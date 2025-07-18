@@ -25,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -179,8 +180,12 @@ public class CacheManager {
      */
     public void updatePlayerName(@NotNull Player bukkitPlayer) throws SQLException {
         PlayerDTO player = playerCache.getPlayer(bukkitPlayer.getUniqueId());
+        URL skin = null;
+        try{
+            skin = bukkitPlayer.getPlayerProfile().getTextures().getSkin();
+        }catch (NoSuchMethodError ignored){}
         if (player != null) {
-            player.updateLastKnownName(bukkitPlayer.getName(), bukkitPlayer.getPlayerProfile().getTextures().getSkin());
+            player.updateLastKnownName(bukkitPlayer.getName(), skin);
         } else {
             PlayerDOO.create(bukkitPlayer);
         }
