@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.Break;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -28,7 +26,6 @@ public class ArmorStandShot implements Listener {
         if (!(projectile.getShooter() instanceof Player player)) {
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(victim.getLocation());
-        checkPrivilegeFlag(dom, Flags.BREAK_BLOCK, player, event);
+        checkPrivilegeFlag(victim.getLocation(), Flags.BREAK_BLOCK, player, event);
     }
 }

@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.Shoot;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.Tag;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -23,7 +21,6 @@ public class ArrowsLaunch implements Listener {
         if (Tag.ENTITY_TYPES_ARROWS.isTagged(projectile.getType())) {
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(projectile.getLocation());
-        checkPrivilegeFlag(dom, Flags.SHOOT, player, event);
+        checkPrivilegeFlag(projectile.getLocation(), Flags.SHOOT, player, event);
     }
 }

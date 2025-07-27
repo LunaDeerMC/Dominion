@@ -114,7 +114,7 @@ public class TeleportManager implements Listener {
             Notification.warn(player, Language.teleportManagerText.disabled);
             return;
         }
-        if (!checkPrivilegeFlag(dominion, Flags.TELEPORT, player, null)) {
+        if (!checkPrivilegeFlag(dominion.getTpLocation(), Flags.TELEPORT, player, null)) {
             return;
         }
         boolean needCooldown = Configuration.getPlayerLimitation(player).teleportation.cooldown > 0;

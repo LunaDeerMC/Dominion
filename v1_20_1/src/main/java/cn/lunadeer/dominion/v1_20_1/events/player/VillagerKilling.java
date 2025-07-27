@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
@@ -21,7 +19,6 @@ public class VillagerKilling implements Listener {
         if (!(event.getEntity() instanceof Villager)) {
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(event.getEntity().getLocation());
-        checkPrivilegeFlag(dom, Flags.VILLAGER_KILLING, player, event);
+        checkPrivilegeFlag(event.getEntity().getLocation(), Flags.VILLAGER_KILLING, player, event);
     }
 }

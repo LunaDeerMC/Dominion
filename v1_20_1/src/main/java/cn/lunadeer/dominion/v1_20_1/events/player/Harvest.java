@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,7 +19,6 @@ public class Harvest implements Listener {
             return;
         }
         Player player = event.getPlayer();
-        DominionDTO dom = CacheManager.instance.getDominion(block.getLocation());
-        checkPrivilegeFlag(dom, Flags.HARVEST, player, event);
+        checkPrivilegeFlag(block.getLocation(), Flags.HARVEST, player, event);
     }
 }

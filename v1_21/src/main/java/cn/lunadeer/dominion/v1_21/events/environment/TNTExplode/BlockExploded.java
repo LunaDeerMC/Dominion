@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_21.events.environment.TNTExplode;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.events.LowestVersion;
 import cn.lunadeer.dominion.utils.XVersionManager;
 import org.bukkit.entity.Entity;
@@ -22,9 +20,6 @@ public class BlockExploded implements Listener {
         if (entity.getType() != EntityType.TNT_MINECART && entity.getType() != EntityType.TNT) {
             return;
         }
-        event.blockList().removeIf(block -> {
-            DominionDTO dom = CacheManager.instance.getDominion(block.getLocation());
-            return !checkEnvironmentFlag(dom, Flags.TNT_EXPLODE, null);
-        });
+        event.blockList().removeIf(block -> !checkEnvironmentFlag(block.getLocation(), Flags.TNT_EXPLODE, null));
     }
 }

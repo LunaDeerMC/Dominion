@@ -45,7 +45,7 @@ public class FallingGravityBlock implements Listener {
             if (domStart != null && domStart.getId().equals(domEnd.getId())) {
                 return;
             }
-            if (!checkEnvironmentFlag(domEnd, Flags.GRAVITY_BLOCK, null)) {
+            if (!checkEnvironmentFlag(locEnd, Flags.GRAVITY_BLOCK, null)) {
                 event.setCancelled(true);
                 locEnd.getWorld().dropItemNaturally(locEnd, new ItemStack(((FallingBlock) entity).getBlockData().getMaterial()));
                 entity.remove();

@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.Container;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemFrame;
@@ -27,7 +25,6 @@ public class ItemFrameGet implements Listener {
         if (!(event.getDamager() instanceof Player bukkitPlayer)) {
             return;
         }
-        DominionDTO dominion = CacheManager.instance.getDominion(itemFrame.getLocation());
-        checkPrivilegeFlag(dominion, Flags.CONTAINER, bukkitPlayer, event);
+        checkPrivilegeFlag(itemFrame.getLocation(), Flags.CONTAINER, bukkitPlayer, event);
     }
 }

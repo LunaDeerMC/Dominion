@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.Break;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemFrame;
@@ -31,7 +29,6 @@ public class ItemFrameBroken implements Listener {
                 return;
             }
         }
-        DominionDTO dom = CacheManager.instance.getDominion(entity.getLocation());
-        checkPrivilegeFlag(dom, Flags.BREAK_BLOCK, player, event);
+        checkPrivilegeFlag(entity.getLocation(), Flags.BREAK_BLOCK, player, event);
     }
 }

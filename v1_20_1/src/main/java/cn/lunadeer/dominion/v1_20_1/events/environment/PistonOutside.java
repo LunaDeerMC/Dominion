@@ -21,10 +21,10 @@ public class PistonOutside implements Listener {
         Block endBlockAfterPush = piston.getRelative(direction, event.getBlocks().size() + 1);
         DominionDTO endBlockDom = CacheManager.instance.getDominion(endBlockAfterPush.getLocation());
         if (pistonDom != null && endBlockDom == null) {
-            checkEnvironmentFlag(pistonDom, Flags.PISTON_OUTSIDE, event);
+            checkEnvironmentFlag(piston.getLocation(), Flags.PISTON_OUTSIDE, event);
         }
         if (pistonDom == null && endBlockDom != null) {
-            checkEnvironmentFlag(endBlockDom, Flags.PISTON_OUTSIDE, event);
+            checkEnvironmentFlag(endBlockAfterPush.getLocation(), Flags.PISTON_OUTSIDE, event);
         }
         if (pistonDom != null && endBlockDom != null) {
             if (!pistonDom.getId().equals(endBlockDom.getId())) {

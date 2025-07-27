@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.environment;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.entity.Enemy;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
@@ -19,7 +17,6 @@ public class MonsterSpawn implements Listener {
         if (!(entity instanceof Enemy)) {
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(entity.getLocation());
-        checkEnvironmentFlag(dom, Flags.MONSTER_SPAWN, event);
+        checkEnvironmentFlag(entity.getLocation(), Flags.MONSTER_SPAWN, event);
     }
 }

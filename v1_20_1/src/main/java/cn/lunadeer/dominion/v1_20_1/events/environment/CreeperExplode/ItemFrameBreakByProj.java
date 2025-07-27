@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.environment.CreeperExplode;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -28,7 +26,6 @@ public class ItemFrameBreakByProj implements Listener {
             // if the shooter is a player, handle in player events
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(event.getEntity().getLocation());
-        checkEnvironmentFlag(dom, Flags.ITEM_FRAME_PROJ_DAMAGE, event);
+        checkEnvironmentFlag(event.getEntity().getLocation(), Flags.ITEM_FRAME_PROJ_DAMAGE, event);
     }
 }

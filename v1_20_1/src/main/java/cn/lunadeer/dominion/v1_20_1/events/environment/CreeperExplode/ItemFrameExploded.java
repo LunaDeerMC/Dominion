@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.environment.CreeperExplode;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -24,7 +22,6 @@ public class ItemFrameExploded implements Listener {
         if (!isExplodeEntity(remover)) {
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(entity.getLocation());
-        checkEnvironmentFlag(dom, Flags.CREEPER_EXPLODE, event);
+        checkEnvironmentFlag(entity.getLocation(), Flags.CREEPER_EXPLODE, event);
     }
 }

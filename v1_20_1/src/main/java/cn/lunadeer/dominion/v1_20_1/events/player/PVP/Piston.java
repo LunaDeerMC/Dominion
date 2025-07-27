@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.PVP;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,13 +17,12 @@ public class Piston implements Listener {
             return;
         }
 
-        DominionDTO dom = CacheManager.instance.getDominion(event.getPotion().getLocation());
-        if (checkPrivilegeFlag(dom, Flags.PVP, attacker, null)) {
+        if (checkPrivilegeFlag(event.getPotion().getLocation(), Flags.PVP, attacker, null)) {
             for (LivingEntity entity : event.getAffectedEntities()) {
                 if (!(entity instanceof Player victim) || victim == attacker) {
                     continue;
                 }
-                if (!checkPrivilegeFlagSilence(dom, Flags.PVP, victim, null)) {
+                if (!checkPrivilegeFlagSilence(event.getPotion().getLocation(), Flags.PVP, victim, null)) {
                     event.setIntensity(victim, 0);
                 }
             }

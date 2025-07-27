@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.environment;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -19,9 +17,6 @@ public class DragonBreakBlock implements Listener {
         if (entity.getType() != EntityType.ENDER_DRAGON) {
             return;
         }
-        event.blockList().removeIf(block -> {
-            DominionDTO dom = CacheManager.instance.getDominion(block.getLocation());
-            return !checkEnvironmentFlag(dom, Flags.DRAGON_BREAK_BLOCK, null);
-        });
+        event.blockList().removeIf(block -> !checkEnvironmentFlag(block.getLocation(), Flags.DRAGON_BREAK_BLOCK, null));
     }
 }

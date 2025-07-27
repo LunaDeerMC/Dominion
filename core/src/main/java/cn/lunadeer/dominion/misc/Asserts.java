@@ -217,6 +217,35 @@ public class Asserts {
     }
 
     /**
+     * Checks if the given player is an admin of the specified dominion.
+     * <p>
+     * Returns true if the player is a server operator (bypass limit), the owner of the dominion,
+     * or a member with the admin flag in their group or as an individual.
+     * Returns false if the player is not a member or does not have admin privileges.
+     *
+     * @param associatedPlayer the player to check
+     * @param dominion         the dominion to check admin status of
+     * @return true if the player is an admin of the dominion, false otherwise
+     */
+    public static boolean checkDominionAdmin(@NotNull Player associatedPlayer, @NotNull DominionDTO dominion) {
+        if (bypassLimit(associatedPlayer)) {
+            return true;
+        }
+        if (dominion.getOwner().equals(associatedPlayer.getUniqueId())) {
+            return true;
+        }
+        MemberDTO member = CacheManager.instance.getMember(dominion, associatedPlayer);
+        if (member == null) {
+            return false; // not a member of the dominion
+        }
+        GroupDTO group = CacheManager.instance.getGroup(member.getGroupId());
+        if (group != null && group.getFlagValue(Flags.ADMIN)) {
+            return true;
+        }
+        return member.getFlagValue(Flags.ADMIN);
+    }
+
+    /**
      * Asserts that the given player is an admin of the specified dominion.
      * Server operators are allowed to bypass this check.
      *
@@ -225,21 +254,7 @@ public class Asserts {
      * @throws DominionException if the player is not an admin of the dominion
      */
     public static void assertDominionAdmin(@NotNull Player associatedPlayer, @NotNull DominionDTO dominion) throws DominionException {
-        if (bypassLimit(associatedPlayer)) {
-            return;
-        }
-        if (dominion.getOwner().equals(associatedPlayer.getUniqueId())) {
-            return;
-        }
-        MemberDTO member = CacheManager.instance.getMember(dominion, associatedPlayer);
-        if (member == null) {
-            throw new DominionException(Language.assertsText.notAdmin, dominion.getName());
-        }
-        GroupDTO group = CacheManager.instance.getGroup(member.getGroupId());
-        if (group != null && group.getFlagValue(Flags.ADMIN)) {
-            return;
-        }
-        if (member.getFlagValue(Flags.ADMIN)) {
+        if (checkDominionAdmin(associatedPlayer, dominion)) {
             return;
         }
         throw new DominionException(Language.assertsText.notAdmin, dominion.getName());

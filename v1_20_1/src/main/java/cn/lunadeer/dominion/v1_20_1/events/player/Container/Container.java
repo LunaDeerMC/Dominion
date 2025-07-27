@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.Container;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.event.EventHandler;
@@ -27,7 +25,6 @@ public class Container implements Listener {
                 !Tag.SHULKER_BOXES.isTagged(event.getClickedBlock().getType())) {
             return;
         }
-        DominionDTO dominion = CacheManager.instance.getDominion(event.getClickedBlock().getLocation());
-        checkPrivilegeFlag(dominion, Flags.CONTAINER, event.getPlayer(), event);
+        checkPrivilegeFlag(event.getClickedBlock().getLocation(), Flags.CONTAINER, event.getPlayer(), event);
     }
 }

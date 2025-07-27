@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.Shoot;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -23,7 +21,6 @@ public class EggLaunch implements Listener {
         if (projectile.getType() != EntityType.EGG) {
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(projectile.getLocation());
-        checkPrivilegeFlag(dom, Flags.EGG, player, event);
+        checkPrivilegeFlag(projectile.getLocation(), Flags.EGG, player, event);
     }
 }

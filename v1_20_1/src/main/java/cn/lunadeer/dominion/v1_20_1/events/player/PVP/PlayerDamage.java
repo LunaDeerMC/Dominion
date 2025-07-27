@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.PVP;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,8 +25,7 @@ public class PlayerDamage implements Listener {
         } else if (attacker_entity instanceof TNTPrimed tnt && tnt.getSource() instanceof Player p) {
             attacker = p;
         } else if (attacker_entity instanceof Firework) {
-            DominionDTO dom = CacheManager.instance.getDominion(attacker_entity.getLocation());
-            if (!checkPrivilegeFlagSilence(dom, Flags.PVP, victim, null)) {
+            if (!checkPrivilegeFlagSilence(attacker_entity.getLocation(), Flags.PVP, victim, null)) {
                 event.setCancelled(true);
             }
             return;
@@ -37,8 +34,8 @@ public class PlayerDamage implements Listener {
             return;
         }
 
-        DominionDTO dom = CacheManager.instance.getDominion(victim.getLocation());
-        if (!checkPrivilegeFlag(dom, Flags.PVP, attacker, null) || !checkPrivilegeFlagSilence(dom, Flags.PVP, victim, null)) {
+        if (!checkPrivilegeFlag(victim.getLocation(), Flags.PVP, attacker, null)
+                || !checkPrivilegeFlagSilence(victim.getLocation(), Flags.PVP, victim, null)) {
             event.setCancelled(true);
         }
     }

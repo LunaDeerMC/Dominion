@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.Sign;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -28,7 +26,6 @@ public class Edit implements Listener {
         if (!(Tag.SIGNS.isTagged(block.getType()))) {
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(block.getLocation());
-        checkPrivilegeFlag(dom, Flags.EDIT_SIGN, player, event);
+        checkPrivilegeFlag(block.getLocation(), Flags.EDIT_SIGN, player, event);
     }
 }

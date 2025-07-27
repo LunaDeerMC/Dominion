@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.environment.Move;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.events.PaperOnly;
 import com.destroystokyo.paper.event.entity.EntityPathfindEvent;
 import org.bukkit.entity.Entity;
@@ -21,7 +19,6 @@ public class PaperMonsterMove implements Listener {
         if (!(entity instanceof Monster)) {
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(event.getLoc());
-        checkEnvironmentFlag(dom, Flags.MONSTER_MOVE, event);
+        checkEnvironmentFlag(event.getLoc(), Flags.MONSTER_MOVE, event);
     }
 }

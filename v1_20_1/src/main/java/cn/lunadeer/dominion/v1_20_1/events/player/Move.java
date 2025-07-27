@@ -18,7 +18,7 @@ public class Move implements Listener {
     public void handler(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         DominionDTO dom = CacheManager.instance.getPlayerCurrentDominion(player);
-        if (!checkPrivilegeFlag(dom, Flags.MOVE, player, null)) {
+        if (!checkPrivilegeFlag(player.getLocation(), Flags.MOVE, player, null)) {
             Location to = player.getLocation();
             assert dom != null;
             int x1 = Math.abs(to.getBlockX() - dom.getCuboid().x1());

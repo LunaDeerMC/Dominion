@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.Vehicle;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
@@ -24,7 +22,6 @@ public class Spawn implements Listener {
         if (!(entity instanceof Vehicle)) {
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(entity.getLocation());
-        checkPrivilegeFlag(dom, Flags.VEHICLE_SPAWN, player, event);
+        checkPrivilegeFlag(entity.getLocation(), Flags.VEHICLE_SPAWN, player, event);
     }
 }

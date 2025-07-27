@@ -120,18 +120,18 @@ public class DominionInterface extends DominionAPI {
 
 
     @Override
-    public boolean checkPrivilegeFlag(@Nullable DominionDTO dom, @NotNull PriFlag flag, @NotNull Player player) {
-        return Others.checkPrivilegeFlag(dom, flag, player, null);
+    public boolean checkPrivilegeFlag(@NotNull Location location, @NotNull PriFlag flag, @NotNull Player player) {
+        return Others.checkPrivilegeFlag(location, flag, player, null);
     }
 
     @Override
-    public boolean checkPrivilegeFlagSilence(@Nullable DominionDTO dom, @NotNull PriFlag flag, @NotNull Player player) {
-        return Others.checkPrivilegeFlagSilence(dom, flag, player, null);
+    public boolean checkPrivilegeFlagSilence(@NotNull Location location, @NotNull PriFlag flag, @NotNull Player player) {
+        return Others.checkPrivilegeFlagSilence(location, flag, player, null);
     }
 
     @Override
-    public boolean checkEnvironmentFlag(@Nullable DominionDTO dom, @NotNull EnvFlag flag) {
-        return Others.checkEnvironmentFlag(dom, flag, null);
+    public boolean checkEnvironmentFlag(@NotNull Location location, @NotNull EnvFlag flag) {
+        return Others.checkEnvironmentFlag(location, flag, null);
     }
 
 }

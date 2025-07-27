@@ -22,11 +22,11 @@ public class HopperOutside implements Listener {
         DominionDTO hopperDom = CacheManager.instance.getDominion(hopper.getLocation());
         DominionDTO inventoryDom = CacheManager.instance.getDominion(inventory.getLocation());
         if (hopperDom == null && inventoryDom != null) {
-            checkEnvironmentFlag(inventoryDom, Flags.HOPPER_OUTSIDE, event);
+            checkEnvironmentFlag(inventory.getLocation(), Flags.HOPPER_OUTSIDE, event);
         }
         if (hopperDom != null && inventoryDom != null) {
             if (!hopperDom.getId().equals(inventoryDom.getId())) {
-                checkEnvironmentFlag(inventoryDom, Flags.HOPPER_OUTSIDE, event);
+                checkEnvironmentFlag(inventory.getLocation(), Flags.HOPPER_OUTSIDE, event);
             }
         }
     }

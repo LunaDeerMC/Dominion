@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.environment.Wither;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -19,9 +17,6 @@ public class ExplodeBySpawn implements Listener {
         if (entity.getType() != EntityType.WITHER) {
             return;
         }
-        event.blockList().removeIf(block -> {
-            DominionDTO dom = CacheManager.instance.getDominion(block.getLocation());
-            return !checkEnvironmentFlag(dom, Flags.WITHER_SPAWN, null);
-        });
+        event.blockList().removeIf(block -> !checkEnvironmentFlag(block.getLocation(), Flags.WITHER_SPAWN, null));
     }
 }

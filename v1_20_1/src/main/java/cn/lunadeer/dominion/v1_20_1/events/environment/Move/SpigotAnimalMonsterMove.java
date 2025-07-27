@@ -1,9 +1,7 @@
 package cn.lunadeer.dominion.v1_20_1.events.environment.Move;
 
 import cn.lunadeer.dominion.Dominion;
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.events.SpigotOnly;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import org.bukkit.Location;
@@ -32,10 +30,9 @@ public class SpigotAnimalMonsterMove implements Listener {
                     } else {
                         Location lastLoc = entityMap.get(entity.getUniqueId());
                         Location currentLoc = entity.getLocation();
-                        DominionDTO dom = CacheManager.instance.getDominion(currentLoc);
-                        if (!checkEnvironmentFlag(dom, Flags.ANIMAL_MOVE, null) && entity instanceof Animals) {
+                        if (!checkEnvironmentFlag(currentLoc, Flags.ANIMAL_MOVE, null) && entity instanceof Animals) {
                             entity.teleport(lastLoc);
-                        } else if (!checkEnvironmentFlag(dom, Flags.MONSTER_MOVE, null) && entity instanceof Monster) {
+                        } else if (!checkEnvironmentFlag(currentLoc, Flags.MONSTER_MOVE, null) && entity instanceof Monster) {
                             entity.teleport(lastLoc);
                         } else {
                             entityMap.put(entity.getUniqueId(), currentLoc);

@@ -179,7 +179,7 @@ public class AdministratorCommand {
                         }
                     }
                 }
-                File folder = new File(Dominion.instance.getDataFolder(), "ExportedMCAList");
+                File folder = new File(Dominion.instance.getDataFolder(), "exported-mca-list");
                 if (!folder.exists()) {
                     boolean success = folder.mkdirs();
                     if (!success) {

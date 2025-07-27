@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.Using;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -29,7 +27,6 @@ public class Cake implements Listener {
             return;
         }
         Player player = event.getPlayer();
-        DominionDTO dom = CacheManager.instance.getDominion(block.getLocation());
-        checkPrivilegeFlag(dom, Flags.CAKE, player, event);
+        checkPrivilegeFlag(block.getLocation(), Flags.CAKE, player, event);
     }
 }

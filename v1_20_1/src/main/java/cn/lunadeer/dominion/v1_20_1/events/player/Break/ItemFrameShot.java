@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.Break;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Hanging;
 import org.bukkit.entity.Player;
@@ -26,7 +24,6 @@ public class ItemFrameShot implements Listener {
         if (!(hit instanceof Hanging)) {
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(hit.getLocation());
-        checkPrivilegeFlag(dom, Flags.BREAK_BLOCK, player, event);
+        checkPrivilegeFlag(hit.getLocation(), Flags.BREAK_BLOCK, player, event);
     }
 }

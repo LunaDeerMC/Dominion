@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.Break;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,7 +15,6 @@ public class NormalBlock implements Listener {
     public void handler(BlockBreakEvent event) {
         Player player = event.getPlayer();
         if (isCrop(event.getBlock().getType())) return;
-        DominionDTO dom = CacheManager.instance.getDominion(event.getBlock().getLocation());
-        checkPrivilegeFlag(dom, Flags.BREAK_BLOCK, player, event);
+        checkPrivilegeFlag(event.getBlock().getLocation(), Flags.BREAK_BLOCK, player, event);
     }
 }
