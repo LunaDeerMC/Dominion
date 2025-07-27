@@ -153,15 +153,13 @@ public class Others {
         if (!flag.getEnable()) {
             return true;
         }
-        boolean re;
         DominionDTO dom = CacheManager.instance.getDominion(location);
+        boolean hasPrivilege;
         if (dom == null) {
-            if (!WorldWide.isWorldWideEnabled(location.getWorld())) {
+            if (!WorldWide.isWorldWideEnabled(location.getWorld()) || bypassLimit(player)) {
                 return true;
-            } else {
-                if (bypassLimit(player)) return true;
-                re = WorldWide.getGuestFlagValue(location.getWorld(), flag);
             }
+            hasPrivilege = WorldWide.getGuestFlagValue(location.getWorld(), flag);
         } else {
             if (checkDominionAdmin(player, dom)) {
                 return true;
@@ -169,16 +167,14 @@ public class Others {
             MemberDTO member = CacheManager.instance.getMember(dom, player);
             if (member != null) {
                 GroupDTO group = CacheManager.instance.getGroup(member.getGroupId());
-                if (member.getGroupId() != -1 && group != null) {
-                    re = group.getFlagValue(flag);
-                } else {
-                    re = member.getFlagValue(flag);
-                }
+                hasPrivilege = (member.getGroupId() != -1 && group != null)
+                        ? group.getFlagValue(flag)
+                        : member.getFlagValue(flag);
             } else {
-                re = dom.getGuestPrivilegeFlagValue().get(flag);
+                hasPrivilege = dom.getGuestPrivilegeFlagValue().get(flag);
             }
         }
-        if (re) {
+        if (hasPrivilege) {
             return true;
         }
         if (event != null) {
@@ -205,24 +201,20 @@ public class Others {
         if (!flag.getEnable()) {
             return true;
         }
-        boolean re;
         DominionDTO dom = CacheManager.instance.getDominion(location);
+        boolean enabled;
         if (dom == null) {
             if (!WorldWide.isWorldWideEnabled(location.getWorld())) {
                 return true;
-            } else {
-                re = WorldWide.getEnvFlagValue(location.getWorld(), flag);
             }
+            enabled = WorldWide.getEnvFlagValue(location.getWorld(), flag);
         } else {
-            re = dom.getEnvironmentFlagValue().get(flag);
+            enabled = dom.getEnvironmentFlagValue().getOrDefault(flag, false);
         }
-        if (re) {
-            return true;
-        }
-        if (event != null) {
+        if (!enabled && event != null) {
             event.setCancelled(true);
         }
-        return false;
+        return enabled;
     }
 
     public static boolean isInDominion(@Nullable DominionDTO dominion, @NotNull Location location) {
