@@ -182,6 +182,10 @@ public class TeleportManager implements Listener {
         if (!player.getPassengers().isEmpty()) {
             player.getPassengers().forEach(player::removePassenger);
         }
+        if (player.isInsideVehicle() && player.getVehicle() != null) {
+            player.getVehicle().removePassenger(player);
+            player.leaveVehicle();
+        }
         if (!isPaper()) {
             Location loc = findNearestSafeLocation(location);
             Bukkit.getScheduler().runTask(Dominion.instance, () -> player.teleport(loc, PlayerTeleportEvent.TeleportCause.PLUGIN));
