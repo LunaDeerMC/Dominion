@@ -83,10 +83,10 @@ public class WorldWide {
             if (flag.getFlagName().equals(Flags.ADMIN.getFlagName())) continue;
             if (config.get(flag.getConfigurationNameKey()) == null) {
                 config.set(flag.getConfigurationNameKey(), flag.getDefaultValue());
-                config.setInlineComments(flag.getConfigurationNameKey(),
-                        List.of(flag.getDisplayName() + " - " + flag.getDescription())
-                );
             }
+            config.setInlineComments(flag.getConfigurationNameKey(),
+                    List.of(flag.getDisplayName() + " - " + flag.getDescription())
+            );
             if (flag instanceof PriFlag priFlag) {
                 worlds.get(worldName).guestPrivilegeFlags.put(priFlag, config.getBoolean(flag.getConfigurationNameKey(), flag.getDefaultValue()));
             } else if (flag instanceof EnvFlag envFlag) {
