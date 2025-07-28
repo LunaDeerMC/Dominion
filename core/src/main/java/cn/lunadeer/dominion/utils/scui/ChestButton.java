@@ -3,8 +3,11 @@ package cn.lunadeer.dominion.utils.scui;
 import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.utils.ColorParser;
+import cn.lunadeer.dominion.utils.LegacyToMiniMessage;
+import cn.lunadeer.dominion.utils.Misc;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import cn.lunadeer.dominion.utils.scui.configuration.ButtonConfiguration;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -113,16 +116,24 @@ public abstract class ChestButton {
         if (displayName != null) {
             displayName = setPlaceholder(viewOwner, displayName);
             displayName = ColorParser.getBukkitType(displayName);
-            // todo MiniMessage support
-            meta.setDisplayName(displayName);
+            if (Misc.isPaper()) {
+                meta.displayName(LegacyToMiniMessage.parse(displayName));
+            } else {
+                meta.setDisplayName(displayName);
+            }
         }
         if (lore != null) {
+            List<Component> componentsLore = new ArrayList<>();
             for (int i = 0; i < lore.size(); i++) {
                 lore.set(i, setPlaceholder(viewOwner, lore.get(i)));
                 lore.set(i, ColorParser.getBukkitType(lore.get(i)));
-                // todo MiniMessage support
+                componentsLore.add(LegacyToMiniMessage.parse(lore.get(i)));
             }
-            meta.setLore(lore);
+            if (Misc.isPaper()) {
+                meta.lore(componentsLore);
+            } else {
+                meta.setLore(lore);
+            }
         }
         item.setItemMeta(meta);
         return item;
