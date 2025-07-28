@@ -17,7 +17,6 @@ import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -283,25 +282,6 @@ public class Others {
         } else {
             player.setAllowFlight(dominion.getGuestPrivilegeFlagValue().get(Flags.FLY));
         }
-    }
-
-    public static boolean isCrop(@NotNull Material material) {
-        return material == Material.COCOA ||
-                material == Material.WHEAT ||
-                material == Material.CARROTS ||
-                material == Material.POTATOES ||
-                material == Material.BEETROOTS ||
-                material == Material.NETHER_WART ||
-                material == Material.SWEET_BERRY_BUSH ||
-                material == Material.MELON ||
-                material == Material.PUMPKIN ||
-                material == Material.SUGAR_CANE ||
-                material == Material.BAMBOO ||
-                material == Material.CACTUS ||
-                material == Material.CHORUS_PLANT ||
-                material == Material.CHORUS_FLOWER ||
-                material == Material.KELP ||
-                material == Material.KELP_PLANT;
     }
 
     public static boolean isExplodeEntity(@NotNull Entity entity) {
