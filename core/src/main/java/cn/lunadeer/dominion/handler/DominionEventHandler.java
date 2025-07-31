@@ -20,6 +20,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,6 +36,8 @@ import static cn.lunadeer.dominion.misc.Others.getSubDominionsRecursive;
  * This class implements the Listener interface to handle events in a Bukkit plugin.
  */
 public class DominionEventHandler implements Listener {
+
+    private static final Logger log = LoggerFactory.getLogger(DominionEventHandler.class);
 
     public static class DominionEventHandlerText extends ConfigurationPart {
         public String createSuccess = "Create dominion {0} success.";
@@ -138,7 +142,7 @@ public class DominionEventHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onDominionSizeChangeEvent(DominionReSizeEvent event) {
         if (event.isCancelled()) return;
-        int amount = event.getNewCuboid().minusVolumeWith(event.getOldCuboid());
+        long amount = event.getNewCuboid().minusVolumeWith(event.getOldCuboid());
         if (amount == 0) {
             XLogger.debug("Dominion size change event cancelled, no size change.");
             return;

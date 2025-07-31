@@ -406,7 +406,7 @@ public class Asserts {
         if (bypassLimit(associatedPlayer)) {
             return;
         }
-        int amount;
+        long amount;
         if (ecoConf.squareOnly) {
             amount = after.minusSquareWith(before);
         } else {

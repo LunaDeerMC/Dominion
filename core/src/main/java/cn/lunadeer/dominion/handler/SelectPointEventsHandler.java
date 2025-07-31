@@ -102,7 +102,7 @@ public class SelectPointEventsHandler implements Listener {
             CuboidDTO cuboid = new CuboidDTO(locs[0], locs[1]);
             try {
                 if (Configuration.getPlayerLimitation(player).economy.enable) {
-                    int amount;
+                    long amount;
                     if (Configuration.getPlayerLimitation(player).economy.squareOnly) {
                         amount = cuboid.getSquare();
                     } else {
