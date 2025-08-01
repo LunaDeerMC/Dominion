@@ -412,7 +412,7 @@ flags:
     description: false 即禁止外部漏斗吸取領地內的容器物品
   door:
     display-name: 門
-    description: 是否允許操作門(包括活板門及柵欄門)
+    description: 是否允許操作門(包括地板門及柵欄門)
   dragon_break_block:
     display-name: 終界龍破壞方塊
     description: 是否允許終界龍破壞方塊
