@@ -23,9 +23,9 @@ import cn.lunadeer.dominion.utils.stui.components.buttons.ListViewButton;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Objects;
 
 import static cn.lunadeer.dominion.Dominion.adminPermission;
 import static cn.lunadeer.dominion.Dominion.defaultPermission;
@@ -139,16 +139,41 @@ public class MigrationCommand {
         event.callEvent();
         if (!event.isCancelled()) {
             Notification.info(sender, Language.migrationCommandText.migrateSuccess, node.name);
-            DominionDTO dominionCreated = event.getDominion();
-            Objects.requireNonNull(Objects.requireNonNull(dominionCreated.setTpLocation(node.tpLoc))
-                            .setJoinMessage(node.joinMessage))
-                    .setLeaveMessage(node.leaveMessage);
-            if (node.children != null) {
-                for (ResMigration.ResidenceNode child : node.children) {
-                    doMigrateCreate(sender, child, dominionCreated);
-                }
+            DominionDTO dominionCreated = postProcessMigration(sender, node, event);
+            event.setDominion(dominionCreated);
+        }
+    }
+
+    /**
+     * Post-processes the migration after a dominion is created.
+     * <p>
+     * This method updates the created dominion with additional properties from the residence node,
+     * such as teleport location, join/leave messages, and recursively migrates any child residences.
+     *
+     * @param sender the command sender
+     * @param node   the residence node containing migration data
+     * @param event  the dominion creation event
+     * @return the updated DominionDTO after post-processing
+     * @throws Exception if an error occurs during child migration
+     */
+    private static @NotNull DominionDTO postProcessMigration(CommandSender sender, ResMigration.ResidenceNode node, DominionCreateEvent event) throws Exception {
+        DominionDTO dominionCreated = event.getDominion();
+        assert dominionCreated != null : "Migrate Dominion created failed, event.getDominion() is null";
+        if (node.tpLoc != null) {
+            dominionCreated = dominionCreated.setTpLocation(node.tpLoc);
+        }
+        if (node.joinMessage != null) {
+            dominionCreated = dominionCreated.setJoinMessage(node.joinMessage);
+        }
+        if (node.leaveMessage != null) {
+            dominionCreated = dominionCreated.setLeaveMessage(node.leaveMessage);
+        }
+        if (node.children != null) {
+            for (ResMigration.ResidenceNode child : node.children) {
+                doMigrateCreate(sender, child, dominionCreated);
             }
         }
+        return dominionCreated;
     }
 
     public static void migrateAll(CommandSender sender) {

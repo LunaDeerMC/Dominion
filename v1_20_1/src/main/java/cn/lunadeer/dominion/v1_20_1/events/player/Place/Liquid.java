@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.Place;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,7 +28,6 @@ public class Liquid implements Listener {
             return;
         }
         Player player = event.getPlayer();
-        DominionDTO dominion = CacheManager.instance.getDominion(event.getClickedBlock().getLocation());
-        checkPrivilegeFlag(dominion, Flags.PLACE, player, event);
+        checkPrivilegeFlag(event.getClickedBlock().getLocation(), Flags.PLACE, player, event);
     }
 }

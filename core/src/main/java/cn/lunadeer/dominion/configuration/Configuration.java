@@ -405,6 +405,8 @@ public class Configuration extends ConfigurationFile {
         loadLanguageFiles(sender, Dominion.instance, Configuration.language);
         // flag
         loadFlagConfiguration();
+        // world-wide
+        WorldWide.load(sender != null ? sender : Dominion.instance.getServer().getConsoleSender(), Dominion.instance);
         // database
         Notification.info(sender != null ? sender : Dominion.instance.getServer().getConsoleSender()
                 , Language.configurationText.prepareDatabase);

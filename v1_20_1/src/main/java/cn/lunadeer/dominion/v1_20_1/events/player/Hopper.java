@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -31,7 +29,6 @@ public class Hopper implements Listener {
         ) {
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(event.getClickedBlock().getLocation());
-        checkPrivilegeFlag(dom, Flags.HOPPER, event.getPlayer(), event);
+        checkPrivilegeFlag(event.getClickedBlock().getLocation(), Flags.HOPPER, event.getPlayer(), event);
     }
 }

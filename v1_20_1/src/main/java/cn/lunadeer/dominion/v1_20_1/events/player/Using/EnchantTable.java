@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.Using;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -24,7 +22,6 @@ public class EnchantTable implements Listener {
         if (event.getClickedBlock().getType() != Material.ENCHANTING_TABLE) {
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(event.getClickedBlock().getLocation());
-        checkPrivilegeFlag(dom, Flags.ENCHANT, event.getPlayer(), event);
+        checkPrivilegeFlag(event.getClickedBlock().getLocation(), Flags.ENCHANT, event.getPlayer(), event);
     }
 }

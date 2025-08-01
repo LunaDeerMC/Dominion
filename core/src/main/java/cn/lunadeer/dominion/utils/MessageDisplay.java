@@ -20,7 +20,7 @@ public class MessageDisplay {
         if (place == Place.BOSS_BAR) {
             Notification.bossBar(player, message);
         } else if (place == Place.CHAT) {
-            player.sendMessage(message);
+            player.sendMessage(LegacyToMiniMessage.parse(message));
         } else if (place == Place.TITLE) {
             Notification.title(player, message);
         } else if (place == Place.SUBTITLE) {

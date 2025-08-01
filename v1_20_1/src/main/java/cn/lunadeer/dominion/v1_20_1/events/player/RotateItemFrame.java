@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemFrame;
@@ -26,7 +24,6 @@ public class RotateItemFrame implements Listener {
             return;
         }
         Player player = event.getPlayer();
-        DominionDTO dom = CacheManager.instance.getDominion(entity.getLocation());
-        checkPrivilegeFlag(dom, Flags.ITEM_FRAME_INTERACTIVE, player, event);
+        checkPrivilegeFlag(entity.getLocation(), Flags.ITEM_FRAME_INTERACTIVE, player, event);
     }
 }

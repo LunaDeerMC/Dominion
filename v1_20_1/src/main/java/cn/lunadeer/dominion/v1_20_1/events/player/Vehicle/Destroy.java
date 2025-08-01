@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.Vehicle;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,7 +15,6 @@ public class Destroy implements Listener {
         if (!(event.getAttacker() instanceof Player player)) {
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(event.getVehicle().getLocation());
-        checkPrivilegeFlag(dom, Flags.VEHICLE_DESTROY, player, event);
+        checkPrivilegeFlag(event.getVehicle().getLocation(), Flags.VEHICLE_DESTROY, player, event);
     }
 }

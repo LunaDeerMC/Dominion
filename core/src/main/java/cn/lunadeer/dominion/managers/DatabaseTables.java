@@ -116,12 +116,12 @@ public class DatabaseTables {
         if (Show.show().columns().from("dominion").execute().containsKey("world_uid")) {
             server_dom_world_field = new FieldString("world_uid", "00000000-0000-0000-0000-000000000000");
         }
-        FieldInteger server_dom_x1_field = new FieldInteger("x1", -2147483648);
-        FieldInteger server_dom_y1_field = new FieldInteger("y1", -2147483648);
-        FieldInteger server_dom_z1_field = new FieldInteger("z1", -2147483648);
-        FieldInteger server_dom_x2_field = new FieldInteger("x2", 2147483647);
-        FieldInteger server_dom_y2_field = new FieldInteger("y2", 2147483647);
-        FieldInteger server_dom_z2_field = new FieldInteger("z2", 2147483647);
+        FieldInteger server_dom_x1_field = new FieldInteger("x1", Integer.MIN_VALUE);
+        FieldInteger server_dom_y1_field = new FieldInteger("y1", Integer.MIN_VALUE);
+        FieldInteger server_dom_z1_field = new FieldInteger("z1", Integer.MIN_VALUE);
+        FieldInteger server_dom_x2_field = new FieldInteger("x2", Integer.MAX_VALUE);
+        FieldInteger server_dom_y2_field = new FieldInteger("y2", Integer.MAX_VALUE);
+        FieldInteger server_dom_z2_field = new FieldInteger("z2", Integer.MAX_VALUE);
         FieldInteger server_dom_parent_dom_id_field = new FieldInteger("parent_dom_id", -1);
         FieldString server_dom_join_message_field = new FieldString("join_message", "'&3{OWNER}: Welcome to {DOM}!'");
         FieldString server_dom_leave_message_field = new FieldString("leave_message", "'&3{OWNER}: Leaving {DOM}...'");

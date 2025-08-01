@@ -105,7 +105,7 @@ public class Asserts {
     /**
      * Asserts that the player has not exceeded the maximum number of dominions they can create.
      *
-     * @param operator             the command sender (usually a player)
+     * @param operator           the command sender (usually a player)
      * @param associatedWorldUid the world in which the dominion is located
      * @throws DominionException if the player has exceeded the maximum number of dominions they can create
      */
@@ -135,7 +135,7 @@ public class Asserts {
     /**
      * Asserts that the size of the given dominion is within the allowed limits.
      *
-     * @param operator             the command operator (usually a player)
+     * @param operator           the command operator (usually a player)
      * @param associatedWorldUid the world in which the dominion is located
      * @param cuboid             the cuboid representing the dominion's size
      * @throws DominionException if the dominion size is outside the allowed limits
@@ -217,6 +217,35 @@ public class Asserts {
     }
 
     /**
+     * Checks if the given player is an admin of the specified dominion.
+     * <p>
+     * Returns true if the player is a server operator (bypass limit), the owner of the dominion,
+     * or a member with the admin flag in their group or as an individual.
+     * Returns false if the player is not a member or does not have admin privileges.
+     *
+     * @param associatedPlayer the player to check
+     * @param dominion         the dominion to check admin status of
+     * @return true if the player is an admin of the dominion, false otherwise
+     */
+    public static boolean checkDominionAdmin(@NotNull Player associatedPlayer, @NotNull DominionDTO dominion) {
+        if (bypassLimit(associatedPlayer)) {
+            return true;
+        }
+        if (dominion.getOwner().equals(associatedPlayer.getUniqueId())) {
+            return true;
+        }
+        MemberDTO member = CacheManager.instance.getMember(dominion, associatedPlayer);
+        if (member == null) {
+            return false; // not a member of the dominion
+        }
+        GroupDTO group = CacheManager.instance.getGroup(member.getGroupId());
+        if (group != null && group.getFlagValue(Flags.ADMIN)) {
+            return true;
+        }
+        return member.getFlagValue(Flags.ADMIN);
+    }
+
+    /**
      * Asserts that the given player is an admin of the specified dominion.
      * Server operators are allowed to bypass this check.
      *
@@ -225,21 +254,7 @@ public class Asserts {
      * @throws DominionException if the player is not an admin of the dominion
      */
     public static void assertDominionAdmin(@NotNull Player associatedPlayer, @NotNull DominionDTO dominion) throws DominionException {
-        if (bypassLimit(associatedPlayer)) {
-            return;
-        }
-        if (dominion.getOwner().equals(associatedPlayer.getUniqueId())) {
-            return;
-        }
-        MemberDTO member = CacheManager.instance.getMember(dominion, associatedPlayer);
-        if (member == null) {
-            throw new DominionException(Language.assertsText.notAdmin, dominion.getName());
-        }
-        GroupDTO group = CacheManager.instance.getGroup(member.getGroupId());
-        if (group != null && group.getFlagValue(Flags.ADMIN)) {
-            return;
-        }
-        if (member.getFlagValue(Flags.ADMIN)) {
+        if (checkDominionAdmin(associatedPlayer, dominion)) {
             return;
         }
         throw new DominionException(Language.assertsText.notAdmin, dominion.getName());
@@ -259,10 +274,10 @@ public class Asserts {
      * @throws DominionException if the parent dominion cannot contain the specified dominion,
      *                           if the dominion cannot contain its children, or if the sub-dominion recursion depth is invalid
      */
-    public static void assertWithinParent(@NotNull DominionDTO dominion, @NotNull CuboidDTO cuboid) throws DominionException {
+    public static void assertWithinParent(@NotNull DominionDTO dominion, @NotNull CuboidDTO cuboid) throws Exception {
         // check if parent dominion can contain this dominion
         if (dominion.getParentDomId() != -1) {
-            DominionDTO parent = CacheManager.instance.getCache().getDominionCache().getDominion(dominion.getParentDomId());
+            DominionDTO parent = DominionDOO.select(dominion.getParentDomId()); // get from db instead of cache to avoid cache miss
             if (parent == null) {
                 throw new DominionException(Language.assertsText.missingParentDom, dominion.getName());
             }
@@ -277,7 +292,7 @@ public class Asserts {
      * This method checks if the recursion depth of sub-dominions is valid
      * based on the player's limitations and the configuration settings.
      *
-     * @param operator   the command operator (usually a player)
+     * @param operator the command operator (usually a player)
      * @param dominion the dominion to check
      * @throws DominionException if the sub-dominion depth exceeds the allowed limit
      */
@@ -329,7 +344,7 @@ public class Asserts {
     /**
      * Asserts that the specified dominion does not intersect with other dominions or the spawn protection area.
      *
-     * @param operator   the command operator (usually a player)
+     * @param operator the command operator (usually a player)
      * @param dominion the dominion to check for intersections
      * @throws DominionException if the dominion intersects with another dominion or the spawn protection area
      */
@@ -374,9 +389,9 @@ public class Asserts {
      * This method checks if the economy feature is enabled, calculates the cost or refund
      * based on the difference between the before and after cuboid sizes, and updates the player's balance accordingly.
      *
-     * @param operator          the command sender (usually a player)
-     * @param before           the cuboid representing the dominion's size before modification
-     * @param after            the cuboid representing the dominion's size after modification
+     * @param operator the command sender (usually a player)
+     * @param before   the cuboid representing the dominion's size before modification
+     * @param after    the cuboid representing the dominion's size after modification
      * @throws Exception if there is an error during the economic transaction
      */
     public static void assertEconomy(@NotNull CommandSender operator, CuboidDTO before, CuboidDTO after) throws Exception {
@@ -391,7 +406,7 @@ public class Asserts {
         if (bypassLimit(associatedPlayer)) {
             return;
         }
-        int amount;
+        long amount;
         if (ecoConf.squareOnly) {
             amount = after.minusSquareWith(before);
         } else {

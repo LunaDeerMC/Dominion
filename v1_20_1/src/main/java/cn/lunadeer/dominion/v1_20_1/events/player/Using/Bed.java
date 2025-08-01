@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.Using;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -28,7 +26,6 @@ public class Bed implements Listener {
         if (!(Tag.BEDS.isTagged(block.getType()))) {
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(block.getLocation());
-        checkPrivilegeFlag(dom, Flags.BED, bukkitPlayer, event);
+        checkPrivilegeFlag(block.getLocation(), Flags.BED, bukkitPlayer, event);
     }
 }

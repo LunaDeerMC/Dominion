@@ -179,9 +179,10 @@ public class CacheManager {
     public void updatePlayerName(@NotNull Player bukkitPlayer) throws Exception {
         PlayerDTO player = playerCache.getPlayer(bukkitPlayer.getUniqueId());
         URL skin = null;
-        try{
+        try {
             skin = bukkitPlayer.getPlayerProfile().getTextures().getSkin();
-        }catch (NoSuchMethodError ignored){}
+        } catch (NoSuchMethodError ignored) {
+        }
         if (player != null) {
             player = player.updateLastKnownName(bukkitPlayer.getName(), skin);
         } else {

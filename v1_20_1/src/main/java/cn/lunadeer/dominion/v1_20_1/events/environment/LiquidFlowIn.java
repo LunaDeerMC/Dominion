@@ -28,6 +28,6 @@ public class LiquidFlowIn implements Listener {
                 return;
             }
         }
-        checkEnvironmentFlag(dom_to, Flags.FLOW_IN_PROTECTION, event);
+        checkEnvironmentFlag(to, Flags.FLOW_IN_PROTECTION, event);
     }
 }

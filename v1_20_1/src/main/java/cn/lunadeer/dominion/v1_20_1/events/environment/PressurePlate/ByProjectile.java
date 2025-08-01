@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.environment.PressurePlate;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Projectile;
@@ -23,7 +21,6 @@ public class ByProjectile implements Listener {
         if (!Tag.PRESSURE_PLATES.isTagged(block.getType())) {
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(block.getLocation());
-        checkEnvironmentFlag(dom, Flags.TRIG_PRESSURE_PROJ, event);
+        checkEnvironmentFlag(block.getLocation(), Flags.TRIG_PRESSURE_PROJ, event);
     }
 }

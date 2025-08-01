@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.Anchor;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,8 +16,7 @@ public class Respawn implements Listener {
         if (!event.isAnchorSpawn()) {
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(event.getRespawnLocation());
-        if (!checkPrivilegeFlag(dom, Flags.ANCHOR, bukkitPlayer, null)) {
+        if (!checkPrivilegeFlag(event.getRespawnLocation(), Flags.ANCHOR, bukkitPlayer, null)) {
             if (bukkitPlayer.getBedSpawnLocation() != null) {
                 event.setRespawnLocation(bukkitPlayer.getBedSpawnLocation());
             } else {

@@ -10,13 +10,13 @@ import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.configuration.Language;
+import cn.lunadeer.dominion.configuration.WorldWide;
 import cn.lunadeer.dominion.doos.PlayerDOO;
 import cn.lunadeer.dominion.utils.MessageDisplay;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static cn.lunadeer.dominion.Dominion.adminPermission;
-import static cn.lunadeer.dominion.misc.Asserts.assertDominionAdmin;
+import static cn.lunadeer.dominion.misc.Asserts.checkDominionAdmin;
 import static cn.lunadeer.dominion.utils.Misc.formatString;
 
 public class Others {
@@ -114,93 +114,106 @@ public class Others {
     }
 
     /**
-     * Checks if a player has the privilege flag for a given dominion.
+     * Checks if the player has the specified privilege flag at the given location.
      * <p>
-     * This method checks if the player has the specified privilege flag for the given dominion. If the player does not have
-     * the privilege, it displays a no-permission message and cancels the event if provided.
+     * If the player does not have the required privilege, a formatted no-permission message is shown
+     * to the player at the configured display place, and the method returns false.
+     * If the player has the privilege, returns true.
      *
-     * @param dom    the DominionDTO to check the privilege flag for
-     * @param flag   the PriFlag to check
-     * @param player the Player object representing the player
-     * @param event  the Cancellable event to cancel if the player does not have the privilege
-     * @return true if the player has the privilege flag, false otherwise
+     * @param location the location to check the privilege at
+     * @param flag     the privilege flag to check
+     * @param player   the player to check
+     * @param event    the cancellable event to cancel if the player lacks the privilege
+     * @return true if the player has the privilege, false otherwise
      */
-    public static boolean checkPrivilegeFlag(@Nullable DominionDTO dom, @NotNull PriFlag flag, @NotNull Player player, @Nullable Cancellable event) {
-        if (checkPrivilegeFlagSilence(dom, flag, player, event)) {
+    public static boolean checkPrivilegeFlag(@NotNull Location location, @NotNull PriFlag flag, @NotNull Player player, @Nullable Cancellable event) {
+        if (checkPrivilegeFlagSilence(location, flag, player, event)) {
             return true;
         } else {
             String msg = formatString(Language.othersText.noPermissionForFlag, flag.getDisplayName(), flag.getDescription());
             msg = "&4" + "&l" + msg;
             MessageDisplay.show(player, MessageDisplay.Place.valueOf(Configuration.pluginMessage.noPermissionDisplayPlace.toUpperCase()), msg);
-            if (event != null) {
-                event.setCancelled(true);
-            }
             return false;
         }
     }
 
     /**
-     * Silently checks if a player has the privilege flag for a given dominion.
+     * Checks if the player has the specified privilege flag at the given location, without displaying any message.
      * <p>
-     * This method checks if the player has the specified privilege flag for the given dominion without displaying any messages.
-     * It returns true if the player has the privilege flag, false otherwise.
+     * If the player does not have the required privilege, the provided event (if not null) will be cancelled.
      *
-     * @param dom    the DominionDTO to check the privilege flag for
-     * @param flag   the PriFlag to check
-     * @param player the Player object representing the player
-     * @param event  the Cancellable event to cancel if the player does not have the privilege
-     * @return true if the player has the privilege flag, false otherwise
+     * @param location the location to check the privilege at
+     * @param flag     the privilege flag to check
+     * @param player   the player to check
+     * @param event    the cancellable event to cancel if the player lacks the privilege
+     * @return true if the player has the privilege, false otherwise
      */
-    public static boolean checkPrivilegeFlagSilence(@Nullable DominionDTO dom, @NotNull PriFlag flag, @NotNull Player player, @Nullable Cancellable event) {
+    public static boolean checkPrivilegeFlagSilence(@NotNull Location location, @NotNull PriFlag flag, @NotNull Player player, @Nullable Cancellable event) {
         if (!flag.getEnable()) {
             return true;
         }
+        DominionDTO dom = CacheManager.instance.getDominion(location);
+        boolean hasPrivilege;
         if (dom == null) {
-            return true;
-        }
-        MemberDTO member = CacheManager.instance.getMember(dom, player);
-        try {
-            assertDominionAdmin(player, dom);
-            return true;
-        } catch (Exception e) {
+            if (!WorldWide.isWorldWideEnabled(location.getWorld()) || bypassLimit(player)) {
+                return true;
+            }
+            hasPrivilege = WorldWide.getGuestFlagValue(location.getWorld(), flag);
+        } else {
+            if (checkDominionAdmin(player, dom)) {
+                return true;
+            }
+            MemberDTO member = CacheManager.instance.getMember(dom, player);
             if (member != null) {
                 GroupDTO group = CacheManager.instance.getGroup(member.getGroupId());
-                if (member.getGroupId() != -1 && group != null) {
-                    return group.getFlagValue(flag);
-                } else {
-                    return member.getFlagValue(flag);
-                }
+                hasPrivilege = (member.getGroupId() != -1 && group != null)
+                        ? group.getFlagValue(flag)
+                        : member.getFlagValue(flag);
             } else {
-                return dom.getGuestPrivilegeFlagValue().get(flag);
+                hasPrivilege = dom.getGuestPrivilegeFlagValue().get(flag);
             }
         }
-    }
-
-    /**
-     * Checks if a dominion has the environment flag enabled.
-     * <p>
-     * This method checks if the specified environment flag is enabled for the given dominion. If the flag is not enabled,
-     * it cancels the event if provided.
-     *
-     * @param dom   the DominionDTO to check the environment flag for
-     * @param flag  the EnvFlag to check
-     * @param event the Cancellable event to cancel if the environment flag is not enabled
-     * @return true if the environment flag is enabled, false otherwise
-     */
-    public static boolean checkEnvironmentFlag(@Nullable DominionDTO dom, @NotNull EnvFlag flag, @Nullable Cancellable event) {
-        if (!flag.getEnable()) {
-            return true;
-        }
-        if (dom == null) {
-            return true;
-        }
-        if (dom.getEnvironmentFlagValue().get(flag)) {
+        if (hasPrivilege) {
             return true;
         }
         if (event != null) {
             event.setCancelled(true);
         }
         return false;
+    }
+
+
+    /**
+     * Checks if the specified environment flag is enabled at the given location.
+     * <p>
+     * This method determines whether the provided {@link EnvFlag} is enabled for the given {@link Location}.
+     * If the flag is not enabled, the method returns true. If the location is not within a dominion,
+     * it checks if the world-wide environment flag is enabled for the world. If the flag is not enabled
+     * in either the dominion or world-wide, the provided {@link Cancellable} event (if not null) will be cancelled.
+     *
+     * @param location the location to check the environment flag at
+     * @param flag     the environment flag to check
+     * @param event    the cancellable event to cancel if the flag is not enabled
+     * @return true if the environment flag is enabled at the location, false otherwise
+     */
+    public static boolean checkEnvironmentFlag(@NotNull Location location, @NotNull EnvFlag flag, @Nullable Cancellable event) {
+        if (!flag.getEnable()) {
+            return true;
+        }
+        DominionDTO dom = CacheManager.instance.getDominion(location);
+        boolean enabled;
+        if (dom == null) {
+            if (!WorldWide.isWorldWideEnabled(location.getWorld())) {
+                return true;
+            }
+            enabled = WorldWide.getEnvFlagValue(location.getWorld(), flag);
+        } else {
+            enabled = dom.getEnvironmentFlagValue().getOrDefault(flag, false);
+        }
+        if (!enabled && event != null) {
+            event.setCancelled(true);
+        }
+        return enabled;
     }
 
     public static boolean isInDominion(@Nullable DominionDTO dominion, @NotNull Location location) {
@@ -269,25 +282,6 @@ public class Others {
         } else {
             player.setAllowFlight(dominion.getGuestPrivilegeFlagValue().get(Flags.FLY));
         }
-    }
-
-    public static boolean isCrop(@NotNull Material material) {
-        return material == Material.COCOA ||
-                material == Material.WHEAT ||
-                material == Material.CARROTS ||
-                material == Material.POTATOES ||
-                material == Material.BEETROOTS ||
-                material == Material.NETHER_WART ||
-                material == Material.SWEET_BERRY_BUSH ||
-                material == Material.MELON ||
-                material == Material.PUMPKIN ||
-                material == Material.SUGAR_CANE ||
-                material == Material.BAMBOO ||
-                material == Material.CACTUS ||
-                material == Material.CHORUS_PLANT ||
-                material == Material.CHORUS_FLOWER ||
-                material == Material.KELP ||
-                material == Material.KELP_PLANT;
     }
 
     public static boolean isExplodeEntity(@NotNull Entity entity) {

@@ -1,6 +1,9 @@
 package cn.lunadeer.dominion.utils;
 
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.boss.BarColor;
@@ -12,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import static cn.lunadeer.dominion.utils.Misc.formatString;
 import static cn.lunadeer.dominion.utils.XLogger.isDebug;
+import static net.kyori.adventure.title.Title.DEFAULT_TIMES;
 
 /**
  * Utility class for sending various types of notifications to players and all online users.
@@ -19,11 +23,15 @@ import static cn.lunadeer.dominion.utils.XLogger.isDebug;
  */
 public class Notification {
     public static Notification instance;
+    private static BukkitAudiences adventure = null;
 
     public Notification(JavaPlugin plugin) {
         instance = this;
         this.plugin = plugin;
         this.prefix = "&6[&e" + plugin.getName() + "&6]&f";
+        if (!Misc.isPaper()) {
+            adventure = BukkitAudiences.create(plugin);
+        }
     }
 
     private String prefix;
@@ -45,7 +53,12 @@ public class Notification {
      * @param msg    The message to send.
      */
     public static void info(CommandSender sender, String msg) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', instance.prefix + " &2" + msg));
+        Component adventureMessage = LegacyToMiniMessage.parse(instance.prefix + " &2" + msg);
+        if (adventure != null) {
+            adventure.sender(sender).sendMessage(adventureMessage);
+        } else {
+            sender.sendMessage(adventureMessage);
+        }
     }
 
     /**
@@ -66,7 +79,12 @@ public class Notification {
      * @param msg    The message to send.
      */
     public static void warn(CommandSender sender, String msg) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', instance.prefix + " &e" + msg));
+        Component adventureMessage = LegacyToMiniMessage.parse(instance.prefix + " &e" + msg);
+        if (adventure != null) {
+            adventure.sender(sender).sendMessage(adventureMessage);
+        } else {
+            sender.sendMessage(adventureMessage);
+        }
     }
 
     /**
@@ -87,7 +105,12 @@ public class Notification {
      * @param msg    The message to send.
      */
     public static void error(CommandSender sender, String msg) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', instance.prefix + " &c" + msg));
+        Component adventureMessage = LegacyToMiniMessage.parse(instance.prefix + " &c" + msg);
+        if (adventure != null) {
+            adventure.sender(sender).sendMessage(adventureMessage);
+        } else {
+            sender.sendMessage(adventureMessage);
+        }
     }
 
     /**
@@ -120,7 +143,12 @@ public class Notification {
      * @param msg The message to broadcast.
      */
     public static void all(String msg) {
-        instance.plugin.getServer().broadcast(ChatColor.translateAlternateColorCodes('&', instance.prefix + " &2" + msg), "bukkit.broadcast.user");
+        Component adventureMessage = LegacyToMiniMessage.parse(instance.prefix + " &2" + msg);
+        if (adventure != null) {
+            adventure.all().sendMessage(adventureMessage);
+        } else {
+            instance.plugin.getServer().broadcast(adventureMessage);
+        }
     }
 
     /**
@@ -140,7 +168,12 @@ public class Notification {
      * @param msg    The message to display.
      */
     public static void actionBar(Player player, String msg) {
-        player.sendActionBar(ChatColor.translateAlternateColorCodes('&', formatString(msg)));
+        Component adventureMessage = LegacyToMiniMessage.parse(msg);
+        if (adventure != null) {
+            adventure.player(player).sendActionBar(adventureMessage);
+        } else {
+            player.sendActionBar(adventureMessage);
+        }
     }
 
     /**
@@ -182,10 +215,14 @@ public class Notification {
      * @param subtitle The subtitle text.
      */
     public static void title(Player player, String title, String subtitle) {
-        player.sendTitle(
-                ChatColor.translateAlternateColorCodes('&', title),
-                ChatColor.translateAlternateColorCodes('&', subtitle)
-        );
+        Component titleAdventureMessage = LegacyToMiniMessage.parse(title);
+        Component subtitleAdventureMessage = LegacyToMiniMessage.parse(subtitle);
+        Title adventureTitle = Title.title(titleAdventureMessage, subtitleAdventureMessage, DEFAULT_TIMES);
+        if (adventure != null) {
+            adventure.player(player).showTitle(adventureTitle);
+        } else {
+            player.showTitle(adventureTitle);
+        }
     }
 
     /**

@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_21.events.player.Using;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.events.LowestVersion;
 import cn.lunadeer.dominion.utils.XVersionManager;
 import org.bukkit.Material;
@@ -27,7 +25,6 @@ public class Crafter implements Listener {
         if (event.getClickedBlock().getType() != Material.CRAFTER) {
             return;
         }
-        DominionDTO dom = CacheManager.instance.getDominion(event.getClickedBlock().getLocation());
-        checkPrivilegeFlag(dom, Flags.CRAFTER, event.getPlayer(), event);
+        checkPrivilegeFlag(event.getClickedBlock().getLocation(), Flags.CRAFTER, event.getPlayer(), event);
     }
 }

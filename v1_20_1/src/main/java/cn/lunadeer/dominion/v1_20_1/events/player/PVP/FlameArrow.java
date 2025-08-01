@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.player.PVP;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,8 +26,8 @@ public class FlameArrow implements Listener {
             return;
         }
 
-        DominionDTO dom = CacheManager.instance.getDominion(arrow.getLocation());
-        if (!checkPrivilegeFlag(dom, Flags.PVP, attacker, null) || !checkPrivilegeFlagSilence(dom, Flags.PVP, victim, null)) {
+        if (!checkPrivilegeFlag(arrow.getLocation(), Flags.PVP, attacker, null)
+                || !checkPrivilegeFlagSilence(arrow.getLocation(), Flags.PVP, victim, null)) {
             event.setCancelled(true);
         }
     }

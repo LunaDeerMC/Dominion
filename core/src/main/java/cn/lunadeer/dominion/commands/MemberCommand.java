@@ -1,10 +1,12 @@
 package cn.lunadeer.dominion.commands;
 
+import cn.lunadeer.dominion.Dominion;
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.MemberDTO;
 import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.configuration.Language;
+import cn.lunadeer.dominion.doos.PlayerDOO;
 import cn.lunadeer.dominion.events.member.MemberAddedEvent;
 import cn.lunadeer.dominion.events.member.MemberRemovedEvent;
 import cn.lunadeer.dominion.events.member.MemberSetFlagEvent;
@@ -16,6 +18,7 @@ import cn.lunadeer.dominion.utils.command.Argument;
 import cn.lunadeer.dominion.utils.command.SecondaryCommand;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -52,7 +55,19 @@ public class MemberCommand {
      */
     public static void addMember(CommandSender sender, String dominionName, String playerName) {
         try {
-            PlayerDTO player = toPlayerDTO(playerName);
+            // PlayerDTO player = toPlayerDTO(playerName); // Old implementation
+            // New implementation START
+            // Compatible with some bot plugin, because they may not be recorded on join.
+            // But this may need a better solution in the future.
+            PlayerDTO player = null;
+            try {
+                player = toPlayerDTO(playerName);
+            } catch (Exception e) {
+                Player bukkitPlayer = Dominion.instance.getServer().getPlayer(playerName);
+                if (bukkitPlayer != null) player = PlayerDOO.create(bukkitPlayer);
+                if (player == null) throw e;
+            }
+            // New implementation END
             DominionDTO dominion = toDominionDTO(dominionName);
             new MemberAddedEvent(sender, dominion, player).call();
             MemberList.show(sender, dominionName, "1");
