@@ -248,18 +248,20 @@ public class Others {
     }
 
     public static void flyOrNot(@NotNull Player player, @Nullable DominionDTO dominion) {
-        for (String flyPN : Configuration.flyPermissionNodes) {
-            if (player.hasPermission(flyPN)) {
-                return;
-            }
+        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
+            if (player.isOp()) player.setAllowFlight(true);
+            return;
         }
         if (player.isOp()) {
-            player.setAllowFlight(true);
             return;
+        } else {
+            for (String flyPN : Configuration.flyPermissionNodes) {
+                if (player.hasPermission(flyPN)) {
+                    return;
+                }
+            }
         }
-        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
-            return;
-        }
+        // handle logic
         if (!Flags.FLY.getEnable()) {
             player.setAllowFlight(false);
             return;
