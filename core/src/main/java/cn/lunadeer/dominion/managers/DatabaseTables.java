@@ -311,8 +311,8 @@ public class DatabaseTables {
                     .execute();
         }
         if (!Show.show().tables().execute().contains("tp_cache")) {
-            Column tp_cache_uuid = Column.of(new FieldString("uuid")).primary().notNull().foreign("player_name", new FieldString("uuid"));
-            Column tp_cache_dom_id = Column.of(new FieldInteger("dom_id")).notNull().foreign("dominion", new FieldInteger("id"));
+            Column tp_cache_uuid = Column.of(new FieldString("uuid")).primary().notNull();
+            Column tp_cache_dom_id = Column.of(new FieldInteger("dom_id")).notNull();
             Create.create().table("tp_cache")
                     .column(tp_cache_uuid)
                     .column(tp_cache_dom_id)
