@@ -253,10 +253,11 @@ public class Others {
                 return;
             }
         }
-        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
+        if (player.isOp()) {
+            player.setAllowFlight(true);
             return;
         }
-        if (player.isOp() && Configuration.adminBypass) {
+        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
             return;
         }
         if (!Flags.FLY.getEnable()) {
