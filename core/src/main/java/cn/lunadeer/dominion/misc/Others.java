@@ -267,6 +267,11 @@ public class Others {
             player.setAllowFlight(false);
             return;
         }
+        if (dominion.getOwner().equals(player.getUniqueId())) {
+            // for owner, if Flags.FLY is enabled, allow flight automatically
+            player.setAllowFlight(true);
+            return;
+        }
         MemberDTO member = CacheManager.instance.getCache().getMemberCache().getMember(dominion, player);
         if (member != null) {
             if (member.getGroupId() == -1) {
