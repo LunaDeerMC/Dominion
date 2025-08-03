@@ -138,22 +138,16 @@ public class ChestView {
      * @param symbol the character symbol to search for in the layout
      * @param button the ChestButton to set at the found slot
      * @return the current ChestView instance for method chaining
-     * @throws IllegalStateException    if the layout has not been set
-     * @throws IllegalArgumentException if the symbol is not found in the layout
+     * @throws IllegalStateException if the layout has not been set
      */
     public ChestView setButton(char symbol, @NotNull ChestButton button) {
         if (layout.isEmpty()) {
             throw new IllegalStateException("Layout must be set before adding buttons with symbols.");
         }
-        boolean found = false;
         for (int i = 0; i < layout.length(); i++) {
             if (layout.charAt(i) == symbol) {
                 setButton(i, button);
-                found = true;
             }
-        }
-        if (!found) {
-            throw new IllegalArgumentException("Symbol '" + symbol + "' not found in layout: " + layout);
         }
         return this;
     }
