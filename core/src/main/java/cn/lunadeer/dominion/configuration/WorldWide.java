@@ -68,7 +68,7 @@ public class WorldWide {
             worlds.put(worldName, new WorldConfig());
         }
 
-        File worldWideFile = getFile(worldWideRootPath, worldName);
+        File worldWideFile = new File(worldWideRootPath, worldName + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(worldWideFile);
 
         // enable configuration
@@ -94,21 +94,6 @@ public class WorldWide {
             }
         }
         config.save(worldWideFile);
-    }
-
-    private static @NotNull File getFile(File worldWideRootPath, String worldName) {
-        File worldWideFile = new File(worldWideRootPath, worldName + ".yml");
-        if (!worldWideFile.exists()) {
-            // create the world-wide dominion file if it does not exist
-            try {
-                if (!worldWideFile.createNewFile()) {
-                    throw new RuntimeException("Failed to create world-wide dominion file: " + worldWideFile.getAbsolutePath());
-                }
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to create world-wide dominion file: " + worldWideFile.getAbsolutePath(), e);
-            }
-        }
-        return worldWideFile;
     }
 
     public static void load(CommandSender sender, JavaPlugin plugin) throws IOException {

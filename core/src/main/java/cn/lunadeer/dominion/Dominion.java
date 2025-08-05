@@ -64,6 +64,8 @@ public final class Dominion extends JavaPlugin {
             Configuration.loadConfigurationAndDatabase(instance.getServer().getConsoleSender());
         } catch (Exception e) {
             XLogger.error(e);
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
         }
         Notification.instance.setPrefix(Language.dominionText.notificationPrefix);
         XVersionManager.VERSION = XVersionManager.GetVersion(this);
