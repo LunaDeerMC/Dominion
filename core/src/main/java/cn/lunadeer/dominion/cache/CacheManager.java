@@ -10,6 +10,7 @@ import cn.lunadeer.dominion.cache.server.PlayerCache;
 import cn.lunadeer.dominion.cache.server.ResidenceDataCache;
 import cn.lunadeer.dominion.cache.server.ServerCache;
 import cn.lunadeer.dominion.configuration.Configuration;
+import cn.lunadeer.dominion.doos.DominionDOO;
 import cn.lunadeer.dominion.doos.PlayerDOO;
 import cn.lunadeer.dominion.events.PlayerCrossDominionBorderEvent;
 import cn.lunadeer.dominion.events.PlayerMoveInDominionEvent;
@@ -337,7 +338,12 @@ public class CacheManager {
                 }
             }
         }
-        return null;
+        // might get null during rebuilding the cache
+        try {
+            return DominionDOO.select(id);
+        } catch (Exception ignore) {
+            return null;
+        }
     }
 
     /**
