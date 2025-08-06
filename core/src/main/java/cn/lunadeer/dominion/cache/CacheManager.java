@@ -368,7 +368,12 @@ public class CacheManager {
                 }
             }
         }
-        return null;
+        // might get null during rebuilding the cache
+        try {
+            return DominionDOO.select(name);
+        } catch (Exception ignore) {
+            return null;
+        }
     }
 
     /**
