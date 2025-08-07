@@ -32,9 +32,6 @@ public class DominionNodeSectored {
     private volatile Integer section_origin_x = 0;
     private volatile Integer section_origin_z = 0;
 
-    // Lock object for synchronization
-    private final Object updateLock = new Object();
-
     /**
      * Gets the DominionDTO for a given location.
      *
@@ -176,7 +173,7 @@ public class DominionNodeSectored {
             }
 
             // Atomically replace all sector data
-            synchronized (updateLock) {
+            synchronized (this) {
                 world_dominion_tree_sector_a = tempSectorA;
                 world_dominion_tree_sector_b = tempSectorB;
                 world_dominion_tree_sector_c = tempSectorC;
