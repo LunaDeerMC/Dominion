@@ -24,12 +24,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class DominionCache extends Cache {
     private final Integer serverId;
 
-    private ConcurrentHashMap<Integer, DominionDTO> idDominions;            // Dominion ID -> DominionDTO
-    private ConcurrentHashMap<Integer, CopyOnWriteArrayList<Integer>> dominionChildrenMap;  // Dominion ID -> Children Dominion ID
-    private ConcurrentHashMap<String, Integer> dominionNameToId;            // Dominion name -> Dominion ID
-    private ConcurrentHashMap<UUID, CopyOnWriteArrayList<Integer>> playerOwnDominions;          // Player UUID -> Dominion ID
-    private ConcurrentHashMap<UUID, CopyOnWriteArrayList<DominionNode>> playerDominionNodes;  // Player UUID -> DominionNode
-    private ConcurrentHashMap<Integer, DominionNode> dominionNodeMap;        // Dominion ID -> DominionNode
+    private volatile ConcurrentHashMap<Integer, DominionDTO> idDominions;            // Dominion ID -> DominionDTO
+    private volatile ConcurrentHashMap<Integer, CopyOnWriteArrayList<Integer>> dominionChildrenMap;  // Dominion ID -> Children Dominion ID
+    private volatile ConcurrentHashMap<String, Integer> dominionNameToId;            // Dominion name -> Dominion ID
+    private volatile ConcurrentHashMap<UUID, CopyOnWriteArrayList<Integer>> playerOwnDominions;          // Player UUID -> Dominion ID
+    private volatile ConcurrentHashMap<UUID, CopyOnWriteArrayList<DominionNode>> playerDominionNodes;  // Player UUID -> DominionNode
+    private volatile ConcurrentHashMap<Integer, DominionNode> dominionNodeMap;        // Dominion ID -> DominionNode
 
     // dominion nodes sectored by location, for fast location-based dominion lookup
     private final DominionNodeSectored dominionNodeSectored = new DominionNodeSectored();
@@ -46,7 +46,8 @@ public class DominionCache extends Cache {
      * @throws DominionException if the dominion ID is not found
      */
     public @Nullable DominionDTO getDominion(@NotNull Integer id) {
-        return idDominions.get(id);
+        ConcurrentHashMap<Integer, DominionDTO> currentIdDominions = idDominions;
+        return currentIdDominions != null ? currentIdDominions.get(id) : null;
     }
 
     /**
@@ -57,7 +58,10 @@ public class DominionCache extends Cache {
      * @throws DominionException if the dominion name is not found
      */
     public @Nullable DominionDTO getDominion(String name) {
-        Integer id = dominionNameToId.get(name);
+        ConcurrentHashMap<String, Integer> currentDominionNameToId = dominionNameToId;
+        if (currentDominionNameToId == null) return null;
+
+        Integer id = currentDominionNameToId.get(name);
         try {
             if (id == null) return DominionDOO.select(name);
         } catch (Exception e) {
@@ -83,7 +87,8 @@ public class DominionCache extends Cache {
      * @return a list of DominionNode objects managed by the player
      */
     public @NotNull CopyOnWriteArrayList<DominionNode> getPlayerDominionNodes(UUID player) {
-        return playerDominionNodes.getOrDefault(player, new CopyOnWriteArrayList<>());
+        ConcurrentHashMap<UUID, CopyOnWriteArrayList<DominionNode>> currentPlayerDominionNodes = playerDominionNodes;
+        return currentPlayerDominionNodes != null ? currentPlayerDominionNodes.getOrDefault(player, new CopyOnWriteArrayList<>()) : new CopyOnWriteArrayList<>();
     }
 
     /**
@@ -92,7 +97,8 @@ public class DominionCache extends Cache {
      * @return a list of all DominionNode objects
      */
     public @NotNull List<DominionNode> getAllDominionNodes() {
-        return new ArrayList<>(dominionNodeMap.values());
+        ConcurrentHashMap<Integer, DominionNode> currentDominionNodeMap = dominionNodeMap;
+        return currentDominionNodeMap != null ? new ArrayList<>(currentDominionNodeMap.values()) : new ArrayList<>();
     }
 
     /**
@@ -102,8 +108,9 @@ public class DominionCache extends Cache {
      * @return a list of DominionDTO objects representing the children of the given dominion
      */
     public @NotNull List<DominionDTO> getChildrenOf(Integer id) {
-        if (dominionChildrenMap.containsKey(id)) {
-            return dominionChildrenMap.get(id).stream().map(this::getDominion).toList();
+        ConcurrentHashMap<Integer, CopyOnWriteArrayList<Integer>> currentDominionChildrenMap = dominionChildrenMap;
+        if (currentDominionChildrenMap != null && currentDominionChildrenMap.containsKey(id)) {
+            return currentDominionChildrenMap.get(id).stream().map(this::getDominion).filter(Objects::nonNull).toList();
         } else {
             return new ArrayList<>();
         }
@@ -115,7 +122,8 @@ public class DominionCache extends Cache {
      * @return a list of all dominion names
      */
     public List<String> getAllDominionNames() {
-        return new ArrayList<>(dominionNameToId.keySet());
+        ConcurrentHashMap<String, Integer> currentDominionNameToId = dominionNameToId;
+        return currentDominionNameToId != null ? new ArrayList<>(currentDominionNameToId.keySet()) : new ArrayList<>();
     }
 
     /**
@@ -125,10 +133,16 @@ public class DominionCache extends Cache {
      * @return a list of DominionDTOs owned by the player
      */
     public CopyOnWriteArrayList<DominionDTO> getPlayerOwnDominionDTOs(UUID player) {
-        CopyOnWriteArrayList<Integer> dominionIds = playerOwnDominions.getOrDefault(player, new CopyOnWriteArrayList<>());
+        ConcurrentHashMap<UUID, CopyOnWriteArrayList<Integer>> currentPlayerOwnDominions = playerOwnDominions;
+        if (currentPlayerOwnDominions == null) return new CopyOnWriteArrayList<>();
+
+        CopyOnWriteArrayList<Integer> dominionIds = currentPlayerOwnDominions.getOrDefault(player, new CopyOnWriteArrayList<>());
         CopyOnWriteArrayList<DominionDTO> dominions = new CopyOnWriteArrayList<>();
         for (Integer id : dominionIds) {
-            dominions.add(getDominion(id));
+            DominionDTO dominion = getDominion(id);
+            if (dominion != null) {
+                dominions.add(dominion);
+            }
         }
         return dominions;
     }
@@ -155,7 +169,8 @@ public class DominionCache extends Cache {
     }
 
     public @NotNull List<DominionDTO> getAllDominions() {
-        return new ArrayList<>(idDominions.values());
+        ConcurrentHashMap<Integer, DominionDTO> currentIdDominions = idDominions;
+        return currentIdDominions != null ? new ArrayList<>(currentIdDominions.values()) : new ArrayList<>();
     }
 
     @Override
@@ -219,6 +234,9 @@ public class DominionCache extends Cache {
     @Override
     void deleteExecution(Integer idToDelete) throws Exception {
         DominionDTO dominionToDelete = idDominions.remove(idToDelete);
+        if (dominionToDelete == null) {
+            return;
+        }
         // remove children map
         dominionChildrenMap.remove(idToDelete);
         if (dominionChildrenMap.containsKey(dominionToDelete.getParentDomId())) {
@@ -260,6 +278,7 @@ public class DominionCache extends Cache {
     }
 
     public Integer count() {
-        return idDominions.size();
+        ConcurrentHashMap<Integer, DominionDTO> currentIdDominions = idDominions;
+        return currentIdDominions != null ? currentIdDominions.size() : 0;
     }
 }
