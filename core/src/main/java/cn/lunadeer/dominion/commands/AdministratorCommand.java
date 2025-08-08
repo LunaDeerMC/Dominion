@@ -18,7 +18,6 @@ import cn.lunadeer.dominion.utils.stui.components.buttons.PermissionButton;
 import cn.lunadeer.dominion.utils.webMap.WebMapRender;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -104,20 +103,19 @@ public class AdministratorCommand {
     }
 
     public static void reloadCache(CommandSender sender) {
-        Scheduler.runTaskAsync(() -> {
-            Notification.info(sender, Language.administratorCommandText.reloadingDominionCache);
-            CacheManager.instance.getCache().getDominionCache().load();
-            Notification.info(sender, Language.administratorCommandText.reloadedDominionCache);
+        Notification.info(sender, Language.administratorCommandText.reloadingDominionCache);
+        CacheManager.instance.getCache().getDominionCache().load();
+        Notification.info(sender, Language.administratorCommandText.reloadedDominionCache);
 
-            Notification.info(sender, Language.administratorCommandText.reloadingMemberCache);
-            CacheManager.instance.getCache().getMemberCache().load();
-            Notification.info(sender, Language.administratorCommandText.reloadedMemberCache);
+        Notification.info(sender, Language.administratorCommandText.reloadingMemberCache);
+        CacheManager.instance.getCache().getMemberCache().load();
+        Notification.info(sender, Language.administratorCommandText.reloadedMemberCache);
 
-            Notification.info(sender, Language.administratorCommandText.reloadingGroupCache);
-            CacheManager.instance.getCache().getGroupCache().load();
-            Notification.info(sender, Language.administratorCommandText.reloadedGroupCache);
-        });
-        if (sender instanceof Player) MainMenu.show(sender, "1");
+        Notification.info(sender, Language.administratorCommandText.reloadingGroupCache);
+        CacheManager.instance.getCache().getGroupCache().load();
+        Notification.info(sender, Language.administratorCommandText.reloadedGroupCache);
+
+        MainMenu.show(sender, "1");
     }
 
     public static PermissionButton reloadConfigButton(CommandSender sender) {
@@ -130,15 +128,13 @@ public class AdministratorCommand {
     }
 
     public static void reloadConfig(CommandSender sender) {
-        Scheduler.runTaskAsync(() -> {
-            try {
-                Notification.info(sender, Language.administratorCommandText.reloadingConfig);
-                Configuration.loadConfigurationAndDatabase(sender);
-            } catch (Exception e) {
-                Notification.error(sender, e.getMessage());
-            }
-            if (sender instanceof Player) MainMenu.show(sender, "1");
-        });
+        try {
+            Notification.info(sender, Language.administratorCommandText.reloadingConfig);
+            Configuration.loadConfigurationAndDatabase(sender);
+            MainMenu.show(sender, "1");
+        } catch (Exception e) {
+            Notification.error(sender, e);
+        }
     }
 
     public static SecondaryCommand exportData = new SecondaryCommand("export", List.of(
