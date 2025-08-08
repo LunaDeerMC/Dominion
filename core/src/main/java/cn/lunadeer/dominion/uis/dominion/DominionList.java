@@ -195,7 +195,11 @@ public class DominionList extends AbstractUI {
             ChestButton btn = new ChestButton(ChestUserInterface.dominionListCui.ownDominionButton) {
                 @Override
                 public void onClick(ClickType type) {
-                    DominionManage.show(player, dominion.getName(), "1");
+                    if (type.isLeftClick()) {
+                        DominionManage.show(player, dominion.getName(), "1");
+                    } else if (type.isRightClick()) {
+                        teleportToDominion(player, dominion);
+                    }
                 }
             };
             btn = btn.setDisplayNameArgs(dominion.getName());
