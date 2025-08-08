@@ -244,9 +244,12 @@ public class DominionCache extends Cache {
         }
         // remove name map
         dominionNameToId.entrySet().removeIf(entry -> entry.getValue().equals(idToDelete));
-        playerOwnDominions.entrySet().removeIf(entry -> entry.getValue().contains(dominionToDelete.getId()));
+        if (playerOwnDominions.containsKey(dominionToDelete.getOwner())) {
+            // remove player dominion map
+            playerOwnDominions.get(dominionToDelete.getOwner()).remove(idToDelete);
+        }
         // update node tree
-        dominionNodeMap.remove(dominionToDelete.getId());
+        dominionNodeMap.remove(idToDelete);
         rebuildTreeAsync();
     }
 
