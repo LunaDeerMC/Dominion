@@ -216,8 +216,11 @@ public class MemberList extends AbstractUI {
         public String banMember = "§cBanned Member";
 
         public List<String> playerHeadItemLore = List.of(
-                "§e▶ Click to manage permissions",
+                "§e▶ Left Click to manage permissions",
                 "§8  Set custom privileges for this player",
+                "",
+                "§c▶ Right Click to remove",
+                "§8  Remove this player from this dominion",
                 "",
                 "§7Status: {0}"
         );
@@ -274,8 +277,12 @@ public class MemberList extends AbstractUI {
             view.addItem(new ChestButton(item) {
                 @Override
                 public void onClick(ClickType type) {
-                    if (m.getGroupId() == -1) {
-                        MemberFlags.show(player, dominion.getName(), m.getPlayer().getLastKnownName(), "1");
+                    if (type.isLeftClick()) {
+                        if (m.getGroupId() == -1) {
+                            MemberFlags.show(player, dominion.getName(), m.getPlayer().getLastKnownName(), "1");
+                        }
+                    } else if (type.isRightClick()) {
+                        MemberCommand.removeMember(player, dominion.getName(), m.getPlayer().getLastKnownName(), String.valueOf(view.getCurrentPage()));
                     }
                 }
             }.setLoreArgs(status));

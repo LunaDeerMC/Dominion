@@ -1129,8 +1129,11 @@ member-list-cui:
   admin-member: §b管理员成员
   ban-member: §c被禁止的成员
   player-head-item-lore:
-    - §e▶ 点击管理权限
+    - §e▶ 左键：点击管理权限
     - §8  为此玩家设置自定义权限
+    - ''
+    - §c▶ 右键：点击移除成员
+    - §8  将此玩家从成员列表中移除
     - ''
     - '§7状态: {0}'
   player-head-item-lore-disable:

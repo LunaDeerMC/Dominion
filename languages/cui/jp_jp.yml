@@ -1150,8 +1150,11 @@ member-list-cui:
   admin-member: §b管理者メンバー
   ban-member: §c禁止されたメンバー
   player-head-item-lore:
-    - §e▶ 権限を管理するにはクリック
-    - §8  このプレイヤーのカスタム特権を設定
+    - §e▶ 左クリックで権限を管理
+    - §8  このプレイヤーの特権を設定します
+    - ''
+    - §c▶ 右クリックで削除
+    - §8  このドミニオンからプレイヤーを削除します
     - ''
     - '§7ステータス: {0}'
   player-head-item-lore-disable:

@@ -1157,8 +1157,11 @@ member-list-cui:
   admin-member: §bAdmin Member
   ban-member: §cBanned Member
   player-head-item-lore:
-    - §e▶ Click to manage permissions
+    - §e▶ Left Click to manage permissions
     - §8  Set custom privileges for this player
+    - ''
+    - §c▶ Right Click to remove
+    - §8  Remove this player from this dominion
     - ''
     - '§7Status: {0}'
   player-head-item-lore-disable:

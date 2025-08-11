@@ -1137,8 +1137,11 @@ member-list-cui:
   admin-member: §b管理員
   ban-member: §c封鎖成員
   player-head-item-lore:
-  - §e▶ 點擊管理權限
+  - §e▶ 左键：點擊管理權限
   - §8  為此玩家設定自訂權限
+  - ''
+  - §c▶ 右键：將其移出成員
+  - §8  他們將失去所有成員權限
   - ''
   - '§7狀態： {0}'
   player-head-item-lore-disable:
