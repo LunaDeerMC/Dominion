@@ -290,15 +290,8 @@ public class DatabaseTables {
         }
         if (!Show.show().columns().from("player_name").execute().containsKey("ui_preference")) {
             Column ui_preference = Column.of(new FieldString("ui_preference")).notNull()
-                    .defaultSqlVal("'TUI'");
+                    .defaultSqlVal("'" + Configuration.defaultUiType + "'");
             Alter.alter().table("player_name").add().column(ui_preference).execute();
-
-            try (Connection conn = DatabaseManager.instance.getConnection()) {
-                // update ui_preference to CUI if player_name UUID starts with 00000000
-                String sql = "UPDATE player_name SET ui_preference = 'CUI' WHERE uuid LIKE '00000000%';";
-                conn.createStatement().executeUpdate(sql);
-            } catch (Exception ignored) {
-            }
         }
 
         // 4.4.0 add multiserver support

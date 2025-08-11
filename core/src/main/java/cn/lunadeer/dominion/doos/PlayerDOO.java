@@ -2,6 +2,7 @@ package cn.lunadeer.dominion.doos;
 
 import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.cache.CacheManager;
+import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.utils.databse.FIelds.Field;
 import cn.lunadeer.dominion.utils.databse.FIelds.FieldInteger;
 import cn.lunadeer.dominion.utils.databse.FIelds.FieldString;
@@ -88,14 +89,16 @@ public class PlayerDOO implements PlayerDTO {
         FieldString uuid = new FieldString("uuid", playerUid.toString());
         FieldString lastKnownName = new FieldString("last_known_name", playerName);
         FieldTimestamp lastJoinAt = new FieldTimestamp("last_join_at", Timestamp.valueOf(LocalDateTime.now()));
-        FieldString uiPreference = new FieldString("ui_preference", UI_TYPE.TUI.name());
+        FieldString uiPreference = new FieldString("ui_preference", Configuration.defaultUiType);
         Map<String, Field<?>> p;
         List<Map<String, Field<?>>> res = Select.select(fields())
                 .from("player_name")
                 .where("uuid = ?", uuid.getValue())
                 .execute();
         if (res.isEmpty()) {
-            if (playerUid.toString().startsWith("00000000")) {
+            if (playerUid.toString().startsWith("00000000") && uiPreference.getValue().equals(UI_TYPE.TUI.name())) {
+                // If the UUID starts with "00000000", it's a bedrock player, so we set CUI as default
+                // this is a workaround for bedrock players who cannot use TUI.
                 uiPreference.setValue(UI_TYPE.CUI.name());
             }
             p = Insert.insert().into("player_name")
@@ -213,7 +216,7 @@ public class PlayerDOO implements PlayerDTO {
     public UI_TYPE getUiPreference() {
         String uiPreferenceValue = ui_preference.getValue();
         if (uiPreferenceValue == null || uiPreferenceValue.isEmpty()) {
-            return UI_TYPE.TUI; // Default to TUI if not set
+            return UI_TYPE.AUTO; // Default to TUI if not set
         }
         return UI_TYPE.valueOf(uiPreferenceValue);
     }

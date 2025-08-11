@@ -1,6 +1,7 @@
 package cn.lunadeer.dominion.configuration;
 
 import cn.lunadeer.dominion.Dominion;
+import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flag;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.managers.DatabaseTables;
@@ -160,6 +161,14 @@ public class Configuration extends ConfigurationFile {
     @Comments("Tool used to show information of clicked dominion.")
     public static String infoTool = "STRING";
 
+    @Comments({
+            "The settings of the player default using UI.",
+            "AUTO: Automatically choose the UI type based on player's preference and server environment.",
+            "CUI: Chest GUI.",
+            "TUI: Text GUI."
+    })
+    public static String defaultUiType = PlayerDTO.UI_TYPE.AUTO.name();
+
     @Comments("The settings of the plugin message.")
     public static PluginMessage pluginMessage = new PluginMessage();
 
@@ -275,6 +284,13 @@ public class Configuration extends ConfigurationFile {
         } catch (IllegalArgumentException e) {
             XLogger.warn("Invalid enter leave display place: {0}", pluginMessage.enterLeaveDisplayPlace);
             pluginMessage.enterLeaveDisplayPlace = "ACTION_BAR";
+        }
+
+        try {
+            PlayerDTO.UI_TYPE.valueOf(defaultUiType.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            XLogger.warn("Invalid default UI type: {0}", defaultUiType);
+            defaultUiType = PlayerDTO.UI_TYPE.AUTO.name();
         }
     }
 

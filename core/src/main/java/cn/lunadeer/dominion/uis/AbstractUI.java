@@ -47,10 +47,22 @@ public abstract class AbstractUI {
                     XLogger.warn("PlayerDTO not found for player: " + player.getName() + ". Showing TUI instead.");
                     return;
                 }
-                if (Objects.requireNonNull(playerDTO.getUiPreference()) == PlayerDTO.UI_TYPE.CUI) {
-                    showCUI(player, args);
+                if (Objects.requireNonNull(playerDTO.getUiPreference()) == PlayerDTO.UI_TYPE.AUTO) {
+                    // Automatically choose UI based on player's UUID
+                    // If UUID starts with "00000000", it is a bedrock player so we show CUI,
+                    // otherwise we show TUI.
+                    // This is a workaround for bedrock players who cannot use TUI.
+                    if (player.getUniqueId().toString().startsWith("00000000")) {
+                        showCUI(player, args);
+                    } else {
+                        showTUI(player, args);
+                    }
                 } else {
-                    showTUI(player, args);
+                    if (Objects.requireNonNull(playerDTO.getUiPreference()) == PlayerDTO.UI_TYPE.CUI) {
+                        showCUI(player, args);
+                    } else {
+                        showTUI(player, args);
+                    }
                 }
             } else {
                 Notification.info(sender, "--------------------------------------------------");
