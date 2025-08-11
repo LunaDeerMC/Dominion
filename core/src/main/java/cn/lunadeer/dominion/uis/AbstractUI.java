@@ -2,13 +2,12 @@ package cn.lunadeer.dominion.uis;
 
 import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.cache.CacheManager;
+import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.Objects;
 
 public abstract class AbstractUI {
 
@@ -47,20 +46,24 @@ public abstract class AbstractUI {
                     XLogger.warn("PlayerDTO not found for player: " + player.getName() + ". Showing TUI instead.");
                     return;
                 }
-                if (Objects.requireNonNull(playerDTO.getUiPreference()) == PlayerDTO.UI_TYPE.AUTO) {
-                    // Automatically choose UI based on player's UUID
-                    // If UUID starts with "00000000", it is a bedrock player so we show CUI,
-                    // otherwise we show TUI.
-                    // This is a workaround for bedrock players who cannot use TUI.
-                    if (player.getUniqueId().toString().startsWith("00000000")) {
+                // If UUID starts with "00000000", it is a bedrock player so we show CUI,
+                // otherwise we show TUI.
+                // This is a workaround for bedrock players who cannot use TUI.
+                if (player.getUniqueId().toString().startsWith("00000000")) {
+                    showCUI(player, args);
+                    return;
+                }
+                if (PlayerDTO.UI_TYPE.valueOf(Configuration.defaultUiType).equals(PlayerDTO.UI_TYPE.BY_PLAYER)) {
+                    if (playerDTO.getUiPreference().equals(PlayerDTO.UI_TYPE.CUI)) {
                         showCUI(player, args);
-                    } else {
+                    } else if (playerDTO.getUiPreference().equals(PlayerDTO.UI_TYPE.TUI)) {
                         showTUI(player, args);
                     }
                 } else {
-                    if (Objects.requireNonNull(playerDTO.getUiPreference()) == PlayerDTO.UI_TYPE.CUI) {
+                    PlayerDTO.UI_TYPE type = PlayerDTO.UI_TYPE.valueOf(Configuration.defaultUiType);
+                    if (type.equals(PlayerDTO.UI_TYPE.CUI)) {
                         showCUI(player, args);
-                    } else {
+                    } else if (type.equals(PlayerDTO.UI_TYPE.TUI)) {
                         showTUI(player, args);
                     }
                 }

@@ -213,12 +213,26 @@ public class PlayerDOO implements PlayerDTO {
     }
 
     @Override
-    public UI_TYPE getUiPreference() {
+    public @NotNull UI_TYPE getUiPreference() {
         String uiPreferenceValue = ui_preference.getValue();
         if (uiPreferenceValue == null || uiPreferenceValue.isEmpty()) {
-            return UI_TYPE.AUTO; // Default to TUI if not set
+            return UI_TYPE.TUI; // Default to TUI if not set
         }
-        return UI_TYPE.valueOf(uiPreferenceValue);
+        try {
+            UI_TYPE type = UI_TYPE.valueOf(uiPreferenceValue);
+            if (type.equals(UI_TYPE.BY_PLAYER)) {
+                setUiPreference(UI_TYPE.CUI); // Convert BY_PLAYER to CUI
+                return getUiPreference(); // Re-fetch after conversion
+            }
+            return type;
+        } catch (Exception e) {
+            try {
+                setUiPreference(UI_TYPE.CUI);
+            } // Convert BY_PLAYER to CUI
+            catch (SQLException ignored) {
+            }
+            return UI_TYPE.CUI; // Fallback to CUI if the value is invalid
+        }
     }
 
     public void setUsingGroupTitleID(Integer usingGroupTitleID) throws SQLException {

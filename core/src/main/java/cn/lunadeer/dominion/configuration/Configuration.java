@@ -162,12 +162,13 @@ public class Configuration extends ConfigurationFile {
     public static String infoTool = "STRING";
 
     @Comments({
-            "The settings of the player default using UI.",
-            "AUTO: Automatically choose the UI type based on player's preference and server environment.",
+            "The settings of the player default using UI. (For bedrock player, will always be CUI.)",
+            "If set to CUI or TUI, player can not change their UI type.",
+            "BY_PLAYER: Decide by player themselves.",
             "CUI: Chest GUI.",
             "TUI: Text GUI."
     })
-    public static String defaultUiType = PlayerDTO.UI_TYPE.AUTO.name();
+    public static String defaultUiType = PlayerDTO.UI_TYPE.BY_PLAYER.name();
 
     @Comments("The settings of the plugin message.")
     public static PluginMessage pluginMessage = new PluginMessage();
@@ -290,7 +291,7 @@ public class Configuration extends ConfigurationFile {
             PlayerDTO.UI_TYPE.valueOf(defaultUiType.toUpperCase());
         } catch (IllegalArgumentException e) {
             XLogger.warn("Invalid default UI type: {0}", defaultUiType);
-            defaultUiType = PlayerDTO.UI_TYPE.AUTO.name();
+            defaultUiType = PlayerDTO.UI_TYPE.BY_PLAYER.name();
         }
     }
 
