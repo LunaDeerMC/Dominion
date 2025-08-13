@@ -2,6 +2,7 @@ package cn.lunadeer.dominion.utils.command;
 
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,5 +31,20 @@ public abstract class ConditionalArgument extends Argument {
 
     public Map<Integer, String> getConditionArguments() {
         return conditionArguments;
+    }
+
+    @Override
+    public ConditionalArgument copy() {
+        // create a new instance of ConditionalArgument with the same name and condition arguments
+        ConditionalArgument copy = new ConditionalArgument(getName(), new ArrayList<>(this.conditionArguments.keySet())) {
+            @Override
+            public List<String> handelCondition(CommandSender sender) {
+                return ConditionalArgument.this.handelCondition(sender);
+            }
+        };
+        copy.setValue(this.getValue());
+        // copy the condition arguments
+        copy.conditionArguments.putAll(this.conditionArguments);
+        return copy;
     }
 }

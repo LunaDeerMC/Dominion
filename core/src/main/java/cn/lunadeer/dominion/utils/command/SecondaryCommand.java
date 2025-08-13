@@ -16,6 +16,11 @@ public abstract class SecondaryCommand {
     private boolean dynamic = false;
     private String description;
 
+    // ThreadLocal to store arguments for the current thread
+    // This allows us to have a separate set of arguments for each command execution
+    // without affecting other threads or command executions.
+    private final ThreadLocal<List<Argument>> threadLocalArguments = new ThreadLocal<>();
+
     /**
      * Create a new SecondaryCommand with command and arguments.
      * <blockquote><pre>
@@ -111,6 +116,13 @@ public abstract class SecondaryCommand {
     }
 
     public List<Argument> getArguments() {
+        // get the thread-local arguments if they exist
+        List<Argument> threadArgs = threadLocalArguments.get();
+        if (threadArgs != null) {
+            return threadArgs;
+        }
+
+        // otherwise, return a copy of the original arguments
         List<Argument> arguments = new ArrayList<>();
         for (Argument argument : this.arguments) {
             arguments.add(argument.copy());
@@ -119,10 +131,15 @@ public abstract class SecondaryCommand {
     }
 
     public String getArgumentValue(int index) {
-        if (index >= arguments.size()) {
+        List<Argument> currentArgs = threadLocalArguments.get();
+        if (currentArgs == null) {
+            currentArgs = this.arguments;
+        }
+
+        if (index >= currentArgs.size()) {
             throw new IllegalArgumentException("Index out of range.");
         }
-        return arguments.get(index).getValue();
+        return currentArgs.get(index).getValue();
     }
 
     public String getUsage() {
@@ -173,13 +190,27 @@ public abstract class SecondaryCommand {
         }
         assertPermission(sender);
         assertArguments(args);
-        for (int i = 0; i < arguments.size(); i++) {
-            if (i + 1 >= args.length) {
-                break;
-            }
-            arguments.get(i).setValue(args[i + 1]);
+
+        // create a thread-local copy of the arguments
+        List<Argument> threadArgs = new ArrayList<>();
+        for (Argument arg : this.arguments) {
+            threadArgs.add(arg.copy());
         }
-        executeHandler(sender);
+        threadLocalArguments.set(threadArgs);
+
+        try {
+            // set the values for the arguments in the thread-local copy
+            for (int i = 0; i < threadArgs.size(); i++) {
+                if (i + 1 >= args.length) {
+                    break;
+                }
+                threadArgs.get(i).setValue(args[i + 1]);
+            }
+            executeHandler(sender);
+        } finally {
+            // clear the thread-local arguments to avoid memory leaks
+            threadLocalArguments.remove();
+        }
     }
 
     public SecondaryCommand register() {

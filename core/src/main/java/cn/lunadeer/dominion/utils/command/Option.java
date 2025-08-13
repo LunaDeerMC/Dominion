@@ -79,4 +79,11 @@ public class Option extends Argument {
     public List<String> getOptions() {
         return options;
     }
+
+    @Override
+    public Option copy() {
+        Option copy = new Option(options, getValue());
+        copy.setValue(this.getValue());
+        return copy;
+    }
 }
