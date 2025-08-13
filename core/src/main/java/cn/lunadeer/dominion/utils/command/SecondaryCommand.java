@@ -111,6 +111,10 @@ public abstract class SecondaryCommand {
     }
 
     public List<Argument> getArguments() {
+        List<Argument> arguments = new ArrayList<>();
+        for (Argument argument : this.arguments) {
+            arguments.add(argument.copy());
+        }
         return arguments;
     }
 

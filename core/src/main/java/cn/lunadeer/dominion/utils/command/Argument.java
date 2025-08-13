@@ -9,6 +9,12 @@ public class Argument {
     private Suggestion suggestion = null;
     private String value = "";
 
+    public Argument copy() {
+        Argument copy = new Argument(name, required, suggestion);
+        copy.value = this.value;
+        return copy;
+    }
+
     /**
      * Constructs an Argument with the specified name, required status, and default value.
      *
