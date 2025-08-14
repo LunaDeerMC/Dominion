@@ -113,7 +113,7 @@ public class DominionEventHandler implements Listener {
             // size check
             assertDominionSize(event.getOperator(), world.getUID(), event.getCuboid());
             // parent check
-            assertWithinParent(toBeCreated, event.getCuboid());
+            assertWithinParent(event.getOperator(), toBeCreated, event.getCuboid());
             assertSubDepth(event.getOperator(), toBeCreated);
             // intersect check
             assertDominionIntersect(event.getOperator(), toBeCreated, event.getCuboid());
@@ -152,8 +152,8 @@ public class DominionEventHandler implements Listener {
         try {
             assertDominionOwner(event.getOperator(), dominion);
             assertDominionSize(event.getOperator(), dominion.getWorldUid(), event.getNewCuboid());
-            assertWithinParent(dominion, event.getNewCuboid());
-            assertContainSubs(dominion, event.getNewCuboid());
+            assertWithinParent(event.getOperator(), dominion, event.getNewCuboid());
+            assertContainSubs(event.getOperator(), dominion, event.getNewCuboid());
             assertDominionIntersect(event.getOperator(), dominion, event.getNewCuboid());
             if (!event.isSkipEconomy()) {
                 assertEconomy(event.getOperator(), event.getOldCuboid(), event.getNewCuboid());

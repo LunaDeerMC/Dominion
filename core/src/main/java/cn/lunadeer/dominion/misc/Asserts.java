@@ -269,19 +269,24 @@ public class Asserts {
     /**
      * Asserts that the parent dominion can contain the specified dominion.
      *
+     * @param operator the command operator (usually a player)
      * @param dominion the dominion to check
      * @param cuboid   the cuboid representing the dominion's size
      * @throws DominionException if the parent dominion cannot contain the specified dominion,
      *                           if the dominion cannot contain its children, or if the sub-dominion recursion depth is invalid
      */
-    public static void assertWithinParent(@NotNull DominionDTO dominion, @NotNull CuboidDTO cuboid) throws Exception {
+    public static void assertWithinParent(@NotNull CommandSender operator, @NotNull DominionDTO dominion, @NotNull CuboidDTO cuboid) throws Exception {
+        if (!(operator instanceof Player associatedPlayer)) {
+            return;
+        }
         // check if parent dominion can contain this dominion
         if (dominion.getParentDomId() != -1) {
             DominionDTO parent = DominionDOO.select(dominion.getParentDomId()); // get from db instead of cache to avoid cache miss
             if (parent == null) {
                 throw new DominionException(Language.assertsText.missingParentDom, dominion.getName());
             }
-            if (!parent.getCuboid().contain(cuboid)) {
+            if (!parent.getCuboid().contain(cuboid,
+                    Configuration.getPlayerLimitation(associatedPlayer).getWorldSettings(dominion.getWorldUid()).autoIncludeVertical)) {
                 throw new DominionException(Language.assertsText.outsideOfParentDom, dominion.getName(), parent.getName());
             }
         }
@@ -327,15 +332,20 @@ public class Asserts {
      * This method checks if the cuboid representing the dominion's size
      * can contain the cuboids of all its child dominions.
      *
+     * @param operator the command operator (usually a player)
      * @param dominion the dominion to check
      * @param cuboid   the cuboid representing the dominion's size
      * @throws DominionException if the dominion cannot contain its child dominions
      */
-    public static void assertContainSubs(@NotNull DominionDTO dominion, @NotNull CuboidDTO cuboid) throws DominionException {
+    public static void assertContainSubs(@NotNull CommandSender operator, @NotNull DominionDTO dominion, @NotNull CuboidDTO cuboid) throws DominionException {
+        if (!(operator instanceof Player associatedPlayer)) {
+            return;
+        }
         // check if dominion can contain children
         List<DominionDTO> children = CacheManager.instance.getCache().getDominionCache().getChildrenOf(dominion.getId());
         for (DominionDTO child : children) {
-            if (!cuboid.contain(child.getCuboid())) {
+            if (!cuboid.contain(child.getCuboid(),
+                    Configuration.getPlayerLimitation(associatedPlayer).getWorldSettings(dominion.getWorldUid()).autoIncludeVertical)) {
                 throw new DominionException(Language.assertsText.cantContainChild, dominion.getName(), child.getName());
             }
         }
