@@ -302,11 +302,13 @@ public class DominionDOO implements DominionDTO {
 
     @Override
     public @NotNull DominionDOO setName(String name) throws SQLException {
+        String oldName = this.name.getValue();
         this.name.setValue(name);
         Update.update("dominion")
                 .set(this.name)
                 .where("id = ?", id.getValue())
                 .execute();
+        CacheManager.instance.getCache().getDominionCache().dominionNameUpdate(oldName, name, getId());
         return this;
     }
 

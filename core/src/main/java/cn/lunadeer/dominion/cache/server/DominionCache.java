@@ -253,6 +253,13 @@ public class DominionCache extends Cache {
         rebuildTreeAsync();
     }
 
+    public void dominionNameUpdate(String oldName, String newName, Integer id) {
+        if (dominionNameToId != null) {
+            dominionNameToId.remove(oldName);
+            dominionNameToId.put(newName, id);
+        }
+    }
+
     private CompletableFuture<Void> rebuildTreeAsync() {
         return CompletableFuture.runAsync(() -> {
             synchronized (this) {
