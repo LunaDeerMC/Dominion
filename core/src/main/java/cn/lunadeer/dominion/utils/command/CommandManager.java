@@ -190,7 +190,7 @@ public class CommandManager implements TabExecutor, Listener {
         }
         for (Argument arg : args) {
             if (arg instanceof ConditionalArgument cond) {
-                for (Integer key : cond.getConditionArguments().keySet()) {
+                for (Integer key : cond.getConditionArgumentsIndex()) {
                     if (key < strings.length - 2) {
                         cond.setConditionArguments(key, strings[key + 1]);
                     }

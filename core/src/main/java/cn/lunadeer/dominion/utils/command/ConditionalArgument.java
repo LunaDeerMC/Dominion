@@ -33,6 +33,10 @@ public abstract class ConditionalArgument extends Argument {
         return conditionArguments;
     }
 
+    public List<Integer> getConditionArgumentsIndex() {
+        return new ArrayList<>(conditionArguments.keySet());
+    }
+
     @Override
     public ConditionalArgument copy() {
         // create a new instance of ConditionalArgument with the same name and condition arguments
