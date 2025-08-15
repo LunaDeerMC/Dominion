@@ -115,6 +115,15 @@ public abstract class SecondaryCommand {
         return command;
     }
 
+    /**
+     * Gets the list of arguments for this command.
+     * <p>
+     * This method returns the thread-local arguments if they exist,
+     * otherwise it returns a copy of the original arguments.
+     * </p>
+     *
+     * @return The list of arguments for this command.
+     */
     public List<Argument> getArguments() {
         // get the thread-local arguments if they exist
         List<Argument> threadArgs = threadLocalArguments.get();
