@@ -56,15 +56,16 @@ public class CacheManager {
      */
     public CacheManager() {
         instance = this;
+
+        this.playerCache = new PlayerCache();
+        this.playerCache.load();
+
         this.thisServerCache = new ServerCache(Configuration.multiServer.serverId);
         this.thisServerCache.getDominionCache().load();
         this.thisServerCache.getMemberCache().load();
         this.thisServerCache.getGroupCache().load();
 
         this.otherServerCaches = new ConcurrentHashMap<>();
-
-        this.playerCache = new PlayerCache();
-        this.playerCache.load();
 
         Bukkit.getPluginManager().registerEvents(new CacheEventHandler(), Dominion.instance);
     }

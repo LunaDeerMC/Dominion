@@ -3,6 +3,7 @@ package cn.lunadeer.dominion.cache.server;
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.GroupDTO;
 import cn.lunadeer.dominion.api.dtos.MemberDTO;
+import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.doos.MemberDOO;
 import org.bukkit.entity.Player;
@@ -37,7 +38,7 @@ public class MemberCache extends Cache {
         ConcurrentHashMap<Integer, MemberDTO> currentIdMembers = idMembers;
 
         if (currentPlayerDominionMemberMap == null || currentIdMembers == null ||
-            !currentPlayerDominionMemberMap.containsKey(player_uuid)) {
+                !currentPlayerDominionMemberMap.containsKey(player_uuid)) {
             return null;
         }
 
@@ -56,7 +57,7 @@ public class MemberCache extends Cache {
         ConcurrentHashMap<Integer, MemberDTO> currentIdMembers = idMembers;
 
         if (currentPlayerDominionMemberMap == null || currentIdMembers == null ||
-            !currentPlayerDominionMemberMap.containsKey(player)) {
+                !currentPlayerDominionMemberMap.containsKey(player)) {
             return new ArrayList<>();
         }
 
@@ -84,7 +85,7 @@ public class MemberCache extends Cache {
         ConcurrentHashMap<Integer, MemberDTO> currentIdMembers = idMembers;
 
         if (currentDominionMembersMap == null || currentIdMembers == null ||
-            !currentDominionMembersMap.containsKey(dominionId)) {
+                !currentDominionMembersMap.containsKey(dominionId)) {
             return new ArrayList<>();
         }
 
@@ -111,7 +112,7 @@ public class MemberCache extends Cache {
         ConcurrentHashMap<Integer, MemberDTO> currentIdMembers = idMembers;
 
         if (currentGroupMembersMap == null || currentIdMembers == null ||
-            !currentGroupMembersMap.containsKey(groupId)) {
+                !currentGroupMembersMap.containsKey(groupId)) {
             return new ArrayList<>();
         }
 
@@ -138,6 +139,12 @@ public class MemberCache extends Cache {
 
         List<MemberDOO> allMembers = MemberDOO.select();
         for (MemberDOO member : allMembers) {
+            PlayerDTO player = CacheManager.instance.getPlayer(member.getPlayerUUID());
+            if (player == null) {
+                // If player doesn't exist, skip this member
+                MemberDOO.deleteByPlayerUuid(member.getPlayerUUID());
+                continue;
+            }
             DominionDTO dominion = CacheManager.instance.getDominion(member.getDomID());
             if (dominion == null || !Objects.equals(dominion.getServerId(), serverId)) continue;
 
@@ -179,7 +186,7 @@ public class MemberCache extends Cache {
 
         // Ensure cache is initialized
         if (idMembers == null || dominionMembersMap == null ||
-            playerDominionMemberMap == null || groupMembersMap == null) {
+                playerDominionMemberMap == null || groupMembersMap == null) {
             loadExecution();
             return;
         }

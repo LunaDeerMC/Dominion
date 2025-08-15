@@ -144,11 +144,6 @@ public class MemberDOO implements MemberDTO {
         return this;
     }
 
-    /**
-     * 获取成员对象
-     *
-     * @return 成员对象
-     */
     @Override
     public @NotNull PlayerDTO getPlayer() {
         return Objects.requireNonNull(CacheManager.instance.getPlayer(getPlayerUUID()));
@@ -174,6 +169,18 @@ public class MemberDOO implements MemberDTO {
                 .set(updateFields)
                 .where("id = ?", id.getValue())
                 .execute();
+    }
+
+    /**
+     * Delete member by player UUID.
+     * <p>
+     * THIS SHOULD ONLY BE USED TO CLEAR LEGACY DATA.
+     *
+     * @param playerUUID the UUID of the player to delete
+     * @throws SQLException if a database access error occurs
+     */
+    public static void deleteByPlayerUuid(UUID playerUUID) throws SQLException {
+        Delete.delete().from("dominion_member").where("player_uuid = ?", playerUUID.toString()).execute();
     }
 
     private MemberDOO(Integer id, UUID playerUUID, Integer domID, Map<PriFlag, Boolean> flags, Integer groupId) {
