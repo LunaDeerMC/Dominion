@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static cn.lunadeer.dominion.Dominion.adminPermission;
+import static cn.lunadeer.dominion.misc.Asserts.assertDominionAdmin;
 import static cn.lunadeer.dominion.misc.Asserts.checkDominionAdmin;
 import static cn.lunadeer.dominion.utils.Misc.formatString;
 
@@ -119,41 +120,37 @@ public class Others {
         XLogger.info(Language.othersText.autoCleanEnd);
     }
 
-    /**
-     * Checks if the player has the specified privilege flag at the given location.
-     * <p>
-     * If the player does not have the required privilege, a formatted no-permission message is shown
-     * to the player at the configured display place, and the method returns false.
-     * If the player has the privilege, returns true.
-     *
-     * @param location the location to check the privilege at
-     * @param flag     the privilege flag to check
-     * @param player   the player to check
-     * @param event    the cancellable event to cancel if the player lacks the privilege
-     * @return true if the player has the privilege, false otherwise
-     */
     public static boolean checkPrivilegeFlag(@NotNull Location location, @NotNull PriFlag flag, @NotNull Player player, @Nullable Cancellable event) {
         if (checkPrivilegeFlagSilence(location, flag, player, event)) {
             return true;
         } else {
-            String msg = formatString(Language.othersText.noPermissionForFlag, flag.getDisplayName(), flag.getDescription());
-            msg = "&4" + "&l" + msg;
-            MessageDisplay.show(player, MessageDisplay.Place.valueOf(Configuration.pluginMessage.noPermissionDisplayPlace.toUpperCase()), msg);
+            showNoPermissionMessage(player, flag);
             return false;
         }
     }
 
     /**
-     * Checks if the player has the specified privilege flag at the given location, without displaying any message.
-     * <p>
-     * If the player does not have the required privilege, the provided event (if not null) will be cancelled.
-     *
-     * @param location the location to check the privilege at
-     * @param flag     the privilege flag to check
-     * @param player   the player to check
-     * @param event    the cancellable event to cancel if the player lacks the privilege
-     * @return true if the player has the privilege, false otherwise
+     * Since 4.5.0 should use {@link #checkPrivilegeFlag(Location, PriFlag, Player, Cancellable)} instead,
+     * as this method is deprecated. Because this method does not check the
+     * <a href="https://dominion.lunadeer.cn/notes/doc/owner/config-ref/world-wide/">world-wide privilege</a> flag,
+     * which is not recommended to use.
      */
+    @Deprecated(since = "4.5.0")
+    public static boolean checkPrivilegeFlag(@Nullable DominionDTO dom, @NotNull PriFlag flag, @NotNull Player player, @Nullable Cancellable event) {
+        if (checkPrivilegeFlagSilence(dom, flag, player, event)) {
+            return true;
+        } else {
+            showNoPermissionMessage(player, flag);
+            return false;
+        }
+    }
+
+    public static void showNoPermissionMessage(@NotNull Player player, @NotNull PriFlag flag) {
+        String msg = formatString(Language.othersText.noPermissionForFlag, flag.getDisplayName(), flag.getDescription());
+        msg = "&4" + "&l" + msg;
+        MessageDisplay.show(player, MessageDisplay.Place.valueOf(Configuration.pluginMessage.noPermissionDisplayPlace.toUpperCase()), msg);
+    }
+
     public static boolean checkPrivilegeFlagSilence(@NotNull Location location, @NotNull PriFlag flag, @NotNull Player player, @Nullable Cancellable event) {
         if (!flag.getEnable()) {
             return true;
@@ -188,20 +185,38 @@ public class Others {
         return false;
     }
 
-
     /**
-     * Checks if the specified environment flag is enabled at the given location.
-     * <p>
-     * This method determines whether the provided {@link EnvFlag} is enabled for the given {@link Location}.
-     * If the flag is not enabled, the method returns true. If the location is not within a dominion,
-     * it checks if the world-wide environment flag is enabled for the world. If the flag is not enabled
-     * in either the dominion or world-wide, the provided {@link Cancellable} event (if not null) will be cancelled.
-     *
-     * @param location the location to check the environment flag at
-     * @param flag     the environment flag to check
-     * @param event    the cancellable event to cancel if the flag is not enabled
-     * @return true if the environment flag is enabled at the location, false otherwise
+     * Since 4.5.0 should use {@link #checkPrivilegeFlag(Location, PriFlag, Player, Cancellable)} instead,
+     * as this method is deprecated. Because this method does not check the
+     * <a href="https://dominion.lunadeer.cn/notes/doc/owner/config-ref/world-wide/">world-wide privilege</a> flag,
+     * which is not recommended to use.
      */
+    @Deprecated(since = "4.5.0")
+    public static boolean checkPrivilegeFlagSilence(@Nullable DominionDTO dom, @NotNull PriFlag flag, @NotNull Player player, @Nullable Cancellable event) {
+        if (!flag.getEnable()) {
+            return true;
+        }
+        if (dom == null) {
+            return true;
+        }
+        MemberDTO member = CacheManager.instance.getMember(dom, player);
+        try {
+            assertDominionAdmin(player, dom);
+            return true;
+        } catch (Exception e) {
+            if (member != null) {
+                GroupDTO group = CacheManager.instance.getGroup(member.getGroupId());
+                if (member.getGroupId() != -1 && group != null) {
+                    return group.getFlagValue(flag);
+                } else {
+                    return member.getFlagValue(flag);
+                }
+            } else {
+                return dom.getGuestPrivilegeFlagValue().get(flag);
+            }
+        }
+    }
+
     public static boolean checkEnvironmentFlag(@NotNull Location location, @NotNull EnvFlag flag, @Nullable Cancellable event) {
         if (!flag.getEnable()) {
             return true;
@@ -220,6 +235,29 @@ public class Others {
             event.setCancelled(true);
         }
         return enabled;
+    }
+
+    /**
+     * Since 4.5.0 should use {@link #checkEnvironmentFlag(Location, EnvFlag, Cancellable)} instead,
+     * as this method is deprecated. Because this method does not check the
+     * <a href="https://dominion.lunadeer.cn/notes/doc/owner/config-ref/world-wide/">world-wide environment</a> flag,
+     * which is not recommended to use.
+     */
+    @Deprecated(since = "4.5.0")
+    public static boolean checkEnvironmentFlag(@Nullable DominionDTO dom, @NotNull EnvFlag flag, @Nullable Cancellable event) {
+        if (!flag.getEnable()) {
+            return true;
+        }
+        if (dom == null) {
+            return true;
+        }
+        if (dom.getEnvironmentFlagValue().get(flag)) {
+            return true;
+        }
+        if (event != null) {
+            event.setCancelled(true);
+        }
+        return false;
     }
 
     public static boolean isInDominion(@Nullable DominionDTO dominion, @NotNull Location location) {

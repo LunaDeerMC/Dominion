@@ -125,13 +125,31 @@ public class DominionInterface extends DominionAPI {
     }
 
     @Override
+    @Deprecated(since = "4.5.0")
+    public boolean checkPrivilegeFlag(@Nullable DominionDTO dom, @NotNull PriFlag flag, @NotNull Player player) {
+        return Others.checkPrivilegeFlag(dom, flag, player, null);
+    }
+
+    @Override
     public boolean checkPrivilegeFlagSilence(@NotNull Location location, @NotNull PriFlag flag, @NotNull Player player) {
         return Others.checkPrivilegeFlagSilence(location, flag, player, null);
     }
 
     @Override
+    @Deprecated(since = "4.5.0")
+    public boolean checkPrivilegeFlagSilence(@Nullable DominionDTO dom, @NotNull PriFlag flag, @NotNull Player player) {
+        return Others.checkPrivilegeFlagSilence(dom, flag, player, null);
+    }
+
+    @Override
     public boolean checkEnvironmentFlag(@NotNull Location location, @NotNull EnvFlag flag) {
         return Others.checkEnvironmentFlag(location, flag, null);
+    }
+
+    @Override
+    @Deprecated(since = "4.5.0")
+    public boolean checkEnvironmentFlag(@Nullable DominionDTO dom, @NotNull EnvFlag flag) {
+        return Others.checkEnvironmentFlag(dom, flag, null);
     }
 
 }
