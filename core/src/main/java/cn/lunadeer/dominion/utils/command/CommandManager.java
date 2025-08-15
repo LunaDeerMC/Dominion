@@ -185,19 +185,13 @@ public class CommandManager implements TabExecutor, Listener {
         if (strings.length - 1 > args.size()) {
             return null;
         }
+        // Set values for all arguments up to the current position
+        String[] suggestionPreArg = new String[strings.length - 1];
         for (int i = 1; i < strings.length - 1; i++) {
             args.get(i - 1).setValue(strings[i]);
+            suggestionPreArg[i - 1] = strings[i];
         }
-        for (Argument arg : args) {
-            if (arg instanceof ConditionalArgument cond) {
-                for (Integer key : cond.getConditionArgumentsIndex()) {
-                    if (key < strings.length - 2) {
-                        cond.setConditionArguments(key, strings[key + 1]);
-                    }
-                }
-            }
-        }
-        return args.get(strings.length - 2).getSuggestion().get(commandSender);
+        return args.get(strings.length - 2).getSuggestion().get(commandSender, suggestionPreArg);
     }
 
     private void printHelp(CommandSender sender, String pageStr) {

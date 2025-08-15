@@ -8,9 +8,7 @@ import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.doos.TemplateDOO;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.command.Argument;
-import cn.lunadeer.dominion.utils.command.ConditionalArgument;
 import cn.lunadeer.dominion.utils.command.Option;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -37,7 +35,7 @@ public class CommandArguments {
      */
     public static class RequiredDominionArgument extends Argument {
         public RequiredDominionArgument() {
-            super("dominion_name", true, (commandSender) -> {
+            super("dominion_name", true, (commandSender, preArguments) -> {
                 if (commandSender instanceof Player player) {
                     return CacheManager.instance.getPlayerManageDominionNames(player.getUniqueId());
                 } else {
@@ -53,7 +51,7 @@ public class CommandArguments {
      */
     public static class RequiredPlayerArgument extends Argument {
         public RequiredPlayerArgument() {
-            super("player_name", true, (commandSender) -> CacheManager.instance.getPlayerNames());
+            super("player_name", true, (commandSender, preArguments) -> CacheManager.instance.getPlayerNames());
         }
     }
 
@@ -63,7 +61,7 @@ public class CommandArguments {
      */
     public static class EnvFlagArgument extends Argument {
         public EnvFlagArgument() {
-            super("env_flag_name", true, (commandSender) -> Flags.getAllEnvFlagsEnable().stream().map(Flag::getFlagName).toList());
+            super("env_flag_name", true, (commandSender, preArguments) -> Flags.getAllEnvFlagsEnable().stream().map(Flag::getFlagName).toList());
         }
     }
 
@@ -74,7 +72,7 @@ public class CommandArguments {
      */
     public static class GuestFlagArgument extends Argument {
         public GuestFlagArgument() {
-            super("guest_flag_name", true, (commandSender) -> Flags.getAllPriFlagsEnable().stream().filter(
+            super("guest_flag_name", true, (commandSender, preArguments) -> Flags.getAllPriFlagsEnable().stream().filter(
                     flag -> !flag.equals(Flags.ADMIN)
             ).map(Flag::getFlagName).toList());
         }
@@ -86,7 +84,7 @@ public class CommandArguments {
      */
     public static class PriFlagArgument extends Argument {
         public PriFlagArgument() {
-            super("pri_flag_name", true, (commandSender) -> Flags.getAllPriFlagsEnable().stream().map(Flag::getFlagName).toList());
+            super("pri_flag_name", true, (commandSender, preArguments) -> Flags.getAllPriFlagsEnable().stream().map(Flag::getFlagName).toList());
         }
     }
 
@@ -102,7 +100,7 @@ public class CommandArguments {
 
     public static class RequiredTemplateArgument extends Argument {
         public RequiredTemplateArgument() {
-            super("template_name", true, (commandSender) -> {
+            super("template_name", true, (commandSender, preArguments) -> {
                 if (commandSender instanceof Player player) {
                     try {
                         return TemplateDOO.selectAll(player.getUniqueId()).stream().map(TemplateDOO::getName).toList();
@@ -117,34 +115,34 @@ public class CommandArguments {
         }
     }
 
-    public static class RequiredMemberArgument extends ConditionalArgument {
+    public static class RequiredMemberArgument extends Argument {
 
         public RequiredMemberArgument(Integer dominionArgumentIndex) {
-            super("member_name", List.of(dominionArgumentIndex));
-        }
-
-        @Override
-        public List<String> handelCondition(CommandSender sender) {
-            DominionDTO dominion = toDominionDTO(getConditionArguments().get(0));
-            return dominion.getMembers().stream().map(member -> member.getPlayer().getLastKnownName()).toList();
+            super("member_name", true, (sender, preArguments) -> {
+                if (preArguments.length <= dominionArgumentIndex) {
+                    return List.of();
+                }
+                DominionDTO dominion = toDominionDTO(preArguments[dominionArgumentIndex]);
+                return dominion.getMembers().stream().map(member -> member.getPlayer().getLastKnownName()).toList();
+            });
         }
     }
 
-    public static class RequiredGroupArgument extends ConditionalArgument {
+    public static class RequiredGroupArgument extends Argument {
         public RequiredGroupArgument(Integer dominionArgumentIndex) {
-            super("group_name", List.of(dominionArgumentIndex));
-        }
-
-        @Override
-        public List<String> handelCondition(CommandSender sender) {
-            DominionDTO dominion = toDominionDTO(getConditionArguments().get(0));
-            return dominion.getGroups().stream().map(GroupDTO::getNamePlain).toList();
+            super("group_name", true, (sender, preArguments) -> {
+                if (preArguments.length <= dominionArgumentIndex) {
+                    return List.of();
+                }
+                DominionDTO dominion = toDominionDTO(preArguments[dominionArgumentIndex]);
+                return dominion.getGroups().stream().map(GroupDTO::getNamePlain).toList();
+            });
         }
     }
 
     public static class PlayerTitleIdArgument extends Argument {
         public PlayerTitleIdArgument() {
-            super("title_id", true, (commandSender) -> {
+            super("title_id", true, (commandSender, preArguments) -> {
                 if (commandSender instanceof Player player) {
                     return CacheManager.instance.getPlayerCache().getPlayerGroupTitleList(player.getUniqueId()).stream().map(title -> title.getId().toString()).toList();
                 } else {

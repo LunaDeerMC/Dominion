@@ -40,7 +40,7 @@ public class Option extends Argument {
      */
     @Override
     public Suggestion getSuggestion() {
-        return (commandSender) -> options;
+        return (commandSender, preArguments) -> options;
     }
 
     /**

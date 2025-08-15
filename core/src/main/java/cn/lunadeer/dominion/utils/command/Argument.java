@@ -51,7 +51,7 @@ public class Argument {
     }
 
     public Suggestion getSuggestion() {
-        return Objects.requireNonNullElseGet(suggestion, () -> (sender) -> List.of(Argument.this.toString()));
+        return Objects.requireNonNullElseGet(suggestion, () -> (sender, preArguments) -> List.of(Argument.this.toString()));
     }
 
     public void setSuggestion(Suggestion suggestion) {
