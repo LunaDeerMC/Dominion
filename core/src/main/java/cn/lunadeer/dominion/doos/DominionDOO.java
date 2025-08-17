@@ -516,4 +516,16 @@ public class DominionDOO implements DominionDTO {
     public int getColorHex() {
         return (getColorR() << 16) + (getColorG() << 8) + getColorB();
     }
+
+    /**
+     * Delete dominion by player UUID.
+     * <p>
+     * THIS SHOULD ONLY BE USED TO CLEAR LEGACY DATA.
+     *
+     * @param playerUUID the UUID of the player to delete
+     * @throws SQLException if a database access error occurs
+     */
+    public static void deleteByPlayerUuid(UUID playerUUID) throws SQLException {
+        Delete.delete().from("dominion").where("owner = ?", playerUUID.toString()).execute();
+    }
 }

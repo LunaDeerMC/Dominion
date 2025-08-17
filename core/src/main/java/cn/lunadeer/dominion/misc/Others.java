@@ -11,6 +11,7 @@ import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.configuration.WorldWide;
+import cn.lunadeer.dominion.doos.DominionDOO;
 import cn.lunadeer.dominion.doos.MemberDOO;
 import cn.lunadeer.dominion.doos.PlayerDOO;
 import cn.lunadeer.dominion.utils.MessageDisplay;
@@ -101,6 +102,11 @@ public class Others {
             List<PlayerDTO> players = PlayerDOO.all();
             for (PlayerDTO p : players) {
                 if (((PlayerDOO) p).getLastJoinAt() + (long) auto_clean_after_days * 24 * 60 * 60 * 1000 < System.currentTimeMillis()) {
+                    try {
+                        DominionDOO.deleteByPlayerUuid(p.getUuid());
+                    } catch (Exception e) {
+                        XLogger.error(e);
+                    }
                     try {
                         MemberDOO.deleteByPlayerUuid(p.getUuid());
                     } catch (Exception e) {

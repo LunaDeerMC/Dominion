@@ -5,6 +5,7 @@ import cn.lunadeer.dominion.api.dtos.GroupDTO;
 import cn.lunadeer.dominion.api.dtos.MemberDTO;
 import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.cache.CacheManager;
+import cn.lunadeer.dominion.doos.DominionDOO;
 import cn.lunadeer.dominion.doos.MemberDOO;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -142,6 +143,7 @@ public class MemberCache extends Cache {
             PlayerDTO player = CacheManager.instance.getPlayer(member.getPlayerUUID());
             if (player == null) {
                 // If player doesn't exist, skip this member
+                DominionDOO.deleteByPlayerUuid(member.getPlayerUUID());
                 MemberDOO.deleteByPlayerUuid(member.getPlayerUUID());
                 continue;
             }
