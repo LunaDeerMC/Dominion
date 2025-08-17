@@ -52,7 +52,7 @@ converts-text:
   invalid-color-format: 颜色参数不正确：{0}，应当为十六进制颜色值（0xRRGGBB）
   unknown-player: 找不到玩家 {0} 的信息（可能是在安装了Dominion后没有登录过）
   not-member: 玩家 {0} 不是领地 {1} 的成员
-  no-group-found: 在领地 {0} 中没有找到权限组 {1}
+  no-group-found: 在领地 {1} 中没有找到权限组 {0}
 others-text:
   auto-clean-start: 开始清理 {0} 天没有登录的玩家数据...
   auto-cleaning-player: 清理了玩家 {0} 的数据。
