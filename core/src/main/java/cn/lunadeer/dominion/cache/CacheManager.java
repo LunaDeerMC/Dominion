@@ -40,7 +40,7 @@ import static cn.lunadeer.dominion.misc.Others.*;
  */
 public class CacheManager {
     private final ServerCache thisServerCache;
-    private final ConcurrentHashMap<Integer, ServerCache> otherServerCaches;
+    private final ConcurrentHashMap<Integer, ServerCache> otherServerCaches = new ConcurrentHashMap<>();
     private final PlayerCache playerCache;
     private final ResidenceDataCache residenceDataCache = new ResidenceDataCache();
 
@@ -64,8 +64,6 @@ public class CacheManager {
         this.thisServerCache.getDominionCache().load();
         this.thisServerCache.getMemberCache().load();
         this.thisServerCache.getGroupCache().load();
-
-        this.otherServerCaches = new ConcurrentHashMap<>();
 
         Bukkit.getPluginManager().registerEvents(new CacheEventHandler(), Dominion.instance);
     }

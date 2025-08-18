@@ -45,11 +45,9 @@ assignees: ''
 - Client Type: [e.g. Vanilla, Forge, Fabric]
 
 ## 📝 Error Logs
-<!-- Please provide relevant console error logs if available -->
+<!-- Please enable the debug mode and provide latest.log file if available -->
 
-```
-Paste error logs here
-```
+Upload the log file here
 
 ## 🔧 Configuration Files
 <!-- If the issue is configuration-related, please provide relevant config file content -->
