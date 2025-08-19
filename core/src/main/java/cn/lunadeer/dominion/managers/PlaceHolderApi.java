@@ -30,29 +30,35 @@ public class PlaceHolderApi extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player bukkitPlayer, @NotNull String params) {
+        // %dominion_group_title%: Get the title of the group the player is currently using
+        // @Returns the title of the group, empty if the player is not using a group title
         if (params.equalsIgnoreCase("group_title")) {
             Integer usingId = CacheManager.instance.getPlayerCache().getPlayerUsingTitleId(bukkitPlayer.getUniqueId());
             GroupDTO group = CacheManager.instance.getGroup(usingId);
             if (group == null) {
-                return "";
+                return null;
             }
             return group.getNameColoredBukkit();
         }
+        // %dominion_current_dominion%: Get the name of the dominion the player is currently in
+        // @Returns the name of the dominion, empty if the player is not in a dominion
         if (params.equalsIgnoreCase("current_dominion")) {
             DominionDTO dominion = CacheManager.instance.getDominion(bukkitPlayer.getLocation());
             if (dominion == null) {
-                return "";
+                return null;
             }
             return dominion.getName();
         }
-        if (params.startsWith("tp_loc_")) { // %dominion_tp_loc_x_<dominion_name>%
+        // %dominion_tp_loc_x_<dominion_name>%: Get the x coordinate of the teleport location of a dominion
+        // %dominion_tp_loc_y_<dominion_name>%: Get the y coordinate of the teleport location of a dominion
+        // %dominion_tp_loc_z_<dominion_name>%: Get the z coordinate of the teleport location of a dominion
+        // @Returns the coordinate of the teleport location of the dominion, empty if the dominion does not exist
+        if (params.startsWith("tp_loc_")) {
             String coordinate = params.substring(8, 9); // x, y, or z
             String dominionName = params.substring(10); // Get the dominion name after the coordinate
 
             DominionDTO dominion = CacheManager.instance.getDominion(dominionName);
-            if (dominion == null) {
-                return null; // Dominion not found
-            }
+            if (dominion == null) return null; // Dominion not found
 
             return switch (coordinate) {
                 case "x" -> String.valueOf(dominion.getTpLocation().getBlockX());
@@ -60,6 +66,63 @@ public class PlaceHolderApi extends PlaceholderExpansion {
                 case "z" -> String.valueOf(dominion.getTpLocation().getBlockZ());
                 default -> null; // Invalid coordinate
             };
+        }
+        // %dominion_is_member%: Check if the player is a member of the dominion they are currently in
+        // @Returns "true" or "false", empty if not in a dominion
+        if (params.equalsIgnoreCase("is_member")) {
+            DominionDTO dominion = CacheManager.instance.getDominion(bukkitPlayer.getLocation());
+            if (dominion == null) return null; // Dominion not found
+            return dominion.getMembers().stream().anyMatch(member ->
+                    member.getPlayer().getUuid().equals(bukkitPlayer.getUniqueId()))
+                    ? "true" : "false";
+        }
+        // %dominion_is_member_<dominion_name>%: Check if the player is a member of a specific dominion
+        // @Returns "true" or "false", empty if the dominion does not exist
+        if (params.startsWith("is_member_")) {
+            String dominionName = params.substring(17); // Get the dominion name after "is_member_of_"
+
+            DominionDTO dominion = CacheManager.instance.getDominion(dominionName);
+            if (dominion == null) return null; // Dominion not found
+
+            return dominion.getMembers().stream().anyMatch(member ->
+                    member.getPlayer().getUuid().equals(bukkitPlayer.getUniqueId()))
+                    ? "true" : "false";
+        }
+        // %dominion_members%: Get the list of members in the dominion the player is currently in
+        // @Returns a comma-separated list of member names, empty if not in a dominion
+        if (params.equalsIgnoreCase("members")) {
+            DominionDTO dominion = CacheManager.instance.getDominion(bukkitPlayer.getLocation());
+            if (dominion == null) return null; // Dominion not found
+            return dominion.getMembers().stream()
+                    .map(member -> member.getPlayer().getLastKnownName())
+                    .reduce((a, b) -> a + ", " + b).orElse("");
+        }
+        // %dominion_members_<dominion_name>%: Get the list of members in a specific dominion
+        // @Returns a comma-separated list of member names, empty if the dominion does not
+        if (params.startsWith("members_")) {
+            String dominionName = params.substring(9); // Get the dominion name after "members_"
+
+            DominionDTO dominion = CacheManager.instance.getDominion(dominionName);
+            if (dominion == null) return null; // Dominion not found
+            return dominion.getMembers().stream()
+                    .map(member -> member.getPlayer().getLastKnownName())
+                    .reduce((a, b) -> a + ", " + b).orElse("");
+        }
+        // %dominion_member_count%: Get the number of members in the dominion the player is currently in
+        // @Returns the number of members, empty if not in a dominion
+        if (params.equalsIgnoreCase("member_count")) {
+            DominionDTO dominion = CacheManager.instance.getDominion(bukkitPlayer.getLocation());
+            if (dominion == null) return null; // Dominion not found
+            return String.valueOf(dominion.getMembers().size());
+        }
+        // %dominion_member_count_<dominion_name>%: Get the number of members in a specific dominion
+        // @Returns the number of members, empty if the dominion does not exist
+        if (params.startsWith("member_count_")) {
+            String dominionName = params.substring(14); // Get the dominion name after "member_count_"
+
+            DominionDTO dominion = CacheManager.instance.getDominion(dominionName);
+            if (dominion == null) return null; // Dominion not found
+            return String.valueOf(dominion.getMembers().size());
         }
         return null; //
     }
