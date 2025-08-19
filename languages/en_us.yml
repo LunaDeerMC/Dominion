@@ -9,7 +9,7 @@ multi-server-manager-text:
   warn-update-server-name: There is already a server with ID {0} and name {1}, but the current server name is {2}. Updating the name to {2}.
 asserts-text:
   dom-name-should-not-empty: Dominion name should not be empty.
-  dom-name-invalid: Dominion name should not contain space or dot.
+  dom-name-invalid: Dominion name should not contain space, dot, §, &, ~ or ,.
   dom-name-exist: 'Dominion name: {0} already exists.'
   group-name-should-not-empty: Group name should not be empty.
   group-name-invalid: Group name should not contain space or dot.

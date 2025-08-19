@@ -35,7 +35,7 @@ public class Asserts {
 
     public static class AssertsText extends ConfigurationPart {
         public String domNameShouldNotEmpty = "Dominion name should not be empty.";
-        public String domNameInvalid = "Dominion name should not contain space or dot.";
+        public String domNameInvalid = "Dominion name should not contain space, dot, §, &, ~ or ,.";
         public String domNameExist = "Dominion name: {0} already exists.";
 
         public String groupNameShouldNotEmpty = "Group name should not be empty.";
@@ -82,7 +82,9 @@ public class Asserts {
         if (dominionName.isEmpty()) {
             throw new DominionException(Language.assertsText.domNameShouldNotEmpty);
         }
-        if (dominionName.contains(" ") || dominionName.contains(".") || dominionName.contains("§")) {
+        if (dominionName.contains(" ") || dominionName.contains(".")
+                || dominionName.contains("§") || dominionName.contains("&")
+                || dominionName.contains("~") || dominionName.contains(",")) {
             throw new DominionException(Language.assertsText.domNameInvalid);
         }
         if (DominionDOO.select(dominionName) != null) {

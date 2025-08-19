@@ -2,12 +2,14 @@ package cn.lunadeer.dominion.managers;
 
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.GroupDTO;
+import cn.lunadeer.dominion.api.dtos.MemberDTO;
 import cn.lunadeer.dominion.cache.CacheManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class PlaceHolderApi extends PlaceholderExpansion {
 
@@ -124,7 +126,56 @@ public class PlaceHolderApi extends PlaceholderExpansion {
             if (dominion == null) return null; // Dominion not found
             return String.valueOf(dominion.getMembers().size());
         }
+        // %dominion_group%: Get the name of the group of player in the dominion they are currently in
+        // @Returns the name of the group, empty if not in a dominion or not in a group
+        if (params.equalsIgnoreCase("group")) {
+            DominionDTO dominion = CacheManager.instance.getDominion(bukkitPlayer.getLocation());
+            if (dominion == null) return null; // Dominion not found
+            return getGroupName(bukkitPlayer, dominion);
+        }
+        // %dominion_group_<dominion_name>%: Get the name of the group of player in a specific dominion
+        // @Returns the name of the group, empty if the dominion does not exist or not in a group
+        if (params.startsWith("group_")) {
+            String dominionName = params.substring(6); // Get the dominion name after "group_"
+            DominionDTO dominion = CacheManager.instance.getDominion(dominionName);
+            if (dominion == null) return null; // Dominion not found
+            return getGroupName(bukkitPlayer, dominion);
+        }
+        // %dominion_groups%: Get the list of groups in the dominion the player is currently in
+        // @Returns a comma-separated list of group names, empty if not in a dominion
+        if (params.equalsIgnoreCase("groups")) {
+            DominionDTO dominion = CacheManager.instance.getDominion(bukkitPlayer.getLocation());
+            if (dominion == null) return null; // Dominion not found
+            return dominion.getGroups().stream()
+                    .map(GroupDTO::getNameColoredBukkit)
+                    .reduce((a, b) -> a + ", " + b).orElse("");
+        }
+        // %dominion_groups_<dominion_name>%: Get the list of groups in a specific dominion
+        // @Returns a comma-separated list of group names, empty if the dominion does not exist
+        if (params.startsWith("groups_")) {
+            String dominionName = params.substring(7); // Get the dominion name after "groups_"
+            DominionDTO dominion = CacheManager.instance.getDominion(dominionName);
+            if (dominion == null) return null; // Dominion not found
+            return dominion.getGroups().stream()
+                    .map(GroupDTO::getNameColoredBukkit)
+                    .reduce((a, b) -> a + ", " + b).orElse("");
+        }
+        // %dominion_group_count%: Get the number of groups in the dominion the player is currently in
+        // @Returns the number of groups, empty if not in a dominion
+        if (params.equalsIgnoreCase("group_count")) {
+            DominionDTO dominion = CacheManager.instance.getDominion(bukkitPlayer.getLocation());
+            if (dominion == null) return null; // Dominion not found
+            return String.valueOf(dominion.getGroups().size());
+        }
         return null; //
+    }
+
+    private static @Nullable String getGroupName(Player bukkitPlayer, DominionDTO dominion) {
+        MemberDTO member = CacheManager.instance.getMember(dominion, bukkitPlayer);
+        if (member == null || member.getGroupId() == -1) return null; // Not in a group
+        GroupDTO group = CacheManager.instance.getGroup(member);
+        if (group == null) return null; // Group not found
+        return group.getNameColoredBukkit();
     }
 
     @Override

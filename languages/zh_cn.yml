@@ -9,7 +9,7 @@ multi-server-manager-text:
   warn-update-server-name: 数据库中服务器ID {0} 的名称（{1}）与配置文件中的名称（{2}）不一致，已更新数据库。
 asserts-text:
   dom-name-should-not-empty: 领地名称不能为空
-  dom-name-invalid: 领地名称不能包含空格或句点
+  dom-name-invalid: 领地名称不能包含空格、点、§、&、~ 或逗号。
   dom-name-exist: 已存在领地名称：{0}
   group-name-should-not-empty: 权限组名称不能为空
   group-name-invalid: 权限组名称不能包含空格或句点

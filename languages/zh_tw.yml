@@ -11,7 +11,7 @@ multi-server-manager-text:
 
 asserts-text:
   dom-name-should-not-empty: 領地名稱不可空白。
-  dom-name-invalid: 領地名稱不可包含空格或句點。
+  dom-name-invalid: 領地名稱不可包含空格、句點、§、&、~ 或逗號。
   dom-name-exist: 已有相同領地名稱：{0}。
   group-name-should-not-empty: 權限組名稱不可空白。
   group-name-invalid: 權限組名稱不可包含空格或句點。

@@ -9,7 +9,7 @@ multi-server-manager-text:
   warn-update-server-name: ID {0} と名前 {1} のサーバーが既に存在しますが、現在のサーバー名は {2} です。名前を {2} に更新します。
 asserts-text:
   dom-name-should-not-empty: ドミニオン名を空にすることはできません。
-  dom-name-invalid: ドミニオン名にはスペースやドットを含めることはできません。
+  dom-name-invalid: ドミニオン名にはスペース、ドット、§、&、~、または , を含めることはできません。
   dom-name-exist: 'ドミニオン名: {0} は既に存在します。'
   group-name-should-not-empty: グループ名を空にすることはできません。
   group-name-invalid: グループ名にはスペースやドットを含めることはできません。
