@@ -112,6 +112,9 @@ public class Configuration extends ConfigurationFile {
 
         @Comments("The password of the database.")
         public String password = "dominion";
+
+        @Comments({"The connection pool size of the database.",})
+        public int connectionPoolSize = 10;
     }
 
     @Comments({
@@ -443,7 +446,8 @@ public class Configuration extends ConfigurationFile {
                     Configuration.database.port,
                     Configuration.database.database,
                     Configuration.database.username,
-                    Configuration.database.password
+                    Configuration.database.password,
+                    Configuration.database.connectionPoolSize
             );
         }
         DatabaseManager.instance.reconnect();
