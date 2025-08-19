@@ -114,6 +114,11 @@ public class TeleportManager implements Listener {
             Notification.warn(player, Language.teleportManagerText.disabled);
             return;
         }
+        // if tp flag is disabled, return too
+        if (!Flags.TELEPORT.getEnable()) {
+            Notification.warn(player, Language.teleportManagerText.disabled);
+            return;
+        }
         if (!checkPrivilegeFlag(dominion, Flags.TELEPORT, player, null)) {
             return;
         }
