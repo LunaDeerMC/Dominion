@@ -3,7 +3,11 @@ package cn.lunadeer.dominion.managers;
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.GroupDTO;
 import cn.lunadeer.dominion.api.dtos.MemberDTO;
+import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
+import cn.lunadeer.dominion.api.dtos.flag.Flags;
+import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
+import cn.lunadeer.dominion.misc.Others;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
@@ -166,6 +170,21 @@ public class PlaceHolderApi extends PlaceholderExpansion {
             DominionDTO dominion = CacheManager.instance.getDominion(bukkitPlayer.getLocation());
             if (dominion == null) return null; // Dominion not found
             return String.valueOf(dominion.getGroups().size());
+        }
+        // %dominion_pri_flag_<flag>%: Get the value of a specific privilege flag for the player in the dominion they are currently in
+        // @Returns "true" or "false", empty if the flag does not exist
+        if (params.startsWith("pri_flag_")) {
+            String flagName = params.substring(10); // Get the flag name after "pri_flag_"
+            PriFlag flag = Flags.getPreFlag(flagName);
+            if (flag == null) return null; // Flag not found
+            return String.valueOf(Others.checkPrivilegeFlagSilence(bukkitPlayer.getLocation(), flag, bukkitPlayer, null));
+        }
+        // %dominion_env_flag_<flag>%: Get the value of a specific environment flag for the player in the dominion they are currently in
+        // @Returns "true" or "false", empty if the flag does not exist
+        if (params.startsWith("env_flag_")) {
+            String flagName = params.substring(9); // Get the flag name after "env_flag_"
+            EnvFlag envFlag = Flags.getEnvFlag(flagName);
+            return String.valueOf(Others.checkEnvironmentFlag(bukkitPlayer.getLocation(), envFlag, null));
         }
         return null; //
     }
