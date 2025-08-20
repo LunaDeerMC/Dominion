@@ -140,9 +140,9 @@ public class TeleportManager implements Listener {
             teleportCooldown.put(player.getUniqueId(), currentTs + Configuration.getPlayerLimitation(player).teleportation.cooldown);
         }
         // delay
-        if (teleportDelayTasks.containsKey(player.getUniqueId())) {
-            teleportDelayTasks.get(player.getUniqueId()).cancel();
-            teleportDelayTasks.remove(player.getUniqueId());
+        CancellableTask existTask = teleportDelayTasks.remove(player.getUniqueId());
+        if (existTask != null) {
+            existTask.cancel();
             Notification.warn(player, Language.teleportManagerText.unfinishedCancelled);
         }
         if (delaySec > 0) {
