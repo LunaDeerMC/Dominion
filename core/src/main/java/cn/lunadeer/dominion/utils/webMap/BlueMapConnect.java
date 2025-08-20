@@ -22,6 +22,16 @@ import static cn.lunadeer.dominion.utils.Misc.formatString;
 
 public class BlueMapConnect extends WebMapRender {
 
+    // Constants for better maintainability
+    private static final String DOMINION_LABEL = "Dominion";
+    private static final String MCA_LABEL = "MCA";
+    private static final double SHAPE_OFFSET = 0.001;
+    private static final int MCA_CHUNK_SIZE = 512;
+    private static final int MIN_Y = -64;
+    private static final int MAX_Y = 320;
+    private static final Color MCA_LINE_COLOR = new Color(0, 204, 0, 0.8F);
+    private static final Color MCA_FILL_COLOR = new Color(0, 204, 0, 0.2F);
+
     public static class BlueMapConnectText extends ConfigurationPart {
         public String registerFail = "Failed to register BlueMap API.";
         public String infoLabel = "<div>{0}</div><div>Owner: {1}</div>";
@@ -33,65 +43,31 @@ public class BlueMapConnect extends WebMapRender {
 
     @Override
     protected void renderDominions(@NotNull List<DominionDTO> dominions) {
+        executeBlueMapOperation(() -> {
+            Map<String, List<DominionDTO>> worldDominions = groupDominionsByWorld(dominions);
+
+            for (Map.Entry<String, List<DominionDTO>> entry : worldDominions.entrySet()) {
+                renderDominionsForWorld(entry.getKey(), entry.getValue());
+            }
+        });
+    }
+
+    @Override
+    protected void renderMCA(@NotNull Map<String, List<String>> mcaFiles) {
+        executeBlueMapOperation(() -> {
+            for (Map.Entry<String, List<String>> entry : mcaFiles.entrySet()) {
+                renderMCAForWorld(entry.getKey(), entry.getValue());
+            }
+        });
+    }
+
+    /**
+     * Common method to execute BlueMap operations with error handling
+     */
+    private void executeBlueMapOperation(Runnable operation) {
         Scheduler.runTaskAsync(() -> {
             try {
-                BlueMapAPI.getInstance().ifPresent(api -> {
-                    Map<String, List<DominionDTO>> world_dominions = new HashMap<>();
-                    for (DominionDTO dominion : dominions) {
-                        if (dominion.getWorld() == null) {
-                            continue;
-                        }
-                        if (!world_dominions.containsKey(dominion.getWorld().getName())) {
-                            world_dominions.put(dominion.getWorld().getName(), new ArrayList<>());
-                        }
-                        world_dominions.get(dominion.getWorld().getName()).add(dominion);
-                    }
-                    for (Map.Entry<String, List<DominionDTO>> d : world_dominions.entrySet()) {
-                        api.getWorld(d.getKey()).ifPresent(world -> {
-                            MarkerSet markerSet = MarkerSet.builder()
-                                    .label("Dominion")
-                                    .build();
-
-                            for (DominionDTO dominion : d.getValue()) {
-                                PlayerDTO p = CacheManager.instance.getPlayer(dominion.getOwner());
-                                if (p == null) {
-                                    continue;
-                                }
-
-                                Collection<Vector2d> vectors = new ArrayList<>();
-                                vectors.add(new Vector2d(dominion.getCuboid().x1() + 0.001, dominion.getCuboid().z1() + 0.001));
-                                vectors.add(new Vector2d(dominion.getCuboid().x2() - 0.001, dominion.getCuboid().z1() + 0.001));
-                                vectors.add(new Vector2d(dominion.getCuboid().x2() - 0.001, dominion.getCuboid().z2() - 0.001));
-                                vectors.add(new Vector2d(dominion.getCuboid().x1() + 0.001, dominion.getCuboid().z2() - 0.001));
-                                Shape shape = new Shape(vectors);
-                                double x = vectors.iterator().next().getX();
-                                double z = vectors.iterator().next().getY();
-                                double y = dominion.getCuboid().y1();
-
-                                int r = dominion.getColorR();
-                                int g = dominion.getColorG();
-                                int b = dominion.getColorB();
-
-                                Color line = new Color(r, g, b, 0.8F);
-                                Color fill = new Color(r, g, b, 0.2F);
-                                ExtrudeMarker marker = ExtrudeMarker.builder()
-                                        .label(dominion.getName())
-                                        .detail(formatString(Language.blueMapConnectText.infoLabel, dominion.getName(), p.getLastKnownName()))
-                                        .position(x, y, z)
-                                        .shape(shape, dominion.getCuboid().y1() + 0.001f, dominion.getCuboid().y2() - 0.001f)
-                                        .lineColor(line)
-                                        .fillColor(fill)
-                                        .build();
-                                markerSet.getMarkers()
-                                        .put(dominion.getName(), marker);
-                            }
-
-                            for (BlueMapMap map : world.getMaps()) {
-                                map.getMarkerSets().put(d.getKey() + "-" + markerSet.getLabel(), markerSet);
-                            }
-                        });
-                    }
-                });
+                BlueMapAPI.getInstance().ifPresent(api -> operation.run());
             } catch (NoClassDefFoundError e) {
                 XLogger.warn(Language.blueMapConnectText.registerFail);
                 XLogger.error(e);
@@ -99,57 +75,143 @@ public class BlueMapConnect extends WebMapRender {
         });
     }
 
-    @Override
-    protected void renderMCA(@NotNull Map<String, List<String>> mcaFiles) {
-        Scheduler.runTaskAsync(() -> {
-            try {
-                BlueMapAPI.getInstance().ifPresent(api -> {
-                    for (String world : mcaFiles.keySet()) {
-                        api.getWorld(world).ifPresent(bmWorld -> {
-                            MarkerSet markerSet = MarkerSet.builder()
-                                    .label("MCA")
-                                    .defaultHidden(true)
-                                    .build();
-                            for (String file : mcaFiles.get(world)) {
-                                // r.-1.-1.mca
-                                int mca_x = Integer.parseInt(file.split("\\.")[1]);
-                                int mca_z = Integer.parseInt(file.split("\\.")[2]);
-                                int world_x1 = mca_x * 512;
-                                int world_x2 = (mca_x + 1) * 512;
-                                int world_z1 = mca_z * 512;
-                                int world_z2 = (mca_z + 1) * 512;
-                                Collection<Vector2d> vectors = new ArrayList<>();
-                                vectors.add(new Vector2d(world_x1 + 0.001, world_z1 + 0.001));
-                                vectors.add(new Vector2d(world_x2 - 0.001, world_z1 + 0.001));
-                                vectors.add(new Vector2d(world_x2 - 0.001, world_z2 - 0.001));
-                                vectors.add(new Vector2d(world_x1 + 0.001, world_z2 - 0.001));
-                                Shape shape = new Shape(vectors);
-                                double x = vectors.iterator().next().getX();
-                                double z = vectors.iterator().next().getY();
-                                double y = -64;
+    /**
+     * Groups dominions by world name for efficient processing
+     */
+    private Map<String, List<DominionDTO>> groupDominionsByWorld(@NotNull List<DominionDTO> dominions) {
+        Map<String, List<DominionDTO>> worldDominions = new HashMap<>();
 
-                                Color line = new Color(0, 204, 0, 0.8F);
-                                Color fill = new Color(0, 204, 0, 0.2F);
-                                ExtrudeMarker marker = ExtrudeMarker.builder()
-                                        .label(file)
-                                        .position(x, y, z)
-                                        .shape(shape, -64, 320)
-                                        .lineColor(line)
-                                        .fillColor(fill)
-                                        .build();
-                                markerSet.getMarkers()
-                                        .put(file, marker);
-                            }
-                            for (BlueMapMap map : bmWorld.getMaps()) {
-                                map.getMarkerSets().put(world + "-" + markerSet.getLabel(), markerSet);
-                            }
-                        });
-                    }
-                });
-            } catch (NoClassDefFoundError e) {
-                XLogger.warn(Language.blueMapConnectText.registerFail);
-                XLogger.error(e);
+        for (DominionDTO dominion : dominions) {
+            if (dominion.getWorld() == null) {
+                continue;
             }
+
+            String worldName = dominion.getWorld().getName();
+            worldDominions.computeIfAbsent(worldName, k -> new ArrayList<>()).add(dominion);
+        }
+
+        return worldDominions;
+    }
+
+    /**
+     * Renders dominions for a specific world
+     */
+    private void renderDominionsForWorld(String worldName, List<DominionDTO> dominions) {
+        BlueMapAPI.getInstance().flatMap(api -> api.getWorld(worldName)).ifPresent(world -> {
+            MarkerSet markerSet = MarkerSet.builder()
+                    .label(DOMINION_LABEL)
+                    .build();
+
+            for (DominionDTO dominion : dominions) {
+                createDominionMarker(dominion, markerSet);
+            }
+
+            addMarkerSetToMaps(world.getMaps(), worldName + "-" + markerSet.getLabel(), markerSet);
         });
+    }
+
+    /**
+     * Creates a marker for a single dominion
+     */
+    private void createDominionMarker(DominionDTO dominion, MarkerSet markerSet) {
+        PlayerDTO player = CacheManager.instance.getPlayer(dominion.getOwner());
+        if (player == null) {
+            return;
+        }
+
+        Shape shape = createRectangularShape(
+                dominion.getCuboid().x1(), dominion.getCuboid().z1(),
+                dominion.getCuboid().x2(), dominion.getCuboid().z2()
+        );
+
+        Color lineColor = new Color(dominion.getColorR(), dominion.getColorG(), dominion.getColorB(), 0.8F);
+        Color fillColor = new Color(dominion.getColorR(), dominion.getColorG(), dominion.getColorB(), 0.2F);
+
+        ExtrudeMarker marker = ExtrudeMarker.builder()
+                .label(dominion.getName())
+                .detail(formatString(Language.blueMapConnectText.infoLabel, dominion.getName(), player.getLastKnownName()))
+                .position(dominion.getCuboid().x1() + SHAPE_OFFSET, dominion.getCuboid().y1(), dominion.getCuboid().z1() + SHAPE_OFFSET)
+                .shape(shape, dominion.getCuboid().y1() + (float) SHAPE_OFFSET, dominion.getCuboid().y2() - (float) SHAPE_OFFSET)
+                .lineColor(lineColor)
+                .fillColor(fillColor)
+                .build();
+
+        markerSet.getMarkers().put(dominion.getName(), marker);
+    }
+
+    /**
+     * Renders MCA files for a specific world
+     */
+    private void renderMCAForWorld(String worldName, List<String> mcaFiles) {
+        BlueMapAPI.getInstance().flatMap(api -> api.getWorld(worldName)).ifPresent(bmWorld -> {
+            MarkerSet markerSet = MarkerSet.builder()
+                    .label(MCA_LABEL)
+                    .defaultHidden(true)
+                    .build();
+
+            for (String file : mcaFiles) {
+                createMCAMarker(file, markerSet);
+            }
+
+            addMarkerSetToMaps(bmWorld.getMaps(), worldName + "-" + markerSet.getLabel(), markerSet);
+        });
+    }
+
+    /**
+     * Creates a marker for a single MCA file
+     */
+    private void createMCAMarker(String fileName, MarkerSet markerSet) {
+        try {
+            String[] parts = fileName.split("\\.");
+            if (parts.length < 3) {
+                XLogger.warn("Invalid MCA filename format: " + fileName);
+                return;
+            }
+
+            int mcaX = Integer.parseInt(parts[1]);
+            int mcaZ = Integer.parseInt(parts[2]);
+
+            int worldX1 = mcaX * MCA_CHUNK_SIZE;
+            int worldX2 = worldX1 + MCA_CHUNK_SIZE;
+            int worldZ1 = mcaZ * MCA_CHUNK_SIZE;
+            int worldZ2 = worldZ1 + MCA_CHUNK_SIZE;
+
+            Shape shape = createRectangularShape(worldX1, worldZ1, worldX2, worldZ2);
+
+            ExtrudeMarker marker = ExtrudeMarker.builder()
+                    .label(fileName)
+                    .position(worldX1 + SHAPE_OFFSET, MIN_Y, worldZ1 + SHAPE_OFFSET)
+                    .shape(shape, MIN_Y, MAX_Y)
+                    .lineColor(MCA_LINE_COLOR)
+                    .fillColor(MCA_FILL_COLOR)
+                    .build();
+
+            markerSet.getMarkers().put(fileName, marker);
+        } catch (NumberFormatException e) {
+            XLogger.warn("Failed to parse MCA coordinates from filename: " + fileName);
+            XLogger.error(e);
+        }
+    }
+
+    /**
+     * Creates a rectangular shape with the given boundaries
+     */
+    private Shape createRectangularShape(double x1, double z1, double x2, double z2) {
+        Collection<Vector2d> vectors = Arrays.asList(
+                new Vector2d(x1 + SHAPE_OFFSET, z1 + SHAPE_OFFSET),
+                new Vector2d(x2 - SHAPE_OFFSET, z1 + SHAPE_OFFSET),
+                new Vector2d(x2 - SHAPE_OFFSET, z2 - SHAPE_OFFSET),
+                new Vector2d(x1 + SHAPE_OFFSET, z2 - SHAPE_OFFSET)
+        );
+        return new Shape(vectors);
+    }
+
+    /**
+     * Adds a marker set to all maps in the collection
+     */
+    private void addMarkerSetToMaps(Collection<BlueMapMap> maps, String key, MarkerSet markerSet) {
+        for (BlueMapMap map : maps) {
+            map.getMarkerSets().put(key, markerSet);
+        }
     }
 }
