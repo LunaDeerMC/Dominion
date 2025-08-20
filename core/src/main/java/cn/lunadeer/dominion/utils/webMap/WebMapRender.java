@@ -35,6 +35,13 @@ public abstract class WebMapRender {
                 XLogger.error(e);
             }
         }
+        if (Configuration.webMapRenderer.pl3xMap) {
+            try {
+                new Pl3xMapConnect();
+            } catch (Throwable e) {
+                XLogger.error(e);
+            }
+        }
 
         Scheduler.runTaskLaterAsync(() -> {
             for (WebMapRender mapRender : webMapInstances) {

@@ -206,6 +206,9 @@ public class Configuration extends ConfigurationFile {
 
         @Comments("https://modrinth.com/plugin/squaremap")
         public boolean squareMap = false;
+
+        @Comments("https://modrinth.com/plugin/pl3xmap")
+        public boolean pl3xMap = false;
     }
 
     @Comments("Weather the player can migrate residence data to dominion.")

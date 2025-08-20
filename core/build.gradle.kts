@@ -15,6 +15,7 @@ repositories {
     maven("https://repo.mikeprimm.com/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://repo.codemc.org/repository/maven-public")
+    maven("https://api.modrinth.com/maven")
 }
 
 dependencies {
@@ -27,4 +28,5 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("net.milkbowl.vault:VaultUnlockedAPI:2.15")
+    compileOnly("maven.modrinth:pl3xmap:1.20.4-489")
 }
