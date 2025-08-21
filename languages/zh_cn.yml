@@ -62,7 +62,7 @@ vault-connect-text:
   vault-unavailable: 缺少经济前置，请安装 Vault 或 VaultUnlock 以及经济插件以使用经济功能。
   economy-unavailable: 缺少经济插件，请至少安装一个经济插件以使用经济功能。
   insufficient-funds: 余额不足，需要 {0} {1}，但是你只有 {2} {1}
-dominion-event-handler-text:
+dominion-provider-handler-text:
   create-success: 成功创建领地 {0}
   create-failed: 创建领地 {0} 失败，原因：{1}
   expand-success: 成功扩张领地 {0}
@@ -94,7 +94,7 @@ dominion-event-handler-text:
   set-env-flag-failed: 配置领地环境 {0} 为 {1} 失败，原因：{2}
   set-guest-flag-success: 设置领地访客权限 {0} 为 {1} 成功
   set-guest-flag-failed: 设置领地访客权限 {0} 为 {1} 失败，原因：{2}
-member-event-handler-text:
+member-provider-handler-text:
   set-flag-success: 成功修改领地 {2} 成员 {1} 的权限配置 {0}
   owner-only: 只有领地所有者可以管理领地管理员
   group-already: 该成员属于权限组 {0}，无法单独管理
@@ -105,7 +105,7 @@ member-event-handler-text:
   add-member-failed: 添加成员失败，原因：{0}
   remove-member-success: 成功将成员 {0} 移出领地 {1}
   remove-member-failed: 移除成员失败，原因：{0}
-group-event-handler-text:
+group-provider-handler-text:
   owner-only: 只有领地所有者可以配置管理员权限组
   set-flag-success: 设置权限组 {0} 的权限 {1} 为 {2} 成功
   set-flag-failed: 配置权限组失败，原因：{0}

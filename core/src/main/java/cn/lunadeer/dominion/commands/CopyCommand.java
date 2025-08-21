@@ -7,12 +7,9 @@ import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Language;
-import cn.lunadeer.dominion.events.group.GroupAddMemberEvent;
-import cn.lunadeer.dominion.events.group.GroupCreateEvent;
-import cn.lunadeer.dominion.events.group.GroupSetFlagEvent;
-import cn.lunadeer.dominion.events.member.MemberAddedEvent;
-import cn.lunadeer.dominion.events.member.MemberSetFlagEvent;
 import cn.lunadeer.dominion.misc.CommandArguments;
+import cn.lunadeer.dominion.providers.GroupProvider;
+import cn.lunadeer.dominion.providers.MemberProvider;
 import cn.lunadeer.dominion.uis.dominion.manage.EnvFlags;
 import cn.lunadeer.dominion.uis.dominion.manage.GuestFlags;
 import cn.lunadeer.dominion.uis.dominion.manage.group.GroupList;
@@ -98,19 +95,16 @@ public class CopyCommand {
                 try {
                     MemberDTO toMember = CacheManager.instance.getMember(toDominion, member.getPlayerUUID());
                     if (toMember == null) {
-                        MemberAddedEvent event = new MemberAddedEvent(sender, toDominion, member.getPlayer());
-                        event.call();
-                        if (event.isCancelled()) continue;
-                        if (event.getMember() == null) continue;
-                        toMember = event.getMember();
+                        toMember = MemberProvider.getInstance().addMember(sender, toDominion, member.getPlayer()).get();
+                        if (toMember == null) continue;
                     }
                     for (PriFlag flag : member.getFlagsValue().keySet()) {
                         if (toMember.getFlagValue(flag) == member.getFlagValue(flag)) continue;
-                        new MemberSetFlagEvent(sender,
+                        MemberProvider.getInstance().setMemberFlag(sender,
                                 toDominion,
                                 toMember,
                                 flag,
-                                member.getFlagValue(flag)).call();
+                                member.getFlagValue(flag));
                     }
                 } catch (Exception e) {
                     Notification.warn(sender, e.getMessage());
@@ -146,27 +140,25 @@ public class CopyCommand {
                             .orElse(null);
                     if (toGroup == null) {
                         // create group in target dominion
-                        GroupCreateEvent event = new GroupCreateEvent(sender, toDominion, group.getNameRaw());
-                        event.call();
-                        if (event.isCancelled()) continue;
-                        if (event.getGroup() == null) continue;
-                        toGroup = event.getGroup();
+                        GroupDTO groupCreated = GroupProvider.getInstance().createGroup(sender, toDominion, group.getNameRaw()).get();
+                        if (groupCreated == null) continue;
+                        toGroup = groupCreated;
                     }
                     // set group flags
                     for (PriFlag flag : group.getFlagsValue().keySet()) {
                         if (toGroup.getFlagValue(flag) == group.getFlagValue(flag)) continue;
-                        new GroupSetFlagEvent(sender,
+                        GroupProvider.getInstance().setGroupFlag(sender,
                                 toDominion,
                                 toGroup,
                                 flag,
-                                group.getFlagValue(flag)).call();
+                                group.getFlagValue(flag));
                     }
                     // set group members
                     for (MemberDTO fromMember : fromDominion.getMembers()) {
                         MemberDTO toMember = CacheManager.instance.getMember(toDominion, fromMember.getPlayerUUID());
                         if (toMember == null) continue;
                         if (toMember.getGroupId().equals(toGroup.getId())) continue;
-                        new GroupAddMemberEvent(sender, toDominion, toGroup, toMember).call();
+                        GroupProvider.getInstance().addMember(sender, toDominion, toGroup, toMember);
                     }
                 } catch (Exception e) {
                     Notification.warn(sender, e.getMessage());

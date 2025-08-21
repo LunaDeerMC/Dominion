@@ -4,9 +4,8 @@ import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.configuration.Language;
-import cn.lunadeer.dominion.events.dominion.modify.DominionSetEnvFlagEvent;
-import cn.lunadeer.dominion.events.dominion.modify.DominionSetGuestFlagEvent;
 import cn.lunadeer.dominion.misc.CommandArguments;
+import cn.lunadeer.dominion.providers.DominionProvider;
 import cn.lunadeer.dominion.uis.dominion.manage.EnvFlags;
 import cn.lunadeer.dominion.uis.dominion.manage.GuestFlags;
 import cn.lunadeer.dominion.utils.Notification;
@@ -61,7 +60,7 @@ public class DominionFlagCommand {
             DominionDTO dominion = toDominionDTO(dominionName);
             EnvFlag flag = toEnvFlag(flagName);
             boolean value = toBoolean(valueStr);
-            new DominionSetEnvFlagEvent(sender, dominion, flag, value).call();
+            DominionProvider.getInstance().setDominionEnvFlag(sender, dominion, flag, value);
             EnvFlags.show(sender, dominionName, pageStr);
         } catch (Exception e) {
             Notification.error(sender, e);
@@ -102,7 +101,7 @@ public class DominionFlagCommand {
             DominionDTO dominion = toDominionDTO(dominionName);
             PriFlag flag = toPriFlag(flagName);
             boolean value = toBoolean(valueStr);
-            new DominionSetGuestFlagEvent(sender, dominion, flag, value).call();
+            DominionProvider.getInstance().setDominionGuestFlag(sender, dominion, flag, value);
             GuestFlags.show(sender, dominionName, pageStr);
         } catch (Exception e) {
             Notification.error(sender, e);

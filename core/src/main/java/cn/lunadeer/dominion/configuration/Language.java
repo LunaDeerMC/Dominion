@@ -6,9 +6,9 @@ import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.commands.*;
 import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
 import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
-import cn.lunadeer.dominion.handler.DominionEventHandler;
-import cn.lunadeer.dominion.handler.GroupEventHandler;
-import cn.lunadeer.dominion.handler.MemberEventHandler;
+import cn.lunadeer.dominion.handler.DominionProviderHandler;
+import cn.lunadeer.dominion.handler.GroupProviderHandler;
+import cn.lunadeer.dominion.handler.MemberProviderHandler;
 import cn.lunadeer.dominion.handler.SelectPointEventsHandler;
 import cn.lunadeer.dominion.inputters.*;
 import cn.lunadeer.dominion.managers.DatabaseTables;
@@ -118,9 +118,9 @@ public class Language extends ConfigurationFile {
     public static VaultConnect.VaultConnectText vaultConnectText = new VaultConnect.VaultConnectText();
 
     // Event Handler
-    public static DominionEventHandler.DominionEventHandlerText dominionEventHandlerText = new DominionEventHandler.DominionEventHandlerText();
-    public static MemberEventHandler.MemberEventHandlerText memberEventHandlerText = new MemberEventHandler.MemberEventHandlerText();
-    public static GroupEventHandler.GroupEventHandlerText groupEventHandlerText = new GroupEventHandler.GroupEventHandlerText();
+    public static DominionProviderHandler.DominionProviderHandlerText dominionProviderHandlerText = new DominionProviderHandler.DominionProviderHandlerText();
+    public static MemberProviderHandler.MemberProviderHandlerText memberProviderHandlerText = new MemberProviderHandler.MemberProviderHandlerText();
+    public static GroupProviderHandler.GroupProviderHandlerText groupProviderHandlerText = new GroupProviderHandler.GroupProviderHandlerText();
     public static SelectPointEventsHandler.SelectPointEventsHandlerText selectPointEventsHandlerText = new SelectPointEventsHandler.SelectPointEventsHandlerText();
 
     // Inputter

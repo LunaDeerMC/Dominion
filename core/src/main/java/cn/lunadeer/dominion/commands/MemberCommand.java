@@ -7,10 +7,8 @@ import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.doos.PlayerDOO;
-import cn.lunadeer.dominion.events.member.MemberAddedEvent;
-import cn.lunadeer.dominion.events.member.MemberRemovedEvent;
-import cn.lunadeer.dominion.events.member.MemberSetFlagEvent;
 import cn.lunadeer.dominion.misc.CommandArguments;
+import cn.lunadeer.dominion.providers.MemberProvider;
 import cn.lunadeer.dominion.uis.dominion.manage.member.MemberFlags;
 import cn.lunadeer.dominion.uis.dominion.manage.member.MemberList;
 import cn.lunadeer.dominion.utils.Notification;
@@ -69,7 +67,7 @@ public class MemberCommand {
             }
             // New implementation END
             DominionDTO dominion = toDominionDTO(dominionName);
-            new MemberAddedEvent(sender, dominion, player).call();
+            MemberProvider.getInstance().addMember(sender, dominion, player);
             MemberList.show(sender, dominionName, "1");
         } catch (Exception e) {
             Notification.error(sender, e);
@@ -115,7 +113,7 @@ public class MemberCommand {
             boolean value = toBoolean(valueStr);
             DominionDTO dominion = toDominionDTO(dominionName);
             MemberDTO member = toMemberDTO(dominion, playerName);
-            new MemberSetFlagEvent(sender, dominion, member, flag, value).call();
+            MemberProvider.getInstance().setMemberFlag(sender, dominion, member, flag, value);
             MemberFlags.show(sender, dominionName, playerName, pageStr);
         } catch (Exception e) {
             Notification.error(sender, e);
@@ -148,7 +146,7 @@ public class MemberCommand {
         try {
             DominionDTO dominion = toDominionDTO(dominionName);
             MemberDTO member = toMemberDTO(dominion, playerName);
-            new MemberRemovedEvent(sender, dominion, member).call();
+            MemberProvider.getInstance().removeMember(sender, dominion, member);
             MemberList.show(sender, dominionName, pageStr);
         } catch (Exception e) {
             Notification.error(sender, e);

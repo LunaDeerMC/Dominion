@@ -118,7 +118,7 @@ public class GroupDOO implements GroupDTO {
     }
 
     @Override
-    public GroupDOO setFlagValue(@NotNull PriFlag flag, @NotNull Boolean value) throws SQLException {
+    public @NotNull GroupDOO setFlagValue(@NotNull PriFlag flag, @NotNull Boolean value) throws SQLException {
         flags.put(flag, value);
         FieldBoolean flagField = new FieldBoolean(flag.getFlagName(), value);
         Update.update("dominion_group")

@@ -3,7 +3,7 @@ package cn.lunadeer.dominion.inputters;
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.GroupDTO;
 import cn.lunadeer.dominion.configuration.Language;
-import cn.lunadeer.dominion.events.group.GroupRenamedEvent;
+import cn.lunadeer.dominion.providers.GroupProvider;
 import cn.lunadeer.dominion.uis.dominion.manage.group.GroupFlags;
 import cn.lunadeer.dominion.utils.ColorParser;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
@@ -28,7 +28,7 @@ public class RenameGroupInputter {
             public void run(String input) {
                 DominionDTO dominion = toDominionDTO(dominionName);
                 GroupDTO group = toGroupDTO(dominion, oldGroupName);
-                new GroupRenamedEvent(sender, dominion, group, input).call();
+                GroupProvider.getInstance().renameGroup(sender, dominion, group, input);
                 GroupFlags.show(sender, dominionName, ColorParser.getPlainText(input), "1");
             }
         };

@@ -4,11 +4,13 @@ import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Language;
-import cn.lunadeer.dominion.events.dominion.DominionDeleteEvent;
-import cn.lunadeer.dominion.events.dominion.modify.*;
+import cn.lunadeer.dominion.events.dominion.modify.DominionReSizeEvent;
+import cn.lunadeer.dominion.events.dominion.modify.DominionSetMessageEvent;
+import cn.lunadeer.dominion.handler.DominionProviderHandler;
 import cn.lunadeer.dominion.managers.TeleportManager;
 import cn.lunadeer.dominion.misc.CommandArguments;
 import cn.lunadeer.dominion.misc.DominionException;
+import cn.lunadeer.dominion.providers.DominionProvider;
 import cn.lunadeer.dominion.uis.MainMenu;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.command.Argument;
@@ -135,9 +137,7 @@ public class DominionOperateCommand {
                 DominionDTO dominion = toDominionDTO(getArgumentValue(0));
                 PlayerDTO player = toPlayerDTO(getArgumentValue(1));
                 boolean force = getArgumentValue(2).equals("force");
-                DominionTransferEvent event = new DominionTransferEvent(sender, dominion, player);
-                event.setForce(force);
-                event.call();
+                DominionProviderHandler.getInstance().transferDominion(sender, dominion, player, force);
             } catch (Exception e) {
                 Notification.error(sender, e);
             }
@@ -207,13 +207,13 @@ public class DominionOperateCommand {
             DominionReSizeEvent.TYPE type = toResizeType(operation);
             int size = toIntegrity(sizeStr);
             DominionReSizeEvent.DIRECTION dir = faceStr.isEmpty() ? toDirection(toPlayer(sender)) : toDirection(faceStr);
-            new DominionReSizeEvent(
+            DominionProviderHandler.getInstance().resizeDominion(
                     sender,
                     dominion,
                     type,
                     dir,
                     size
-            ).call();
+            );
         } catch (Exception e) {
             Notification.error(sender, e);
         }
@@ -237,13 +237,13 @@ public class DominionOperateCommand {
             DominionReSizeEvent.TYPE type = toResizeType(operation);
             int size = toIntegrity(sizeStr);
             DominionReSizeEvent.DIRECTION dir = faceStr.isEmpty() ? toDirection(player) : toDirection(faceStr);
-            new DominionReSizeEvent(
+            DominionProviderHandler.getInstance().resizeDominion(
                     sender,
                     dominion,
                     type,
                     dir,
                     size
-            ).call();
+            );
         } catch (Exception e) {
             Notification.error(sender, e);
         }
@@ -261,12 +261,12 @@ public class DominionOperateCommand {
         try {
             DominionDTO dominion = toDominionDTO(dominionName);
             DominionSetMessageEvent.TYPE type = toMessageType(typeStr);
-            new DominionSetMessageEvent(
+            DominionProvider.getInstance().setDominionMessage(
                     sender,
                     dominion,
                     type,
                     msg
-            ).call();
+            );
         } catch (Exception e) {
             Notification.error(sender, e);
         }
@@ -283,9 +283,7 @@ public class DominionOperateCommand {
         try {
             DominionDTO dominion = toDominionDTO(dominionName);
             boolean force = forceStr.equals("force");
-            DominionDeleteEvent even = new DominionDeleteEvent(sender, dominion);
-            even.setForce(force);
-            even.call();
+            DominionProviderHandler.getInstance().deleteDominion(sender, dominion, false, force);
         } catch (Exception e) {
             Notification.error(sender, e);
         }
@@ -301,7 +299,7 @@ public class DominionOperateCommand {
     public static void rename(CommandSender sender, String dominionName, String newName) {
         try {
             DominionDTO dominion = toDominionDTO(dominionName);
-            new DominionRenameEvent(sender, dominion, newName).call();
+            DominionProviderHandler.getInstance().renameDominion(sender, dominion, newName);
         } catch (Exception e) {
             Notification.error(sender, e);
         }
@@ -311,7 +309,7 @@ public class DominionOperateCommand {
         try {
             DominionDTO dominion = toDominionDTO(dominionName);
             Color color = toColor(colorStr);
-            new DominionSetMapColorEvent(sender, dominion, color).call();
+            DominionProvider.getInstance().setDominionMapColor(sender, dominion, color);
         } catch (Exception e) {
             Notification.error(sender, e);
         }
@@ -321,7 +319,7 @@ public class DominionOperateCommand {
         try {
             Player player = toPlayer(sender);
             DominionDTO dominion = toDominionDTO(dominionName);
-            new DominionSetTpLocationEvent(sender, dominion, player.getLocation()).call();
+            DominionProvider.getInstance().setDominionTpLocation(sender, dominion, player.getLocation());
         } catch (Exception e) {
             Notification.error(sender, e);
         }

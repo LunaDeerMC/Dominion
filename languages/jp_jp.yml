@@ -62,7 +62,7 @@ vault-connect-text:
   vault-unavailable: Vault が利用できません。経済機能を使用するには Vault または VaultUnlock をインストールしてください。
   economy-unavailable: 経済プラグインが見つかりません。経済機能を使用するには、1つの経済プラグインをインストールする必要があります。
   insufficient-funds: 資金が不足しています。 {0} {1} が必要ですが、 {2} {1} しかありません。
-dominion-event-handler-text:
+dominion-provider-handler-text:
   create-success: ドミニオン {0} の作成に成功しました。
   create-failed: 'ドミニオン {0} の作成に失敗しました。理由: {1}'
   expand-success: ドミニオン {0} の拡張に成功しました。
@@ -94,7 +94,7 @@ dominion-event-handler-text:
   set-env-flag-failed: '環境フラグ {0} を {1} に設定するのに失敗しました。理由: {2}'
   set-guest-flag-success: ゲストフラグ {0} を {1} に設定しました。
   set-guest-flag-failed: 'ゲストフラグ {0} を {1} に設定するのに失敗しました。理由: {2}'
-member-event-handler-text:
+member-provider-handler-text:
   set-flag-success: '{1} の {2} にフラグ {0} を正常に設定しました。'
   owner-only: オーナーのみが管理メンバーを管理できます。
   group-already: このメンバーはグループ {0} に属しているため、個別に管理することはできません。
@@ -105,7 +105,7 @@ member-event-handler-text:
   add-member-failed: 'メンバーの追加に失敗しました。理由: {0}'
   remove-member-success: '{0} を {1} から正常に削除しました。'
   remove-member-failed: 'メンバーの削除に失敗しました。理由: {0}'
-group-event-handler-text:
+group-provider-handler-text:
   owner-only: オーナーのみが管理グループを管理できます。
   set-flag-success: グループ {0} のフラグ {1} を {2} に正常に設定しました。
   set-flag-failed: 'グループフラグの設定に失敗しました。理由: {3}'

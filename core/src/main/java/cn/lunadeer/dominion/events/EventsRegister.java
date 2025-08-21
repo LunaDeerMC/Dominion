@@ -1,8 +1,8 @@
 package cn.lunadeer.dominion.events;
 
-import cn.lunadeer.dominion.handler.DominionEventHandler;
-import cn.lunadeer.dominion.handler.GroupEventHandler;
-import cn.lunadeer.dominion.handler.MemberEventHandler;
+import cn.lunadeer.dominion.handler.DominionProviderHandler;
+import cn.lunadeer.dominion.handler.GroupProviderHandler;
+import cn.lunadeer.dominion.handler.MemberProviderHandler;
 import cn.lunadeer.dominion.handler.SelectPointEventsHandler;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.XVersionManager;
@@ -40,9 +40,9 @@ public class EventsRegister {
             plugin.getServer().getPluginManager().disablePlugin(plugin);
         }
 
-        new DominionEventHandler(plugin);
-        new MemberEventHandler(plugin);
-        new GroupEventHandler(plugin);
+        new DominionProviderHandler(plugin);
+        new MemberProviderHandler(plugin);
+        new GroupProviderHandler(plugin);
         new SelectPointEventsHandler(plugin);
     }
 

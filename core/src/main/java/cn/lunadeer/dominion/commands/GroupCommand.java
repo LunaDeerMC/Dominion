@@ -5,8 +5,8 @@ import cn.lunadeer.dominion.api.dtos.GroupDTO;
 import cn.lunadeer.dominion.api.dtos.MemberDTO;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.configuration.Language;
-import cn.lunadeer.dominion.events.group.*;
 import cn.lunadeer.dominion.misc.CommandArguments;
+import cn.lunadeer.dominion.providers.GroupProvider;
 import cn.lunadeer.dominion.uis.dominion.manage.group.GroupFlags;
 import cn.lunadeer.dominion.uis.dominion.manage.group.GroupList;
 import cn.lunadeer.dominion.utils.Notification;
@@ -44,7 +44,7 @@ public class GroupCommand {
     public static void createGroup(CommandSender sender, String dominionName, String groupName) {
         try {
             DominionDTO dominion = toDominionDTO(dominionName);
-            new GroupCreateEvent(sender, dominion, groupName).call();
+            GroupProvider.getInstance().createGroup(sender, dominion, groupName);
             GroupList.show(sender, dominion.getName(), "1");
         } catch (Exception e) {
             Notification.error(sender, e);
@@ -66,7 +66,7 @@ public class GroupCommand {
         try {
             DominionDTO dominion = toDominionDTO(dominionName);
             GroupDTO group = toGroupDTO(dominion, groupName);
-            new GroupDeleteEvent(sender, dominion, group).call();
+            GroupProvider.getInstance().deleteGroup(sender, dominion, group);
             GroupList.show(sender, dominion.getName(), pageStr);
         } catch (Exception e) {
             Notification.error(sender, e);
@@ -88,7 +88,7 @@ public class GroupCommand {
         try {
             DominionDTO dominion = toDominionDTO(dominionName);
             GroupDTO group = toGroupDTO(dominion, oldGroupName);
-            new GroupRenamedEvent(sender, dominion, group, newGroupName).call();
+            GroupProvider.getInstance().renameGroup(sender, dominion, group, newGroupName);
             GroupFlags.show(sender, dominion.getName(), newGroupName, "1");
         } catch (Exception e) {
             Notification.error(sender, e);
@@ -114,7 +114,7 @@ public class GroupCommand {
             GroupDTO group = toGroupDTO(dominion, groupName);
             PriFlag flag = toPriFlag(flagName);
             boolean value = toBoolean(valueStr);
-            new GroupSetFlagEvent(sender, dominion, group, flag, value).call();
+            GroupProvider.getInstance().setGroupFlag(sender, dominion, group, flag, value);
             GroupFlags.show(sender, dominionName, groupName, pageStr);
         } catch (Exception e) {
             Notification.error(sender, e);
@@ -137,7 +137,7 @@ public class GroupCommand {
             DominionDTO dominion = toDominionDTO(dominionName);
             MemberDTO member = toMemberDTO(dominion, playerName);
             GroupDTO group = toGroupDTO(dominion, groupName);
-            new GroupAddMemberEvent(sender, dominion, group, member).call();
+            GroupProvider.getInstance().addMember(sender, dominion, group, member);
             GroupList.show(sender, dominion.getName(), "1");
         } catch (Exception e) {
             Notification.error(sender, e);
@@ -161,7 +161,7 @@ public class GroupCommand {
             DominionDTO dominion = toDominionDTO(dominionName);
             GroupDTO group = toGroupDTO(dominion, groupName);
             MemberDTO member = toMemberDTO(dominion, playerName);
-            new GroupRemoveMemberEvent(sender, dominion, group, member).call();
+            GroupProvider.getInstance().removeMember(sender, dominion, group, member);
             GroupList.show(sender, dominion.getName(), pageStr);
         } catch (Exception e) {
             Notification.error(sender, e);

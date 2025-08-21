@@ -2,8 +2,8 @@ package cn.lunadeer.dominion.commands;
 
 import cn.lunadeer.dominion.api.dtos.CuboidDTO;
 import cn.lunadeer.dominion.configuration.Language;
-import cn.lunadeer.dominion.events.dominion.DominionCreateEvent;
 import cn.lunadeer.dominion.misc.CommandArguments;
+import cn.lunadeer.dominion.providers.DominionProvider;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.command.Argument;
 import cn.lunadeer.dominion.utils.command.SecondaryCommand;
@@ -38,13 +38,13 @@ public class DominionCreateCommand {
                 World world = player.getWorld();
                 Location[] points = getSelectedPoints(player);
                 CuboidDTO cuboidDTO = new CuboidDTO(points[0], points[1]);
-                new DominionCreateEvent(
+                DominionProvider.getInstance().createDominion(
                         sender,
                         getArgumentValue(0),
                         player.getUniqueId(),
                         world, cuboidDTO,
-                        null
-                ).call();
+                        null, false
+                );
             } catch (Exception e) {
                 Notification.error(sender, e);
             }
@@ -62,13 +62,14 @@ public class DominionCreateCommand {
                 World world = player.getWorld();
                 Location[] points = getSelectedPoints(player);
                 CuboidDTO cuboidDTO = new CuboidDTO(points[0], points[1]);
-                new DominionCreateEvent(
+                DominionProvider.getInstance().createDominion(
                         sender,
                         getArgumentValue(0),
                         player.getUniqueId(),
                         world, cuboidDTO,
-                        toDominionDTO(getArgumentValue(1))
-                ).call();
+                        toDominionDTO(getArgumentValue(1)),
+                        false
+                );
             } catch (Exception e) {
                 Notification.error(sender, e);
             }
@@ -90,13 +91,13 @@ public class DominionCreateCommand {
             World world = player.getWorld();
             Location[] points = autoPoints(player);
             CuboidDTO cuboidDTO = new CuboidDTO(points[0], points[1]);
-            new DominionCreateEvent(
+            DominionProvider.getInstance().createDominion(
                     sender,
                     dominionName,
                     player.getUniqueId(),
                     world, cuboidDTO,
-                    null
-            ).call();
+                    null, false
+            );
         } catch (Exception e) {
             Notification.error(sender, e);
         }
@@ -113,13 +114,14 @@ public class DominionCreateCommand {
                 World world = player.getWorld();
                 Location[] points = autoPoints(player);
                 CuboidDTO cuboidDTO = new CuboidDTO(points[0], points[1]);
-                new DominionCreateEvent(
+                DominionProvider.getInstance().createDominion(
                         sender,
                         getArgumentValue(0),
                         player.getUniqueId(),
                         world, cuboidDTO,
-                        toDominionDTO(getArgumentValue(1))
-                ).call();
+                        toDominionDTO(getArgumentValue(1)),
+                        false
+                );
             } catch (Exception e) {
                 Notification.error(sender, e);
             }

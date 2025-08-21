@@ -9,9 +9,9 @@ import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
 import cn.lunadeer.dominion.doos.DominionDOO;
 import cn.lunadeer.dominion.doos.PlayerDOO;
-import cn.lunadeer.dominion.events.dominion.DominionCreateEvent;
 import cn.lunadeer.dominion.misc.CommandArguments;
 import cn.lunadeer.dominion.misc.DominionException;
+import cn.lunadeer.dominion.providers.DominionProvider;
 import cn.lunadeer.dominion.uis.MigrateList;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.ResMigration;
@@ -23,7 +23,6 @@ import cn.lunadeer.dominion.utils.stui.components.buttons.ListViewButton;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -132,15 +131,13 @@ public class MigrationCommand {
         while (DominionDOO.select(renameNumber == 0 ? node.name : node.name + "_" + renameNumber) != null) {
             renameNumber++;
         }
-        DominionCreateEvent event = new DominionCreateEvent(sender,
+        DominionDTO dominion = DominionProvider.getInstance().createDominion(
+                sender,
                 renameNumber == 0 ? node.name : node.name + "_" + renameNumber,
-                ownerDTO.getUuid(), world, cuboidDTO, parent);
-        event.setSkipEconomy(true);
-        event.callEvent();
-        if (!event.isCancelled()) {
+                ownerDTO.getUuid(), world, cuboidDTO, parent, true).get();
+        if (dominion != null) {
             Notification.info(sender, Language.migrationCommandText.migrateSuccess, node.name);
-            DominionDTO dominionCreated = postProcessMigration(sender, node, event);
-            event.setDominion(dominionCreated);
+            postProcessMigration(sender, node, dominion);
         }
     }
 
@@ -150,14 +147,12 @@ public class MigrationCommand {
      * This method updates the created dominion with additional properties from the residence node,
      * such as teleport location, join/leave messages, and recursively migrates any child residences.
      *
-     * @param sender the command sender
-     * @param node   the residence node containing migration data
-     * @param event  the dominion creation event
-     * @return the updated DominionDTO after post-processing
+     * @param sender          the command sender
+     * @param node            the residence node containing migration data
+     * @param dominionCreated the DominionDTO that was created
      * @throws Exception if an error occurs during child migration
      */
-    private static @NotNull DominionDTO postProcessMigration(CommandSender sender, ResMigration.ResidenceNode node, DominionCreateEvent event) throws Exception {
-        DominionDTO dominionCreated = event.getDominion();
+    private static void postProcessMigration(CommandSender sender, ResMigration.ResidenceNode node, DominionDTO dominionCreated) throws Exception {
         assert dominionCreated != null : "Migrate Dominion created failed, event.getDominion() is null";
         if (node.tpLoc != null) {
             dominionCreated = dominionCreated.setTpLocation(node.tpLoc);
@@ -173,7 +168,6 @@ public class MigrationCommand {
                 doMigrateCreate(sender, child, dominionCreated);
             }
         }
-        return dominionCreated;
     }
 
     public static void migrateAll(CommandSender sender) {

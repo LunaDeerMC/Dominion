@@ -62,7 +62,7 @@ vault-connect-text:
   vault-unavailable: Vault not available, please install Vault or VaultUnlock to use economy features.
   economy-unavailable: Economy plugin not found, you need to install one Economy plugin to use economy features.
   insufficient-funds: Insufficient money, need {0} {1}, but only have {2} {1}.
-dominion-event-handler-text:
+dominion-provider-handler-text:
   create-success: Create dominion {0} success.
   create-failed: 'Create dominion {0} failed, reason: {1}'
   expand-success: Expand dominion {0} success.
@@ -94,7 +94,7 @@ dominion-event-handler-text:
   set-env-flag-failed: 'Set env flag {0} to {1} failed, reason: {2}'
   set-guest-flag-success: Set guest flag {0} to {1} success.
   set-guest-flag-failed: 'Set guest flag {0} to {1} failed, reason: {2}'
-member-event-handler-text:
+member-provider-handler-text:
   set-flag-success: Successfully set flag {0} for {1} in {2}.
   owner-only: Only owner can manage admin member.
   group-already: This member belong to group {0} so you can't manage it separately.
@@ -105,7 +105,7 @@ member-event-handler-text:
   add-member-failed: 'Failed to add member, reason: {0}'
   remove-member-success: Successfully removed {0} from {1}.
   remove-member-failed: 'Failed to remove member, reason: {0}'
-group-event-handler-text:
+group-provider-handler-text:
   owner-only: Only the owner can manage admin group.
   set-flag-success: Set group {0} flag {1} to {2} successfully.
   set-flag-failed: 'Failed to set group flag, reason: {3}'

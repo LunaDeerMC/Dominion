@@ -68,7 +68,7 @@ vault-connect-text:
   economy-unavailable: 未偵測到經濟插件，請安裝至少一個經濟插件以啟用經濟功能。
   insufficient-funds: 餘額不足，需要 {0}{1}，但你僅有 {2}{1}。
 
-dominion-event-handler-text:
+dominion-provider-handler-text:
   create-success: 成功建立領地 {0}。
   create-failed: 建立領地 {0} 失敗，原因：{1}。
   expand-success: 成功擴張領地 {0}。
@@ -101,7 +101,7 @@ dominion-event-handler-text:
   set-guest-flag-success: 成功將通用權限 {0} 設定為 {1}。
   set-guest-flag-failed: 設定通用權限 {0} 為 {1} 失敗，原因：{2}。
 
-member-event-handler-text:
+member-provider-handler-text:
   set-flag-success: 已成功在領地 {2} 為 {1} 設定權限 {0}。
   owner-only: 僅有領地擁有者可管理管理員。
   group-already: 該成員已屬於權限組 {0}，無法重複設定。
@@ -113,7 +113,7 @@ member-event-handler-text:
   remove-member-success: 成功將成員 {0} 從領地 {1} 移除。
   remove-member-failed: 移除成員失敗，原因：{0}。
 
-group-event-handler-text:
+group-provider-handler-text:
   owner-only: 僅有領地擁有者可管理管理員群組。
   set-flag-success: 成功將群組 {0} 的權限 {1} 設定為 {2}。
   set-flag-failed: 設定群組權限失敗，原因：{0}。

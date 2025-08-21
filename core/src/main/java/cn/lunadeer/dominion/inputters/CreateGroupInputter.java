@@ -2,7 +2,7 @@ package cn.lunadeer.dominion.inputters;
 
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.configuration.Language;
-import cn.lunadeer.dominion.events.group.GroupCreateEvent;
+import cn.lunadeer.dominion.providers.GroupProvider;
 import cn.lunadeer.dominion.uis.dominion.manage.group.GroupList;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import cn.lunadeer.dominion.utils.stui.components.buttons.FunctionalButton;
@@ -23,7 +23,7 @@ public class CreateGroupInputter {
             @Override
             public void run(String input) {
                 DominionDTO dominion = toDominionDTO(dominionName);
-                new GroupCreateEvent(sender, dominion, input).call();
+                GroupProvider.getInstance().createGroup(sender, dominion, input);
                 GroupList.show(sender, dominionName, "1");
             }
         };
