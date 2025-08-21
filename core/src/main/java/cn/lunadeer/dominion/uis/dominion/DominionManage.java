@@ -368,7 +368,7 @@ public class DominionManage extends AbstractUI {
                         dominion.getCuboid().y1() + " ~ " + dominion.getCuboid().y2(),
                         dominion.getCuboid().getSquare(),
                         dominion.getCuboid().getVolume(),
-                        dominion.getTpLocation().getWorld() + ":" +
+                        dominion.getTpLocation().getWorld().getName() + ":" +
                                 dominion.getTpLocation().getBlockX() + "," +
                                 dominion.getTpLocation().getBlockY() + "," +
                                 dominion.getTpLocation().getBlockZ()
