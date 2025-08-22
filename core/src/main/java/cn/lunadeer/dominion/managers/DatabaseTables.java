@@ -17,6 +17,7 @@ import cn.lunadeer.dominion.utils.databse.syntax.Show.Show;
 import cn.lunadeer.dominion.utils.databse.syntax.Table.Column;
 import cn.lunadeer.dominion.utils.databse.syntax.Table.Create;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -386,11 +387,22 @@ public class DatabaseTables {
                 return;
             }
             try {
+                importCsv("player_name", player_name_csv, "id");
+                importCsv("privilege_template", privilege_template_csv, "id");
+                importCsv("dominion", dominion_csv, "id");
+                importCsv("dominion_group", dominion_group_csv, "id");
+                importCsv("dominion_member", dominion_member_csv, "id");
+
                 YamlConfiguration world_uid = YamlConfiguration.loadConfiguration(world_uid_mapping);
                 for (String key : world_uid.getKeys(false)) {
                     if (world_uid_map.containsKey(key)) {
                         String old_uid = world_uid.getString(key);
-                        String new_uid = world_uid_map.get(key);
+                        World newWorld = Dominion.instance.getServer().getWorld(key);
+                        if (newWorld == null) {
+                            Notification.warn(sender, Language.databaseManagerText.convertWorldFailed, key, old_uid);
+                            continue;
+                        }
+                        String new_uid = newWorld.getUID().toString();
                         if (new_uid == null) {
                             Notification.warn(sender, Language.databaseManagerText.convertWorldFailed, key, old_uid);
                             continue;
@@ -402,12 +414,6 @@ public class DatabaseTables {
                         }
                     }
                 }
-
-                importCsv("player_name", player_name_csv, "id");
-                importCsv("privilege_template", privilege_template_csv, "id");
-                importCsv("dominion", dominion_csv, "id");
-                importCsv("dominion_group", dominion_group_csv, "id");
-                importCsv("dominion_member", dominion_member_csv, "id");
             } catch (Exception e) {
                 Notification.error(sender, Language.databaseManagerText.importDatabaseFail, e.getMessage());
                 XLogger.error(e);
