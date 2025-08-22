@@ -1,4 +1,4 @@
-package cn.lunadeer.dominion.v1_20_1.events.environment;
+package cn.lunadeer.dominion.v1_20_1.events.environment.MonsterDamagePlayer;
 
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import org.bukkit.entity.Enemy;
@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 
-public class MonsterDamagePlayer implements Listener {
+public class Directly implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(EntityDamageByEntityEvent event) {
         Entity attacker = event.getDamager();
