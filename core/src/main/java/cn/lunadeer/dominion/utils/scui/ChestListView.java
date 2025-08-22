@@ -20,7 +20,7 @@ public class ChestListView extends ChestView {
     private char itemSymbol = 'i';
     private boolean layoutSet = false;
     private ListViewConfiguration configCopy;
-    private List<ChestButton> items = new ArrayList<>();
+    private final List<ChestButton> items = new ArrayList<>();
 
     public ChestListView applyListConfiguration(@NotNull ListViewConfiguration config, int currentPage) {
         this.configCopy = config;
@@ -68,6 +68,7 @@ public class ChestListView extends ChestView {
         int itemSymbolPosition = -1; // Reset itemSymbolPosition for the new page
         // setButton(int slot, @NotNull ChestButton button) from the first available itemSymbolPosition
         for (int idx = 0; idx < items.size(); idx++) {
+            if (items.get(idx).getSymbol() != itemSymbol) continue; // Skip items that do not match the itemSymbol
             // skip not this page items
             if (idx < (currentPage - 1) * pageSize) {
                 continue;

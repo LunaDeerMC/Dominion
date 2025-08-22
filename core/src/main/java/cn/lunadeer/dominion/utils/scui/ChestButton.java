@@ -30,6 +30,7 @@ import static cn.lunadeer.dominion.utils.Misc.*;
 
 public abstract class ChestButton {
 
+    private final char symbol;
     private final ItemStack item;
     private String displayName;
     private List<String> lore;
@@ -81,6 +82,7 @@ public abstract class ChestButton {
         } else {
             this.item = new ItemStack(Material.valueOf(config.material));
         }
+        this.symbol = config.getSymbol();
         this.displayName = config.name;
         this.lore = new ArrayList<>(config.lore);
     }
@@ -137,5 +139,9 @@ public abstract class ChestButton {
         }
         item.setItemMeta(meta);
         return item;
+    }
+
+    public char getSymbol() {
+        return symbol;
     }
 }
