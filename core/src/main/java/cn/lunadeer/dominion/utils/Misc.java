@@ -13,6 +13,8 @@ import java.util.List;
 
 public class Misc {
 
+    private static Boolean isPaper = null;
+
     /**
      * Checks if the server is running Paper.
      * <p>
@@ -23,10 +25,13 @@ public class Misc {
      * @return true if the server is running Paper, false otherwise
      */
     public static boolean isPaper() {
+        if (isPaper != null) return  isPaper;
         try {
             Class.forName("io.papermc.paper.threadedregions.scheduler.ScheduledTask");
+            isPaper = true;
             return true;
         } catch (ClassNotFoundException e) {
+            isPaper = false;
             return false;
         }
     }
