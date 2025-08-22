@@ -43,6 +43,9 @@ public class DominionDOO implements DominionDTO {
     private final FieldString world_uid = new FieldString("world_uid");
     private final FieldInteger serverId = new FieldInteger("server_id");
 
+    // Cache for the parsed UUID to avoid repeated string parsing
+    private UUID cachedWorldUid = null;
+
     private static Field<?>[] fields() {
         Field<?>[] fields = new Field<?>[6 + 6 + Flags.getAllEnvFlagsEnable().size() + Flags.getAllPriFlagsEnable().size() + 4];
         fields[0] = rootDominion().cuboid.x1Field();
@@ -319,7 +322,11 @@ public class DominionDOO implements DominionDTO {
 
     @Override
     public @NotNull UUID getWorldUid() {
-        return UUID.fromString(world_uid.getValue());
+        // Return cached UUID if available
+        if (cachedWorldUid == null) {
+            cachedWorldUid = UUID.fromString(world_uid.getValue());
+        }
+        return cachedWorldUid;
     }
 
     @Override
