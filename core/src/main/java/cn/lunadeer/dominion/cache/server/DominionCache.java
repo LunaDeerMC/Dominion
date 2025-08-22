@@ -206,7 +206,7 @@ public class DominionCache extends Cache {
             playerOwnDominions = tempPlayerOwnDominions;
             dominionNodeMap = tempDominionNodeMap;
             playerDominionNodes = tempPlayerDominionNodes;
-            dominionNodeSectored.build(nodeTree);
+            dominionNodeSectored.buildAsync(nodeTree);
         }
     }
 
@@ -271,7 +271,7 @@ public class DominionCache extends Cache {
 
                 playerDominionNodes = tempPlayerDominionNodes;
                 dominionNodeMap = tempDominionNodeMap;
-                dominionNodeSectored.build(nodeTree);
+                dominionNodeSectored.buildAsync(nodeTree);
             }
         });
     }
