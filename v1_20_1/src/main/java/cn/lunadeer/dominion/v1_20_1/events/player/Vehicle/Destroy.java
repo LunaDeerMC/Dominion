@@ -12,6 +12,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class Destroy implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(VehicleDestroyEvent event) {
+        if (event.isCancelled()) return;
         if (!(event.getAttacker() instanceof Player player)) {
             return;
         }

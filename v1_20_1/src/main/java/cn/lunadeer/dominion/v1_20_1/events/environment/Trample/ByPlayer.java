@@ -14,6 +14,7 @@ import static org.bukkit.Material.FARMLAND;
 public class ByPlayer implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(PlayerInteractEvent event) {
+        if (event.isCancelled()) return;
         if (event.getAction() != Action.PHYSICAL) {
             return;
         }

@@ -16,6 +16,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class ItemFrameBroken implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(HangingBreakByEntityEvent event) {
+        if (event.isCancelled()) return;
         if (!(event.getRemover() instanceof Player player)) {
             return;
         }

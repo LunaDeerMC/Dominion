@@ -14,6 +14,7 @@ import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 public class HopperOutside implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(InventoryMoveItemEvent event) {
+        if (event.isCancelled()) return;
         Inventory hopper = event.getDestination();
         Inventory inventory = event.getSource();
         if (hopper.getLocation() == null || inventory.getLocation() == null) {

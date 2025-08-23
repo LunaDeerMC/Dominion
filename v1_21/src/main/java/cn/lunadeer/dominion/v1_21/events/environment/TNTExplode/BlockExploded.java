@@ -16,6 +16,7 @@ import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 public class BlockExploded implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(EntityExplodeEvent event) {
+        if (event.isCancelled()) return;
         Entity entity = event.getEntity();
         if (entity.getType() != EntityType.TNT_MINECART && entity.getType() != EntityType.TNT) {
             return;

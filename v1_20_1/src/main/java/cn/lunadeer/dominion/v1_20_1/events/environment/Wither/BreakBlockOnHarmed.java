@@ -11,6 +11,7 @@ import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 public class BreakBlockOnHarmed implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(EntityChangeBlockEvent event) {
+        if (event.isCancelled()) return;
         if (event.getEntity().getType() != org.bukkit.entity.EntityType.WITHER) {
             return;
         }

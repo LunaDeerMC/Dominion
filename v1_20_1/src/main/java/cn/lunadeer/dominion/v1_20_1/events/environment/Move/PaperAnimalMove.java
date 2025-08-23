@@ -15,6 +15,7 @@ import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 public class PaperAnimalMove implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handle(EntityPathfindEvent event) {
+        if (event.isCancelled()) return;
         Entity entity = event.getEntity();
         if (!(entity instanceof Animals)) {
             return;

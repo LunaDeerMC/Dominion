@@ -11,6 +11,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class PickUp implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(PlayerAttemptPickupItemEvent event) {
+        if (event.isCancelled()) return;
         if (event.getItem().getItemStack().getType().isAir()) {
             return;
         }

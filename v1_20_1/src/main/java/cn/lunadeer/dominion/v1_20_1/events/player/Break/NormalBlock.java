@@ -13,6 +13,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class NormalBlock implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(BlockBreakEvent event) {
+        if (event.isCancelled()) return;
         Player player = event.getPlayer();
         if (Tag.CROPS.isTagged(event.getBlock().getType())) return;
         checkPrivilegeFlag(event.getBlock().getLocation(), Flags.BREAK_BLOCK, player, event);

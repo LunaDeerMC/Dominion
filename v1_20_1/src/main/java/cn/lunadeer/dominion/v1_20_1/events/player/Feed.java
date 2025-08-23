@@ -14,6 +14,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class Feed implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(PlayerInteractEntityEvent event) {
+        if (event.isCancelled()) return;
         if (!(event.getRightClicked() instanceof Animals)) {
             return;
         }

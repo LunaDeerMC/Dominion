@@ -11,6 +11,7 @@ import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 public class SnowAccumulation implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(BlockFormEvent event) {
+        if (event.isCancelled()) return;
         if (!event.getNewState().getType().name().contains("SNOW")) {
             return;
         }

@@ -15,6 +15,7 @@ import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 public class ItemFrameBreakByProj implements Listener {
     @EventHandler(priority = EventPriority.LOWEST) // item_frame_proj_damage
     public void handle(HangingBreakByEntityEvent event) {
+        if (event.isCancelled()) return;
         if (event.getCause() != HangingBreakEvent.RemoveCause.ENTITY) {
             return;
         }

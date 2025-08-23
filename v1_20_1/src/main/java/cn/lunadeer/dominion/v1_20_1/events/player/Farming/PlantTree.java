@@ -13,6 +13,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class PlantTree implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(BlockPlaceEvent event) {
+        if (event.isCancelled()) return;
         if (!Tag.SAPLINGS.isTagged(event.getBlock().getType())) return;
         Player player = event.getPlayer();
         checkPrivilegeFlag(event.getBlock().getLocation(), Flags.SOWING, player, event);

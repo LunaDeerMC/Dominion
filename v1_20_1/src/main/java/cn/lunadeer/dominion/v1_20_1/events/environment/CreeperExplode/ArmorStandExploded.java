@@ -14,6 +14,7 @@ import static cn.lunadeer.dominion.misc.Others.isExplodeEntity;
 public class ArmorStandExploded implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handle(EntityDamageByEntityEvent event) {
+        if (event.isCancelled()) return;
         Entity entity = event.getEntity();
         if (entity.getType() != EntityType.ARMOR_STAND) {
             return;

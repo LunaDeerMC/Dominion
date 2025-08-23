@@ -12,6 +12,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class Ignite implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(BlockIgniteEvent event) {
+        if (event.isCancelled()) return;
         Player player = event.getPlayer();
         if (player == null) {
             return;

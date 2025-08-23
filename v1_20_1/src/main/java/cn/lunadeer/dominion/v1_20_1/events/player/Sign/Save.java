@@ -13,6 +13,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class Save implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(SignChangeEvent event) {
+        if (event.isCancelled()) return;
         Player player = event.getPlayer();
         Block block = event.getBlock();
         checkPrivilegeFlag(block.getLocation(), Flags.EDIT_SIGN, player, event);

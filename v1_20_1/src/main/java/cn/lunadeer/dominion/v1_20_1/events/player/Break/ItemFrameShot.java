@@ -14,6 +14,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class ItemFrameShot implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(ProjectileHitEvent event) {
+        if (event.isCancelled()) return;
         Entity hit = event.getHitEntity();
         if (hit == null) {
             return;

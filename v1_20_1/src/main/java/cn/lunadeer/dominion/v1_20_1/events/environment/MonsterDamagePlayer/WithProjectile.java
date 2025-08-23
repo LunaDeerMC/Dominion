@@ -13,6 +13,7 @@ import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 public class WithProjectile implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(ProjectileHitEvent event) {
+        if (event.isCancelled()) return;
         if (event.getEntity().getShooter() == null || event.getEntity().getShooter() == null) {
             return;
         }

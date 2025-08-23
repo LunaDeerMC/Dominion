@@ -12,6 +12,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class Shear implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(PlayerShearEntityEvent event) {
+        if (event.isCancelled()) return;
         Player player = event.getPlayer();
         checkPrivilegeFlag(event.getEntity().getLocation(), Flags.SHEAR, player, event);
     }

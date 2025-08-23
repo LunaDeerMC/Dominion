@@ -22,6 +22,7 @@ public class WindChargeExplode implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(ExplosionPrimeEvent event) {
+        if (event.isCancelled()) return;
         Entity entity = event.getEntity();
         if (entity.getType() != EntityType.WIND_CHARGE) {
             return;

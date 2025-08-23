@@ -12,6 +12,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class Lead implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(PlayerLeashEntityEvent event) {
+        if (event.isCancelled()) return;
         Player player = event.getPlayer();
         checkPrivilegeFlag(event.getEntity().getLocation(), Flags.LEASH, player, event);
     }

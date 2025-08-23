@@ -23,6 +23,7 @@ public class FallingGravityBlock implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(EntityChangeBlockEvent event) {
+        if (event.isCancelled()) return;
         Entity entity = event.getEntity();
         if (!(entity instanceof FallingBlock)) {
             return;

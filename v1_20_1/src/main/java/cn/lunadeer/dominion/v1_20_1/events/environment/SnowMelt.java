@@ -11,6 +11,7 @@ import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 public class SnowMelt implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(BlockFadeEvent event) {
+        if (event.isCancelled()) return;
         if (!event.getBlock().getType().name().contains("SNOW")) {
             return;
         }

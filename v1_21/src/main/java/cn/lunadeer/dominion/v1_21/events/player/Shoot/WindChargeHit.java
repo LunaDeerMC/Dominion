@@ -17,6 +17,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class WindChargeHit implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(ProjectileHitEvent event) {
+        if (event.isCancelled()) return;
         Projectile projectile = event.getEntity();
         if (!(projectile.getShooter() instanceof Player player)) {
             return;

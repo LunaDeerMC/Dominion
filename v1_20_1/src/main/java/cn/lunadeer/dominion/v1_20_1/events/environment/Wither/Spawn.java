@@ -13,6 +13,7 @@ import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 public class Spawn implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(CreatureSpawnEvent event) {
+        if (event.isCancelled()) return;
         Entity entity = event.getEntity();
         if (entity.getType() != EntityType.WITHER) {
             return;

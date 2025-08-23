@@ -13,6 +13,7 @@ import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 public class Escape implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(EntityTeleportEvent event) {
+        if (event.isCancelled()) return;
         Entity entity = event.getEntity();
         if (entity.getType() != EntityType.ENDERMAN) {
             return;

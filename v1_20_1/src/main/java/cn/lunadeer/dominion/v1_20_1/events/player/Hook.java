@@ -13,6 +13,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class Hook implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(PlayerFishEvent event) {
+        if (event.isCancelled()) return;
         Entity caught = event.getCaught();
         if (caught == null) {
             return;

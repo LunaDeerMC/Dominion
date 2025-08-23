@@ -16,6 +16,7 @@ import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 public class EntityExploded implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(EntityDamageByEntityEvent event) {
+        if (event.isCancelled()) return;
         Entity entity = event.getEntity();
         Entity harmer = event.getDamager();
         if (harmer.getType() != EntityType.MINECART_TNT && harmer.getType() != EntityType.PRIMED_TNT) {

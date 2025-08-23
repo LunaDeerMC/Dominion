@@ -14,6 +14,7 @@ import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 public class ByDropItem implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(EntityInteractEvent event) {
+        if (event.isCancelled()) return;
         if (!(event.getEntity() instanceof Item)) {
             return;
         }

@@ -11,6 +11,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class DropItem implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(PlayerDropItemEvent event) {
+        if (event.isCancelled()) return;
         if (event.getItemDrop().getItemStack().getType().isAir()) {
             return;
         }

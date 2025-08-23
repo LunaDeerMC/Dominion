@@ -13,6 +13,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class ArmorStand implements Listener {
     @EventHandler(priority = EventPriority.LOWEST) // place - armor stand
     public void handler(EntityPlaceEvent event) {
+        if (event.isCancelled()) return;
         Player player = event.getPlayer();
         if (player == null) {
             return;

@@ -15,6 +15,7 @@ import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 public class PistonOutside implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(BlockPistonExtendEvent event) {
+        if (event.isCancelled()) return;
         Block piston = event.getBlock();
         DominionDTO pistonDom = CacheManager.instance.getDominion(piston.getLocation());
         BlockFace direction = event.getDirection();

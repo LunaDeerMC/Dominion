@@ -16,6 +16,7 @@ import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 public class LiquidFlowIn implements Listener {
     @EventHandler(priority = EventPriority.LOWEST) // flow_in_protection
     public void handler(BlockFromToEvent event) {
+        if (event.isCancelled()) return;
         Location from = event.getBlock().getLocation();
         Location to = event.getToBlock().getLocation();
         DominionDTO dom_to = CacheManager.instance.getDominion(to);

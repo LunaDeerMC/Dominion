@@ -14,6 +14,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class DragonEgg implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(PlayerInteractEvent event) {
+        if (event.isCancelled()) return;
         Block block = event.getClickedBlock();
         if (block == null) {
             return;

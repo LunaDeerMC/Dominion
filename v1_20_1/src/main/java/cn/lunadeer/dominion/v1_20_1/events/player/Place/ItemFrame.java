@@ -13,6 +13,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class ItemFrame implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(HangingPlaceEvent event) {
+        if (event.isCancelled()) return;
         Entity entity = event.getEntity();
         Player player = event.getPlayer();
         if (player == null) {

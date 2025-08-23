@@ -14,6 +14,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class Spawn implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(EntityPlaceEvent event) {
+        if (event.isCancelled()) return;
         Player player = event.getPlayer();
         if (player == null) {
             return;

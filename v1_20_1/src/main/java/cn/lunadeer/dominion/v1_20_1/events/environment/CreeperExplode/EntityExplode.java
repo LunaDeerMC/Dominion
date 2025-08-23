@@ -13,6 +13,7 @@ import static cn.lunadeer.dominion.misc.Others.isExplodeEntity;
 public class EntityExplode implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handle(EntityExplodeEvent event) {
+        if (event.isCancelled()) return;
         Entity entity = event.getEntity();
         if (!isExplodeEntity(entity)) {
             return;

@@ -14,6 +14,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class MonsterKilling implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(EntityDamageByEntityEvent event) {
+        if (event.isCancelled()) return;
         if (!(event.getDamager() instanceof Player bukkitPlayer)) {
             return;
         }

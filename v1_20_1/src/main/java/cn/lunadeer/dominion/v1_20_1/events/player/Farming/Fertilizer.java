@@ -12,6 +12,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class Fertilizer implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(BlockFertilizeEvent event) {
+        if (event.isCancelled()) return;
         Player player = event.getPlayer();
         if (player == null) return;
         checkPrivilegeFlag(event.getBlock().getLocation(), Flags.SOWING, player, event);

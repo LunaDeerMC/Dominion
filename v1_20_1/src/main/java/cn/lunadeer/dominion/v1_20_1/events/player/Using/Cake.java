@@ -15,6 +15,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class Cake implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(PlayerInteractEvent event) {
+        if (event.isCancelled()) return;
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }

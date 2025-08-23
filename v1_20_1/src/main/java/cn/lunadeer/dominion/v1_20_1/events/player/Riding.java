@@ -12,6 +12,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class Riding implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(EntityMountEvent event) {
+        if (event.isCancelled()) return;
         if (!(event.getEntity() instanceof Player player)) {
             return;
         }

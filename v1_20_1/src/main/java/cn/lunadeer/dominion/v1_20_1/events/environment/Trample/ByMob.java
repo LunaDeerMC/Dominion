@@ -13,6 +13,7 @@ import static org.bukkit.Material.FARMLAND;
 public class ByMob implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(EntityInteractEvent event) {
+        if (event.isCancelled()) return;
         Block block = event.getBlock();
         if (block.getType() != FARMLAND) {
             return;

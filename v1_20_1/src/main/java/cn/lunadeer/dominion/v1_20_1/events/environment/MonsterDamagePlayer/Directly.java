@@ -14,6 +14,7 @@ import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 public class Directly implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(EntityDamageByEntityEvent event) {
+        if (event.isCancelled()) return;
         Entity attacker = event.getDamager();
         if (!(attacker instanceof Enemy)) {
             return;

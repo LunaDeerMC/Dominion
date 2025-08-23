@@ -13,6 +13,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class Jukebox implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(PlayerInteractEvent event) {
+        if (event.isCancelled()) return;
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (event.getClickedBlock() == null) return;
         if (event.getClickedBlock().getType() != Material.JUKEBOX) return;

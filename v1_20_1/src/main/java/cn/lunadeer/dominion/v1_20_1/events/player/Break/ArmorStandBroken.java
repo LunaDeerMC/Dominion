@@ -14,6 +14,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class ArmorStandBroken implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(EntityDamageByEntityEvent event) {
+        if (event.isCancelled()) return;
         Entity entity = event.getEntity();
         if (!(entity instanceof ArmorStand)) {
             return;

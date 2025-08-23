@@ -14,6 +14,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class Liquid implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(PlayerInteractEvent event) {
+        if (event.isCancelled()) return;
         if (event.getItem() == null) {
             return;
         }

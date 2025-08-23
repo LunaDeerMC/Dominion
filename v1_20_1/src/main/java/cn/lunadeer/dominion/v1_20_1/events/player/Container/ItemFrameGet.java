@@ -15,6 +15,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class ItemFrameGet implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(EntityDamageByEntityEvent event) {
+        if (event.isCancelled()) return;
         Entity entity = event.getEntity();
         if (!(entity instanceof ItemFrame itemFrame)) {
             return;

@@ -16,6 +16,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class Move implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(PlayerMoveEvent event) {
+        if (event.isCancelled()) return;
         Player player = event.getPlayer();
         DominionDTO dom = CacheManager.instance.getPlayerCurrentDominion(player);
         if (!checkPrivilegeFlag(player.getLocation(), Flags.MOVE, player, null)) {

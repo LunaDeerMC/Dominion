@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 public class MobDropItem implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(EntityDeathEvent event) {
+        if (event.isCancelled()) return;
         Entity entity = event.getEntity();
         if (entity instanceof Player) {
             return;

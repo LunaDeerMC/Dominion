@@ -14,6 +14,7 @@ import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 public class HarvestCrop implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(BlockBreakEvent event) {
+        if (event.isCancelled()) return;
         Block block = event.getBlock();
         if (!Tag.CROPS.isTagged(event.getBlock().getType())) return;
         Player player = event.getPlayer();
