@@ -8,6 +8,7 @@ import cn.lunadeer.dominion.utils.Misc;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import cn.lunadeer.dominion.utils.scui.configuration.ButtonConfiguration;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -119,7 +120,7 @@ public abstract class ChestButton {
             displayName = setPlaceholder(viewOwner, displayName);
             displayName = ColorParser.getBukkitType(displayName);
             if (Misc.isPaper()) {
-                meta.displayName(LegacyToMiniMessage.parse(displayName));
+                meta.displayName(LegacyToMiniMessage.parse(displayName).decoration(TextDecoration.ITALIC, false));
             } else {
                 meta.setDisplayName(displayName);
             }
@@ -129,7 +130,7 @@ public abstract class ChestButton {
             for (int i = 0; i < lore.size(); i++) {
                 lore.set(i, setPlaceholder(viewOwner, lore.get(i)));
                 lore.set(i, ColorParser.getBukkitType(lore.get(i)));
-                componentsLore.add(LegacyToMiniMessage.parse(lore.get(i)));
+                componentsLore.add(LegacyToMiniMessage.parse(lore.get(i)).decoration(TextDecoration.ITALIC, false));
             }
             if (Misc.isPaper()) {
                 meta.lore(componentsLore);
