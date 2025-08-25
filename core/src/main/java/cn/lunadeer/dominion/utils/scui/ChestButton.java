@@ -5,6 +5,7 @@ import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.utils.ColorParser;
 import cn.lunadeer.dominion.utils.LegacyToMiniMessage;
 import cn.lunadeer.dominion.utils.Misc;
+import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import cn.lunadeer.dominion.utils.scui.configuration.ButtonConfiguration;
 import net.kyori.adventure.text.Component;
@@ -71,7 +72,7 @@ public abstract class ChestButton {
                                     ". Expected 'B64' or 'URL' or 'NAME'.");
                         }
                     } catch (Exception e) {
-                        throw new IllegalArgumentException("Failed to parse texture data: " + parts[2], e);
+                        XLogger.debug("Failed to parse texture data: {0} {1}", parts[2], e.getMessage());
                     }
                     profile.setTextures(textures);
                     meta.setOwnerProfile(profile);
