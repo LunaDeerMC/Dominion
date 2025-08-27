@@ -22,6 +22,6 @@ public class FireBallLaunch implements Listener {
         if (projectile.getType() != EntityType.FIREBALL) {
             return;
         }
-        checkPrivilegeFlag(projectile.getLocation(), Flags.SHOOT, player, event);
+        checkPrivilegeFlag(player.getLocation(), Flags.SHOOT, player, event);
     }
 }

@@ -6,17 +6,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 
-public class ArrowsLaunch implements Listener {
+public class ArrowsDoHarm implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
-    public void handler(ProjectileLaunchEvent event) {
+    public void handler(EntityDamageByEntityEvent event) {
         if (event.isCancelled()) return;
-        if (!(event.getEntity() instanceof Arrow arrow)) return;
+        if (!(event.getDamager() instanceof Arrow arrow)) return;
         if (!(arrow.getShooter() instanceof Player player)) return;
 
-        checkPrivilegeFlag(player.getLocation(), Flags.SHOOT, player, event);
+        if (!checkPrivilegeFlag(event.getEntity().getLocation(), Flags.SHOOT, player, event)) {
+            arrow.remove();
+        }
     }
 }

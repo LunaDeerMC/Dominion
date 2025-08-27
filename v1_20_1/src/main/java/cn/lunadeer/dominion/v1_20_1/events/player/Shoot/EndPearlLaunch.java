@@ -22,6 +22,6 @@ public class EndPearlLaunch implements Listener {
         if (projectile.getType() != EntityType.ENDER_PEARL) {
             return;
         }
-        checkPrivilegeFlag(projectile.getLocation(), Flags.ENDER_PEARL, player, event);
+        checkPrivilegeFlag(player.getLocation(), Flags.ENDER_PEARL, player, event);
     }
 }

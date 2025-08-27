@@ -22,6 +22,6 @@ public class TridentLaunch implements Listener {
         if (projectile.getType() != EntityType.TRIDENT) {
             return;
         }
-        checkPrivilegeFlag(projectile.getLocation(), Flags.SHOOT, player, event);
+        checkPrivilegeFlag(player.getLocation(), Flags.SHOOT, player, event);
     }
 }

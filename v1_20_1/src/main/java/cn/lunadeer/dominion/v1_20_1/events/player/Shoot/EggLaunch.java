@@ -22,6 +22,6 @@ public class EggLaunch implements Listener {
         if (projectile.getType() != EntityType.EGG) {
             return;
         }
-        checkPrivilegeFlag(projectile.getLocation(), Flags.EGG, player, event);
+        checkPrivilegeFlag(player.getLocation(), Flags.EGG, player, event);
     }
 }
