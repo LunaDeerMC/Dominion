@@ -1,9 +1,11 @@
 package cn.lunadeer.dominion.commands;
 
+import cn.lunadeer.dominion.api.dtos.CuboidDTO;
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Language;
+import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
 import cn.lunadeer.dominion.events.dominion.modify.DominionReSizeEvent;
 import cn.lunadeer.dominion.events.dominion.modify.DominionSetMessageEvent;
 import cn.lunadeer.dominion.handler.DominionProviderHandler;
@@ -189,6 +191,37 @@ public class DominionOperateCommand {
             } catch (Exception e) {
                 Notification.error(sender, e);
             }
+        }
+    }.needPermission(defaultPermission).register();
+
+
+    public static SecondaryCommand easyInfo = new SecondaryCommand("info", List.of(
+    ), TextUserInterface.sizeInfoTuiText.description) {
+        @Override
+        public void executeHandler(CommandSender sender) {
+            if (!(sender instanceof Player player)) {
+                Notification.error(sender, "This command can only be executed by a player.");
+                return;
+            }
+            Location location = player.getLocation();
+            DominionDTO dominion = CacheManager.instance.getDominion(location);
+            if (dominion == null) {
+                Notification.error(player, Language.selectPointEventsHandlerText.noDominion, location.getBlockX(), location.getBlockY(), location.getBlockZ());
+                return;
+            }
+            Notification.info(player, ">--------------------<");
+            Notification.info(player, dominion.getName());
+            PlayerDTO owner = CacheManager.instance.getPlayer(dominion.getOwner());
+            if (owner == null) {
+                Notification.info(player, ">--------------------<");
+                return;
+            }
+            Notification.info(player,"");
+            Notification.info(player, TextUserInterface.sizeInfoTuiText.ownerName, owner.getLastKnownName());
+            CuboidDTO cuboid = dominion.getCuboid();
+            Notification.info(player, TextUserInterface.sizeInfoTuiText.infoLWH, cuboid.xLength(), cuboid.yLength(), cuboid.zLength());
+            Notification.info(player, TextUserInterface.sizeInfoTuiText.infoHeight, cuboid.y1(), cuboid.y2());
+            Notification.info(player, ">--------------------<");
         }
     }.needPermission(defaultPermission).register();
 
