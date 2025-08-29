@@ -147,24 +147,40 @@ public class DominionCache extends Cache {
         return dominions;
     }
 
+    /**
+     * Retrieves all dominions where the specified player has administrative rights.
+     * <p>
+     * This method checks all dominions where the player is a member and determines if
+     * they have admin rights either directly or through a group they belong to.
+     *
+     * @param player the UUID of the player to check for admin rights
+     * @return a list of DominionDTO objects where the player has administrative privileges
+     */
     public List<DominionDTO> getPlayerAdminDominionDTOs(UUID player) {
-        List<DominionDTO> dominions = new ArrayList<>();
-        List<MemberDTO> playerBelongedDominionMembers = Objects.requireNonNull(CacheManager.instance.getCache(serverId)).getMemberCache().getMemberBelongedDominions(player);
+        // Pre-fetch cache manager to avoid repeated lookups
+        CacheManager cacheManager = CacheManager.instance;
+        List<MemberDTO> playerBelongedDominionMembers = cacheManager.getCache().getMemberCache().getMemberBelongedDominions(player);
+
+        List<DominionDTO> dominions = new ArrayList<>(playerBelongedDominionMembers.size()); // Pre-size for efficiency
+
         for (MemberDTO member : playerBelongedDominionMembers) {
-            if (member.getGroupId() != -1) {
-                GroupDTO group = CacheManager.instance.getGroup(member.getGroupId());
-                if (group == null) {
-                    continue;
-                }
-                if (group.getFlagValue(Flags.ADMIN)) {
-                    dominions.add(getDominion(member.getDomID()));
-                }
+            boolean hasAdminRights;
+
+            if (member.getGroupId() == -1) {
+                hasAdminRights = member.getFlagValue(Flags.ADMIN);
             } else {
-                if (member.getFlagValue(Flags.ADMIN)) {
-                    dominions.add(getDominion(member.getDomID()));
+                GroupDTO group = cacheManager.getGroup(member.getGroupId());
+                hasAdminRights = group != null && group.getFlagValue(Flags.ADMIN);
+            }
+
+            if (hasAdminRights) {
+                DominionDTO dominion = getDominion(member.getDomID());
+                if (dominion != null) {
+                    dominions.add(dominion);
                 }
             }
         }
+
         return dominions;
     }
 

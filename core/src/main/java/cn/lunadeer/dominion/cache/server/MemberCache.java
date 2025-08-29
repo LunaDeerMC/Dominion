@@ -66,6 +66,11 @@ public class MemberCache extends Cache {
         if (playerMemberMap == null) return new ArrayList<>();
 
         Collection<Integer> member_ids = playerMemberMap.values();
+        return getMembersByIDs(currentIdMembers, member_ids);
+    }
+
+    @NotNull
+    private List<MemberDTO> getMembersByIDs(ConcurrentHashMap<Integer, MemberDTO> currentIdMembers, Collection<Integer> member_ids) {
         List<MemberDTO> members = new ArrayList<>();
         for (Integer member_id : member_ids) {
             MemberDTO member = currentIdMembers.get(member_id);
@@ -83,6 +88,11 @@ public class MemberCache extends Cache {
     public @NotNull List<MemberDTO> getDominionMembers(@NotNull Integer dominionId) {
         // Use local variables to avoid NPE and ensure consistency
         ConcurrentHashMap<Integer, CopyOnWriteArrayList<Integer>> currentDominionMembersMap = dominionMembersMap;
+        return getMembersByIDs(dominionId, currentDominionMembersMap);
+    }
+
+    @NotNull
+    private List<MemberDTO> getMembersByIDs(@NotNull Integer dominionId, ConcurrentHashMap<Integer, CopyOnWriteArrayList<Integer>> currentDominionMembersMap) {
         ConcurrentHashMap<Integer, MemberDTO> currentIdMembers = idMembers;
 
         if (currentDominionMembersMap == null || currentIdMembers == null ||
@@ -93,14 +103,7 @@ public class MemberCache extends Cache {
         CopyOnWriteArrayList<Integer> memberIds = currentDominionMembersMap.get(dominionId);
         if (memberIds == null) return new ArrayList<>();
 
-        List<MemberDTO> members = new ArrayList<>();
-        for (Integer member_id : memberIds) {
-            MemberDTO member = currentIdMembers.get(member_id);
-            if (member != null) {
-                members.add(member);
-            }
-        }
-        return members;
+        return getMembersByIDs(currentIdMembers, memberIds);
     }
 
     public @NotNull List<MemberDTO> getGroupMembers(@NotNull GroupDTO group) {
@@ -110,24 +113,7 @@ public class MemberCache extends Cache {
     public @NotNull List<MemberDTO> getGroupMembers(@NotNull Integer groupId) {
         // Use local variables to avoid NPE and ensure consistency
         ConcurrentHashMap<Integer, CopyOnWriteArrayList<Integer>> currentGroupMembersMap = groupMembersMap;
-        ConcurrentHashMap<Integer, MemberDTO> currentIdMembers = idMembers;
-
-        if (currentGroupMembersMap == null || currentIdMembers == null ||
-                !currentGroupMembersMap.containsKey(groupId)) {
-            return new ArrayList<>();
-        }
-
-        CopyOnWriteArrayList<Integer> memberIds = currentGroupMembersMap.get(groupId);
-        if (memberIds == null) return new ArrayList<>();
-
-        List<MemberDTO> members = new ArrayList<>();
-        for (Integer member_id : memberIds) {
-            MemberDTO member = currentIdMembers.get(member_id);
-            if (member != null) {
-                members.add(member);
-            }
-        }
-        return members;
+        return getMembersByIDs(groupId, currentGroupMembersMap);
     }
 
     @Override
