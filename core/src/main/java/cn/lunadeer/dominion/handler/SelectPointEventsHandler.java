@@ -52,9 +52,8 @@ public class SelectPointEventsHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void selectPoint(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        ItemStack item = player.getInventory().getItemInMainHand();
-
-        if (item.getType() != Material.matchMaterial(Configuration.selectTool)) {
+        ItemStack item = event.getItem();
+        if (item == null || item.getType() != Material.matchMaterial(Configuration.selectTool)) {
             return;
         }
         Block block = event.getClickedBlock();
