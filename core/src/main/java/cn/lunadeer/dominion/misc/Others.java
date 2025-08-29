@@ -5,7 +5,6 @@ import cn.lunadeer.dominion.api.dtos.GroupDTO;
 import cn.lunadeer.dominion.api.dtos.MemberDTO;
 import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
-import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Configuration;
@@ -17,7 +16,6 @@ import cn.lunadeer.dominion.doos.PlayerDOO;
 import cn.lunadeer.dominion.utils.MessageDisplay;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -137,11 +135,10 @@ public class Others {
 
     /**
      * Since 4.5.0 should use {@link #checkPrivilegeFlag(Location, PriFlag, Player, Cancellable)} instead,
-     * as this method is deprecated. Because this method does not check the
+     * because this method does not check the
      * <a href="https://dominion.lunadeer.cn/notes/doc/owner/config-ref/world-wide/">world-wide privilege</a> flag,
      * which is not recommended to use.
      */
-    @Deprecated(since = "4.5.0")
     public static boolean checkPrivilegeFlag(@Nullable DominionDTO dom, @NotNull PriFlag flag, @NotNull Player player, @Nullable Cancellable event) {
         if (checkPrivilegeFlagSilence(dom, flag, player, event)) {
             return true;
@@ -193,11 +190,10 @@ public class Others {
 
     /**
      * Since 4.5.0 should use {@link #checkPrivilegeFlag(Location, PriFlag, Player, Cancellable)} instead,
-     * as this method is deprecated. Because this method does not check the
+     * because this method does not check the
      * <a href="https://dominion.lunadeer.cn/notes/doc/owner/config-ref/world-wide/">world-wide privilege</a> flag,
      * which is not recommended to use.
      */
-    @Deprecated(since = "4.5.0")
     public static boolean checkPrivilegeFlagSilence(@Nullable DominionDTO dom, @NotNull PriFlag flag, @NotNull Player player, @Nullable Cancellable event) {
         if (!flag.getEnable()) {
             return true;
@@ -245,11 +241,10 @@ public class Others {
 
     /**
      * Since 4.5.0 should use {@link #checkEnvironmentFlag(Location, EnvFlag, Cancellable)} instead,
-     * as this method is deprecated. Because this method does not check the
+     * because this method does not check the
      * <a href="https://dominion.lunadeer.cn/notes/doc/owner/config-ref/world-wide/">world-wide environment</a> flag,
      * which is not recommended to use.
      */
-    @Deprecated(since = "4.5.0")
     public static boolean checkEnvironmentFlag(@Nullable DominionDTO dom, @NotNull EnvFlag flag, @Nullable Cancellable event) {
         if (!flag.getEnable()) {
             return true;
@@ -270,76 +265,6 @@ public class Others {
         if (dominion == null) return false;
         if (!Objects.equals(dominion.getWorldUid(), location.getWorld().getUID())) return false;
         return dominion.getCuboid().contain(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-    }
-
-    public static void lightOrNot(@NotNull Player player, @Nullable DominionDTO dominion) {
-        if (!Flags.GLOW.getEnable()) {
-            return;
-        }
-        if (dominion == null) {
-            player.setGlowing(false);
-            return;
-        }
-        MemberDTO member = CacheManager.instance.getCache().getMemberCache().getMember(dominion, player);
-        if (member != null) {
-            if (member.getGroupId() == -1) {
-                player.setGlowing(member.getFlagValue(Flags.GLOW));
-            } else {
-                GroupDTO group = CacheManager.instance.getCache().getGroupCache().getGroup(member.getGroupId());
-                if (group != null) {
-                    player.setGlowing(group.getFlagValue(Flags.GLOW));
-                } else {
-                    player.setGlowing(dominion.getGuestPrivilegeFlagValue().get(Flags.GLOW));
-                }
-            }
-        } else {
-            player.setGlowing(dominion.getGuestPrivilegeFlagValue().get(Flags.GLOW));
-        }
-    }
-
-    public static void flyOrNot(@NotNull Player player, @Nullable DominionDTO dominion) {
-        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
-            if (player.isOp()) player.setAllowFlight(true);
-            return;
-        }
-        if (player.isOp()) {
-            return;
-        } else {
-            for (String flyPN : Configuration.flyPermissionNodes) {
-                if (player.hasPermission(flyPN)) {
-                    return;
-                }
-            }
-        }
-        // handle logic
-        if (!Flags.FLY.getEnable()) {
-            player.setAllowFlight(false);
-            return;
-        }
-        if (dominion == null) {
-            player.setAllowFlight(false);
-            return;
-        }
-        if (dominion.getOwner().equals(player.getUniqueId())) {
-            // for owner, if Flags.FLY is enabled, allow flight automatically
-            player.setAllowFlight(true);
-            return;
-        }
-        MemberDTO member = CacheManager.instance.getCache().getMemberCache().getMember(dominion, player);
-        if (member != null) {
-            if (member.getGroupId() == -1) {
-                player.setAllowFlight(member.getFlagValue(Flags.FLY));
-            } else {
-                GroupDTO group = CacheManager.instance.getCache().getGroupCache().getGroup(member.getGroupId());
-                if (group != null) {
-                    player.setAllowFlight(group.getFlagValue(Flags.FLY));
-                } else {
-                    player.setAllowFlight(dominion.getGuestPrivilegeFlagValue().get(Flags.FLY));
-                }
-            }
-        } else {
-            player.setAllowFlight(dominion.getGuestPrivilegeFlagValue().get(Flags.FLY));
-        }
     }
 
     public static boolean isExplodeEntity(@NotNull Entity entity) {

@@ -33,7 +33,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static cn.lunadeer.dominion.misc.Others.*;
+import static cn.lunadeer.dominion.misc.Others.isInDominion;
 
 /**
  * Manages the cache for the server and other servers.
@@ -44,7 +44,6 @@ public class CacheManager {
     private final PlayerCache playerCache;
     private final ResidenceDataCache residenceDataCache = new ResidenceDataCache();
 
-    private boolean recheckPlayerStatus = false;
     private final ConcurrentHashMap<UUID, Integer> playerCurrentDominionId = new ConcurrentHashMap<>();
 
     public static CacheManager instance;
@@ -516,26 +515,6 @@ public class CacheManager {
     // ******************************************************************************************************************
 
     /**
-     * Checks if a recheck of player status is needed.
-     *
-     * @return true if a recheck is needed, false otherwise
-     */
-    public boolean needRecheckPlayerStatus() {
-        if (recheckPlayerStatus) {
-            recheckPlayerStatus = false;
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Sets the flag to recheck player status.
-     */
-    public void recheckPlayerStatus() {
-        this.recheckPlayerStatus = true;
-    }
-
-    /**
      * Retrieves the current dominion of a player.
      * <p>
      * This method retrieves the current dominion of the player based on their location. It checks if the player is still
@@ -558,7 +537,6 @@ public class CacheManager {
             // we don't need to check again and return the last dominion directly
             if (isInDominion(last_dominion, player.getLocation())
                     && cache.getChildrenOf(last_in_dom_id).isEmpty()) {
-                checkPlayerStates(player, last_dominion);   // check player states
                 return last_dominion;
             }
 
@@ -569,14 +547,11 @@ public class CacheManager {
 
             // if last and current dominion are the same, return last dominion
             if (last_dom_id == current_dom_id) {
-                checkPlayerStates(player, last_dominion);   // check player states
                 return last_dominion;
             }
 
             // if last and current dominion are different, trigger player cross dominion border event
             new PlayerCrossDominionBorderEvent(player, last_dominion, current_dominion).call();
-            recheckPlayerStatus();
-            checkPlayerStates(player, current_dominion);   // check player states
 
             // if last dominion is not null, trigger player move out dominion event
             if (last_dom_id != -1) {
@@ -595,21 +570,6 @@ public class CacheManager {
                 return current_dominion;
             }
         }
-    }
-
-    /**
-     * Checks and updates the player's states based on the dominion.
-     * <p>
-     * This method checks if a recheck of player status is needed and updates the player's states such as flying and lighting
-     * based on the dominion.
-     *
-     * @param player   the Player object representing the player
-     * @param dominion the DominionDTO associated with the player's current location
-     */
-    private void checkPlayerStates(@NotNull Player player, @Nullable DominionDTO dominion) {
-        if (!needRecheckPlayerStatus()) return;
-        flyOrNot(player, dominion);
-        lightOrNot(player, dominion);
     }
 
     /**

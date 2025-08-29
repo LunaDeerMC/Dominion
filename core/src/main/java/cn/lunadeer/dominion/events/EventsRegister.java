@@ -1,9 +1,6 @@
 package cn.lunadeer.dominion.events;
 
-import cn.lunadeer.dominion.handler.DominionProviderHandler;
-import cn.lunadeer.dominion.handler.GroupProviderHandler;
-import cn.lunadeer.dominion.handler.MemberProviderHandler;
-import cn.lunadeer.dominion.handler.SelectPointEventsHandler;
+import cn.lunadeer.dominion.handler.*;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.XVersionManager;
 import org.bukkit.Bukkit;
@@ -44,6 +41,7 @@ public class EventsRegister {
         new MemberProviderHandler(plugin);
         new GroupProviderHandler(plugin);
         new SelectPointEventsHandler(plugin);
+        new PlayerStatusHandler(plugin);
     }
 
     public void registerEvents(String className) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {

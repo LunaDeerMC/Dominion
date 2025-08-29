@@ -1,6 +1,5 @@
 package cn.lunadeer.dominion.cache.server;
 
-import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 
@@ -17,27 +16,11 @@ public abstract class Cache {
             resetLastTaskTimeStamp();
             try {
                 loadExecution();
-                CacheManager.instance.recheckPlayerStatus();
             } catch (Exception e) {
                 XLogger.error(e);
             }
         } else {
-            if (isTaskScheduled()) return;
-            XLogger.debug("schedule loadExecution");
-            setTaskScheduled();
-            Scheduler.runTaskLaterAsync(() -> {
-                        XLogger.debug("scheduled loadExecution run");
-                        try {
-                            resetLastTaskTimeStamp();
-                            loadExecution();
-                            CacheManager.instance.recheckPlayerStatus();
-                        } catch (Exception e) {
-                            XLogger.error(e);
-                        } finally {
-                            unsetTaskScheduled();
-                        }
-                    },
-                    getTaskScheduledDelayTick());
+            scheduleLoad();
         }
     }
 
@@ -47,28 +30,30 @@ public abstract class Cache {
             resetLastTaskTimeStamp();
             try {
                 deleteExecution(idToDelete);
-                CacheManager.instance.recheckPlayerStatus();
             } catch (Exception e) {
                 XLogger.error(e);
             }
         } else {
-            if (isTaskScheduled()) return;
-            XLogger.debug("schedule loadExecution");
-            setTaskScheduled();
-            Scheduler.runTaskLaterAsync(() -> {
-                        XLogger.debug("scheduled loadExecution run");
-                        try {
-                            resetLastTaskTimeStamp();
-                            loadExecution();
-                            CacheManager.instance.recheckPlayerStatus();
-                        } catch (Exception e) {
-                            XLogger.error(e);
-                        } finally {
-                            unsetTaskScheduled();
-                        }
-                    },
-                    getTaskScheduledDelayTick());
+            scheduleLoad();
         }
+    }
+
+    private void scheduleLoad() {
+        if (isTaskScheduled()) return;
+        XLogger.debug("schedule loadExecution");
+        setTaskScheduled();
+        Scheduler.runTaskLaterAsync(() -> {
+                    XLogger.debug("scheduled loadExecution run");
+                    try {
+                        resetLastTaskTimeStamp();
+                        loadExecution();
+                    } catch (Exception e) {
+                        XLogger.error(e);
+                    } finally {
+                        unsetTaskScheduled();
+                    }
+                },
+                getTaskScheduledDelayTick());
     }
 
     public void load(Integer idToLoad) {
@@ -76,7 +61,6 @@ public abstract class Cache {
             resetLastTaskTimeStamp();
             try {
                 loadExecution(idToLoad);
-                CacheManager.instance.recheckPlayerStatus();
             } catch (Exception e) {
                 XLogger.error(e);
             }
@@ -87,7 +71,6 @@ public abstract class Cache {
                         try {
                             resetLastTaskTimeStamp();
                             loadExecution();
-                            CacheManager.instance.recheckPlayerStatus();
                         } catch (Exception e) {
                             XLogger.error(e);
                         } finally {
