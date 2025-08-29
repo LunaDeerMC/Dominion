@@ -2,7 +2,7 @@ package cn.lunadeer.dominion.utils;
 
 import org.bukkit.entity.Player;
 
-import static cn.lunadeer.dominion.utils.Misc.setPlaceholder;
+import static cn.lunadeer.dominion.managers.HooksManager.setPlaceholder;
 
 public class MessageDisplay {
     public enum Place {

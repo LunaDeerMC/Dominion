@@ -10,6 +10,7 @@ import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.configuration.Limitation;
 import cn.lunadeer.dominion.doos.DominionDOO;
+import cn.lunadeer.dominion.managers.HooksManager;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.VaultConnect.VaultConnect;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
@@ -393,6 +394,9 @@ public class Asserts {
                 spawn.getBlockZ() - spawnProtection, spawn.getBlockZ() + spawnProtection);
         if (cuboid.intersectWith(spawnCuboid)) {
             throw new DominionException(Language.assertsText.intersectWithSpawn, dominion.getName());
+        }
+        if (HooksManager.isConflictWithWorldGuard(cuboid, world)) {
+            throw new DominionException(Language.assertsText.intersectWithDom, dominion.getName(), "WorldGuard");
         }
     }
 

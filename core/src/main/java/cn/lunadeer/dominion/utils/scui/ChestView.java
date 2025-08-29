@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static cn.lunadeer.dominion.utils.Misc.setPlaceholder;
+import static cn.lunadeer.dominion.managers.HooksManager.setPlaceholder;
 import static cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager.attachTag;
 import static cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager.hasTag;
 

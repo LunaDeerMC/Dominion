@@ -10,6 +10,7 @@ softdepend:
   - PlaceholderAPI
   - BlueMap
   - squaremap
+  - WorldGuard
 commands:
   dominion:
     description: Dominion plugin command

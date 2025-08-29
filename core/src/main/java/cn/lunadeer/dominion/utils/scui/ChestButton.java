@@ -28,7 +28,9 @@ import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
-import static cn.lunadeer.dominion.utils.Misc.*;
+import static cn.lunadeer.dominion.managers.HooksManager.setPlaceholder;
+import static cn.lunadeer.dominion.utils.Misc.formatString;
+import static cn.lunadeer.dominion.utils.Misc.formatStringList;
 
 public abstract class ChestButton {
 

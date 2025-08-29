@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import static cn.lunadeer.dominion.utils.Misc.setPlaceholder;
+import static cn.lunadeer.dominion.managers.HooksManager.setPlaceholder;
 
 public class CacheEventHandler implements Listener {
 

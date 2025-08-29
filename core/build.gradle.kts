@@ -16,6 +16,7 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://repo.codemc.org/repository/maven-public")
     maven("https://api.modrinth.com/maven")
+    maven("https://maven.enginehub.org/repo/")
 }
 
 dependencies {
@@ -29,4 +30,5 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("net.milkbowl.vault:VaultUnlockedAPI:2.15")
     compileOnly("maven.modrinth:pl3xmap:1.20.4-489")
+    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9-SNAPSHOT")
 }

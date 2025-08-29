@@ -1,4 +1,4 @@
-package cn.lunadeer.dominion.managers;
+package cn.lunadeer.dominion.hooks;
 
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.GroupDTO;
@@ -15,13 +15,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class PlaceHolderApi extends PlaceholderExpansion {
+public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     private final JavaPlugin plugin;
 
-    public static PlaceHolderApi instance = null;
+    public static PlaceholderAPIHook instance = null;
 
-    public PlaceHolderApi(JavaPlugin plugin) {
+    public PlaceholderAPIHook(JavaPlugin plugin) {
         this.plugin = plugin;
         this.register();
         instance = this;

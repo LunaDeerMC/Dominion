@@ -4,8 +4,8 @@ import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.events.EventsRegister;
+import cn.lunadeer.dominion.managers.HooksManager;
 import cn.lunadeer.dominion.managers.MultiServerManager;
-import cn.lunadeer.dominion.managers.PlaceHolderApi;
 import cn.lunadeer.dominion.managers.TeleportManager;
 import cn.lunadeer.dominion.misc.InitCommands;
 import cn.lunadeer.dominion.misc.Others;
@@ -78,10 +78,7 @@ public final class Dominion extends JavaPlugin {
         new TextUserInterfaceManager(this);
         new ChestUserInterfaceManager(this);
         new DominionInterface();
-
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new PlaceHolderApi(this);
-        }
+        new HooksManager(this);
 
         new EventsRegister(this);
         new InitCommands();

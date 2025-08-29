@@ -1,9 +1,6 @@
 package cn.lunadeer.dominion.utils;
 
-import cn.lunadeer.dominion.managers.PlaceHolderApi;
 import org.apache.commons.lang3.tuple.Triple;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -25,7 +22,7 @@ public class Misc {
      * @return true if the server is running Paper, false otherwise
      */
     public static boolean isPaper() {
-        if (isPaper != null) return  isPaper;
+        if (isPaper != null) return isPaper;
         try {
             Class.forName("io.papermc.paper.threadedregions.scheduler.ScheduledTask");
             isPaper = true;
@@ -158,25 +155,6 @@ public class Misc {
         }
         return classesInPackage;
     }
-
-    /**
-     * Set placeholder for the message.
-     * <p>
-     * Use this method instead of PlaceholderAPI directly to avoid not installed PlaceholderAPI
-     * throwing NoClassDefFoundError.
-     *
-     * @param player  the player
-     * @param message the message
-     * @return the message with placeholder
-     */
-    public static String setPlaceholder(Player player, String message) {
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            return PlaceHolderApi.setPlaceholders(player, message);
-        } else {
-            return message;
-        }
-    }
-
 
     /**
      * Calculates pagination information based on the current page, page size, and total items.
