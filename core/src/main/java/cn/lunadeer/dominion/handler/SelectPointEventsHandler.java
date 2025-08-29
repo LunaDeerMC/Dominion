@@ -6,10 +6,14 @@ import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.configuration.Language;
+import cn.lunadeer.dominion.providers.DominionProvider;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.ParticleUtil;
 import cn.lunadeer.dominion.utils.VaultConnect.VaultConnect;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -23,13 +27,15 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
+import static cn.lunadeer.dominion.misc.Converts.getSelectedPoints;
 import static cn.lunadeer.dominion.misc.Others.sortLocations;
 
 
 public class SelectPointEventsHandler implements Listener {
+
+    private final List<UUID> typingDominionNamePlayerList = new ArrayList<>();
 
     public static class SelectPointEventsHandlerText extends ConfigurationPart {
         public String firstPoint = "First point selected at {0}, {1}, {2}.";
@@ -43,10 +49,44 @@ public class SelectPointEventsHandler implements Listener {
 
         public String noDominion = "No dominion found at the location {0}, {1}, {2}.";
         public String foundDominion = "Location {0}, {1}, {2} is in dominion {3}.";
+
+        public String askPlayerForDominionName = "Two points selected, Please type the name of the dominion. Type cancel to cancel.";
+        public String dominionCreationCanceled = "Dominion creation canceled.";
     }
 
     public SelectPointEventsHandler(JavaPlugin plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
+
+    @EventHandler
+    public void onPlayerChat(AsyncChatEvent event) {
+        Player player = event.getPlayer();
+        if (!typingDominionNamePlayerList.contains(player.getUniqueId())) {
+            return;
+        }
+        String message = MiniMessage.miniMessage().serialize(event.message());
+        if (message.equalsIgnoreCase("cancel")) {
+            Notification.info(player, Language.selectPointEventsHandlerText.dominionCreationCanceled);
+        } else {
+            try {
+                World world = player.getWorld();
+                Location[] points = getSelectedPoints(player);
+                CuboidDTO cuboidDTO = new CuboidDTO(points[0], points[1]);
+                Bukkit.getScheduler().runTask(Dominion.instance, () ->
+                        DominionProvider.getInstance().createDominion(
+                        player,
+                        message,
+                        player.getUniqueId(),
+                        world, cuboidDTO,
+                        null, false
+                ));
+            } catch (Exception e) {
+                Notification.error(player, e);
+            }
+        }
+        event.setCancelled(true);
+        typingDominionNamePlayerList.remove(player.getUniqueId());
+        Dominion.pointsSelect.remove(player.getUniqueId());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -114,6 +154,12 @@ public class SelectPointEventsHandler implements Listener {
                 Notification.info(player, Language.selectPointEventsHandlerText.size, cuboid.xLength(), cuboid.yLength(), cuboid.zLength());
                 Notification.info(player, Language.selectPointEventsHandlerText.square, cuboid.getSquare());
                 Notification.info(player, Language.selectPointEventsHandlerText.volume, cuboid.getVolume());
+
+                Notification.info(player, Language.selectPointEventsHandlerText.askPlayerForDominionName);
+
+                if (!typingDominionNamePlayerList.contains(player.getUniqueId())) {
+                    typingDominionNamePlayerList.add(player.getUniqueId());
+                }
             } catch (Exception e) {
                 Notification.error(player, e.getMessage());
             }
