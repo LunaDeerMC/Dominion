@@ -517,6 +517,18 @@ flags:
   sowing:
     display-name: 播種
     description: 作物 (小麦、ニンジンなど) を播種できるかどうか。
+  drop_item:
+    display-name: アイテムを捨てる
+    description: インベントリ内のアイテムを捨てることができるかどうか
+  jukebox:
+    display-name: ジュークボックス
+    description: ジュークボックスを使用できるかどうか
+  lectern:
+    display-name: 書見台
+    description: 書見台を使用できるかどうか
+  pick_up:
+    display-name: アイテムを拾う
+    description: 地面に落ちているアイテムを拾うことができるかどうか
 rename-template-inputter-text:
   button: 名前変更
   hint: 新しいテンプレート名を入力してください。

@@ -548,6 +548,18 @@ flags:
   sowing:
     display-name: 播種
     description: 是否允許播種作物(小麥、紅蘿蔔等)
+  drop_item:
+    display-name: 丢弃物品
+    description: 是否可以丢弃背包中的物品
+  jukebox:
+    display-name: 唱片机
+    description: 是否可以使用唱片机
+  lectern:
+    display-name: 讲台
+    description: 是否可以使用讲台
+  pick_up:
+    display-name: 拾取物品
+    description: 是否可以拾取地上的物品
 rename-template-inputter-text:
   button: 重新命名
   hint: 輸入新的範本名稱

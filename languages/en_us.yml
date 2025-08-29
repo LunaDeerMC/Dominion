@@ -517,6 +517,18 @@ flags:
   sowing:
     display-name: Sowing
     description: Whether to allow sowing crops (wheat, carrot etc.).
+  drop_item:
+    display-name: Drop Item
+    description: Whether player can drop item in dominion.
+  jukebox:
+    display-name: Jukebox
+    description: Whether can interact with jukebox.
+  lectern:
+    display-name: Lectern
+    description: Whether can interact with lectern.
+  pick_up:
+    display-name: Pick Up Item
+    description: Whether player can pick up items in dominion.
 rename-template-inputter-text:
   button: RENAME
   hint: Enter new template name.
