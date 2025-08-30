@@ -130,6 +130,8 @@ select-point-events-handler-text:
   no-dominion: 坐标 {0}, {1}, {2} 位置没有找到领地
   found-dominion: 坐标 {0}, {1}, {2} 所处的领地：{3}
   owner: 领地所有人：{0}
+  ask-player-for-dominion-name: 请输入领地名称（输入cancel取消，亦可重新选择位置）：
+  dominion-creation-canceled: 领地创建已取消
 administrator-command-text:
   reload-cache-button: 重载缓存
   reload-cache-description: 重新加载并构建数据缓存（不要频繁执行）
