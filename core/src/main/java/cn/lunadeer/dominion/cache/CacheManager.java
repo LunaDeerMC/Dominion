@@ -545,6 +545,12 @@ public class CacheManager {
             int last_dom_id = last_dominion == null ? -1 : last_dominion.getId();
             int current_dom_id = current_dominion == null ? -1 : current_dominion.getId();
 
+            // if last dominion is null, but last dominion id is not null, trigger player move out dominion event
+            if (last_dominion == null && last_in_dom_id != null) {
+                // this means the last dominion has been deleted
+                new PlayerMoveOutDominionEvent(player, null).call();
+            }
+
             // if last and current dominion are the same, return last dominion
             if (last_dom_id == current_dom_id) {
                 return last_dominion;

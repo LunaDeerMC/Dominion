@@ -41,7 +41,7 @@ public class EventsRegister {
         new MemberProviderHandler(plugin);
         new GroupProviderHandler(plugin);
         new SelectPointEventsHandler(plugin);
-        new PlayerStatusHandler(plugin);
+        new FlyGlowCheckHandler(plugin);
     }
 
     public void registerEvents(String className) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {

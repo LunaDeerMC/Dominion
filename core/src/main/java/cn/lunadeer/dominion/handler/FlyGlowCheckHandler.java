@@ -7,6 +7,7 @@ import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.configuration.WorldWide;
 import cn.lunadeer.dominion.events.PlayerCrossDominionBorderEvent;
+import cn.lunadeer.dominion.events.PlayerMoveOutDominionEvent;
 import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -19,9 +20,9 @@ import org.jetbrains.annotations.Nullable;
 
 import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlagSilence;
 
-public class PlayerStatusHandler implements Listener {
+public class FlyGlowCheckHandler implements Listener {
 
-    public PlayerStatusHandler(JavaPlugin plugin) {
+    public FlyGlowCheckHandler(JavaPlugin plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -34,6 +35,19 @@ public class PlayerStatusHandler implements Listener {
         }
         handle(event.getPlayer(), event.getTo(), Flags.FLY, () -> allowFly(player), () -> disableFly(player));
         handle(event.getPlayer(), event.getTo(), Flags.GLOW, () -> player.setGlowing(true), () -> player.setGlowing(false));
+    }
+
+    @EventHandler
+    public void onDominionDelete(PlayerMoveOutDominionEvent event) {
+        DominionDTO dominion = event.getDominion();
+        if (dominion != null) return;
+        Player player = event.getPlayer();
+        if (player.isOp() || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
+            return;
+        }
+        disableFly(player);
+        if (event.getPlayer().isFlying()) player.setFlying(false);
+        player.setGlowing(false);
     }
 
     private static void handle(@NotNull Player player,
@@ -86,6 +100,12 @@ public class PlayerStatusHandler implements Listener {
             return;
         }
         DominionDTO dominion = CacheManager.instance.getDominion(event.getPlayer().getLocation());
-        handle(event.getPlayer(), dominion, Flags.FLY, () -> allowFly(player), () -> disableFly(player));
+        handle(event.getPlayer(), dominion, Flags.FLY, () -> {
+            allowFly(player);
+            if (!event.getPlayer().isFlying()) player.setFlying(true);
+        }, () -> {
+            disableFly(player);
+            if (event.getPlayer().isFlying()) player.setFlying(false);
+        });
     }
 }
