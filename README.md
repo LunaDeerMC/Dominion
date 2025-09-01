@@ -35,8 +35,8 @@ For detail functions and features of Dominion, you can view [Introduction](intro
 
 ## For developer
 
-Dominion provides some simple (for now) APIs for developers to build something amazing depends on Dominion. You can
-take a look at [API Reference](https://dominion.lunadeer.cn/en/notes/api/) for more details.
+- If you want to contribute to the development of Dominion, please see [CONTRIBUTING](CONTRIBUTING.md)
+- If you want to develop plugins based on Dominion, please see [DominionAPI](https://dominion.lunadeer.cn/en/notes/api/)
 
 ## Help us improve
 

@@ -3,6 +3,25 @@
 Thank you for considering contributing to Dominion! We welcome contributions from everyone. By participating in this
 project, you agree to abide by our code of conduct.
 
+## How to Build
+
+To build the project locally, you need to have Java Development Kit (JDK) 21 or higher and Gradle installed on your machine.
+
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/LunaDeerMC/Dominion.git
+    cd Dominion
+    git submodule update --init --recursive
+    ```
+
+2. Build the project using Gradle:
+
+    ```bash
+    ./gradlew shadowJar
+    ```
+    The compiled plugin JAR file will be located in the `build/libs` directory.
+
 ## How to Contribute
 
 ### 🪲Reporting Bugs
