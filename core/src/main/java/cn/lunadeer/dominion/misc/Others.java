@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static cn.lunadeer.dominion.Dominion.adminPermission;
-import static cn.lunadeer.dominion.misc.Asserts.assertDominionAdmin;
 import static cn.lunadeer.dominion.misc.Asserts.checkDominionAdmin;
 import static cn.lunadeer.dominion.utils.Misc.formatString;
 
@@ -201,11 +200,10 @@ public class Others {
         if (dom == null) {
             return true;
         }
-        MemberDTO member = CacheManager.instance.getMember(dom, player);
-        try {
-            assertDominionAdmin(player, dom);
+        if (checkDominionAdmin(player, dom)) {
             return true;
-        } catch (Exception e) {
+        } else {
+            MemberDTO member = CacheManager.instance.getMember(dom, player);
             if (member != null) {
                 GroupDTO group = CacheManager.instance.getGroup(member.getGroupId());
                 if (member.getGroupId() != -1 && group != null) {
