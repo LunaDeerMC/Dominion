@@ -203,16 +203,25 @@ public class Others {
         if (checkDominionAdmin(player, dom)) {
             return true;
         } else {
+            boolean hasPrivilege;
             MemberDTO member = CacheManager.instance.getMember(dom, player);
             if (member != null) {
                 GroupDTO group = CacheManager.instance.getGroup(member.getGroupId());
                 if (member.getGroupId() != -1 && group != null) {
-                    return group.getFlagValue(flag);
+                    hasPrivilege = group.getFlagValue(flag);
                 } else {
-                    return member.getFlagValue(flag);
+                    hasPrivilege = member.getFlagValue(flag);
                 }
             } else {
-                return dom.getGuestPrivilegeFlagValue().get(flag);
+                hasPrivilege = dom.getGuestPrivilegeFlagValue().get(flag);
+            }
+            if (hasPrivilege) {
+                return true;
+            } else {
+                if (event != null) {
+                    event.setCancelled(true);
+                }
+                return false;
             }
         }
     }
