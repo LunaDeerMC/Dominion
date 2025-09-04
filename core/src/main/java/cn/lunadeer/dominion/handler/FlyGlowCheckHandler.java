@@ -63,6 +63,10 @@ public class FlyGlowCheckHandler implements Listener {
                 onDisable.run();
             }
         } else {
+            if (!flag.getEnable()) {
+                onDisable.run();
+                return;
+            }
             if (checkPrivilegeFlagSilence(to, flag, player, null)) {
                 onAllow.run();
             } else {
