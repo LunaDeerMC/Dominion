@@ -43,11 +43,11 @@ public abstract class WebMapRender {
             }
         }
 
-        Scheduler.runTaskLaterAsync(() -> {
+        Scheduler.runTaskRepeatAsync(() -> {
             for (WebMapRender mapRender : webMapInstances) {
                 mapRender.renderDominions(CacheManager.instance.getCache().getDominionCache().getAllDominions());
             }
-        }, Configuration.webMapRenderer.refreshIntervalSeconds * 20L);
+        }, Configuration.webMapRenderer.refreshIntervalSeconds * 20L, Configuration.webMapRenderer.refreshIntervalSeconds * 20L);
     }
 
     public static void renderAllMCA(@NotNull Map<String, List<String>> mcaFiles) {
