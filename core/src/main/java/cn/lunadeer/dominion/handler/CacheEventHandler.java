@@ -40,6 +40,7 @@ public class CacheEventHandler implements Listener {
     @EventHandler
     public void onPlayerMoveOutDominion(PlayerMoveOutDominionEvent event) {
         XLogger.debug("PlayerMoveOutDominionEvent called.");
+        if (event.getDominion() == null) return;
         // show message
         MessageDisplay.show(event.getPlayer(), MessageDisplay.Place.valueOf(Configuration.pluginMessage.enterLeaveDisplayPlace.toUpperCase()),
                 setPlaceholder(
