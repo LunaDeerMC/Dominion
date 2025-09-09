@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static cn.lunadeer.dominion.utils.webMap.WebMapRender.WebMapRenderInit;
+import static cn.lunadeer.dominion.misc.webMap.WebMapRender.WebMapRenderInit;
 
 public final class Dominion extends JavaPlugin {
 

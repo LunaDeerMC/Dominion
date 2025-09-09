@@ -1,6 +1,7 @@
-package cn.lunadeer.dominion.utils.webMap;
+package cn.lunadeer.dominion.misc.webMap.implementations;
 
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
+import cn.lunadeer.dominion.misc.webMap.WebMapRender;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -45,20 +46,10 @@ public class SquareMapConnect extends WebMapRender {
             try {
                 api.getWorldIfEnabled(BukkitAdapter.worldIdentifier(world)).ifPresent(mapWorld -> {
                     // Initialize Dominion layer
-                    if (mapWorld.layerRegistry().get(DOMINION_KEY) == null) {
-                        SimpleLayerProvider dominionProvider = SimpleLayerProvider.builder("Dominion")
-                                .showControls(true)
-                                .build();
-                        mapWorld.layerRegistry().register(DOMINION_KEY, dominionProvider);
-                    }
+                    mapWorld.layerRegistry().get(DOMINION_KEY);
 
                     // Initialize MCA layer
-                    if (mapWorld.layerRegistry().get(MCA_KEY) == null) {
-                        SimpleLayerProvider mcaProvider = SimpleLayerProvider.builder("MCA")
-                                .showControls(true)
-                                .build();
-                        mapWorld.layerRegistry().register(MCA_KEY, mcaProvider);
-                    }
+                    mapWorld.layerRegistry().get(MCA_KEY);
                 });
             } catch (Exception e) {
                 LOGGER.log(Level.WARNING, "Failed to initialize layers for world: " + world.getName(), e);
@@ -67,7 +58,7 @@ public class SquareMapConnect extends WebMapRender {
     }
 
     @Override
-    protected void renderDominions(@NotNull List<DominionDTO> dominions) {
+    protected void renderAll(@NotNull List<DominionDTO> dominions) {
         if (dominions.isEmpty()) {
             return; // Early return if no dominions to render
         }
@@ -85,13 +76,40 @@ public class SquareMapConnect extends WebMapRender {
         });
     }
 
+    @Override
+    protected void updateDominionInSet(@NotNull DominionDTO dominion) {
+        World world = dominion.getWorld();
+        if (world == null) return;
+        api.getWorldIfEnabled(BukkitAdapter.worldIdentifier(world)).ifPresent(mapWorld -> {
+            SimpleLayerProvider dominionProvider = (SimpleLayerProvider) mapWorld.layerRegistry().get(DOMINION_KEY);
+            try {
+                renderSingleDominion(dominionProvider, dominion);
+                // Re-register the layer to apply changes
+                mapWorld.layerRegistry().unregister(DOMINION_KEY);
+                mapWorld.layerRegistry().register(DOMINION_KEY, dominionProvider);
+            } catch (Exception e) {
+                LOGGER.log(Level.WARNING, "Failed to update dominion: " + dominion.getId(), e);
+            }
+        });
+    }
+
+    @Override
+    protected void removeDominionFromSet(@NotNull String worldName, @NotNull String dominionName) {
+        World world = Bukkit.getWorld(worldName);
+        if (world == null) return;
+        api.getWorldIfEnabled(BukkitAdapter.worldIdentifier(world)).ifPresent(mapWorld -> {
+            SimpleLayerProvider dominionProvider = (SimpleLayerProvider) mapWorld.layerRegistry().get(DOMINION_KEY);
+            Key key = Key.of(dominionName);
+            dominionProvider.removeMarker(key);
+            // Re-register the layer to apply changes
+            mapWorld.layerRegistry().unregister(DOMINION_KEY);
+            mapWorld.layerRegistry().register(DOMINION_KEY, dominionProvider);
+        });
+    }
+
     private void renderDominionsForWorld(World world, List<DominionDTO> dominionList) {
         api.getWorldIfEnabled(BukkitAdapter.worldIdentifier(world)).ifPresent(mapWorld -> {
             SimpleLayerProvider dominionProvider = (SimpleLayerProvider) mapWorld.layerRegistry().get(DOMINION_KEY);
-            if (dominionProvider == null) {
-                LOGGER.warning("Dominion provider not found for world: " + world.getName());
-                return;
-            }
 
             // Batch process dominions
             dominionList.forEach(dominion -> {
@@ -119,7 +137,7 @@ public class SquareMapConnect extends WebMapRender {
                 .build();
 
         Marker marker = Marker.rectangle(p1, p2).markerOptions(options);
-        Key key = Key.of("dominion_" + dominion.getId());
+        Key key = Key.of(dominion.getName());
 
         provider.removeMarker(key);
         provider.addMarker(key, marker);
@@ -149,10 +167,6 @@ public class SquareMapConnect extends WebMapRender {
 
         api.getWorldIfEnabled(BukkitAdapter.worldIdentifier(world)).ifPresent(mapWorld -> {
             SimpleLayerProvider mcaProvider = (SimpleLayerProvider) mapWorld.layerRegistry().get(MCA_KEY);
-            if (mcaProvider == null) {
-                LOGGER.warning("MCA provider not found for world: " + worldName);
-                return;
-            }
 
             // Batch process MCA files
             files.forEach(file -> {
@@ -170,15 +184,15 @@ public class SquareMapConnect extends WebMapRender {
     }
 
     private void renderSingleMCAFile(SimpleLayerProvider provider, String worldName, String file) {
-        String[] coords = file.split("\\.");
-        if (coords.length < 3) {
+        String[] cords = file.split("\\.");
+        if (cords.length < 3) {
             LOGGER.warning("Invalid MCA file format: " + file);
             return;
         }
 
         try {
-            int chunkX = Integer.parseInt(coords[1]);
-            int chunkZ = Integer.parseInt(coords[2]);
+            int chunkX = Integer.parseInt(cords[1]);
+            int chunkZ = Integer.parseInt(cords[2]);
 
             int worldX1 = chunkX * MCA_CHUNK_SIZE;
             int worldZ1 = chunkZ * MCA_CHUNK_SIZE;

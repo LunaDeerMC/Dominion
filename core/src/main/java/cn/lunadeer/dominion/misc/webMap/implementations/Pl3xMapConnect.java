@@ -1,8 +1,9 @@
-package cn.lunadeer.dominion.utils.webMap;
+package cn.lunadeer.dominion.misc.webMap.implementations;
 
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.cache.CacheManager;
+import cn.lunadeer.dominion.misc.webMap.WebMapRender;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.event.EventHandler;
@@ -65,7 +66,7 @@ public class Pl3xMapConnect extends WebMapRender implements EventListener {
     }
 
     @Override
-    protected void renderDominions(@NotNull List<DominionDTO> dominions) {
+    protected void renderAll(@NotNull List<DominionDTO> dominions) {
         if (!isInitialized.get()) {
             LOGGER.warning("Pl3xMap not initialized, skipping dominion rendering");
             return;
@@ -87,7 +88,7 @@ public class Pl3xMapConnect extends WebMapRender implements EventListener {
                 // Pre-cache options for better performance
                 validDominions.forEach(dominion -> {
                     Options options = getDominionOptions(dominion);
-                    dominionOptionsCache.put(String.valueOf(dominion.getId()), options);
+                    dominionOptionsCache.put(dominion.getName(), options);
                 });
 
                 updateLayers();
@@ -96,6 +97,35 @@ public class Pl3xMapConnect extends WebMapRender implements EventListener {
                 LOGGER.log(Level.SEVERE, "Error rendering dominions on Pl3xMap", e);
             }
         });
+    }
+
+    @Override
+    protected void updateDominionInSet(@NotNull DominionDTO dominion) {
+        if (!isInitialized.get()) {
+            LOGGER.warning("Pl3xMap not initialized, skipping dominion update");
+            return;
+        }
+
+        this.dominions.removeIf(d -> d.getName().equals(dominion.getName()) && Objects.equals(d.getWorld(), dominion.getWorld()));
+        if (dominion.getWorld() != null) {
+            this.dominions.add(dominion);
+            dominionOptionsCache.put(dominion.getName(), getDominionOptions(dominion));
+        } else {
+            dominionOptionsCache.remove(dominion.getName());
+        }
+        updateLayers();
+    }
+
+    @Override
+    protected void removeDominionFromSet(@NotNull String worldName, @NotNull String dominionName) {
+        if (!isInitialized.get()) {
+            LOGGER.warning("Pl3xMap not initialized, skipping dominion removal");
+            return;
+        }
+
+        this.dominions.removeIf(d -> d.getName().equals(dominionName) && d.getWorld() != null && d.getWorld().getName().equals(worldName));
+        dominionOptionsCache.remove(dominionName);
+        updateLayers();
     }
 
     @Override
@@ -249,7 +279,7 @@ public class Pl3xMapConnect extends WebMapRender implements EventListener {
             return connect.dominions.stream()
                     .filter(dominion -> dominion.getWorld().getName().equals(mapWorld.getName()))
                     .map(dominion -> Rectangle.of(
-                            "dominion_" + dominion.getId(),
+                            dominion.getName(),
                             Point.of(dominion.getCuboid().x1(), dominion.getCuboid().z1()),
                             Point.of(dominion.getCuboid().x2(), dominion.getCuboid().z2())
                     ).setOptions(connect.getDominionOptions(dominion)))

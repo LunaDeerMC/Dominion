@@ -17,6 +17,8 @@ import cn.lunadeer.dominion.managers.TeleportManager;
 import cn.lunadeer.dominion.misc.Asserts;
 import cn.lunadeer.dominion.misc.Converts;
 import cn.lunadeer.dominion.misc.Others;
+import cn.lunadeer.dominion.misc.webMap.implementations.BlueMapConnect;
+import cn.lunadeer.dominion.misc.webMap.implementations.DynmapConnect;
 import cn.lunadeer.dominion.uis.AbstractUI;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.VaultConnect.VaultConnect;
@@ -25,8 +27,6 @@ import cn.lunadeer.dominion.utils.command.InvalidArgumentException;
 import cn.lunadeer.dominion.utils.command.NoPermissionException;
 import cn.lunadeer.dominion.utils.configuration.*;
 import cn.lunadeer.dominion.utils.stui.inputter.InputterRunner;
-import cn.lunadeer.dominion.utils.webMap.BlueMapConnect;
-import cn.lunadeer.dominion.utils.webMap.DynmapConnect;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 

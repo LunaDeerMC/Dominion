@@ -1,9 +1,10 @@
-package cn.lunadeer.dominion.utils.webMap;
+package cn.lunadeer.dominion.misc.webMap.implementations;
 
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Language;
+import cn.lunadeer.dominion.misc.webMap.WebMapRender;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
@@ -42,7 +43,7 @@ public class BlueMapConnect extends WebMapRender {
     }
 
     @Override
-    protected void renderDominions(@NotNull List<DominionDTO> dominions) {
+    protected void renderAll(@NotNull List<DominionDTO> dominions) {
         executeBlueMapOperation(() -> {
             Map<String, List<DominionDTO>> worldDominions = groupDominionsByWorld(dominions);
 
@@ -51,6 +52,33 @@ public class BlueMapConnect extends WebMapRender {
             }
         });
     }
+
+    @Override
+    protected void updateDominionInSet(@NotNull DominionDTO dominion) {
+        if (dominion.getWorld() == null) {
+            return;
+        }
+        String worldName = dominion.getWorld().getName();
+        BlueMapAPI.getInstance().flatMap(api -> api.getWorld(worldName)).ifPresent(world -> {
+            world.getMaps().forEach(map -> {
+                MarkerSet set = map.getMarkerSets().get(DOMINION_LABEL);
+                if (set == null) return;
+                updateDominionInMarker(dominion, set);
+            });
+        });
+    }
+
+    @Override
+    protected void removeDominionFromSet(@NotNull String worldName, @NotNull String dominionName) {
+        BlueMapAPI.getInstance().flatMap(api -> api.getWorld(worldName)).ifPresent(world -> {
+            world.getMaps().forEach(map -> {
+                MarkerSet set = map.getMarkerSets().get(DOMINION_LABEL);
+                if (set == null) return;
+                set.getMarkers().remove(dominionName);
+            });
+        });
+    }
+
 
     @Override
     protected void renderMCA(@NotNull Map<String, List<String>> mcaFiles) {
@@ -103,7 +131,7 @@ public class BlueMapConnect extends WebMapRender {
                     .build();
 
             for (DominionDTO dominion : dominions) {
-                createDominionMarker(dominion, markerSet);
+                updateDominionInMarker(dominion, markerSet);
             }
 
             addMarkerSetToMaps(world.getMaps(), worldName + "-" + markerSet.getLabel(), markerSet);
@@ -113,7 +141,7 @@ public class BlueMapConnect extends WebMapRender {
     /**
      * Creates a marker for a single dominion
      */
-    private void createDominionMarker(DominionDTO dominion, MarkerSet markerSet) {
+    private void updateDominionInMarker(DominionDTO dominion, MarkerSet markerSet) {
         PlayerDTO player = CacheManager.instance.getPlayer(dominion.getOwner());
         if (player == null) {
             return;

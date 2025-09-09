@@ -1,15 +1,17 @@
-package cn.lunadeer.dominion.utils.webMap;
+package cn.lunadeer.dominion.misc.webMap.implementations;
 
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Language;
+import cn.lunadeer.dominion.misc.webMap.WebMapRender;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import org.dynmap.DynmapCommonAPI;
 import org.dynmap.DynmapCommonAPIListener;
 import org.dynmap.markers.AreaMarker;
+import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerSet;
 import org.jetbrains.annotations.NotNull;
@@ -72,22 +74,34 @@ public class DynmapConnect extends WebMapRender {
             return markerSet;
         }
 
+        private void removeDominionMarker(@NotNull String dominionName) {
+            if (this.dominionMarkerSet == null) {
+                XLogger.warn(Language.dynmapConnectText.registerFail);
+                return;
+            }
+            Marker marker = this.dominionMarkerSet.findMarker(dominionName);
+            if (marker != null) {
+                marker.deleteMarker();
+                XLogger.debug("Removed dominion marker: " + dominionName);
+            }
+        }
+
         private void setDominionMarker(@NotNull DominionDTO dominion) {
             PlayerDTO owner = CacheManager.instance.getPlayer(dominion.getOwner());
             if (owner == null || dominion.getWorld() == null) {
                 XLogger.debug("Skipping dominion marker for " + dominion.getName() +
-                            " - missing owner or world information");
+                        " - missing owner or world information");
                 return;
             }
 
             try {
                 String nameLabel = formatString(Language.dynmapConnectText.infoLabel,
-                                              dominion.getName(), owner.getLastKnownName());
+                        dominion.getName(), owner.getLastKnownName());
                 double[] xCoordinates = {dominion.getCuboid().x1(), dominion.getCuboid().x2()};
                 double[] zCoordinates = {dominion.getCuboid().z1(), dominion.getCuboid().z2()};
 
                 AreaMarker marker = this.dominionMarkerSet.createAreaMarker(
-                        dominion.getId().toString(),
+                        dominion.getName(),
                         nameLabel,
                         true,
                         dominion.getWorld().getName(),
@@ -207,8 +221,18 @@ public class DynmapConnect extends WebMapRender {
     }
 
     @Override
-    protected void renderDominions(@NotNull List<DominionDTO> dominions) {
+    protected void renderAll(@NotNull List<DominionDTO> dominions) {
         listener.setDominionMarkers(dominions);
+    }
+
+    @Override
+    protected void updateDominionInSet(@NotNull DominionDTO dominion) {
+        listener.setDominionMarker(dominion);
+    }
+
+    @Override
+    protected void removeDominionFromSet(@NotNull String worldName, @NotNull String dominionName) {
+        listener.removeDominionMarker(dominionName);
     }
 
     @Override
