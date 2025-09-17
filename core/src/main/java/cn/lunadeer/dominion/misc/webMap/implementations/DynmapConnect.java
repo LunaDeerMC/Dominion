@@ -8,6 +8,7 @@ import cn.lunadeer.dominion.misc.webMap.WebMapRender;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
+import org.bukkit.World;
 import org.dynmap.DynmapCommonAPI;
 import org.dynmap.DynmapCommonAPIListener;
 import org.dynmap.markers.AreaMarker;
@@ -121,22 +122,6 @@ public class DynmapConnect extends WebMapRender {
             }
         }
 
-        public void setDominionMarkers(@NotNull List<DominionDTO> dominions) {
-            Scheduler.runTaskAsync(() -> {
-                if (this.dominionMarkerSet == null) {
-                    XLogger.warn(Language.dynmapConnectText.registerFail);
-                    return;
-                }
-
-                // Clear existing markers
-                clearAreaMarkers(this.dominionMarkerSet);
-
-                // Create new markers
-                dominions.forEach(this::setDominionMarker);
-                XLogger.debug("Updated " + dominions.size() + " dominion markers");
-            });
-        }
-
         public void setMCAMarkers(@NotNull Map<String, List<String>> mcaFiles) {
             Scheduler.runTaskAsync(() -> {
                 if (this.mcaMarkerSet == null) {
@@ -221,8 +206,9 @@ public class DynmapConnect extends WebMapRender {
     }
 
     @Override
-    protected void renderAll(@NotNull List<DominionDTO> dominions) {
-        listener.setDominionMarkers(dominions);
+    protected void renderWorldInSet(@NotNull World world) {
+        CacheManager.instance.getCache().getDominionCache().getDominionsByWorld(world)
+                .forEach(listener::setDominionMarker);
     }
 
     @Override

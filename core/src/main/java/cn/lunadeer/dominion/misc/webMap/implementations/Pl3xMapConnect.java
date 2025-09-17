@@ -66,7 +66,7 @@ public class Pl3xMapConnect extends WebMapRender implements EventListener {
     }
 
     @Override
-    protected void renderAll(@NotNull List<DominionDTO> dominions) {
+    protected void renderWorldInSet(org.bukkit.@NotNull World world) {
         if (!isInitialized.get()) {
             LOGGER.warning("Pl3xMap not initialized, skipping dominion rendering");
             return;
@@ -74,14 +74,8 @@ public class Pl3xMapConnect extends WebMapRender implements EventListener {
 
         Scheduler.runTaskAsync(() -> {
             try {
-                // Clear old data
-                this.dominions.clear();
-                dominionOptionsCache.clear();
-
                 // Filter and add valid dominions
-                List<DominionDTO> validDominions = dominions.parallelStream()
-                        .filter(dominion -> dominion.getWorld() != null)
-                        .toList();
+                List<DominionDTO> validDominions = CacheManager.instance.getCache().getDominionCache().getDominionsByWorld(world);
 
                 this.dominions.addAll(validDominions);
 

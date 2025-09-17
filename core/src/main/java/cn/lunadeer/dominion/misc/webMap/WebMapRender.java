@@ -2,8 +2,8 @@ package cn.lunadeer.dominion.misc.webMap;
 
 import cn.lunadeer.dominion.Dominion;
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
-import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Configuration;
+import cn.lunadeer.dominion.handler.WorldLoadHandler;
 import cn.lunadeer.dominion.misc.webMap.implementations.BlueMapConnect;
 import cn.lunadeer.dominion.misc.webMap.implementations.DynmapConnect;
 import cn.lunadeer.dominion.misc.webMap.implementations.Pl3xMapConnect;
@@ -11,6 +11,7 @@ import cn.lunadeer.dominion.misc.webMap.implementations.SquareMapConnect;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -51,11 +52,7 @@ public abstract class WebMapRender {
 
         Bukkit.getServer().getPluginManager().registerEvents(new RenderEventHandler(), Dominion.instance);
 
-        Scheduler.runTaskLaterAsync(() -> {
-            for (WebMapRender mapRender : webMapInstances) {
-                mapRender.renderAll(CacheManager.instance.getCache().getDominionCache().getAllDominions());
-            }
-        }, Configuration.webMapRenderer.renderDelaySec * 20L);
+        WorldLoadHandler.getInstance().addRunner(WebMapRender::renderWorld);
     }
 
     public static void renderAllMCA(@NotNull Map<String, List<String>> mcaFiles) {
@@ -68,7 +65,15 @@ public abstract class WebMapRender {
 
     protected static List<WebMapRender> webMapInstances = new ArrayList<>();
 
-    protected abstract void renderAll(@NotNull List<DominionDTO> dominions);
+    public static void renderWorld(@NotNull World world) {
+        Scheduler.runTaskAsync(() -> {
+            for (WebMapRender mapRender : webMapInstances) {
+                mapRender.renderWorldInSet(world);
+            }
+        });
+    }
+
+    protected abstract void renderWorldInSet(@NotNull World world);
 
     /**
      * Updates a DominionDTO in the internal set for rendering.

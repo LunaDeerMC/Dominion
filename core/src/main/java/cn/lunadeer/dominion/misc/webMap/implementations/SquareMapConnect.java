@@ -1,6 +1,7 @@
 package cn.lunadeer.dominion.misc.webMap.implementations;
 
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
+import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.misc.webMap.WebMapRender;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import org.bukkit.Bukkit;
@@ -16,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class SquareMapConnect extends WebMapRender {
 
@@ -58,22 +58,8 @@ public class SquareMapConnect extends WebMapRender {
     }
 
     @Override
-    protected void renderAll(@NotNull List<DominionDTO> dominions) {
-        if (dominions.isEmpty()) {
-            return; // Early return if no dominions to render
-        }
-
-        Scheduler.runTaskAsync(() -> {
-            try {
-                Map<World, List<DominionDTO>> dominionMap = dominions.stream()
-                        .filter(dominion -> dominion.getWorld() != null)
-                        .collect(Collectors.groupingBy(DominionDTO::getWorld));
-
-                dominionMap.forEach(this::renderDominionsForWorld);
-            } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "Error rendering dominions", e);
-            }
-        });
+    protected void renderWorldInSet(@NotNull World world) {
+        renderDominionsForWorld(world, CacheManager.instance.getCache().getDominionCache().getDominionsByWorld(world));
     }
 
     @Override

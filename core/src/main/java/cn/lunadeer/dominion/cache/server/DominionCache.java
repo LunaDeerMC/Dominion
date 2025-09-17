@@ -10,6 +10,7 @@ import cn.lunadeer.dominion.cache.DominionNodeSectored;
 import cn.lunadeer.dominion.doos.DominionDOO;
 import cn.lunadeer.dominion.misc.DominionException;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -306,5 +307,20 @@ public class DominionCache extends Cache {
     public Integer count() {
         ConcurrentHashMap<Integer, DominionDTO> currentIdDominions = idDominions;
         return currentIdDominions != null ? currentIdDominions.size() : 0;
+    }
+
+    public List<DominionDTO> getDominionsByWorld(@NotNull World world) {
+        List<DominionDTO> dominions = new ArrayList<>();
+
+        for (DominionDTO dominion : getAllDominions()) {
+            if (dominion.getWorld() == null) {
+                continue;
+            }
+            if (dominion.getWorld().getUID().equals(world.getUID())) {
+                dominions.add(dominion);
+            }
+        }
+
+        return dominions;
     }
 }
