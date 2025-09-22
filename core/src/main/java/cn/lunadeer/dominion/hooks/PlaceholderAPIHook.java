@@ -42,7 +42,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
             Integer usingId = CacheManager.instance.getPlayerCache().getPlayerUsingTitleId(bukkitPlayer.getUniqueId());
             GroupDTO group = CacheManager.instance.getGroup(usingId);
             if (group == null) {
-                return null;
+                return "";
             }
             return group.getNameColoredBukkit();
         }
@@ -51,7 +51,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         if (params.equalsIgnoreCase("current_dominion")) {
             DominionDTO dominion = CacheManager.instance.getDominion(bukkitPlayer.getLocation());
             if (dominion == null) {
-                return null;
+                return "";
             }
             return dominion.getName();
         }
@@ -184,6 +184,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         if (params.startsWith("env_flag_")) {
             String flagName = params.substring(9); // Get the flag name after "env_flag_"
             EnvFlag envFlag = Flags.getEnvFlag(flagName);
+            if (envFlag == null) return null; // Flag not found
             return String.valueOf(Others.checkEnvironmentFlag(bukkitPlayer.getLocation(), envFlag, null));
         }
         return null; //
