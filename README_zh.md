@@ -5,6 +5,7 @@
 [![Documentation](https://img.shields.io/badge/在线文档-点击跳转-70f3ff?logo=readthedocs)](https://dominion.lunadeer.cn/)
 [![GitHub Repository](https://img.shields.io/badge/开源地址-GitHub-blue?logo=github)](https://github.com/LunaDeerMC/Dominion)
 [![bStats](https://img.shields.io/badge/bStats-Statistics-eacd76?logo=google-analytics)](https://bstats.org/plugin/bukkit/Dominion/21445)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/LunaDeerMC/Dominion)
 
 [![Latest Build](https://img.shields.io/github/v/release/LunaDeerMC/Dominion?label=%E6%9C%80%E6%96%B0%E6%9E%84%E5%BB%BA%E4%B8%8B%E8%BD%BD&logo=github&color=0aa344)](https://github.com/LunaDeerMC/Dominion/releases/latest)
 [![Latest Build](https://img.shields.io/github/v/release/LunaDeerMC/Dominion?label=%E5%A4%87%E7%94%A8%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80&logo=gitea&color=0aa344)](https://ssl.lunadeer.cn:14446/mirror/Dominion/releases)
