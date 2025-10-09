@@ -3,7 +3,6 @@ package cn.lunadeer.dominion.uis.dominion;
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.commands.CopyCommand;
 import cn.lunadeer.dominion.commands.DominionOperateCommand;
-import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
 import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
@@ -142,9 +141,7 @@ public class DominionManage extends AbstractUI {
                 .add(rename)
                 .add(enter_msg)
                 .add(leave_msg);
-        if (Configuration.webMapRenderer.blueMap || Configuration.webMapRenderer.dynmap) {
-            view.add(map_color);
-        }
+        view.add(map_color);
         view.add(copy_menu);
         view.showOn(player, page);
     }
