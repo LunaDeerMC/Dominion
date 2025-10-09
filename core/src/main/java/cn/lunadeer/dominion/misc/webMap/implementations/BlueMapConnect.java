@@ -15,9 +15,13 @@ import de.bluecolored.bluemap.api.markers.ExtrudeMarker;
 import de.bluecolored.bluemap.api.markers.MarkerSet;
 import de.bluecolored.bluemap.api.math.Color;
 import de.bluecolored.bluemap.api.math.Shape;
+import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import static cn.lunadeer.dominion.utils.Misc.formatString;
 
@@ -43,13 +47,9 @@ public class BlueMapConnect extends WebMapRender {
     }
 
     @Override
-    protected void renderAll(@NotNull List<DominionDTO> dominions) {
+    protected void renderWorldInSet(@NotNull World world) {
         executeBlueMapOperation(() -> {
-            Map<String, List<DominionDTO>> worldDominions = groupDominionsByWorld(dominions);
-
-            for (Map.Entry<String, List<DominionDTO>> entry : worldDominions.entrySet()) {
-                renderDominionsForWorld(entry.getKey(), entry.getValue());
-            }
+            renderDominionsForWorld(world.getName(), CacheManager.instance.getCache().getDominionCache().getDominionsByWorld(world));
         });
     }
 
@@ -101,24 +101,6 @@ public class BlueMapConnect extends WebMapRender {
                 XLogger.error(e);
             }
         });
-    }
-
-    /**
-     * Groups dominions by world name for efficient processing
-     */
-    private Map<String, List<DominionDTO>> groupDominionsByWorld(@NotNull List<DominionDTO> dominions) {
-        Map<String, List<DominionDTO>> worldDominions = new HashMap<>();
-
-        for (DominionDTO dominion : dominions) {
-            if (dominion.getWorld() == null) {
-                continue;
-            }
-
-            String worldName = dominion.getWorld().getName();
-            worldDominions.computeIfAbsent(worldName, k -> new ArrayList<>()).add(dominion);
-        }
-
-        return worldDominions;
     }
 
     /**

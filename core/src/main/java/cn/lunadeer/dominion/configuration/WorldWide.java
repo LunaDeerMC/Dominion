@@ -4,6 +4,8 @@ import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
 import cn.lunadeer.dominion.api.dtos.flag.Flag;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
+import cn.lunadeer.dominion.handler.WorldLoadHandler;
+import cn.lunadeer.dominion.utils.XLogger;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -104,10 +106,13 @@ public class WorldWide {
                 throw new RuntimeException("Failed to create world-wide dominion directory: " + rootPath.getAbsolutePath());
             }
         }
-        for (World world : plugin.getServer().getWorlds()) {
-            String worldName = world.getName();
-            loadWorld(rootPath, worldName);
-        }
+        WorldLoadHandler.getInstance().addRunner((world -> {
+            try {
+                loadWorld(rootPath, world.getName());
+            } catch (IOException e) {
+                XLogger.error(e);
+            }
+        }));
     }
 
 }

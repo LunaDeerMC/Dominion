@@ -195,12 +195,6 @@ public class Configuration extends ConfigurationFile {
     public static WebMapRenderer webMapRenderer = new WebMapRenderer();
 
     public static class WebMapRenderer extends ConfigurationPart {
-        @Comments({
-                "Delay seconds after server start to render all dominions on web map.",
-                "Make sure worlds are loaded before rendering.",
-        })
-        public int renderDelaySec = 40;
-
         @Comments("https://bluemap.bluecolored.de/")
         public boolean blueMap = false;
 

@@ -23,12 +23,8 @@ dependencies {
     implementation(project(":api"))
     compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
 
-    compileOnly("com.github.BlueMap-Minecraft:BlueMapAPI:v2.6.2")
-    compileOnly("us.dynmap:DynmapCoreAPI:3.4")
-    compileOnly("xyz.jpenilla:squaremap-api:1.3.4")
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("net.milkbowl.vault:VaultUnlockedAPI:2.15")
-    compileOnly("maven.modrinth:pl3xmap:1.20.4-489")
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9-SNAPSHOT")
 }

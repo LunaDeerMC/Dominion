@@ -6,10 +6,7 @@ folia-supported: true
 libraries: [ ]
 softdepend:
   - Vault
-  - dynmap
   - PlaceholderAPI
-  - BlueMap
-  - squaremap
   - WorldGuard
 commands:
   dominion:
