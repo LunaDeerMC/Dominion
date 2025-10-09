@@ -7,7 +7,6 @@ import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.managers.DatabaseTables;
 import cn.lunadeer.dominion.misc.DominionException;
-import cn.lunadeer.dominion.misc.webMap.WebMapRender;
 import cn.lunadeer.dominion.uis.MainMenu;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.command.Option;
@@ -201,7 +200,6 @@ public class AdministratorCommand {
                         Notification.error(sender, Language.administratorCommandText.exportMCAListFailed, world, e.getMessage());
                     }
                 }
-                WebMapRender.renderAllMCA(mca_cords);
                 Notification.info(sender, Language.administratorCommandText.exportedMCAList, folder.getAbsolutePath());
             });
         } catch (Exception e) {

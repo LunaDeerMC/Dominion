@@ -17,8 +17,6 @@ import cn.lunadeer.dominion.managers.TeleportManager;
 import cn.lunadeer.dominion.misc.Asserts;
 import cn.lunadeer.dominion.misc.Converts;
 import cn.lunadeer.dominion.misc.Others;
-import cn.lunadeer.dominion.misc.webMap.implementations.BlueMapConnect;
-import cn.lunadeer.dominion.misc.webMap.implementations.DynmapConnect;
 import cn.lunadeer.dominion.uis.AbstractUI;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.VaultConnect.VaultConnect;
@@ -154,11 +152,6 @@ public class Language extends ConfigurationFile {
     public static DatabaseTables.DatabaseManagerText databaseManagerText = new DatabaseTables.DatabaseManagerText();
 
     public static TeleportManager.TeleportManagerText teleportManagerText = new TeleportManager.TeleportManagerText();
-
-    // web map render
-    public static BlueMapConnect.BlueMapConnectText blueMapConnectText = new BlueMapConnect.BlueMapConnectText();
-    public static DynmapConnect.DynmapConnectText dynmapConnectText = new DynmapConnect.DynmapConnectText();
-
 
     public static CommandExceptionText commandExceptionText = new CommandExceptionText();
 
