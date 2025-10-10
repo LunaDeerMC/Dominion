@@ -8,7 +8,9 @@ import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
+import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.misc.Others;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -147,6 +149,18 @@ public class DominionInterface extends DominionAPI {
     @Override
     public boolean checkEnvironmentFlag(@Nullable DominionDTO dom, @NotNull EnvFlag flag) {
         return Others.checkEnvironmentFlag(dom, flag, null);
+    }
+
+    @Override
+    public void reloadCache() {
+        CacheManager.instance.getCache().getDominionCache().load();
+        CacheManager.instance.getCache().getMemberCache().load();
+        CacheManager.instance.getCache().getGroupCache().load();
+    }
+
+    @Override
+    public void reloadConfig() throws Exception{
+        Configuration.loadConfigurationAndDatabase(Bukkit.getConsoleSender());
     }
 
 }
