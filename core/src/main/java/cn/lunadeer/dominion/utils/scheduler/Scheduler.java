@@ -1,5 +1,6 @@
 package cn.lunadeer.dominion.utils.scheduler;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.concurrent.TimeUnit;
@@ -115,6 +116,14 @@ public class Scheduler {
             return new PaperTask(instance.plugin.getServer().getAsyncScheduler().runAtFixedRate(instance.plugin, (plugin) -> task.run(), delay * 50, period * 50, TimeUnit.MILLISECONDS));
         } else {
             return new SpigotTask(instance.plugin.getServer().getScheduler().runTaskTimerAsynchronously(instance.plugin, task, delay, period));
+        }
+    }
+
+    public static CancellableTask runEntityTask(Runnable task, Entity entity) {
+        if (instance.isPaper) {
+            return new PaperTask(entity.getScheduler().run(instance.plugin, (plugin) -> task.run(), null));
+        } else {
+            return new SpigotTask(instance.plugin.getServer().getScheduler().runTaskAsynchronously(instance.plugin, task));
         }
     }
 }

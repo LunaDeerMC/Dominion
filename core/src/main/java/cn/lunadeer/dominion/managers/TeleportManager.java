@@ -74,7 +74,7 @@ public class TeleportManager implements Listener {
             if (dominion.getServerId() != Configuration.multiServer.serverId) {
                 return;
             }
-            doTeleportSafely(event.getPlayer(), dominion.getTpLocation());
+            Scheduler.runEntityTask(() -> doTeleportSafely(event.getPlayer(), dominion.getTpLocation()), event.getPlayer());
         } catch (Exception e) {
             Notification.error(event.getPlayer(), e);
         }
@@ -151,7 +151,7 @@ public class TeleportManager implements Listener {
         // teleport
         CancellableTask task = Scheduler.runTaskLaterAsync(() -> {
             if (dominion.getServerId() == Configuration.multiServer.serverId) {
-                doTeleportSafely(player, dominion.getTpLocation());
+                Scheduler.runEntityTask(() -> doTeleportSafely(player, dominion.getTpLocation()), player);
             } else {
                 if (!Configuration.multiServer.enable) return;
                 try {
@@ -188,7 +188,7 @@ public class TeleportManager implements Listener {
             player.getPassengers().forEach(player::removePassenger);
         }
         if (player.isInsideVehicle() && player.getVehicle() != null) {
-            player.getVehicle().removePassenger(player);
+            Scheduler.runEntityTask(() -> player.getVehicle().removePassenger(player), player.getVehicle());
             player.leaveVehicle();
         }
         if (!isPaper()) {
