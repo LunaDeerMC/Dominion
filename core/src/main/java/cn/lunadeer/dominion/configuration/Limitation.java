@@ -178,7 +178,7 @@ public class Limitation extends ConfigurationFile {
             amountAllOverTheWorld = -1;
         }
 
-        if (!worldLimitations.containsKey("default")) {
+        if (worldLimitations.get("default") == null) {
             worldLimitations.put("default", new WorldLimitationSetting());
         }
 
