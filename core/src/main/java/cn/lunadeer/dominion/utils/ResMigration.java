@@ -98,6 +98,10 @@ public class ResMigration {
             residence.setMessages((int) zone.get("Messages"));
             Permission permission = new Permission();
             permission.OwnerUUID = ((Map<String, Object>) zone.get("Permissions")).get("OwnerUUID").toString();
+            if (Objects.equals(permission.OwnerUUID, "00000000-0000-0000-0000-000000000000")) {
+                XLogger.warn("Skipping server land residence: {0} (Because Dominion does not support that).", entry.getKey());
+                continue;
+            }
             permission.OwnerLastKnownName = ((Map<String, Object>) zone.get("Permissions")).get("OwnerLastKnownName").toString();
             residence.setPermissions(permission);
             residence.setAreas((Map<String, String>) zone.get("Areas"));
