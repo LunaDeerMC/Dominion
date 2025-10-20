@@ -18,6 +18,7 @@ import cn.lunadeer.dominion.events.PlayerMoveOutDominionEvent;
 import cn.lunadeer.dominion.handler.CacheEventHandler;
 import cn.lunadeer.dominion.misc.DominionException;
 import cn.lunadeer.dominion.utils.AutoTimer;
+import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.XLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -176,17 +177,25 @@ public class CacheManager {
      * @param bukkitPlayer the Player object representing the player
      */
     public void updatePlayerName(@NotNull Player bukkitPlayer) throws Exception {
-        PlayerDTO player = playerCache.getPlayer(bukkitPlayer.getUniqueId());
         URL skin = null;
         try {
             skin = bukkitPlayer.getPlayerProfile().getTextures().getSkin();
         } catch (NoSuchMethodError ignored) {
         }
-        if (player != null) {
-            player = player.updateLastKnownName(bukkitPlayer.getName(), skin);
-        } else {
-            PlayerDOO.create(bukkitPlayer);
+
+        String playerName = bukkitPlayer.getName();
+        PlayerDTO playerWithSameName = playerCache.getPlayer(playerName);
+        if (playerWithSameName != null && !playerWithSameName.getUuid().equals(bukkitPlayer.getUniqueId())) {
+            Notification.warn(bukkitPlayer, "Another player with the same name \"{0}\"({1}) exists in the Dominion. " +
+                            "This may caused by a name change, your player name will be modified to avoid conflicts.",
+                    playerName, playerWithSameName.getUuid());
+            playerName = playerName + "_" + bukkitPlayer.getUniqueId().toString().substring(0, 8);
         }
+
+        PlayerDTO player = playerCache.getPlayer(bukkitPlayer.getUniqueId());
+        if (player == null)
+            player = PlayerDOO.create(bukkitPlayer.getUniqueId(), playerName);
+        player.updateLastKnownName(playerName, skin);
     }
 
     /**
