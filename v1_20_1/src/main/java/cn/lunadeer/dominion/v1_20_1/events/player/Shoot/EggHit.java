@@ -23,7 +23,7 @@ public class EggHit implements Listener {
             return;
         }
         if (!checkPrivilegeFlag(projectile.getLocation(), Flags.EGG, player, event)) {
-            projectile.remove();
+            projectile.teleportAsync(player.getLocation());
         }
     }
 }

@@ -23,7 +23,7 @@ public class FireBallHit implements Listener {
             return;
         }
         if (!checkPrivilegeFlag(projectile.getLocation(), Flags.SHOOT, player, event)) {
-            projectile.remove();
+            projectile.teleportAsync(player.getLocation());
         }
     }
 }

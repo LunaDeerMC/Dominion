@@ -23,7 +23,7 @@ public class EndPearlHit implements Listener {
             return;
         }
         if (!checkPrivilegeFlag(projectile.getLocation(), Flags.ENDER_PEARL, player, event)) {
-            projectile.remove();
+            projectile.teleportAsync(player.getLocation());
         }
     }
 }

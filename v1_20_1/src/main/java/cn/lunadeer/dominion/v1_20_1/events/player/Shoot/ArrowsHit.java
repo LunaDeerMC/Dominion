@@ -18,7 +18,7 @@ public class ArrowsHit implements Listener {
         if (!(arrow.getShooter() instanceof Player player)) return;
 
         if (!checkPrivilegeFlag(arrow.getLocation(), Flags.SHOOT, player, event)) {
-            arrow.remove();
+            arrow.teleportAsync(player.getLocation());
         }
     }
 }
