@@ -252,6 +252,6 @@ public class Limitation extends ConfigurationFile {
     }
 
     public @NotNull Limitation.WorldLimitationSetting getWorldSettings(@Nullable String worldName) {
-        return Objects.requireNonNullElse(worldLimitations.get(worldName), worldLimitations.get("default"));
+        return worldLimitations.getOrDefault(worldName, worldLimitations.get("default"));
     }
 }
