@@ -5,7 +5,8 @@ project, you agree to abide by our code of conduct.
 
 ## How to Build
 
-To build the project locally, you need to have Java Development Kit (JDK) 21 or higher and Gradle installed on your machine.
+To build the project locally, you need to have Java Development Kit (JDK) 21 or higher and Gradle installed on your
+machine.
 
 1. Clone the repository:
 
@@ -20,7 +21,7 @@ To build the project locally, you need to have Java Development Kit (JDK) 21 or 
     ```bash
     ./gradlew shadowJar
     ```
-    The compiled plugin JAR file will be located in the `build/libs` directory.
+   The compiled plugin JAR file will be located in the `build/libs` directory.
 
 ## How to Contribute
 
@@ -33,6 +34,26 @@ including steps to reproduce the issue, the expected result, and the actual resu
 
 We welcome suggestions for new features or improvements. Please open an issue on our GitHub repository and describe the
 enhancement you would like to see, why you think it would be useful, and any other relevant information.
+
+### 🔧Creating Pull Requests
+
+If you would like to contribute code to the project, please follow these steps:
+
+1. Fork the repository & clone the repository to your local.
+2. Create a new branch for your changes.
+3. Make your changes.
+4. Commit & Push your changes to your fork.
+5. Open a pull request, wait for your pull request to be reviewed and merged.
+
+Please ensure that your code adheres to the project's coding standards.
+
+- Follow the existing code style and conventions.
+- Write clear and concise commit messages.
+- Update documentation as needed.
+
+**NOTE:** Generally, we do not accept pull requests that add new features or change existing functionality or modify API
+repo without prior discussion. Please open an issue first to discuss your proposed changes before submitting a pull
+request.
 
 ### 🌐Translating
 
@@ -58,9 +79,10 @@ Plugin messages are located in the `languages` directory. Translate the files in
 > the [Crowdin project](https://crowdin.com/project/dominion).
 >
 > But we **NOT RECOMMEND** this way, because the translation on Crowdin may not be the latest.
+> If you insist on using Crowdin and founding contents are outdated, please inform us via issue on GitHub
+> to update the contents on Crowdin.
 >
 > ![Crowdin](https://badges.crowdin.net/dominion/localized.svg)
-
 
 #### **Translate Documentation**
 
