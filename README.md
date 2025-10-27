@@ -5,13 +5,16 @@
 [![Documentation](https://img.shields.io/badge/Document-Online-70f3ff?logo=readthedocs)](https://dominion.lunadeer.cn/)
 [![GitHub Repository](https://img.shields.io/badge/SourceCode-GitHub-blue?logo=github)](https://github.com/LunaDeerMC/Dominion)
 [![bStats](https://img.shields.io/badge/bStats-Statistics-eacd76?logo=google-analytics)](https://bstats.org/plugin/bukkit/Dominion/21445)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/LunaDeerMC/Dominion)
+
 
 [![Latest Build](https://img.shields.io/github/v/release/LunaDeerMC/Dominion?label=LatestBuild&logo=github&color=0aa344)](https://github.com/LunaDeerMC/Dominion/releases/latest)
 
 [![Hangar](https://img.shields.io/badge/To-Hangar-004ee9)](https://hangar.papermc.io/zhangyuheng/Dominion)
 [![Modrinth](https://img.shields.io/badge/To-Modrinth-1bd96a)](https://modrinth.com/plugin/lunadeer-dominion)
 [![Spigot](https://img.shields.io/badge/To-Spigot-ed8106)](https://www.spigotmc.org/resources/dominion.119514/)
+
+![](https://img.shields.io/github/downloads/LunaDeerMC/Dominion/total?logo=github&label=Github%20Downloads)]
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/LunaDeerMC/Dominion)
 
 </div>
 
