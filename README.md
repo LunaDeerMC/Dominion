@@ -13,7 +13,7 @@
 [![Modrinth](https://img.shields.io/badge/To-Modrinth-1bd96a)](https://modrinth.com/plugin/lunadeer-dominion)
 [![Spigot](https://img.shields.io/badge/To-Spigot-ed8106)](https://www.spigotmc.org/resources/dominion.119514/)
 
-![](https://img.shields.io/github/downloads/LunaDeerMC/Dominion/total?logo=github&label=Github%20Downloads)]
+![](https://img.shields.io/github/downloads/LunaDeerMC/Dominion/total?logo=github&label=Github%20Downloads)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/LunaDeerMC/Dominion)
 
 </div>
