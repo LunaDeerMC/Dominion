@@ -41,6 +41,7 @@ For detail functions and features of Dominion, you can view [Introduction](intro
 
 - If you want to contribute to the development of Dominion, please see [CONTRIBUTING](CONTRIBUTING.md)
 - If you want to develop plugins based on Dominion, please see [DominionAPI](https://dominion.lunadeer.cn/en/notes/api/)
+  - [Amazing Addons List](https://dominion.lunadeer.cn/en/notes/doc/owner/addons/)
 
 ## Help us improve
 

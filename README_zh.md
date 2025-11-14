@@ -52,6 +52,7 @@ Dominion 是一个完全开源、免费，专为高版本开发，面向未来�
 
 - 如果您想为 Dominion 的开发做出贡献，请参阅 [CONTRIBUTING](CONTRIBUTING.md)
 - 如果您想基于 Dominion 开发插件，请参阅 [DominionAPI](https://dominion.lunadeer.cn/notes/api/)
+  - [已支持的附属列表](https://dominion.lunadeer.cn/notes/doc/owner/addons/)
 
 ## Special Thanks
 
