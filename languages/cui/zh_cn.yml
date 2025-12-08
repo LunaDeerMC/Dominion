@@ -98,10 +98,11 @@ main-menu-cui:
     material: COMPASS
 all-dominion-cui:
   title: §6✦ §c§l所有领地 §6✦
+  search-results-title: §6✦ §c§l{0} 的领地 §6✦
   list-configuration:
     item-symbol: i
     layout:
-      - <########
+      - <#####s##
       - '#iiiiiii#'
       - '#iiiiiii#'
       - '#iiiiiii#'
@@ -140,6 +141,16 @@ all-dominion-cui:
       - ''
       - §e▶ 点击返回
     material: RED_STAINED_GLASS_PANE
+  search-button:
+    symbol: s
+    name: §e🔍 §6搜索玩家领地
+    lore:
+      - §7搜索特定玩家拥有的领地。
+      - ''
+      - §6▶ 点击搜索
+      - ''
+      - §8输入玩家名称查找其领地！
+    material: COMPASS
 title-list-cui:
   title: §6✦ §d§l头衔列表 §6✦
   list-configuration:

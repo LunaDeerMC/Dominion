@@ -180,6 +180,11 @@ resize-dominion-inputter-text:
 search-player-inputter-text:
   button: 搜尋
   hint: 輸入欲搜尋的玩家精確名稱。
+  no-results: 找不到符合的玩家。
+search-player-dominion-inputter-text:
+  button: 搜尋
+  hint: 輸入欲搜尋領地的玩家名稱。
+  no-results: 找不到該玩家的領地。
 
 set-map-color-inputter-text:
   button: 顏色

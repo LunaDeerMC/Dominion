@@ -163,6 +163,11 @@ resize-dominion-inputter-text:
 search-player-inputter-text:
   button: SEARCH
   hint: Enter the exact name of the player you want to search.
+  no-results: No players found matching your search.
+search-player-dominion-inputter-text:
+  button: SEARCH
+  hint: Enter the name of the player whose dominions you want to search.
+  no-results: No dominions found for this player.
 set-map-color-inputter-text:
   button: COLOR
   hint: 'Enter the hex color code (e.g., #FF5733) to set the map color.'

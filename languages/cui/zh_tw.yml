@@ -104,10 +104,11 @@ main-menu-cui:
     material: COMPASS
 all-dominion-cui:
   title: §6✦ §c§l所有領地 §6✦
+  search-results-title: §6✦ §c§l{0} 的領地 §6✦
   list-configuration:
     item-symbol: i
     layout:
-    - '<########'
+    - '<#####s##'
     - '#iiiiiii#'
     - '#iiiiiii#'
     - '#iiiiiii#'
@@ -146,6 +147,17 @@ all-dominion-cui:
     - ''
     - §e▶ 點擊返回
     material: RED_STAINED_GLASS_PANE
+  search-button:
+    symbol: s
+    name: §e🔍 §6搜尋玩家領地
+    lore:
+    - §7輸入玩家名稱以搜尋
+    - §7該玩家的所有領地
+    - ''
+    - §6▶ 點擊搜尋
+    - ''
+    - §8適合尋找特定玩家的領地！
+    material: COMPASS
 title-list-cui:
   title: §6✦ §d§l群組稱號列表 §6✦
   list-configuration:

@@ -163,6 +163,11 @@ resize-dominion-inputter-text:
 search-player-inputter-text:
   button: 検索
   hint: 検索したいプレイヤーの正確な名前を入力してください。
+  no-results: 検索に一致するプレイヤーが見つかりませんでした。
+search-player-dominion-inputter-text:
+  button: 検索
+  hint: ドミニオンを検索したいプレイヤーの名前を入力してください。
+  no-results: このプレイヤーのドミニオンは見つかりませんでした。
 set-map-color-inputter-text:
   button: 色
   hint: 'マップカラーを設定するための16進数の色コードを入力してください (例: #FF5733)。'
