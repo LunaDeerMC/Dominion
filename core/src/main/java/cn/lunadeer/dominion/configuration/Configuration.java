@@ -218,7 +218,7 @@ public class Configuration extends ConfigurationFile {
     }
 
     @Comments("Player with these permission nodes won't be affected by dominion's fly limitation.")
-    public static List<String> flyPermissionNodes = List.of("essentials.fly", "cmi.command.fly");
+    public static List<String> flyPermissionNodes = List.of("essentials.fly", "cmi.command.fly", "domfly.use");
 
     @Comments("Check for updates by internet.")
     public static boolean checkUpdate = true;
