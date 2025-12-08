@@ -1230,10 +1230,59 @@ select-player-cui:
     lore:
     - §7輸入玩家帳號以
     - §7搜尋特定玩家。
+    - §7支援模糊搜尋（75%相似度匹配）
     - ''
     - §6▶ 點擊以搜尋
     - ''
     - §8可用於尋找離線玩家！
+    material: COMPASS
+  player-button-name: §a➕ §2{0}
+  player-button-lore:
+  - §7將此玩家新增為您領地的
+  - §7成員。
+  - ''
+  - '§7玩家: §e{0}'
+  - ''
+  - §2▶ 點擊以新增成員
+search-results-cui:
+  title: '§6✦ §5§l搜尋結果: {0} §6✦'
+  list-configuration:
+    item-symbol: i
+    layout:
+    - <######r#
+    - '#iiiiiii#'
+    - '#iiiiiii#'
+    - '#iiiiiii#'
+    - p#######n
+    preview-button:
+      symbol: p
+      name: <<<
+      lore:
+      - '頁碼: {0}/{1}'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWRiZWIwZmJjNWU2NjAxZmU1MDQ3MDJjYWZmZGFhYzBlOGVhMTllMTFiY2FkZmJlZTBkMThjODlmNDZiYzFmZCJ9fX0=
+    next-button:
+      symbol: n
+      name: '>>>'
+      lore:
+      - '頁碼: {0}/{1}'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWI5Y2VjYzIxZDY3MGMxZmYyNzc4MTc2MjI1ZTI4NTBlMmVlMmY3Y2Y1NDEzYmIxNTY2N2Q5OGRiYjNjZjhiNSJ9fX0=
+  back-button:
+    symbol: <
+    name: §c« 返回玩家列表
+    lore:
+    - §7返回完整的玩家列表，
+    - §7不選擇任何玩家。
+    - ''
+    - §e▶ 點擊以返回
+    material: RED_STAINED_GLASS_PANE
+  search-again-button:
+    symbol: r
+    name: §e🔍 §6重新搜尋
+    lore:
+    - §7輸入其他帳號
+    - §7搜尋不同的玩家。
+    - ''
+    - §6▶ 點擊以重新搜尋
     material: COMPASS
   player-button-name: §a➕ §2{0}
   player-button-lore:

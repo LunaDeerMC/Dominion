@@ -1252,10 +1252,59 @@ select-player-cui:
     lore:
       - §7Search for a specific player
       - §7by entering their username.
+      - §7Supports fuzzy search (75% similarity match)
       - ''
       - §6▶ Click to search
       - ''
       - §8Useful for finding offline players!
+    material: COMPASS
+  player-button-name: §a➕ §2{0}
+  player-button-lore:
+    - §7Add this player as a member
+    - §7of your dominion.
+    - ''
+    - '§7Player: §e{0}'
+    - ''
+    - §2▶ Click to add member
+search-results-cui:
+  title: '§6✦ §5§lSearch Results: {0} §6✦'
+  list-configuration:
+    item-symbol: i
+    layout:
+      - <######r#
+      - '#iiiiiii#'
+      - '#iiiiiii#'
+      - '#iiiiiii#'
+      - p#######n
+    preview-button:
+      symbol: p
+      name: <<<
+      lore:
+        - 'Page: {0}/{1}'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWRiZWIwZmJjNWU2NjAxZmU1MDQ3MDJjYWZmZGFhYzBlOGVhMTllMTFiY2FkZmJlZTBkMThjODlmNDZiYzFmZCJ9fX0=
+    next-button:
+      symbol: n
+      name: '>>>'
+      lore:
+        - 'Page: {0}/{1}'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWI5Y2VjYzIxZDY3MGMxZmYyNzc4MTc2MjI1ZTI4NTBlMmVlMmY3Y2Y1NDEzYmIxNTY2N2Q5OGRiYjNjZjhiNSJ9fX0=
+  back-button:
+    symbol: <
+    name: §c« Back to Player List
+    lore:
+      - §7Return to the full player list
+      - §7without selecting a player.
+      - ''
+      - §e▶ Click to go back
+    material: RED_STAINED_GLASS_PANE
+  search-again-button:
+    symbol: r
+    name: §e🔍 §6Search Again
+    lore:
+      - §7Search for a different player
+      - §7by entering another username.
+      - ''
+      - §6▶ Click to search again
     material: COMPASS
   player-button-name: §a➕ §2{0}
   player-button-lore:
