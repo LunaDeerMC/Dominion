@@ -529,6 +529,12 @@ flags:
   pick_up:
     display-name: アイテムを拾う
     description: 地面に落ちているアイテムを拾うことができるかどうか
+  decay:
+    display-name: 葉の腐敗
+    description: 葉が腐敗するかどうか
+  bookshelf:
+    display-name: 模様入りの本棚
+    description: 模様入りの本棚と相互作用できるかどうか
 rename-template-inputter-text:
   button: 名前変更
   hint: 新しいテンプレート名を入力してください。

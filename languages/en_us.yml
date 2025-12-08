@@ -529,6 +529,12 @@ flags:
   pick_up:
     display-name: Pick Up Item
     description: Whether player can pick up items in dominion.
+  decay:
+    display-name: Leaf Decay
+    description: Whether leaves can decay.
+  bookshelf:
+    display-name: Chiseled Bookshelf
+    description: Whether can interact with chiseled bookshelf.
 rename-template-inputter-text:
   button: RENAME
   hint: Enter new template name.
