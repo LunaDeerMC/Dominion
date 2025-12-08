@@ -79,6 +79,10 @@ select-player-tui-text:
   button: 添加成员
   description: 选择一个登陆过的玩家添加为领地成员
   back: 返回
+search-results-tui-text:
+  title: 搜索结果
+  button: 搜索结果
+  description: 匹配搜索条件的玩家列表
 member-setting-tui-text:
   title: 成员 {0} 权限设置
   description: 设置成员在此领地的权限
