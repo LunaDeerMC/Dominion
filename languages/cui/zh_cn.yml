@@ -1192,7 +1192,7 @@ select-player-cui:
   list-configuration:
     item-symbol: i
     layout:
-      - <######s#
+      - <#####Ns#
       - '#iiiiiii#'
       - '#iiiiiii#'
       - '#iiiiiii#'
@@ -1218,6 +1218,16 @@ select-player-cui:
       - ''
       - §e▶ 点击返回
     material: RED_STAINED_GLASS_PANE
+  nearby-players-button:
+    symbol: N
+    name: §b👥 §3附近玩家
+    lore:
+      - §7显示当前在领地内的玩家。
+      - ''
+      - §3▶ 点击查看附近玩家
+      - ''
+      - §8快速添加在场玩家！
+    material: OAK_SIGN
   search-button:
     symbol: s
     name: §e🔍 §6搜索玩家
@@ -1329,3 +1339,42 @@ select-template-cui:
       - ''
       - §8这将覆盖成员当前的权限。
     material: WRITABLE_BOOK
+
+select-player-in-dominion-cui:
+  title: §6✦ §5§l领地内的玩家 {0} §6✦
+  list-configuration:
+    item-symbol: i
+    layout:
+      - <########
+      - '#iiiiiii#'
+      - '#iiiiiii#'
+      - '#iiiiiii#'
+      - p#######n
+    preview-button:
+      symbol: p
+      name: <<<
+      lore:
+        - '第 {0}/{1} 页'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWRiZWIwZmJjNWU2NjAxZmU1MDQ3MDJjYWZmZGFhYzBlOGVhMTllMTFiY2FkZmJlZTBkMThjODlmNDZiYzFmZCJ9fX0=
+    next-button:
+      symbol: n
+      name: '>>>'
+      lore:
+        - '第 {0}/{1} 页'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWI5Y2VjYzIxZDY3MGMxZmYyNzc4MTc2MjI1ZTI4NTBlMmVlMmY3Y2Y1NDEzYmIxNTY2N2Q5OGRiYjNjZjhiNSJ9fX0=
+  back-button:
+    symbol: <
+    name: §c« 返回玩家选择
+    lore:
+      - §7返回完整的玩家选择菜单。
+      - ''
+      - §e▶ 点击返回
+    material: RED_STAINED_GLASS_PANE
+  player-button-name: §a➕ §2{0}
+  player-button-lore:
+    - §7此玩家当前在你的领地内。
+    - ''
+    - '§7玩家: §e{0}'
+    - ''
+    - §2▶ 点击添加为成员
+  no-players-message: §7当前领地内没有其他玩家。

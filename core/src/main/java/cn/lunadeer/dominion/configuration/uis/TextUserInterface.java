@@ -18,6 +18,7 @@ import cn.lunadeer.dominion.uis.dominion.manage.group.SelectMember;
 import cn.lunadeer.dominion.uis.dominion.manage.member.MemberFlags;
 import cn.lunadeer.dominion.uis.dominion.manage.member.MemberList;
 import cn.lunadeer.dominion.uis.dominion.manage.member.SelectPlayer;
+import cn.lunadeer.dominion.uis.dominion.manage.member.SelectPlayerInDominion;
 import cn.lunadeer.dominion.uis.dominion.manage.member.SelectTemplate;
 import cn.lunadeer.dominion.uis.template.TemplateFlags;
 import cn.lunadeer.dominion.uis.template.TemplateList;
@@ -56,6 +57,7 @@ public class TextUserInterface extends ConfigurationFile {
     public static MemberList.MemberListTuiText memberListTuiText = new MemberList.MemberListTuiText();
     public static SelectPlayer.SelectPlayerTuiText selectPlayerTuiText = new SelectPlayer.SelectPlayerTuiText();
     public static SelectPlayer.SearchResultsTuiText searchResultsTuiText = new SelectPlayer.SearchResultsTuiText();
+    public static SelectPlayerInDominion.SelectPlayerInDominionTuiText selectPlayerInDominionTuiText = new SelectPlayerInDominion.SelectPlayerInDominionTuiText();
     public static MemberFlags.MemberSettingTuiText memberSettingTuiText = new MemberFlags.MemberSettingTuiText();
     public static TemplateList.TemplateListTuiText templateListTuiText = new TemplateList.TemplateListTuiText();
     public static SelectTemplate.SelectTemplateTuiText selectTemplateTuiText = new SelectTemplate.SelectTemplateTuiText();

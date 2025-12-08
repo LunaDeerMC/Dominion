@@ -203,6 +203,8 @@ public class SelectPlayer extends AbstractUI {
         public String button = "ADD PLAYER";
         public String description = "Add a player as a member of this dominion.";
         public String back = "BACK";
+        public String nearbyPlayers = "NEARBY";
+        public String nearbyPlayersDescription = "Show players currently inside this dominion.";
     }
 
     public static class SearchResultsTuiText extends ConfigurationPart {
@@ -232,6 +234,7 @@ public class SelectPlayer extends AbstractUI {
         ListView view = ListView.create(10, button(player, dominionName));
         Line sub = Line.create()
                 .append(SearchPlayerInputter.createTuiButtonOn(player, dominionName).build())
+                .append(SelectPlayerInDominion.button(player, dominionName).setText(TextUserInterface.selectPlayerTuiText.nearbyPlayers).build())
                 .append(MemberList.button(player, dominionName).setText(TextUserInterface.selectPlayerTuiText.back).build());
         view.title(TextUserInterface.selectPlayerTuiText.title).subtitle(sub);
 
@@ -256,7 +259,7 @@ public class SelectPlayer extends AbstractUI {
         public ListViewConfiguration listConfiguration = new ListViewConfiguration(
                 'i',
                 List.of(
-                        "<######s#",
+                        "<#####Ns#",
                         "#iiiiiii#",
                         "#iiiiiii#",
                         "#iiiiiii#",
@@ -272,6 +275,19 @@ public class SelectPlayer extends AbstractUI {
                         "§7without adding a player.",
                         "",
                         "§e▶ Click to go back"
+                )
+        );
+
+        public ButtonConfiguration nearbyPlayersButton = ButtonConfiguration.createMaterial(
+                'N', Material.OAK_SIGN,
+                "§b👥 §3Nearby Players",
+                List.of(
+                        "§7Show players who are currently",
+                        "§7inside this dominion.",
+                        "",
+                        "§3▶ Click to view nearby players",
+                        "",
+                        "§8Quick way to add present players!"
                 )
         );
 
@@ -361,6 +377,15 @@ public class SelectPlayer extends AbstractUI {
                     @Override
                     public void onClick(ClickType type) {
                         MemberList.show(player, dominionName, "1");
+                    }
+                }
+        );
+
+        view.setButton(ChestUserInterface.selectPlayerCui.nearbyPlayersButton.getSymbol(),
+                new ChestButton(ChestUserInterface.selectPlayerCui.nearbyPlayersButton) {
+                    @Override
+                    public void onClick(ClickType type) {
+                        SelectPlayerInDominion.show(player, dominionName, "1");
                     }
                 }
         );
