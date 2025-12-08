@@ -560,6 +560,12 @@ flags:
   pick_up:
     display-name: 拾取物品
     description: 是否可以拾取地上的物品
+  decay:
+    display-name: 樹葉腐爛
+    description: 是否允許樹葉自然腐爛
+  bookshelf:
+    display-name: 雕紋書架
+    description: 是否可以與雕紋書架互動
 rename-template-inputter-text:
   button: 重新命名
   hint: 輸入新的範本名稱

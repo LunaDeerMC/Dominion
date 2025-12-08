@@ -479,6 +479,12 @@ flags:
   pick_up:
     display-name: 拾取物品
     description: 是否可以拾取地上的物品
+  decay:
+    display-name: 树叶腐烂
+    description: 是否允许树叶自然腐烂
+  bookshelf:
+    display-name: 雕纹书架
+    description: 是否可以与雕纹书架交互
 create-dominion-inputter-text:
   button: 创建领地
   description: 在你的周围创建一个新的领地。
