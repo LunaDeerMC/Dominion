@@ -18,6 +18,7 @@ import cn.lunadeer.dominion.utils.bStatsMetrics;
 import cn.lunadeer.dominion.utils.command.CommandManager;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import cn.lunadeer.dominion.utils.databse.DatabaseManager;
+import cn.lunadeer.dominion.utils.highlighter.HighlighterManager;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager;
 import cn.lunadeer.dominion.utils.stui.TextUserInterfaceManager;
@@ -72,6 +73,7 @@ public final class Dominion extends JavaPlugin {
         new MultiServerManager(this);
         new TeleportManager(this);
         new CacheManager();
+        new HighlighterManager();
         new Inputter(this);
         new TextUserInterfaceManager(this);
         new ChestUserInterfaceManager(this);

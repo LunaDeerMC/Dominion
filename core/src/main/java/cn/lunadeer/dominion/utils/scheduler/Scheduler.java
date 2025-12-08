@@ -1,5 +1,6 @@
 package cn.lunadeer.dominion.utils.scheduler;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -31,7 +32,7 @@ public class Scheduler {
      * Run a task later
      *
      * @param task  The task to run
-     * @param delay The delay in ticks (20 ticks = 1 second)
+     * @param delay The delay in ticks
      */
     public static CancellableTask runTaskLater(Runnable task, long delay) {
         if (delay <= 0) {
@@ -62,8 +63,8 @@ public class Scheduler {
      * Run a task repeatedly
      *
      * @param task   The task to run
-     * @param delay  The delay in ticks (20 ticks = 1 second)
-     * @param period The period in ticks (20 ticks = 1 second)
+     * @param delay  The delay in ticks
+     * @param period The period in ticks
      */
     public static CancellableTask runTaskRepeat(Runnable task, long delay, long period) {
         if (instance.isPaper) {
@@ -77,7 +78,7 @@ public class Scheduler {
      * Run a task later asynchronously
      *
      * @param task  The task to run
-     * @param delay The delay in ticks (20 ticks = 1 second)
+     * @param delay The delay in ticks
      */
     public static CancellableTask runTaskLaterAsync(Runnable task, long delay) {
         if (delay <= 0) {
@@ -108,8 +109,8 @@ public class Scheduler {
      * Run a task repeatedly asynchronously
      *
      * @param task   The task to run
-     * @param delay  The delay in ticks (20 ticks = 1 second)
-     * @param period The period in ticks (20 ticks = 1 second)
+     * @param delay  The delay in ticks
+     * @param period The period in ticks
      */
     public static CancellableTask runTaskRepeatAsync(Runnable task, long delay, long period) {
         if (instance.isPaper) {
@@ -124,6 +125,38 @@ public class Scheduler {
             return new PaperTask(entity.getScheduler().run(instance.plugin, (plugin) -> task.run(), null));
         } else {
             return new SpigotTask(instance.plugin.getServer().getScheduler().runTaskAsynchronously(instance.plugin, task));
+        }
+    }
+
+    /**
+     * Run a task at a specific location
+     *
+     * @param task     The task to run
+     * @param location The location to run the task at
+     */
+    public static CancellableTask runTaskAtLocation(Runnable task, Location location) {
+        if (instance.isPaper) {
+            return new PaperTask(instance.plugin.getServer().getRegionScheduler().run(instance.plugin, location, (plugin) -> task.run()));
+        } else {
+            return new SpigotTask(instance.plugin.getServer().getScheduler().runTask(instance.plugin, task));
+        }
+    }
+
+    /**
+     * Run a task at a specific location later
+     *
+     * @param task     The task to run
+     * @param location The location to run the task at
+     * @param delay    The delay in ticks
+     */
+    public static CancellableTask runTaskAtLocationLater(Runnable task, Location location, long delay) {
+        if (delay <= 0) {
+            return runTaskAtLocation(task, location);
+        }
+        if (instance.isPaper) {
+            return new PaperTask(instance.plugin.getServer().getRegionScheduler().runDelayed(instance.plugin, location, (plugin) -> task.run(), delay));
+        } else {
+            return new SpigotTask(instance.plugin.getServer().getScheduler().runTaskLater(instance.plugin, task, delay));
         }
     }
 }
