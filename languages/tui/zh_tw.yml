@@ -79,6 +79,14 @@ select-player-tui-text:
   button: 新增成員
   description: 選擇一位曾登入的玩家加入領地
   back: 返回
+  nearby-players: 附近玩家
+  nearby-players-description: 顯示目前在此領地內的玩家。
+select-player-in-dominion-tui-text:
+  title: 領地內的玩家
+  button: 附近
+  description: 從目前在此領地內的玩家中選擇。
+  back: 返回
+  no-player: 目前此領地內沒有玩家。
 member-setting-tui-text:
   title: 成員 {0} 權限設定
   description: 設定此成員在領地內的權限
