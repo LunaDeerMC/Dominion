@@ -7,6 +7,7 @@ import cn.lunadeer.dominion.utils.Misc;
 import cn.lunadeer.dominion.utils.XLogger;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,9 +21,11 @@ public class HighlighterManager {
 
     private static HighlighterManager instance;
     private final List<Highlighter> highlighters = new ArrayList<>();
+    private final Plugin plugin;
 
-    public HighlighterManager() {
+    public HighlighterManager(Plugin plugin) {
         instance = this;
+        this.plugin = plugin;
         registerHighlighters();
     }
 
@@ -33,7 +36,7 @@ public class HighlighterManager {
         // Register BlockDisplay highlighter only on Paper servers
         if (Misc.isPaper()) {
             try {
-                highlighters.add(new BlockDisplayHighlighter());
+                highlighters.add(new BlockDisplayHighlighter(plugin));
                 XLogger.info("BlockDisplay highlighter registered (Paper detected)");
             } catch (Exception e) {
                 XLogger.warn("Failed to register BlockDisplay highlighter: {0}", e.getMessage());

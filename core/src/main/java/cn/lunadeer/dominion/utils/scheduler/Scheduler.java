@@ -32,7 +32,7 @@ public class Scheduler {
      * Run a task later
      *
      * @param task  The task to run
-     * @param delay The delay in ticks
+     * @param delay The delay in ticks (20 ticks = 1 second in Minecraft)
      */
     public static CancellableTask runTaskLater(Runnable task, long delay) {
         if (delay <= 0) {
@@ -63,8 +63,8 @@ public class Scheduler {
      * Run a task repeatedly
      *
      * @param task   The task to run
-     * @param delay  The delay in ticks
-     * @param period The period in ticks
+     * @param delay  The delay in ticks (20 ticks = 1 second in Minecraft)
+     * @param period The period in ticks (20 ticks = 1 second in Minecraft)
      */
     public static CancellableTask runTaskRepeat(Runnable task, long delay, long period) {
         if (instance.isPaper) {
@@ -78,7 +78,7 @@ public class Scheduler {
      * Run a task later asynchronously
      *
      * @param task  The task to run
-     * @param delay The delay in ticks
+     * @param delay The delay in ticks (20 ticks = 1 second in Minecraft)
      */
     public static CancellableTask runTaskLaterAsync(Runnable task, long delay) {
         if (delay <= 0) {
@@ -109,8 +109,8 @@ public class Scheduler {
      * Run a task repeatedly asynchronously
      *
      * @param task   The task to run
-     * @param delay  The delay in ticks
-     * @param period The period in ticks
+     * @param delay  The delay in ticks (20 ticks = 1 second in Minecraft)
+     * @param period The period in ticks (20 ticks = 1 second in Minecraft)
      */
     public static CancellableTask runTaskRepeatAsync(Runnable task, long delay, long period) {
         if (instance.isPaper) {
@@ -147,7 +147,7 @@ public class Scheduler {
      *
      * @param task     The task to run
      * @param location The location to run the task at
-     * @param delay    The delay in ticks
+     * @param delay    The delay in ticks (20 ticks = 1 second in Minecraft)
      */
     public static CancellableTask runTaskAtLocationLater(Runnable task, Location location, long delay) {
         if (delay <= 0) {

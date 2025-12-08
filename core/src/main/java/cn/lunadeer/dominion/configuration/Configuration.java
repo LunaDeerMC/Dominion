@@ -316,6 +316,47 @@ public class Configuration extends ConfigurationFile {
             XLogger.warn("Invalid default UI type: {0}", defaultUiType);
             defaultUiType = PlayerDTO.UI_TYPE.BY_PLAYER.name();
         }
+
+        // Validate highlighter configuration
+        String highlighterType = highlighter.type.toUpperCase();
+        if (!highlighterType.equals("AUTO") && !highlighterType.equals("BLOCK_DISPLAY") && !highlighterType.equals("PARTICLE")) {
+            XLogger.warn("Invalid highlighter type: {0}, using AUTO", highlighter.type);
+            highlighter.type = "AUTO";
+        }
+
+        if (Material.matchMaterial(highlighter.cornerBlockType) == null) {
+            XLogger.warn("Invalid corner block type: {0}, using GLOWSTONE", highlighter.cornerBlockType);
+            highlighter.cornerBlockType = "GLOWSTONE";
+        }
+
+        if (Material.matchMaterial(highlighter.edgeBlockType) == null) {
+            XLogger.warn("Invalid edge block type: {0}, using GOLD_BLOCK", highlighter.edgeBlockType);
+            highlighter.edgeBlockType = "GOLD_BLOCK";
+        }
+
+        try {
+            org.bukkit.Particle.valueOf(highlighter.particleType.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            XLogger.warn("Invalid particle type: {0}, using FLAME", highlighter.particleType);
+            highlighter.particleType = "FLAME";
+        }
+
+        // Validate glow color format
+        String glowColor = highlighter.glowColor;
+        if (glowColor.startsWith("#")) {
+            glowColor = glowColor.substring(1);
+        }
+        try {
+            Integer.parseInt(glowColor, 16);
+        } catch (NumberFormatException e) {
+            XLogger.warn("Invalid glow color format: {0}, using #FFFF00", highlighter.glowColor);
+            highlighter.glowColor = "#FFFF00";
+        }
+
+        if (highlighter.edgeSpacing < 1) {
+            XLogger.warn("Edge spacing must be at least 1, using 8");
+            highlighter.edgeSpacing = 8;
+        }
     }
 
     @HandleManually

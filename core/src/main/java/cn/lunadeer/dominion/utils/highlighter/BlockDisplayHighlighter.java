@@ -13,6 +13,7 @@ import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Transformation;
 import org.joml.AxisAngle4f;
 import org.joml.Vector3f;
@@ -24,6 +25,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static cn.lunadeer.dominion.utils.highlighter.HighlighterUtil.RENDER_MAX_RADIUS;
+
 /**
  * Highlighter implementation using BlockDisplay entities.
  * Only works on Paper servers.
@@ -31,7 +34,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class BlockDisplayHighlighter implements Highlighter {
 
-    private static final int RENDER_MAX_RADIUS = 48;
     private static final float SCALAR = 0.002f;
     private static final Transformation SCALE_TRANSFORMATION = new Transformation(
             new Vector3f(-(SCALAR / 2), -(SCALAR / 2), -(SCALAR / 2)),
@@ -45,6 +47,12 @@ public class BlockDisplayHighlighter implements Highlighter {
     private final Map<UUID, List<BlockDisplay>> activeDisplays = new ConcurrentHashMap<>();
     // Store cleanup tasks per player
     private final Map<UUID, CancellableTask> cleanupTasks = new ConcurrentHashMap<>();
+    // Plugin instance for entity visibility
+    private final Plugin plugin;
+
+    public BlockDisplayHighlighter(Plugin plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void showBorder(Player player, DominionDTO dominion) {
@@ -154,6 +162,8 @@ public class BlockDisplayHighlighter implements Highlighter {
         if (!isInRange(y, pMinY, pMaxY) || !isInRange(z, pMinZ, pMaxZ)) return;
         
         int edgeLength = maxX - minX;
+        // For edges of length 2 or less, there is no space between corners to place additional edge blocks.
+        // Only the corners are marked in this case.
         if (edgeLength <= 2) return;
         
         // Always place a block next to the corner (minX + 1)
@@ -183,6 +193,8 @@ public class BlockDisplayHighlighter implements Highlighter {
         if (!isInRange(y, pMinY, pMaxY) || !isInRange(x, pMinX, pMaxX)) return;
         
         int edgeLength = maxZ - minZ;
+        // For edges of length 2 or less, there is no space between corners to place additional edge blocks.
+        // Only the corners are marked in this case.
         if (edgeLength <= 2) return;
         
         // Always place a block next to the corner (minZ + 1)
@@ -212,6 +224,8 @@ public class BlockDisplayHighlighter implements Highlighter {
         if (!isInRange(x, pMinX, pMaxX) || !isInRange(z, pMinZ, pMaxZ)) return;
         
         int edgeLength = maxY - minY;
+        // For edges of length 2 or less, there is no space between corners to place additional edge blocks.
+        // Only the corners are marked in this case.
         if (edgeLength <= 2) return;
         
         // Always place a block next to the corner (minY + 1)
@@ -269,7 +283,7 @@ public class BlockDisplayHighlighter implements Highlighter {
             }
 
             // Show only to the specific player
-            player.showEntity(org.bukkit.Bukkit.getPluginManager().getPlugin("Dominion"), display);
+            player.showEntity(plugin, display);
 
             return display;
         } catch (Exception e) {
@@ -345,21 +359,4 @@ public class BlockDisplayHighlighter implements Highlighter {
         }
     }
 
-    private int[] adjustBoundary(int playerMin, int playerMax, int boundaryMin, int boundaryMax) {
-        if (playerMax <= boundaryMin) {
-            boundaryMin = boundaryMax;
-        } else if (playerMax <= boundaryMax) {
-            boundaryMax = playerMax;
-            if (playerMin >= boundaryMin) {
-                boundaryMin = playerMin;
-            }
-        } else {
-            if (playerMin > boundaryMin) {
-                boundaryMin = playerMin;
-            } else if (playerMin > boundaryMax) {
-                boundaryMin = boundaryMax;
-            }
-        }
-        return new int[]{boundaryMin, boundaryMax};
-    }
 }

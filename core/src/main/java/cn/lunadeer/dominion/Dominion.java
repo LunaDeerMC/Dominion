@@ -73,7 +73,7 @@ public final class Dominion extends JavaPlugin {
         new MultiServerManager(this);
         new TeleportManager(this);
         new CacheManager();
-        new HighlighterManager();
+        new HighlighterManager(this);
         new Inputter(this);
         new TextUserInterfaceManager(this);
         new ChestUserInterfaceManager(this);

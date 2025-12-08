@@ -9,13 +9,15 @@ import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import static cn.lunadeer.dominion.utils.highlighter.HighlighterUtil.RENDER_MAX_RADIUS;
+import static cn.lunadeer.dominion.utils.highlighter.HighlighterUtil.adjustBoundary;
+
 /**
  * Highlighter implementation using particles.
  * Works on all Bukkit/Spigot/Paper servers.
  */
 public class ParticleHighlighter implements Highlighter {
 
-    private static final int RENDER_MAX_RADIUS = 48;
 
     @Override
     public void showBorder(Player player, DominionDTO dominion) {
@@ -57,7 +59,8 @@ public class ParticleHighlighter implements Highlighter {
     }
 
     private void showBoxFace(Player player, Location loc1, Location loc2) {
-        Scheduler.runTask(() -> {
+        // Use runTaskAtLocation for Folia compatibility
+        Scheduler.runTaskAtLocation(() -> {
             if (!loc1.getWorld().equals(loc2.getWorld())) {
                 return;
             }
@@ -124,7 +127,7 @@ public class ParticleHighlighter implements Highlighter {
                     }
                 }
             }
-        });
+        }, player.getLocation());
     }
 
     private Particle getParticleType() {
@@ -137,23 +140,5 @@ public class ParticleHighlighter implements Highlighter {
 
     private void spawnParticle(Player player, Particle particle, double x, double y, double z) {
         player.spawnParticle(particle, x, y, z, 2, 0, 0, 0, 0);
-    }
-
-    private int[] adjustBoundary(int playerMin, int playerMax, int boundaryMin, int boundaryMax) {
-        if (playerMax <= boundaryMin) {
-            boundaryMin = boundaryMax;
-        } else if (playerMax <= boundaryMax) {
-            boundaryMax = playerMax;
-            if (playerMin >= boundaryMin) {
-                boundaryMin = playerMin;
-            }
-        } else {
-            if (playerMin > boundaryMin) {
-                boundaryMin = playerMin;
-            } else if (playerMin > boundaryMax) {
-                boundaryMin = boundaryMax;
-            }
-        }
-        return new int[]{boundaryMin, boundaryMax};
     }
 }
