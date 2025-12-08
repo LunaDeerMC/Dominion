@@ -104,10 +104,11 @@ main-menu-cui:
     material: COMPASS
 all-dominion-cui:
   title: §6✦ §c§lすべてのドミニオン §6✦
+  search-results-title: §6✦ §c§l{0} のドミニオン §6✦
   list-configuration:
     item-symbol: i
     layout:
-      - <########
+      - <#####s##
       - '#iiiiiii#'
       - '#iiiiiii#'
       - '#iiiiiii#'
@@ -146,6 +147,17 @@ all-dominion-cui:
       - ''
       - §e▶ 戻るにはクリック
     material: RED_STAINED_GLASS_PANE
+  search-button:
+    symbol: s
+    name: §e🔍 §6プレイヤーのドミニオンを検索
+    lore:
+      - §7プレイヤー名を入力して
+      - §7そのプレイヤーのすべてのドミニオンを検索します。
+      - ''
+      - §6▶ 検索するにはクリック
+      - ''
+      - §8特定のプレイヤーのドミニオンを見つけるのに便利！
+    material: COMPASS
 title-list-cui:
   title: §6✦ §d§lグループタイトルリスト §6✦
   list-configuration:

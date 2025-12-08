@@ -105,10 +105,11 @@ main-menu-cui:
     material: COMPASS
 all-dominion-cui:
   title: §6✦ §c§lAll Dominions §6✦
+  search-results-title: §6✦ §c§lDominions of {0} §6✦
   list-configuration:
     item-symbol: i
     layout:
-      - <########
+      - <#####s##
       - '#iiiiiii#'
       - '#iiiiiii#'
       - '#iiiiiii#'
@@ -147,6 +148,17 @@ all-dominion-cui:
       - ''
       - §e▶ Click to go back
     material: RED_STAINED_GLASS_PANE
+  search-button:
+    symbol: s
+    name: §e🔍 §6Search Player Dominions
+    lore:
+      - §7Search for dominions owned by
+      - §7a specific player.
+      - ''
+      - §6▶ Click to search
+      - ''
+      - §8Enter player name to find their dominions!
+    material: COMPASS
 title-list-cui:
   title: §6✦ §d§lGroup Title List §6✦
   list-configuration:
