@@ -10,6 +10,7 @@ import cn.lunadeer.dominion.uis.dominion.copy.CopyMenu;
 import cn.lunadeer.dominion.uis.dominion.copy.DominionCopy;
 import cn.lunadeer.dominion.uis.dominion.manage.EnvFlags;
 import cn.lunadeer.dominion.uis.dominion.manage.GuestFlags;
+import cn.lunadeer.dominion.uis.dominion.manage.MonsterSpawnSettings;
 import cn.lunadeer.dominion.uis.dominion.manage.SetSize;
 import cn.lunadeer.dominion.uis.dominion.manage.group.GroupFlags;
 import cn.lunadeer.dominion.uis.dominion.manage.group.GroupList;
@@ -57,6 +58,7 @@ public class ChestUserInterface extends ConfigurationFile {
     public static DominionCopy.DominionCopyCui dominionCopyCui = new DominionCopy.DominionCopyCui();
     public static EnvFlags.EnvSettingCui envSettingCui = new EnvFlags.EnvSettingCui();
     public static GuestFlags.GuestSettingCui guestSettingCui = new GuestFlags.GuestSettingCui();
+    public static MonsterSpawnSettings.MonsterSpawnSettingsCui monsterSpawnSettingsCui = new MonsterSpawnSettings.MonsterSpawnSettingsCui();
     public static SetSize.SetSizeCui setSizeCui = new SetSize.SetSizeCui();
     public static GroupList.GroupListCui groupListCui = new GroupList.GroupListCui();
     public static GroupManage.GroupManageCUI groupManageCUI = new GroupManage.GroupManageCUI();

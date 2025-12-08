@@ -154,6 +154,8 @@ public class EnvFlags extends AbstractUI {
                 "§e▶ Click to toggle this setting",
                 "§8Changes take effect immediately"
         );
+
+        public String rightClickForDetailedSettings = "§b▶ Right-click for detailed settings";
     }
 
     @Override
@@ -180,7 +182,14 @@ public class EnvFlags extends AbstractUI {
             String flagState = dominion.getEnvFlagValue(flag) ? ChestUserInterface.envSettingCui.flagItemStateTrue : ChestUserInterface.envSettingCui.flagItemStateFalse;
             String flagName = formatString(ChestUserInterface.envSettingCui.flagItemName, flag.getDisplayName());
             List<String> descriptions = foldLore2Line(flag.getDescription(), 30);
-            List<String> flagLore = formatStringList(ChestUserInterface.envSettingCui.flagItemLore, flagState, descriptions.get(0), descriptions.get(1));
+            List<String> flagLore;
+            if (flag.equals(Flags.MONSTER_SPAWN)) {
+                flagLore = formatStringList(ChestUserInterface.envSettingCui.flagItemLore, flagState, descriptions.get(0), descriptions.get(1));
+                flagLore.add("");
+                flagLore.add(ChestUserInterface.envSettingCui.rightClickForDetailedSettings);
+            } else {
+                flagLore = formatStringList(ChestUserInterface.envSettingCui.flagItemLore, flagState, descriptions.get(0), descriptions.get(1));
+            }
             ButtonConfiguration btnConfig = ButtonConfiguration.createMaterial(
                     ChestUserInterface.envSettingCui.listConfiguration.itemSymbol.charAt(0),
                     flag.getMaterial(),
@@ -190,6 +199,10 @@ public class EnvFlags extends AbstractUI {
             view.addItem(new ChestButton(btnConfig) {
                 @Override
                 public void onClick(ClickType type) {
+                    if (flag.equals(Flags.MONSTER_SPAWN) && type == ClickType.RIGHT) {
+                        MonsterSpawnSettings.show(player, dominion.getName(), "1");
+                        return;
+                    }
                     DominionFlagCommand.setEnv(player, dominion.getName(), flag.getFlagName(), String.valueOf(!dominion.getEnvFlagValue(flag)), page.toString());
                 }
             });

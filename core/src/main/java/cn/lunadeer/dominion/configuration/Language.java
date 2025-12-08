@@ -26,6 +26,7 @@ import cn.lunadeer.dominion.utils.command.NoPermissionException;
 import cn.lunadeer.dominion.utils.configuration.*;
 import cn.lunadeer.dominion.utils.stui.inputter.InputterRunner;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -166,6 +167,112 @@ public class Language extends ConfigurationFile {
         public String onlyPlayer = "TUI inputter can only be used by a player.";
         public String cancel = " [Send 'C' to cancel the inputter.]";
         public String inputterCancelled = "Inputter cancelled.";
+    }
+
+    public static SpawnReasonText spawnReasonText = new SpawnReasonText();
+    
+    public static class SpawnReasonText extends ConfigurationPart {
+        // Natural spawns
+        public String naturalDisplayName = "Natural Spawn";
+        public String naturalDescription = "Monsters spawn naturally in darkness";
+        public String spawnerDisplayName = "Spawner";
+        public String spawnerDescription = "Monsters spawn from monster spawner blocks";
+        public String chunkGenDisplayName = "Chunk Generation";
+        public String chunkGenDescription = "Monsters spawn during world generation";
+        public String jockeyDisplayName = "Jockey";
+        public String jockeyDescription = "Spider jockeys, chicken jockeys, etc.";
+        public String patrolDisplayName = "Patrol";
+        public String patrolDescription = "Pillager patrol spawning";
+        public String raidDisplayName = "Raid";
+        public String raidDescription = "Raid event spawning";
+        public String reinforcementsDisplayName = "Reinforcements";
+        public String reinforcementsDescription = "Zombie reinforcements when attacked";
+        public String villageInvasionDisplayName = "Village Invasion";
+        public String villageInvasionDescription = "Zombie siege on villages";
+        public String netherPortalDisplayName = "Nether Portal";
+        public String netherPortalDescription = "Zombified piglin from nether portal";
+        public String silverfishBlockDisplayName = "Silverfish Block";
+        public String silverfishBlockDescription = "Silverfish from infested blocks";
+        public String trapDisplayName = "Trap";
+        public String trapDescription = "Skeleton horse trap from lightning";
+        public String enderPearlDisplayName = "Ender Pearl";
+        public String enderPearlDescription = "Endermite from ender pearl";
+        public String spellDisplayName = "Spell";
+        public String spellDescription = "Evoker summoning vex";
+
+        // Player-initiated spawns
+        public String spawnerEggDisplayName = "Spawn Egg";
+        public String spawnerEggDescription = "Player using spawn egg";
+        public String dispenseEggDisplayName = "Dispenser Egg";
+        public String dispenseEggDescription = "Dispenser spawning from egg";
+        public String commandDisplayName = "Command";
+        public String commandDescription = "Spawned by command";
+        public String customDisplayName = "Custom/Plugin";
+        public String customDescription = "Spawned by plugin";
+
+        // Conversion spawns
+        public String infectionDisplayName = "Infection";
+        public String infectionDescription = "Villager converting to zombie villager";
+        public String drownedDisplayName = "Drowned Conversion";
+        public String drownedDescription = "Zombie converting to drowned";
+        public String lightningDisplayName = "Lightning";
+        public String lightningDescription = "Pig converting to zombified piglin";
+        public String curedDisplayName = "Cured";
+        public String curedDescription = "Zombie villager being cured";
+
+        public String getDisplayName(CreatureSpawnEvent.SpawnReason reason) {
+            switch (reason) {
+                case NATURAL: return naturalDisplayName;
+                case SPAWNER: return spawnerDisplayName;
+                case CHUNK_GEN: return chunkGenDisplayName;
+                case JOCKEY: return jockeyDisplayName;
+                case PATROL: return patrolDisplayName;
+                case RAID: return raidDisplayName;
+                case REINFORCEMENTS: return reinforcementsDisplayName;
+                case VILLAGE_INVASION: return villageInvasionDisplayName;
+                case NETHER_PORTAL: return netherPortalDisplayName;
+                case SILVERFISH_BLOCK: return silverfishBlockDisplayName;
+                case TRAP: return trapDisplayName;
+                case ENDER_PEARL: return enderPearlDisplayName;
+                case SPELL: return spellDisplayName;
+                case SPAWNER_EGG: return spawnerEggDisplayName;
+                case DISPENSE_EGG: return dispenseEggDisplayName;
+                case COMMAND: return commandDisplayName;
+                case CUSTOM: return customDisplayName;
+                case INFECTION: return infectionDisplayName;
+                case DROWNED: return drownedDisplayName;
+                case LIGHTNING: return lightningDisplayName;
+                case CURED: return curedDisplayName;
+                default: return reason.name();
+            }
+        }
+
+        public String getDescription(CreatureSpawnEvent.SpawnReason reason) {
+            switch (reason) {
+                case NATURAL: return naturalDescription;
+                case SPAWNER: return spawnerDescription;
+                case CHUNK_GEN: return chunkGenDescription;
+                case JOCKEY: return jockeyDescription;
+                case PATROL: return patrolDescription;
+                case RAID: return raidDescription;
+                case REINFORCEMENTS: return reinforcementsDescription;
+                case VILLAGE_INVASION: return villageInvasionDescription;
+                case NETHER_PORTAL: return netherPortalDescription;
+                case SILVERFISH_BLOCK: return silverfishBlockDescription;
+                case TRAP: return trapDescription;
+                case ENDER_PEARL: return enderPearlDescription;
+                case SPELL: return spellDescription;
+                case SPAWNER_EGG: return spawnerEggDescription;
+                case DISPENSE_EGG: return dispenseEggDescription;
+                case COMMAND: return commandDescription;
+                case CUSTOM: return customDescription;
+                case INFECTION: return infectionDescription;
+                case DROWNED: return drownedDescription;
+                case LIGHTNING: return lightningDescription;
+                case CURED: return curedDescription;
+                default: return "";
+            }
+        }
     }
 
     @PreProcess

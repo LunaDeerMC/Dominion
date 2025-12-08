@@ -11,6 +11,7 @@ import cn.lunadeer.dominion.uis.dominion.copy.DominionCopy;
 import cn.lunadeer.dominion.uis.dominion.manage.EnvFlags;
 import cn.lunadeer.dominion.uis.dominion.manage.GuestFlags;
 import cn.lunadeer.dominion.uis.dominion.manage.Info;
+import cn.lunadeer.dominion.uis.dominion.manage.MonsterSpawnSettings;
 import cn.lunadeer.dominion.uis.dominion.manage.SetSize;
 import cn.lunadeer.dominion.uis.dominion.manage.group.GroupFlags;
 import cn.lunadeer.dominion.uis.dominion.manage.group.GroupList;
@@ -51,6 +52,7 @@ public class TextUserInterface extends ConfigurationFile {
     public static SetSize.SetSizeTuiText setSizeTuiText = new SetSize.SetSizeTuiText();
     public static EnvFlags.EnvSettingTuiText envSettingTuiText = new EnvFlags.EnvSettingTuiText();
     public static GuestFlags.GuestSettingTuiText guestSettingTuiText = new GuestFlags.GuestSettingTuiText();
+    public static MonsterSpawnSettings.MonsterSpawnSettingsTuiText monsterSpawnSettingsTuiText = new MonsterSpawnSettings.MonsterSpawnSettingsTuiText();
     public static Info.SizeInfoTuiText sizeInfoTuiText = new Info.SizeInfoTuiText();
     public static MigrateList.MigrateListTuiText migrateListTuiText = new MigrateList.MigrateListTuiText();
     public static MemberList.MemberListTuiText memberListTuiText = new MemberList.MemberListTuiText();

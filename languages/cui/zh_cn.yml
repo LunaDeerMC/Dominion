@@ -705,6 +705,48 @@ env-setting-cui:
     - ''
     - §e▶ 点击切换此设置
     - §8更改会立即生效
+  right-click-for-detailed-settings: §b▶ 右键点击进入详细设置
+monster-spawn-settings-cui:
+  title: §6✦ §4§l怪物生成设置 §6✦
+  list-configuration:
+    item-symbol: i
+    layout:
+      - <########
+      - '#iiiiiii#'
+      - '#iiiiiii#'
+      - '#iiiiiii#'
+      - p#######n
+    preview-button:
+      symbol: p
+      name: <<<
+      lore:
+        - '第 {0}/{1} 页'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWRiZWIwZmJjNWU2NjAxZmU1MDQ3MDJjYWZmZGFhYzBlOGVhMTllMTFiY2FkZmJlZTBkMThjODlmNDZiYzFmZCJ9fX0=
+    next-button:
+      symbol: n
+      name: '>>>'
+      lore:
+        - '第 {0}/{1} 页'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWI5Y2VjYzIxZDY3MGMxZmYyNzc4MTc2MjI1ZTI4NTBlMmVlMmY3Y2Y1NDEzYmIxNTY2N2Q5OGRiYjNjZjhiNSJ9fX0=
+  back-button:
+    symbol: <
+    name: §c« 返回环境设置
+    lore:
+      - §7返回环境设置菜单。
+      - ''
+      - §e▶ 点击返回
+    material: RED_STAINED_GLASS_PANE
+  reason-item-name: §6⚙️ §e{0}
+  reason-item-state-blocked: §c§l✗ 已阻止
+  reason-item-state-allowed: §a§l✓ 已允许
+  reason-item-lore:
+    - '§7状态: {0}'
+    - ''
+    - '§7描述:'
+    - §f{1}
+    - ''
+    - §e▶ 点击切换
+    - §8阻止 = 怪物不会以此方式生成
 guest-setting-cui:
   title: §6✦ §e§l{0} 的访客设置 §6✦
   list-configuration:

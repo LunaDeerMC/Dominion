@@ -384,8 +384,8 @@ flags:
     display-name: 怪物傷人
     description: 是否允許怪物傷害玩家
   monster_spawn:
-    display-name: 怪物生成
-    description: 是否允許怪物生成(含刷蛋)
+    display-name: 怪物自然生成
+    description: 是否允許怪物自然生成（刷怪籠、黑暗生成等，不影響轉化、刷怪蛋、插件生成）
   monster_move:
     display-name: 怪物移動
     description: 是否允許怪物在領地內移動
@@ -560,6 +560,12 @@ flags:
   pick_up:
     display-name: 拾取物品
     description: 是否可以拾取地上的物品
+  decay:
+    display-name: 樹葉腐爛
+    description: 是否允許樹葉自然腐爛
+  bookshelf:
+    display-name: 雕紋書架
+    description: 是否可以與雕紋書架互動
 rename-template-inputter-text:
   button: 重新命名
   hint: 輸入新的範本名稱
@@ -611,3 +617,129 @@ ui-commands-description:
   member-flags: 管理成員權限權限
   environment-flags: 管理領地環境權限
   guest-flags: 管理領地通用權限權限
+  monster-spawn-settings: 管理怪物生成的詳細設定
+
+spawn-reason-text:
+  natural:
+    display-name: 自然生成
+    description: 因黑暗或正常生成條件而生成
+  spawner:
+    display-name: 刷怪籠
+    description: 由刷怪籠方塊生成
+  chunk-gen:
+    display-name: 區塊生成
+    description: 區塊生成時生成
+  village-defense:
+    display-name: 村莊防禦
+    description: 為村莊防禦而生成（鐵乙太）
+  village-invasion:
+    display-name: 村莊入侵
+    description: 村莊入侵事件生成
+  build-irongolem:
+    display-name: 建造鐵乙太
+    description: 玩家建造鐵乙太
+  build-snowman:
+    display-name: 建造雪乙太
+    description: 玩家建造雪乙太
+  build-wither:
+    display-name: 建造乙太
+    description: 玩家建造乙太
+  breeding:
+    display-name: 繁殖
+    description: 動物繁殖生成
+  dispense-egg:
+    display-name: 發射器蛋
+    description: 發射器發射生怪蛋
+  egg:
+    display-name: 蛋
+    description: 投擲蛋生成雞
+  spawner-egg:
+    display-name: 生怪蛋
+    description: 玩家使用生怪蛋
+  lightning:
+    display-name: 閃電
+    description: 被閃電擊中轉化（豬→乙太豬乙太）
+  jockey:
+    display-name: 騎乘
+    description: 作為騎乘怪物生成
+  nether-portal:
+    display-name: 乙太傳送門
+    description: 通過乙太傳送門生成
+  infection:
+    display-name: 感染
+    description: 被乙太感染轉化（村民→乙太村民）
+  cured:
+    display-name: 治癒
+    description: 乙太村民被治癒轉化為村民
+  ocelot-baby:
+    display-name: 豹貓幼崽
+    description: 豹貓幼崽生成
+  silverfish-block:
+    display-name: 蠹魚方塊
+    description: 從被蟲蛀的方塊生成蠹魚
+  mount:
+    display-name: 坐騎
+    description: 作為坐騎生成
+  trap:
+    display-name: 陷阱
+    description: 骷髏陷阱等陷阱生成
+  ender-pearl:
+    display-name: 乙太珍珠
+    description: 投擲乙太珍珠生成乙太蟎
+  shoulder-entity:
+    display-name: 肩上實體
+    description: 從玩家肩上生成實體
+  drowned:
+    display-name: 溺屍
+    description: 乙太在水中轉化為溺屍
+  sheared:
+    display-name: 剪毛
+    description: 剪哞菇轉化為牛
+  explosion:
+    display-name: 爆炸
+    description: 因爆炸生成
+  raid:
+    display-name: 襲擊
+    description: 襲擊事件生成
+  patrol:
+    display-name: 巡邏
+    description: 作為掠奪者巡邏隊生成
+  beehive:
+    display-name: 蜂巢
+    description: 從蜂巢生成蜜蜂
+  piglin-zombified:
+    display-name: 豬乙太乙太化
+    description: 豬乙太在主世界轉化為乙太豬乙太
+  spell:
+    display-name: 咒語
+    description: 由喚魔者咒語等生成
+  frozen:
+    display-name: 凍結
+    description: 因凍結生成（流髑）
+  metamorphosis:
+    display-name: 變態
+    description: 蝌蚪變態為青蛙
+  duplication:
+    display-name: 複製
+    description: 悅靈複製等生成
+  command:
+    display-name: 指令
+    description: 由伺服器指令生成
+  custom:
+    display-name: 自訂
+    description: 由插件或模組自訂生成
+  default:
+    display-name: 預設
+    description: 預設或未知的生成原因
+  reinforcements:
+    display-name: 援軍
+    description: 作為乙太援軍生成
+  slime-split:
+    display-name: 史萊姆分裂
+    description: 史萊姆或岩漿怪分裂
+  trial-spawner:
+    display-name: 試煉刷怪籠
+    description: 由試煉刷怪籠生成
+  ominous-item-spawner:
+    display-name: 不祥物品生成器
+    description: 由不祥物品生成器生成

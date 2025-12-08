@@ -728,6 +728,49 @@ env-setting-cui:
     - ''
     - §e▶ Click to toggle this setting
     - §8Changes take effect immediately
+  right-click-for-detailed-settings: §b▶ Right-click for detailed settings
+monster-spawn-settings-cui:
+  title: §6✦ §4§lMonster Spawn Settings §6✦
+  list-configuration:
+    item-symbol: i
+    layout:
+      - <########
+      - '#iiiiiii#'
+      - '#iiiiiii#'
+      - '#iiiiiii#'
+      - p#######n
+    preview-button:
+      symbol: p
+      name: <<<
+      lore:
+        - 'Page: {0}/{1}'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWRiZWIwZmJjNWU2NjAxZmU1MDQ3MDJjYWZmZGFhYzBlOGVhMTllMTFiY2FkZmJlZTBkMThjODlmNDZiYzFmZCJ9fX0=
+    next-button:
+      symbol: n
+      name: '>>>'
+      lore:
+        - 'Page: {0}/{1}'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWI5Y2VjYzIxZDY3MGMxZmYyNzc4MTc2MjI1ZTI4NTBlMmVlMmY3Y2Y1NDEzYmIxNTY2N2Q5OGRiYjNjZjhiNSJ9fX0=
+  back-button:
+    symbol: <
+    name: §c« Back to Environment Settings
+    lore:
+      - §7Return to the environment
+      - §7settings menu.
+      - ''
+      - §e▶ Click to go back
+    material: RED_STAINED_GLASS_PANE
+  reason-item-name: §6⚙️ §e{0}
+  reason-item-state-blocked: §c§l✗ BLOCKED
+  reason-item-state-allowed: §a§l✓ ALLOWED
+  reason-item-lore:
+    - '§7Status: {0}'
+    - ''
+    - '§7Description:'
+    - §f{1}
+    - ''
+    - §e▶ Click to toggle
+    - §8Blocked = monsters won't spawn this way
 guest-setting-cui:
   title: §6✦ §e§lGuest Setting of {0} §6✦
   list-configuration:

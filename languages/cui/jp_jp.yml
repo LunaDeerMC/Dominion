@@ -1300,3 +1300,49 @@ select-template-cui:
       - ''
       - §8これによりメンバーの現在の権限が上書きされます。
     material: WRITABLE_BOOK
+
+env-setting-cui:
+  right-click-for-detailed-settings: §b▶ 右クリックで詳細設定
+
+monster-spawn-settings-cui:
+  title: §6✦ §c§l{0}のモンスタースポーン設定 §6✦
+  list-configuration:
+    item-symbol: i
+    layout:
+      - <########
+      - '#iiiiiii#'
+      - '#iiiiiii#'
+      - '#iiiiiii#'
+      - p#######n
+    preview-button:
+      symbol: p
+      name: <<<
+      lore:
+        - 'ページ: {0}/{1}'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWRiZWIwZmJjNWU2NjAxZmU1MDQ3MDJjYWZmZGFhYzBlOGVhMTllMTFiY2FkZmJlZTBkMThjODlmNDZiYzFmZCJ9fX0=
+    next-button:
+      symbol: n
+      name: '>>>'
+      lore:
+        - 'ページ: {0}/{1}'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWI5Y2VjYzIxZDY3MGMxZmYyNzc4MTc2MjI1ZTI4NTBlMmVlMmY3Y2Y1NDEzYmIxNTY2N2Q5OGRiYjNjZjhiNSJ9fX0=
+  back-button:
+    symbol: <
+    name: §c« 環境設定に戻る
+    lore:
+      - §7環境設定に戻って
+      - §7他の設定にアクセスします。
+      - ''
+      - §e▶ 戻るにはクリック
+    material: RED_STAINED_GLASS_PANE
+  spawn-reason-item-name: §6🔧 §e{0}
+  spawn-reason-item-state-blocked: §c§l✗ ブロック
+  spawn-reason-item-state-allowed: §a§l✓ 許可
+  spawn-reason-item-lore:
+    - '§7ステータス: {0}'
+    - ''
+    - '§7説明:'
+    - §f{1}
+    - ''
+    - §e▶ この設定を切り替えるにはクリック
+    - §8即時に効果があります

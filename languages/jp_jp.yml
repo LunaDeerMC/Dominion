@@ -353,8 +353,8 @@ flags:
     display-name: モンスターによるプレイヤー攻撃
     description: モンスターがプレイヤーに危害を加えることができるかどうか。
   monster_spawn:
-    display-name: モンスター召喚
-    description: モンスターを召喚できるかどうか (スポーンエッグを含む)。
+    display-name: モンスター自然スポーン
+    description: モンスターが自然にスポーンできるかどうか（スポナー、暗闘など。変換、スポーンエッグ、プラグインスポーンには影響しません）。
   monster_move:
     display-name: モンスター移動
     description: モンスターがドミニオン内で移動できるかどうか。
@@ -529,6 +529,12 @@ flags:
   pick_up:
     display-name: アイテムを拾う
     description: 地面に落ちているアイテムを拾うことができるかどうか
+  decay:
+    display-name: 葉の腐敗
+    description: 葉が腐敗するかどうか
+  bookshelf:
+    display-name: 彫刻された本棚
+    description: 彫刻された本棚と相互作用できるかどうか
 rename-template-inputter-text:
   button: 名前変更
   hint: 新しいテンプレート名を入力してください。
@@ -580,3 +586,129 @@ ui-commands-description:
   member-flags: メンバーのフラグを管理します。
   environment-flags: ドミニオンの環境フラグを管理します。
   guest-flags: ドミニオンのゲスト特権フラグを管理します。
+  monster-spawn-settings: モンスタースポーンの詳細設定を管理します。
+
+spawn-reason-text:
+  natural:
+    display-name: 自然スポーン
+    description: 暗闘や通常のスポーン条件によるスポーン
+  spawner:
+    display-name: スポナー
+    description: モンスタースポナーブロックによるスポーン
+  chunk-gen:
+    display-name: チャンク生成
+    description: チャンク生成時のスポーン
+  village-defense:
+    display-name: 村の防衛
+    description: 村の防衛のためのスポーン（アイアンゴーレム）
+  village-invasion:
+    display-name: 村の襲撃
+    description: 村の襲撃イベントによるスポーン
+  build-irongolem:
+    display-name: アイアンゴーレム建造
+    description: プレイヤーがアイアンゴーレムを建造
+  build-snowman:
+    display-name: スノーゴーレム建造
+    description: プレイヤーがスノーゴーレムを建造
+  build-wither:
+    display-name: ウィザー建造
+    description: プレイヤーがウィザーを建造
+  breeding:
+    display-name: 繁殖
+    description: 動物の繁殖によるスポーン
+  dispense-egg:
+    display-name: ディスペンサーの卵
+    description: ディスペンサーからスポーンエッグを発射
+  egg:
+    display-name: 卵
+    description: 卵を投げてニワトリがスポーン
+  spawner-egg:
+    display-name: スポーンエッグ
+    description: プレイヤーがスポーンエッグを使用
+  lightning:
+    display-name: 雷
+    description: 雷に打たれて変換（豚→ゾンビピグリン）
+  jockey:
+    display-name: ジョッキー
+    description: 騎乗モブとしてスポーン
+  nether-portal:
+    display-name: ネザーポータル
+    description: ネザーポータル経由でスポーン
+  infection:
+    display-name: 感染
+    description: ゾンビに感染して変換（村人→ゾンビ村人）
+  cured:
+    display-name: 治療
+    description: ゾンビ村人が治療されて村人に変換
+  ocelot-baby:
+    display-name: オセロットの子供
+    description: オセロットの子供がスポーン
+  silverfish-block:
+    display-name: シルバーフィッシュブロック
+    description: 虫食いブロックからシルバーフィッシュがスポーン
+  mount:
+    display-name: マウント
+    description: 騎乗用としてスポーン
+  trap:
+    display-name: トラップ
+    description: スケルトントラップなどのトラップによるスポーン
+  ender-pearl:
+    display-name: エンダーパール
+    description: エンダーパールを投げてエンダーマイトがスポーン
+  shoulder-entity:
+    display-name: 肩のエンティティ
+    description: プレイヤーの肩からエンティティがスポーン
+  drowned:
+    display-name: ドラウンド
+    description: ゾンビが水中でドラウンドに変換
+  sheared:
+    display-name: 刈り取り
+    description: ムーシュルームを刈り取って牛に変換
+  explosion:
+    display-name: 爆発
+    description: 爆発によるスポーン
+  raid:
+    display-name: 襲撃
+    description: 襲撃イベントによるスポーン
+  patrol:
+    display-name: パトロール
+    description: ピリジャーパトロールとしてスポーン
+  beehive:
+    display-name: ハチの巣
+    description: ハチの巣からハチがスポーン
+  piglin-zombified:
+    display-name: ピグリンのゾンビ化
+    description: ピグリンがオーバーワールドでゾンビピグリンに変換
+  spell:
+    display-name: 呪文
+    description: エヴォーカーの呪文などによるスポーン
+  frozen:
+    display-name: 凍結
+    description: 凍結によるスポーン（ストレイ）
+  metamorphosis:
+    display-name: 変態
+    description: オタマジャクシがカエルに変態
+  duplication:
+    display-name: 複製
+    description: アレイの複製などによるスポーン
+  command:
+    display-name: コマンド
+    description: サーバーコマンドによるスポーン
+  custom:
+    display-name: カスタム
+    description: プラグインやMODによるカスタムスポーン
+  default:
+    display-name: デフォルト
+    description: デフォルトまたは不明なスポーン理由
+  reinforcements:
+    display-name: 援軍
+    description: ゾンビの援軍としてスポーン
+  slime-split:
+    display-name: スライム分裂
+    description: スライムやマグマキューブが分裂
+  trial-spawner:
+    display-name: トライアルスポナー
+    description: トライアルスポナーによるスポーン
+  ominous-item-spawner:
+    display-name: 不吉なアイテムスポナー
+    description: 不吉なアイテムスポナーによるスポーン

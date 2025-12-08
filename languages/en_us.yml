@@ -288,6 +288,49 @@ inputter-text:
   only-player: TUI inputter can only be used by a player.
   cancel: ' [Send ''C'' to cancel the inputter.]'
   inputter-cancelled: Inputter cancelled.
+spawn-reason-text:
+  natural-display-name: Natural Spawn
+  natural-description: Monsters spawn naturally in darkness
+  spawner-display-name: Spawner
+  spawner-description: Monsters spawn from monster spawner blocks
+  chunk-gen-display-name: Chunk Generation
+  chunk-gen-description: Monsters spawn during world generation
+  jockey-display-name: Jockey
+  jockey-description: Spider jockeys, chicken jockeys, etc.
+  patrol-display-name: Patrol
+  patrol-description: Pillager patrol spawning
+  raid-display-name: Raid
+  raid-description: Raid event spawning
+  reinforcements-display-name: Reinforcements
+  reinforcements-description: Zombie reinforcements when attacked
+  village-invasion-display-name: Village Invasion
+  village-invasion-description: Zombie siege on villages
+  nether-portal-display-name: Nether Portal
+  nether-portal-description: Zombified piglin from nether portal
+  silverfish-block-display-name: Silverfish Block
+  silverfish-block-description: Silverfish from infested blocks
+  trap-display-name: Trap
+  trap-description: Skeleton horse trap from lightning
+  ender-pearl-display-name: Ender Pearl
+  ender-pearl-description: Endermite from ender pearl
+  spell-display-name: Spell
+  spell-description: Evoker summoning vex
+  spawner-egg-display-name: Spawn Egg
+  spawner-egg-description: Player using spawn egg
+  dispense-egg-display-name: Dispenser Egg
+  dispense-egg-description: Dispenser spawning from egg
+  command-display-name: Command
+  command-description: Spawned by command
+  custom-display-name: Custom/Plugin
+  custom-description: Spawned by plugin
+  infection-display-name: Infection
+  infection-description: Villager converting to zombie villager
+  drowned-display-name: Drowned Conversion
+  drowned-description: Zombie converting to drowned
+  lightning-display-name: Lightning
+  lightning-description: Pig converting to zombified piglin
+  cured-display-name: Cured
+  cured-description: Zombie villager being cured
 flags:
   tnt_explode:
     display-name: TNT Explode
@@ -353,8 +396,8 @@ flags:
     display-name: Monster Kill Player
     description: Whether monster can do harm to player.
   monster_spawn:
-    display-name: Monster Spawn
-    description: Whether monster can spawn (including spawn egg).
+    display-name: Monster Natural Spawn
+    description: Whether monsters can spawn naturally (spawner, darkness, etc. Does not affect conversion, spawn eggs, or plugin spawns).
   monster_move:
     display-name: Monster Move
     description: Whether monster can move in dominion.
@@ -529,6 +572,12 @@ flags:
   pick_up:
     display-name: Pick Up Item
     description: Whether player can pick up items in dominion.
+  decay:
+    display-name: Leaf Decay
+    description: Whether leaves can decay.
+  bookshelf:
+    display-name: Chiseled Bookshelf
+    description: Whether can interact with chiseled bookshelf.
 rename-template-inputter-text:
   button: RENAME
   hint: Enter new template name.
@@ -580,3 +629,4 @@ ui-commands-description:
   member-flags: Manage flags of a member.
   environment-flags: Manage environment flags of a dominion.
   guest-flags: Manage guest privilege flags of a dominion.
+  monster-spawn-settings: Manage detailed monster spawn settings.

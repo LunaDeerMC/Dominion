@@ -1288,3 +1288,49 @@ select-template-cui:
     - §8這將會覆寫成員
     - §8目前的權限。
     material: WRITABLE_BOOK
+
+env-setting-cui:
+  right-click-for-detailed-settings: §b▶ 右鍵點擊進入詳細設定
+
+monster-spawn-settings-cui:
+  title: §6✦ §c§l{0} 的怪物生成設定 §6✦
+  list-configuration:
+    item-symbol: i
+    layout:
+    - '<########'
+    - '#iiiiiii#'
+    - '#iiiiiii#'
+    - '#iiiiiii#'
+    - 'p#######n'
+    preview-button:
+      symbol: p
+      name: '<<<'
+      lore:
+      - '頁面：{0}/{1}'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWRiZWIwZmJjNWU2NjAxZmU1MDQ3MDJjYWZmZGFhYzBlOGVhMTllMTFiY2FkZmJlZTBkMThjODlmNDZiYzFmZCJ9fX0=
+    next-button:
+      symbol: n
+      name: '>>>'
+      lore:
+      - '頁面：{0}/{1}'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWI5Y2VjYzIxZDY3MGMxZmYyNzc4MTc2MjI1ZTI4NTBlMmVlMmY3Y2Y1NDEzYmIxNTY2N2Q5OGRiYjNjZjhiNSJ9fX0=
+  back-button:
+    symbol: <
+    name: §c« 返回環境設定
+    lore:
+    - §7返回環境設定
+    - §7以存取其他設定
+    - ''
+    - §e▶ 點擊返回
+    material: RED_STAINED_GLASS_PANE
+  spawn-reason-item-name: §6🔧 §e{0}
+  spawn-reason-item-state-blocked: §c§l✗ 阻止
+  spawn-reason-item-state-allowed: §a§l✓ 允許
+  spawn-reason-item-lore:
+  - '§7狀態：{0}'
+  - ''
+  - '§7說明：'
+  - §f{1}
+  - ''
+  - §e▶ 點擊切換此設定
+  - §8變更將立即生效

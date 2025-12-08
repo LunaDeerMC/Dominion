@@ -302,6 +302,13 @@ public class DatabaseTables {
             }
         }
 
+        // 4. add monster_spawn_settings for detailed spawn reason control
+        if (!Show.show().columns().from("dominion").execute().containsKey("monster_spawn_settings")) {
+            Column monster_spawn_settings = Column.of(new FieldString("monster_spawn_settings")).notNull()
+                    .defaultSqlVal("''");
+            Alter.alter().table("dominion").add().column(monster_spawn_settings).execute();
+        }
+
         // 4.4.0 add multiserver support
         if (!Show.show().tables().execute().contains("server_info")) {
             Column server_info_id = Column.of(new FieldInteger("id")).primary().serial().notNull().unique();

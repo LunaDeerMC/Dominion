@@ -303,8 +303,8 @@ flags:
     display-name: 怪物对玩家造成伤害
     description: 是否可以对玩家造成伤害
   monster_spawn:
-    display-name: 怪物生成
-    description: 是否可以生成怪物
+    display-name: 怪物自然生成
+    description: 是否允许怪物自然生成（刷怪笼、黑暗生成等，不影响转化、刷怪蛋、插件生成）
   monster_move:
     display-name: 怪物移动
     description: 是否可以在（向）领地内移动
@@ -479,6 +479,12 @@ flags:
   pick_up:
     display-name: 拾取物品
     description: 是否可以拾取地上的物品
+  decay:
+    display-name: 树叶腐烂
+    description: 是否允许树叶自然腐烂
+  bookshelf:
+    display-name: 雕纹书架
+    description: 是否可以与雕纹书架交互
 create-dominion-inputter-text:
   button: 创建领地
   description: 在你的周围创建一个新的领地。
@@ -529,6 +535,49 @@ inputter-text:
   only-player: 只有玩家可以使用输入器。
   cancel: ' 【发送大写 C 取消输入】'
   inputter-cancelled: 输入已取消。
+spawn-reason-text:
+  natural-display-name: 自然生成
+  natural-description: 怪物在黑暗中自然生成
+  spawner-display-name: 刷怪笼
+  spawner-description: 怪物从刷怪笼方块生成
+  chunk-gen-display-name: 区块生成
+  chunk-gen-description: 世界生成时生成的怪物
+  jockey-display-name: 骑乘怪物
+  jockey-description: 蜘蛛骑士、鸡骑士等
+  patrol-display-name: 巡逻队
+  patrol-description: 掠夺者巡逻队生成
+  raid-display-name: 袭击
+  raid-description: 袭击事件生成
+  reinforcements-display-name: 援军
+  reinforcements-description: 僵尸被攻击时召唤的援军
+  village-invasion-display-name: 村庄入侵
+  village-invasion-description: 僵尸围攻村庄
+  nether-portal-display-name: 下界传送门
+  nether-portal-description: 僵尸猪灵从下界传送门生成
+  silverfish-block-display-name: 蠹虫方块
+  silverfish-block-description: 蠹虫从被虫蚀的方块生成
+  trap-display-name: 陷阱
+  trap-description: 闪电生成的骷髅马陷阱
+  ender-pearl-display-name: 末影珍珠
+  ender-pearl-description: 末影螨从末影珍珠生成
+  spell-display-name: 法术
+  spell-description: 唤魔者召唤恼鬼
+  spawner-egg-display-name: 刷怪蛋
+  spawner-egg-description: 玩家使用刷怪蛋
+  dispense-egg-display-name: 发射器刷怪蛋
+  dispense-egg-description: 发射器发射刷怪蛋生成
+  command-display-name: 命令
+  command-description: 通过命令生成
+  custom-display-name: 自定义/插件
+  custom-description: 由插件生成
+  infection-display-name: 感染
+  infection-description: 村民转化为僵尸村民
+  drowned-display-name: 溺尸转化
+  drowned-description: 僵尸转化为溺尸
+  lightning-display-name: 闪电
+  lightning-description: 猪被闪电击中转化为僵尸猪灵
+  cured-display-name: 治愈
+  cured-description: 僵尸村民被治愈
 rename-template-inputter-text:
   button: 重命名模板
   hint: 请输入新的模板名称
@@ -580,3 +629,4 @@ ui-commands-description:
   member-flags: 管理成员的权限。
   environment-flags: 管理领地的环境权限。
   guest-flags: 管理领地的访客权限。
+  monster-spawn-settings: 管理怪物生成的详细设置。

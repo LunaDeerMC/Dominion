@@ -42,12 +42,13 @@ public class DominionDOO implements DominionDTO {
     private final FieldString color = new FieldString("color", "#00BFFF");
     private final FieldString world_uid = new FieldString("world_uid");
     private final FieldInteger serverId = new FieldInteger("server_id");
+    private final FieldString monsterSpawnSettings = new FieldString("monster_spawn_settings", "");
 
     // Cache for the parsed UUID to avoid repeated string parsing
     private UUID cachedWorldUid = null;
 
     private static Field<?>[] fields() {
-        Field<?>[] fields = new Field<?>[6 + 6 + Flags.getAllEnvFlagsEnable().size() + Flags.getAllPriFlagsEnable().size() + 4];
+        Field<?>[] fields = new Field<?>[6 + 6 + Flags.getAllEnvFlagsEnable().size() + Flags.getAllPriFlagsEnable().size() + 5];
         fields[0] = rootDominion().cuboid.x1Field();
         fields[1] = rootDominion().cuboid.y1Field();
         fields[2] = rootDominion().cuboid.z1Field();
@@ -71,6 +72,7 @@ public class DominionDOO implements DominionDTO {
         fields[i++] = rootDominion().tp_location;
         fields[i++] = rootDominion().color;
         fields[i++] = rootDominion().serverId;
+        fields[i++] = rootDominion().monsterSpawnSettings;
         return fields;
     }
 
@@ -104,7 +106,8 @@ public class DominionDOO implements DominionDTO {
                 preFlags,
                 (String) map.get("tp_location").getValue(),
                 (String) map.get("color").getValue(),
-                (Integer) map.get("server_id").getValue()
+                (Integer) map.get("server_id").getValue(),
+                (String) map.get("monster_spawn_settings").getValue()
         );
     }
 
@@ -124,7 +127,7 @@ public class DominionDOO implements DominionDTO {
                 -1,
                 "null", "null",
                 new HashMap<>(), new HashMap<>(),
-                "default", "#00BFFF", -1);
+                "default", "#00BFFF", -1, "");
     }
 
     public static @Nullable DominionDOO select(Integer id) throws SQLException {
@@ -184,7 +187,8 @@ public class DominionDOO implements DominionDTO {
                         Map<PriFlag, Boolean> preFlags,
                         String tp_location,
                         String color,
-                        Integer serverId) {
+                        Integer serverId,
+                        String monsterSpawnSettings) {
         this.id.setValue(id);
         this.owner.setValue(owner.toString());
         this.name.setValue(name);
@@ -198,6 +202,7 @@ public class DominionDOO implements DominionDTO {
         this.tp_location.setValue(tp_location);
         this.color.setValue(color);
         this.serverId.setValue(serverId);
+        this.monsterSpawnSettings.setValue(monsterSpawnSettings != null ? monsterSpawnSettings : "");
     }
 
     // constructor for new dominion
@@ -522,6 +527,21 @@ public class DominionDOO implements DominionDTO {
     @Override
     public int getColorHex() {
         return (getColorR() << 16) + (getColorG() << 8) + getColorB();
+    }
+
+    @Override
+    public @NotNull String getMonsterSpawnSettings() {
+        return monsterSpawnSettings.getValue() != null ? monsterSpawnSettings.getValue() : "";
+    }
+
+    @Override
+    public @NotNull DominionDOO setMonsterSpawnSettings(@NotNull String settings) throws SQLException {
+        this.monsterSpawnSettings.setValue(settings);
+        Update.update("dominion")
+                .set(this.monsterSpawnSettings)
+                .where("id = ?", id.getValue())
+                .execute();
+        return this;
     }
 
     /**
