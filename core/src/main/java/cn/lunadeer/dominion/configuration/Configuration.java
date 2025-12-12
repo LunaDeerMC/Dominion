@@ -229,6 +229,43 @@ public class Configuration extends ConfigurationFile {
     @Comments("Performance recorder, don't open this unless you are debugging.")
     public static boolean timer = false;
 
+    @Comments("The settings of the border highlighter.")
+    public static HighlighterConfig highlighter = new HighlighterConfig();
+
+    public static class HighlighterConfig extends ConfigurationPart {
+        @Comments({
+                "The type of highlighter to use.",
+                "AUTO: Automatically select the best highlighter (BlockDisplay on Paper, Particle on Spigot).",
+                "BLOCK_DISPLAY: Use BlockDisplay entities (Paper only, better visuals with glow effect).",
+                "PARTICLE: Use particles (works on all servers)."
+        })
+        public String type = "AUTO";
+
+        @Comments("The block type to use for corners (8 corners of the cuboid).")
+        public String cornerBlockType = "GLOWSTONE";
+
+        @Comments("The block type to use for edges (along the 12 edges of the cuboid).")
+        public String edgeBlockType = "GOLD_BLOCK";
+
+        @Comments("The spacing between edge blocks (in blocks). Smaller = more blocks.")
+        public int edgeSpacing = 8;
+
+        @Comments("Whether to enable glow effect for BlockDisplay highlighter.")
+        public boolean glowEffect = true;
+
+        @Comments("The glow color for BlockDisplay highlighter (hex color code).")
+        public String glowColor = "#FFFF00";
+
+        @Comments("The particle type to use for Particle highlighter.")
+        public String particleType = "FLAME";
+
+        @Comments({
+                "How long the BlockDisplay border should be visible (in seconds).",
+                "Set to 0 or negative to disable auto-cleanup (not recommended)."
+        })
+        public int displayDuration = 10;
+    }
+
     @PostProcess
     public static void checkConfigurationParams() {
         if (database.type.equalsIgnoreCase("sqlite") && multiServer.enable) {
@@ -278,6 +315,47 @@ public class Configuration extends ConfigurationFile {
         } catch (IllegalArgumentException e) {
             XLogger.warn("Invalid default UI type: {0}", defaultUiType);
             defaultUiType = PlayerDTO.UI_TYPE.BY_PLAYER.name();
+        }
+
+        // Validate highlighter configuration
+        String highlighterType = highlighter.type.toUpperCase();
+        if (!highlighterType.equals("AUTO") && !highlighterType.equals("BLOCK_DISPLAY") && !highlighterType.equals("PARTICLE")) {
+            XLogger.warn("Invalid highlighter type: {0}, using AUTO", highlighter.type);
+            highlighter.type = "AUTO";
+        }
+
+        if (Material.matchMaterial(highlighter.cornerBlockType) == null) {
+            XLogger.warn("Invalid corner block type: {0}, using GLOWSTONE", highlighter.cornerBlockType);
+            highlighter.cornerBlockType = "GLOWSTONE";
+        }
+
+        if (Material.matchMaterial(highlighter.edgeBlockType) == null) {
+            XLogger.warn("Invalid edge block type: {0}, using GOLD_BLOCK", highlighter.edgeBlockType);
+            highlighter.edgeBlockType = "GOLD_BLOCK";
+        }
+
+        try {
+            org.bukkit.Particle.valueOf(highlighter.particleType.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            XLogger.warn("Invalid particle type: {0}, using FLAME", highlighter.particleType);
+            highlighter.particleType = "FLAME";
+        }
+
+        // Validate glow color format
+        String glowColor = highlighter.glowColor;
+        if (glowColor.startsWith("#")) {
+            glowColor = glowColor.substring(1);
+        }
+        try {
+            Integer.parseInt(glowColor, 16);
+        } catch (NumberFormatException e) {
+            XLogger.warn("Invalid glow color format: {0}, using #FFFF00", highlighter.glowColor);
+            highlighter.glowColor = "#FFFF00";
+        }
+
+        if (highlighter.edgeSpacing < 1) {
+            XLogger.warn("Edge spacing must be at least 1, using 8");
+            highlighter.edgeSpacing = 8;
         }
     }
 
