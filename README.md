@@ -75,3 +75,11 @@ Dominion development.
 <div align="center">
 <img src="https://bstats.org/signatures/bukkit/Dominion.svg" alt="" width="100%">
 </div>
+
+<a href="https://star-history.com/#LunaDeerMC/Dominion&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=LunaDeerMC/Dominion&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=LunaDeerMC/Dominion&type=Date" />
+    <img alt="" src="https://api.star-history.com/svg?repos=LunaDeerMC/Dominion&type=Date" />
+  </picture>
+</a>
