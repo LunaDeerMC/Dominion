@@ -149,6 +149,8 @@ public class Language extends ConfigurationFile {
 
     public static Limitation.LimitationText limitationText = new Limitation.LimitationText();
 
+    public static UserLimitation.UserLimitationText userLimitationText = new UserLimitation.UserLimitationText();
+
     public static DatabaseTables.DatabaseManagerText databaseManagerText = new DatabaseTables.DatabaseManagerText();
 
     public static TeleportManager.TeleportManagerText teleportManagerText = new TeleportManager.TeleportManagerText();

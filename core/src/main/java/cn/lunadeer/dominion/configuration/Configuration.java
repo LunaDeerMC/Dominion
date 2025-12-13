@@ -306,6 +306,10 @@ public class Configuration extends ConfigurationFile {
             return;
         }
         for (File file : files) {
+            // Skip users.yml as it's handled by UserLimitation
+            if (file.getName().equals("users.yml")) {
+                continue;
+            }
             try {
                 XLogger.info(Language.configurationText.loadingLimitation, file.getName());
                 ConfigurationFile limitationFile = ConfigurationManager.load(Limitation.class, file, "version");
@@ -335,6 +339,7 @@ public class Configuration extends ConfigurationFile {
                 Bukkit.getPluginManager().addPermission(new Permission(permissionGroup));
             }
         }
+        UserLimitation.load();
     }
 
     @PostProcess
@@ -347,7 +352,10 @@ public class Configuration extends ConfigurationFile {
 
     /**
      * Gets the limitation for a player based on their permissions.
-     * If the player has multiple limitations, the one with the lowest priority is returned.
+     * Priority order:
+     * 1. User-specific limitations (from users.yml) - highest priority
+     * 2. Group-based limitations (from *.yml files) - sorted by priority field
+     * 3. Default limitation - lowest priority
      *
      * @param player the player whose limitation is to be retrieved, or null to get the default limitation
      * @return the limitation for the player, or the default limitation if the player is null or has no specific limitations
@@ -356,6 +364,14 @@ public class Configuration extends ConfigurationFile {
         if (player == null) {
             return limitations.get("default");
         }
+
+        // Check if the player has a user-specific limitation (highest priority)
+        Limitation userLimitation = UserLimitation.getPlayerLimitation(player.getName());
+        if (userLimitation != null) {
+            return userLimitation;
+        }
+
+        // Check group-based limitations
         List<Limitation> playerLimitations = new ArrayList<>();
         for (String group : limitations.keySet()) {
             if (group.equals("default")) {

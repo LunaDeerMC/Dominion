@@ -257,6 +257,11 @@ limitation-text:
   loading-world-setting: '{0} のワールド設定を読み込んでいます...'
   load-world-setting-failed: 'ワールド設定の読み込みに失敗しました: {0}。理由: {1}'
   load-world-settings-success: 'ワールド設定 {0} の読み込みに成功しました: {1}。'
+user-limitation-text:
+  loading-user-limitations: ユーザー制限を読み込んでいます...
+  load-user-limitation-failed: 'ユーザー {0} の制限の読み込みに失敗しました。理由: {1}'
+  load-user-limitations-success: '{0} 個のユーザー制限を正常に読み込みました: {1}。'
+  saving-default-user-limitation: デフォルトの users.yml ファイルを作成しています...
 database-manager-text:
   exporting-database-tables: データベーステーブルをエクスポート中...
   export-table-fail: 'テーブルのエクスポートに失敗しました。理由: {0}'

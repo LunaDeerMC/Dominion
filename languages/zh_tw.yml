@@ -282,6 +282,12 @@ limitation-text:
   load-world-setting-failed: 載入 {0} 的世界設定失敗，原因：{1}
   load-world-settings-success: 已成功載入 {0} 的世界設定：{1}
 
+user-limitation-text:
+  loading-user-limitations: 正在載入玩家限制設定…
+  load-user-limitation-failed: 載入玩家 {0} 的限制設定失敗，原因：{1}
+  load-user-limitations-success: 已成功載入 {0} 個玩家限制設定：{1}
+  saving-default-user-limitation: 正在建立預設的 users.yml 檔案…
+
 database-manager-text:
   exporting-database-tables: 正在匯出資料庫資料表…
   export-table-fail: 資料表匯出失敗，原因：{0}
