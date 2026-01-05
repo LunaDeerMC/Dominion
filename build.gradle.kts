@@ -21,7 +21,7 @@ libraries += "net.kyori:adventure-text-minimessage:4.22.0"
 var suffixes = getAndIncrementVersion()
 
 group = "cn.lunadeer"
-version = "4.7.0-$suffixes"
+version = "4.7.1-$suffixes"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -92,6 +92,7 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":v1_20_1"))
     implementation(project(":v1_21"))
+    implementation(project(":v1_21_9"))
 }
 
 tasks.shadowJar {

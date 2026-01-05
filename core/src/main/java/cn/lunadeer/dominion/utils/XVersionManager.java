@@ -10,6 +10,11 @@ public class XVersionManager {
         String version = plugin.getServer().getBukkitVersion();
         XLogger.debug("API version: {0}", version);
         if (version.contains("1.21")) {
+            if (version.contains("1.21.9")
+                    || version.contains("1.21.10")
+                    || version.contains("1.21.11")) {
+                return ImplementationVersion.v1_21_9;
+            }
             return ImplementationVersion.v1_21;
         } else if (version.contains("1.20.1")
                 || version.contains("1.20.4")
@@ -22,6 +27,7 @@ public class XVersionManager {
     }
 
     public enum ImplementationVersion {
+        v1_21_9,
         v1_21,
         v1_20_1;
 
