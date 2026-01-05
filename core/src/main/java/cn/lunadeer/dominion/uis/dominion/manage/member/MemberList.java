@@ -113,7 +113,7 @@ public class MemberList extends AbstractUI {
         );
 
         // get data from database directly because cache update may not be in time
-        List<MemberDTO> members = new ArrayList<>(selectByDominionId(dominion.getId()));
+        List<MemberDTO> members = dominion.getMembers();
         for (MemberDTO member : members) {
             PlayerDTO p_player = member.getPlayer();
             GroupDTO group = CacheManager.instance.getGroup(member.getGroupId());
