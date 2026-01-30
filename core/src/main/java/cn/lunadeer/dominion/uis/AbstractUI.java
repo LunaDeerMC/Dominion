@@ -29,6 +29,7 @@ public abstract class AbstractUI {
         public String memberFlags = "Manage flags of a member.";
         public String environmentFlags = "Manage environment flags of a dominion.";
         public String guestFlags = "Manage guest privilege flags of a dominion.";
+        public String listAllOfDescription = "List all dominions owned by a player.";
     }
 
     protected abstract void showTUI(Player player, String... args) throws Exception;

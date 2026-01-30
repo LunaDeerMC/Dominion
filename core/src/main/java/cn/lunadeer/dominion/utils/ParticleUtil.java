@@ -35,9 +35,9 @@ public class ParticleUtil {
                 cuboid.x1(),
                 cuboid.y1(),
                 cuboid.z1(),
-                cuboid.x2(),
+                cuboid.x2() + 1,
                 cuboid.y2(),
-                cuboid.z2()
+                cuboid.z2() + 1
         );
     }
 

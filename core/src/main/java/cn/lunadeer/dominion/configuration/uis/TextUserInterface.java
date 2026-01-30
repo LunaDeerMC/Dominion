@@ -1,9 +1,6 @@
 package cn.lunadeer.dominion.configuration.uis;
 
-import cn.lunadeer.dominion.uis.AllDominion;
-import cn.lunadeer.dominion.uis.MainMenu;
-import cn.lunadeer.dominion.uis.MigrateList;
-import cn.lunadeer.dominion.uis.TitleList;
+import cn.lunadeer.dominion.uis.*;
 import cn.lunadeer.dominion.uis.dominion.DominionList;
 import cn.lunadeer.dominion.uis.dominion.DominionManage;
 import cn.lunadeer.dominion.uis.dominion.copy.CopyMenu;
@@ -63,6 +60,7 @@ public class TextUserInterface extends ConfigurationFile {
     public static SelectMember.SelectMemberTuiText selectMemberTuiText = new SelectMember.SelectMemberTuiText();
     public static TitleList.TitleListTuiText titleListTuiText = new TitleList.TitleListTuiText();
     public static AllDominion.AllDominionTuiText allDominionTuiText = new AllDominion.AllDominionTuiText();
+    public static AllDominionOfPlayer.AllDominionOfPlayerTuiText allDominionOfPlayerTuiText = new AllDominionOfPlayer.AllDominionOfPlayerTuiText();
     public static TemplateFlags.TemplateSettingTuiText templateSettingTuiText = new TemplateFlags.TemplateSettingTuiText();
     public static CopyMenu.CopyMenuTuiText copyMenuTuiText = new CopyMenu.CopyMenuTuiText();
     public static DominionCopy.DominionCopyTuiText dominionCopyTuiText = new DominionCopy.DominionCopyTuiText();

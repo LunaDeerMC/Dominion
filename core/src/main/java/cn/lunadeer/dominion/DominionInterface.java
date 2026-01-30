@@ -46,6 +46,11 @@ public class DominionInterface extends DominionAPI {
     }
 
     @Override
+    public List<DominionDTO> getAllDominionsOfPlayer(@NotNull UUID player) {
+        return CacheManager.instance.getPlayerOwnDominionDTOs(player);
+    }
+
+    @Override
     public List<DominionDTO> getChildrenDominionOf(DominionDTO parent) {
         return CacheManager.instance.getChildrenDominionOf(parent);
     }
@@ -159,7 +164,7 @@ public class DominionInterface extends DominionAPI {
     }
 
     @Override
-    public void reloadConfig() throws Exception{
+    public void reloadConfig() throws Exception {
         Configuration.loadConfigurationAndDatabase(Bukkit.getConsoleSender());
     }
 

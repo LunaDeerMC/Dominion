@@ -1,9 +1,6 @@
 package cn.lunadeer.dominion.configuration.uis;
 
-import cn.lunadeer.dominion.uis.AllDominion;
-import cn.lunadeer.dominion.uis.MainMenu;
-import cn.lunadeer.dominion.uis.MigrateList;
-import cn.lunadeer.dominion.uis.TitleList;
+import cn.lunadeer.dominion.uis.*;
 import cn.lunadeer.dominion.uis.dominion.DominionList;
 import cn.lunadeer.dominion.uis.dominion.DominionManage;
 import cn.lunadeer.dominion.uis.dominion.copy.CopyMenu;
@@ -47,6 +44,7 @@ import cn.lunadeer.dominion.utils.configuration.Headers;
 public class ChestUserInterface extends ConfigurationFile {
     public static MainMenu.MainMenuCui mainMenuCui = new MainMenu.MainMenuCui();
     public static AllDominion.AllDominionCui allDominionCui = new AllDominion.AllDominionCui();
+    public static AllDominionOfPlayer.AllDominionOfPlayerCui allDominionOfPlayerCui = new AllDominionOfPlayer.AllDominionOfPlayerCui();
     public static TitleList.TitleListCui titleListCui = new TitleList.TitleListCui();
     public static MigrateList.MigrateListCui migrateListCui = new MigrateList.MigrateListCui();
     public static TemplateList.TemplateListCui templateListCui = new TemplateList.TemplateListCui();

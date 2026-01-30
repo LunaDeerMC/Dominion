@@ -1,10 +1,7 @@
 package cn.lunadeer.dominion.misc;
 
 import cn.lunadeer.dominion.commands.*;
-import cn.lunadeer.dominion.uis.AllDominion;
-import cn.lunadeer.dominion.uis.MainMenu;
-import cn.lunadeer.dominion.uis.MigrateList;
-import cn.lunadeer.dominion.uis.TitleList;
+import cn.lunadeer.dominion.uis.*;
 import cn.lunadeer.dominion.uis.dominion.DominionList;
 import cn.lunadeer.dominion.uis.dominion.DominionManage;
 import cn.lunadeer.dominion.uis.dominion.copy.CopyMenu;
@@ -39,6 +36,7 @@ public class InitCommands {
         // cn.lunadeer.dominion.uis
         new MainMenu();
         new AllDominion();
+        new AllDominionOfPlayer();
         new MigrateList();
         new TitleList();
         // cn.lunadeer.dominion.uis.dominion
