@@ -456,6 +456,9 @@ public class DominionDOO implements DominionDTO {
             World w = getWorld();
             if (loc.length == 3 && w != null) {
                 return new Location(w, Integer.parseInt(loc[0]), Integer.parseInt(loc[1]), Integer.parseInt(loc[2]));
+            } else if (loc.length == 5 && w != null) {
+                return new Location(w, Integer.parseInt(loc[0]), Integer.parseInt(loc[1]), Integer.parseInt(loc[2]),
+                        Float.parseFloat(loc[3]), Float.parseFloat(loc[4]));
             } else {
                 return new Location(getWorld(),
                         (double) (cuboid.x1() + cuboid.x2()) / 2,
@@ -467,7 +470,7 @@ public class DominionDOO implements DominionDTO {
 
     @Override
     public @NotNull DominionDOO setTpLocation(Location loc) throws SQLException {
-        this.tp_location.setValue(loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ());
+        this.tp_location.setValue(loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ() + ":" + loc.getYaw() + ":" + loc.getPitch());
         Update.update("dominion")
                 .set(this.tp_location)
                 .where("id = ?", id.getValue())
