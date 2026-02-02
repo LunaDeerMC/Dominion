@@ -48,6 +48,8 @@ public class Limitation extends ConfigurationFile {
         public boolean squareOnly = false;
         @Comments("The refund rate when player contract or delete dominion.")
         public double refundRate = 0.85;
+        @Comments("Whether free to create sub dominions.")
+        public boolean freeForSubs = false;
     }
 
     @Comments("The settings of the teleportation feature.")
@@ -67,6 +69,9 @@ public class Limitation extends ConfigurationFile {
             "Set -1 means no limitation."
     })
     public int amountAllOverTheWorld = 10;
+
+    @Comments("Whether sub dominions are not counted in the amount limitation.")
+    public boolean doNotCountSubs = false;
 
     @HandleManually // See comments at loadWorldLimitationSettings() method
     public Map<String, WorldLimitationSetting> worldLimitations = new HashMap<>();

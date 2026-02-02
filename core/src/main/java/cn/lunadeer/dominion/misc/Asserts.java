@@ -107,19 +107,29 @@ public class Asserts {
 
     /**
      * Asserts that the player has not exceeded the maximum number of dominions they can create.
+     * <p>
+     * This method checks both the total number of dominions the player owns
+     * and the number of dominions in the specified world.
+     * If mayNotCountSubs is true, sub-dominions are excluded from the count (if configured).
      *
      * @param operator           the command sender (usually a player)
      * @param associatedWorldUid the world in which the dominion is located
+     * @param mayNotCountSubs    whether to exclude sub-dominions from the count
      * @throws DominionException if the player has exceeded the maximum number of dominions they can create
      */
-    public static void assertPlayerDominionAmount(@NotNull CommandSender operator, @NotNull UUID associatedWorldUid) throws DominionException {
+    public static void assertPlayerDominionAmount(@NotNull CommandSender operator, @NotNull UUID associatedWorldUid, boolean mayNotCountSubs) throws DominionException {
         if (!(operator instanceof Player associatedPlayer)) {
             return;
         }
         if (bypassLimit(associatedPlayer)) {
             return;
         }
-        List<DominionDTO> dominions = CacheManager.instance.getCache().getDominionCache().getPlayerOwnDominionDTOs(associatedPlayer.getUniqueId());
+        List<DominionDTO> dominions;
+        if (mayNotCountSubs && Configuration.getPlayerLimitation(associatedPlayer).doNotCountSubs) { // sub dominions do not count toward the limit
+            dominions = CacheManager.instance.getCache().getDominionCache().getPlayerOwnTopLevelDominionDTOs(associatedPlayer.getUniqueId());
+        } else {
+            dominions = CacheManager.instance.getCache().getDominionCache().getPlayerOwnDominionDTOs(associatedPlayer.getUniqueId());
+        }
         int allOverTheWorld = Configuration.getPlayerLimitation(associatedPlayer).amountAllOverTheWorld;
         if (dominions.size() >= allOverTheWorld && allOverTheWorld >= 0) {
             throw new DominionException(Language.assertsText.exceedMaxAmount, associatedPlayer.getName(), allOverTheWorld);
@@ -405,12 +415,16 @@ public class Asserts {
      * This method checks if the economy feature is enabled, calculates the cost or refund
      * based on the difference between the before and after cuboid sizes, and updates the player's balance accordingly.
      *
-     * @param operator the command sender (usually a player)
-     * @param before   the cuboid representing the dominion's size before modification
-     * @param after    the cuboid representing the dominion's size after modification
+     * @param operator        the command sender (usually a player)
+     * @param before          the cuboid representing the dominion's size before modification
+     * @param after           the cuboid representing the dominion's size after modification
+     * @param mayNotCountSubs whether to exclude sub-dominions from the calculation (if configured)
      * @throws Exception if there is an error during the economic transaction
      */
-    public static void assertEconomy(@NotNull CommandSender operator, CuboidDTO before, CuboidDTO after) throws Exception {
+    public static void assertEconomy(@NotNull CommandSender operator,
+                                     CuboidDTO before,
+                                     CuboidDTO after,
+                                     boolean mayNotCountSubs) throws Exception {
         if (!(operator instanceof Player associatedPlayer)) {
             // do nothing if command sender is not a player
             return;
@@ -420,6 +434,9 @@ public class Asserts {
             return;
         }
         if (bypassLimit(associatedPlayer)) {
+            return;
+        }
+        if (mayNotCountSubs && ecoConf.freeForSubs) {
             return;
         }
         long amount;

@@ -149,6 +149,25 @@ public class DominionCache extends Cache {
     }
 
     /**
+     * Retrieves the top-level DominionDTOs owned by a player.
+     * <p>
+     * Top-level dominions are defined as those without a parent dominion (i.e., parentDomId == -1).
+     *
+     * @param player the UUID of the player
+     * @return a list of top-level DominionDTOs owned by the player
+     */
+    public CopyOnWriteArrayList<DominionDTO> getPlayerOwnTopLevelDominionDTOs(UUID player) {
+        CopyOnWriteArrayList<DominionDTO> allDominions = getPlayerOwnDominionDTOs(player);
+        CopyOnWriteArrayList<DominionDTO> topLevelDominions = new CopyOnWriteArrayList<>();
+        for (DominionDTO dominion : allDominions) {
+            if (dominion.getParentDomId() == -1) {
+                topLevelDominions.add(dominion);
+            }
+        }
+        return topLevelDominions;
+    }
+
+    /**
      * Retrieves all dominions where the specified player has administrative rights.
      * <p>
      * This method checks all dominions where the player is a member and determines if
