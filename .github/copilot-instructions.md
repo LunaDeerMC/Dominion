@@ -1,75 +1,82 @@
 # Copilot Instructions for Dominion
 
-## Project Overview
-Dominion is an open-source, future-proof anti-grief plugin for high-version Minecraft servers. It supports Bukkit, Spigot, Paper, and Folia, with a strong recommendation for Paper or its forks for optimal performance. The project is actively developed and includes a modular API for creating addons.
+## Architecture Overview
 
-### Key Components
-- **Core Plugin**: Located in `core/`, this contains the main functionality of the Dominion plugin.
-- **API**: Found in `api/`, this module provides interfaces and utilities for addon development.
-- **Documentation**: The `docs/` directory contains user and developer guides, including multi-language support.
-- **Language Files**: Translation files are in `languages/` and follow the YAML format.
+Dominion is a Minecraft territory/anti-grief plugin (1.20.1+) with a multi-module Gradle structure:
 
-## Developer Workflows
+| Module | Purpose |
+|--------|---------|
+| `api/` | Public API for addon developers - DTOs, events, provider interfaces |
+| `core/` | Main plugin - commands, cache, events, UI, database operations |
+| `v1_20_1/`, `v1_21/`, `v1_21_9/` | Version-specific event handlers for Minecraft API changes |
+| `languages/` | YAML translations (`zh_cn.yml` is the reference) |
+| `docs/` | VuePress documentation site |
 
-### Building the Project
-1. Ensure you have JDK 21+ and Gradle installed.
-2. Clone the repository and initialize submodules:
-   ```bash
-   git clone https://github.com/LunaDeerMC/Dominion.git
-   cd Dominion
-   git submodule update --init --recursive
-   ```
-3. Build the plugin JAR:
-   ```bash
-   ./gradlew shadowJar
-   ```
-   The output JAR will be in `build/libs/`.
+### Data Flow Pattern
+1. **DTOs** (`api/dtos/`) define data contracts (e.g., `DominionDTO`, `MemberDTO`, `GroupDTO`)
+2. **DOOs** (`core/doos/`) are database objects implementing DTOs with persistence logic
+3. **CacheManager** (`core/cache/`) maintains in-memory state synchronized across multi-server setups
+4. **Handlers** (`core/handler/`) respond to cache and provider events
 
-### Running Tests
-- Tests are located in `src/test/java/`.
-- Use Gradle to execute tests:
-  ```bash
-  ./gradlew test
-  ```
+### Version Compatibility System
+Event handlers in `v1_20_1/`, `v1_21/`, `v1_21_9/` are auto-registered via reflection. Use annotations:
+- `@SpigotOnly` / `@PaperOnly` - server implementation filtering
+- `@LowestVersion` / `@HighestVersion` - Minecraft version gating
 
-### Debugging
-- Use IntelliJ IDEA for development. The project is optimized for this IDE, with features like code completion and debugging tools.
+## Build Commands
 
-## Project-Specific Conventions
+```bash
+./gradlew shadowJar                    # Build lite JAR (dependencies external)
+./gradlew shadowJar -PBuildFull=true   # Build full JAR (dependencies bundled)
+cd api && ./gradlew clean build        # Build API module only
+cd docs && npm run docs:dev            # Run docs locally
+```
 
-### Code Style
-- Follow existing code patterns in the `core/` and `api/` modules.
-- Use clear and concise commit messages.
+**Output:** `build/libs/Dominion-{version}-{lite|full}.jar`
 
-### Translations
-- Translation files are in `languages/`.
-- Use `zh-cn.yml` as the reference for updates.
-- Add your name in the header comment of translated files.
+**Note:** No automated tests exist. Testing is manual on Minecraft servers.
 
-### Documentation
-- Documentation contributions go in `docs/`.
-- Follow the structure of the `zh-cn` directory for new languages.
+## Key Conventions
+
+### Adding a New Flag
+1. Define in `api/dtos/flag/` (extend `EnvFlag` or `PriFlag`)
+2. Register in `Flags.java` static initializer
+3. Add to `DominionDOO.java` field mapping and `fields()` method
+4. Add language keys in `languages/*.yml`
+
+### Adding Event Handlers
+Place in version-specific modules under `events/player/` or `events/environment/`:
+```java
+// v1_21/src/main/java/cn/lunadeer/dominion/v1_21/events/player/MyHandler.java
+@PaperOnly  // Optional: restrict to Paper servers
+public class MyHandler implements Listener { ... }
+```
+
+### Translation Files Structure
+```yaml
+# languages/en_us.yml - keys use kebab-case
+dominion-text:
+  loading-config: Loading Configurations...
+  plugin-version: 'Plugin Version: {0}'  # Use {0}, {1} for placeholders
+```
+Separate files exist for CUI (`cui/`) and TUI (`tui/`) interfaces.
+
+### Database Operations
+Use the custom ORM in `core/utils/databse/`:
+```java
+// Example from DominionDOO.java
+Select.from("dominion").where("id", id).execute(Dominion.database);
+Update.table("dominion").set(fieldName, value).where("id", id).execute(Dominion.database);
+```
 
 ## Integration Points
-- **API**: The `api/` module provides hooks and utilities for addon development. Refer to the [API documentation](https://dominion.lunadeer.cn/en/notes/api/).
-- **bStats**: The plugin integrates with bStats for analytics. Ensure any new metrics are registered appropriately.
-- **Crowdin**: Translations are synced with Crowdin, but direct file edits are preferred.
 
-## Examples
+- **Vault/PlaceholderAPI/WorldGuard** - soft dependencies in `plugin.yml`
+- **DominionAPI** - entry point for addons: `DominionAPI.getInstance()`
+- **bStats** - metrics registered in `Dominion.java` onEnable
 
-### Adding a New Command
-1. Define the command in `plugin.yml`.
-2. Implement the command logic in `core/src/main/java/`.
-3. Register the command in the plugin's main class.
+## Important Files
 
-### Creating an Addon
-1. Use the `api/` module as a dependency.
-2. Implement the required interfaces.
-3. Package and distribute the addon separately.
-
-## Additional Resources
-- [Contribution Guidelines](../CONTRIBUTING.md)
-- [API Documentation](https://dominion.lunadeer.cn/en/notes/api/)
-- [GitHub Issues](https://github.com/LunaDeerMC/Dominion/issues)
-
-For any questions or clarifications, open an issue or refer to the documentation.
+- `core/src/main/resources/plugin.yml` - plugin metadata, commands, permissions
+- `build.gradle.kts` - version management, dependency toggling, Hangar publishing
+- `version.properties` - auto-incremented version suffix
