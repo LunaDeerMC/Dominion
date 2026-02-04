@@ -58,6 +58,8 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         // %dominion_tp_loc_x_<dominion_name>%: Get the x coordinate of the teleport location of a dominion
         // %dominion_tp_loc_y_<dominion_name>%: Get the y coordinate of the teleport location of a dominion
         // %dominion_tp_loc_z_<dominion_name>%: Get the z coordinate of the teleport location of a dominion
+        // %dominion_tp_loc_Y_<dominion_name>%: Get the yaw of the teleport location of a dominion
+        // %dominion_tp_loc_P_<dominion_name>%: Get the pitch of the teleport location of a dominion
         // @Returns the coordinate of the teleport location of the dominion, empty if the dominion does not exist
         if (params.startsWith("tp_loc_")) {
             String coordinate = params.substring(8, 9); // x, y, or z
@@ -70,6 +72,8 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
                 case "x" -> String.valueOf(dominion.getTpLocation().getBlockX());
                 case "y" -> String.valueOf(dominion.getTpLocation().getBlockY());
                 case "z" -> String.valueOf(dominion.getTpLocation().getBlockZ());
+                case "Y" -> String.valueOf(dominion.getTpLocation().getYaw());
+                case "P" -> String.valueOf(dominion.getTpLocation().getPitch());
                 default -> null; // Invalid coordinate
             };
         }
@@ -85,7 +89,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         // %dominion_is_member_<dominion_name>%: Check if the player is a member of a specific dominion
         // @Returns "true" or "false", empty if the dominion does not exist
         if (params.startsWith("is_member_")) {
-            String dominionName = params.substring(17); // Get the dominion name after "is_member_of_"
+            String dominionName = params.substring(10); // Get the dominion name after "is_member_"
 
             DominionDTO dominion = CacheManager.instance.getDominion(dominionName);
             if (dominion == null) return null; // Dominion not found
@@ -106,7 +110,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         // %dominion_members_<dominion_name>%: Get the list of members in a specific dominion
         // @Returns a comma-separated list of member names, empty if the dominion does not
         if (params.startsWith("members_")) {
-            String dominionName = params.substring(9); // Get the dominion name after "members_"
+            String dominionName = params.substring(8); // Get the dominion name after "members_"
 
             DominionDTO dominion = CacheManager.instance.getDominion(dominionName);
             if (dominion == null) return null; // Dominion not found
@@ -124,7 +128,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         // %dominion_member_count_<dominion_name>%: Get the number of members in a specific dominion
         // @Returns the number of members, empty if the dominion does not exist
         if (params.startsWith("member_count_")) {
-            String dominionName = params.substring(14); // Get the dominion name after "member_count_"
+            String dominionName = params.substring(13); // Get the dominion name after "member_count_"
 
             DominionDTO dominion = CacheManager.instance.getDominion(dominionName);
             if (dominion == null) return null; // Dominion not found
@@ -174,7 +178,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         // %dominion_pri_flag_<flag>%: Get the value of a specific privilege flag for the player in the dominion they are currently in
         // @Returns "true" or "false", empty if the flag does not exist
         if (params.startsWith("pri_flag_")) {
-            String flagName = params.substring(10); // Get the flag name after "pri_flag_"
+            String flagName = params.substring(9); // Get the flag name after "pri_flag_"
             PriFlag flag = Flags.getPreFlag(flagName);
             if (flag == null) return null; // Flag not found
             return String.valueOf(Others.checkPrivilegeFlagSilence(bukkitPlayer.getLocation(), flag, bukkitPlayer, null));
