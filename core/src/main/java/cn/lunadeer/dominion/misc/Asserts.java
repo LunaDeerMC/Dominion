@@ -300,6 +300,9 @@ public class Asserts {
     /**
      * Check the sub_dom can be created by checking the uuid between the parent and operator
      * and make the admin permission to bypass it
+     *
+     * @param operator the command operator (usually operator)
+     * @param parent the parent dominion
      */
     public static void ifOperatorHasPermission(@NotNull CommandSender operator, DominionDTO parent){
         if ((parent == null)||operator.hasPermission(adminPermission)) return; //handle if there isn't a parent dom or the operator is admin
