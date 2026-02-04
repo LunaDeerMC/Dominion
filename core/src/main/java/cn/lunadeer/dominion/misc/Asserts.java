@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
+import static cn.lunadeer.dominion.Dominion.adminPermission;
 import static cn.lunadeer.dominion.misc.Converts.toWorld;
 import static cn.lunadeer.dominion.misc.Others.bypassLimit;
 
@@ -66,6 +67,7 @@ public class Asserts {
         public String cantContainChild = "Dominion {0} can not contain it's child dominion {1}.";
         public String missingParentDom = "Parent dominion of {0} is missing.";
         public String subDomTooDeep = "Player {0} can't create sub-dominion of depth more than {1}.";
+        public String subPermissionError = "Player {0} doesn't has permission of dominion {1}";
 
         public String withDrawMoney = "Successfully paid {0} for dominion.";
         public String depositMoney = "Successfully refunded {0} from dominion.";
@@ -292,6 +294,19 @@ public class Asserts {
                     Configuration.getPlayerLimitation(associatedPlayer).getWorldSettings(dominion.getWorldUid()).autoIncludeVertical)) {
                 throw new DominionException(Language.assertsText.outsideOfParentDom, dominion.getName(), parent.getName());
             }
+        }
+    }
+
+    /**
+     * Check the sub_dom can be created by checking the uuid between the parent and operator
+     * and make the admin permission to bypass it
+     */
+    public static void ifOperatorHasPermission(@NotNull CommandSender operator, DominionDTO parent){
+        if ((parent == null)||operator.hasPermission(adminPermission)) return; //handle if there isn't a parent dom or the operator is admin
+        if (operator instanceof Player operatorplayer){
+            if(operatorplayer.getUniqueId() != parent.getOwner()){
+                throw new DominionException(Language.assertsText.subPermissionError, operator.getName(), parent.getName());
+            };//check if the owner is same;
         }
     }
 
