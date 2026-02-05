@@ -114,7 +114,10 @@ public class DominionProviderHandler extends DominionProvider {
                 // size check
                 assertDominionSize(event.getOperator(), event.getWorld().getUID(), event.getCuboid());
                 //permission check
-                ifOperatorHasPermission(event.getOperator(),parent);
+                if (parent != null) {
+                    assertDominionOwner(event.getOperator(), parent);
+                }
+
                 // parent check
                 assertWithinParent(event.getOperator(), toBeCreated, event.getCuboid());
                 assertSubDepth(event.getOperator(), toBeCreated);
