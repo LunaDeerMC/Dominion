@@ -24,7 +24,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
-import static cn.lunadeer.dominion.Dominion.adminPermission;
 import static cn.lunadeer.dominion.misc.Converts.toWorld;
 import static cn.lunadeer.dominion.misc.Others.bypassLimit;
 
