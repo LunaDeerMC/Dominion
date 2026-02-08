@@ -12,6 +12,8 @@ import org.bukkit.util.Transformation;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import static cn.lunadeer.dominion.utils.Misc.isPaper;
+
 /**
  * Represents a single display element (BlockDisplay or ItemDisplay) within a {@link HoloItem}.
  * <p>
@@ -437,7 +439,11 @@ public class HoloElement {
         worldPos.setPitch(0);
 
         // Teleport entity to calculated world position
-        entity.teleport(worldPos);
+        if (!isPaper()) {
+            entity.teleport(worldPos);
+        } else {
+            entity.teleportAsync(worldPos);
+        }
 
         // Calculate combined rotation: parent rotation * local rotation
         Quaternionf combinedRotation = new Quaternionf(parentRotation).mul(localRotation);
