@@ -448,9 +448,12 @@ public class HoloElement {
         // Calculate combined rotation: parent rotation * local rotation
         Quaternionf combinedRotation = new Quaternionf(parentRotation).mul(localRotation);
 
-        // Apply transformation with translation offset, combined rotation, and local scale
+        // Transform the translation offset by parent rotation to keep it consistent with world space
+        Vector3f rotatedTranslation = parentRotation.transform(new Vector3f(translationOffset));
+
+        // Apply transformation with rotated translation offset, combined rotation, and local scale
         Transformation transformation = new Transformation(
-                new Vector3f(translationOffset),
+                rotatedTranslation,
                 combinedRotation,
                 new Vector3f(localScale),
                 new Quaternionf() // identity rightRotation
