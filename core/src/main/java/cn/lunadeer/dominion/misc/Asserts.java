@@ -110,14 +110,14 @@ public class Asserts {
      * <p>
      * This method checks both the total number of dominions the player owns
      * and the number of dominions in the specified world.
-     * If mayNotCountSubs is true, sub-dominions are excluded from the count (if configured).
      *
      * @param operator           the command sender (usually a player)
      * @param associatedWorldUid the world in which the dominion is located
-     * @param mayNotCountSubs    whether to exclude sub-dominions from the count
+     * @param doingSubDominion   whether the assertion is being made for a sub-dominion
+     *                           (if true, the current dominion will not be counted towards the limit if configured)
      * @throws DominionException if the player has exceeded the maximum number of dominions they can create
      */
-    public static void assertPlayerDominionAmount(@NotNull CommandSender operator, @NotNull UUID associatedWorldUid, boolean mayNotCountSubs) throws DominionException {
+    public static void assertPlayerDominionAmount(@NotNull CommandSender operator, @NotNull UUID associatedWorldUid, boolean doingSubDominion) throws DominionException {
         if (!(operator instanceof Player associatedPlayer)) {
             return;
         }
@@ -125,7 +125,9 @@ public class Asserts {
             return;
         }
         List<DominionDTO> dominions;
-        if (mayNotCountSubs && Configuration.getPlayerLimitation(associatedPlayer).doNotCountSubs) { // sub dominions do not count toward the limit
+        if (Configuration.getPlayerLimitation(associatedPlayer).doNotCountSubs) { // sub dominions do not count toward the limit
+            if (doingSubDominion)
+                return;   // if we are doing sub dominion, we should not count current dominion toward the limit
             dominions = CacheManager.instance.getCache().getDominionCache().getPlayerOwnTopLevelDominionDTOs(associatedPlayer.getUniqueId());
         } else {
             dominions = CacheManager.instance.getCache().getDominionCache().getPlayerOwnDominionDTOs(associatedPlayer.getUniqueId());
