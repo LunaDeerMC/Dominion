@@ -19,6 +19,7 @@ import cn.lunadeer.dominion.uis.dominion.manage.member.SelectPlayer;
 import cn.lunadeer.dominion.uis.dominion.manage.member.SelectTemplate;
 import cn.lunadeer.dominion.uis.template.TemplateFlags;
 import cn.lunadeer.dominion.uis.template.TemplateList;
+import cn.lunadeer.dominion.utils.holograme.HoloCommand;
 
 public class InitCommands {
     public InitCommands() {
@@ -63,5 +64,7 @@ public class InitCommands {
         new TemplateList();
         new TemplateFlags();
 
+        // cn.lunadeer.dominion.utils.holograme (debug - remove when done)
+        new HoloCommand();
     }
 }

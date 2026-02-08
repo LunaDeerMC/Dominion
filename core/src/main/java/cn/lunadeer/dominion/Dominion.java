@@ -14,6 +14,7 @@ import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.VaultConnect.VaultConnect;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.XVersionManager;
+import cn.lunadeer.dominion.utils.holograme.HoloManager;
 import cn.lunadeer.dominion.utils.bStatsMetrics;
 import cn.lunadeer.dominion.utils.command.CommandManager;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
@@ -98,6 +99,7 @@ public final class Dominion extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        HoloManager.instance().removeAll(); // Clean up hologram display entities
         if (DatabaseManager.instance != null)
             DatabaseManager.instance.close();
         Scheduler.cancelAll();

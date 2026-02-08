@@ -123,3 +123,5 @@ runs/
 !gradle-wrapper.jar
 
 version.properties
+
+/bin/
