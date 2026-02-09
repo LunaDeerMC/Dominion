@@ -15,6 +15,13 @@ public class XVersionManager {
                     || version.contains("1.21.11")) {
                 return ImplementationVersion.v1_21_9;
             }
+            if (version.contains("1.21.4")
+                    || version.contains("1.21.5")
+                    || version.contains("1.21.6")
+                    || version.contains("1.21.7")
+                    || version.contains("1.21.8")) {
+                return ImplementationVersion.v1_21_4;
+            }
             return ImplementationVersion.v1_21;
         } else if (version.contains("1.20.1")
                 || version.contains("1.20.4")
@@ -28,6 +35,7 @@ public class XVersionManager {
 
     public enum ImplementationVersion {
         v1_21_9,
+        v1_21_4,
         v1_21,
         v1_20_1;
 
