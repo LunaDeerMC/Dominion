@@ -1,18 +1,16 @@
 package cn.lunadeer.dominion.utils.holograme;
 
+import cn.lunadeer.dominion.nms.FakeEntity;
+import cn.lunadeer.dominion.nms.NMSManager;
 import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.BlockDisplay;
-import org.bukkit.entity.Display;
-import org.bukkit.entity.ItemDisplay;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Transformation;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import static cn.lunadeer.dominion.utils.Misc.isPaper;
+import java.util.Collection;
 
 /**
  * Represents a single display element (BlockDisplay or ItemDisplay) within a {@link HoloItem}.
@@ -20,8 +18,8 @@ import static cn.lunadeer.dominion.utils.Misc.isPaper;
  * Each element has a relative offset from the parent HoloItem's anchor point,
  * and can be individually scaled, rotated, and styled using a fluent API.
  * <p>
- * <b>Thread Safety:</b> All methods that modify the underlying entity must be called
- * from the main server thread (or the entity's region thread on Folia).
+ * This implementation uses NMS packets to create client-side only entities.
+ * No real entities are spawned on the server. Each element is backed by a {@link FakeEntity}.
  *
  * <h3>Usage Example:</h3>
  * <pre>{@code
@@ -29,7 +27,6 @@ import static cn.lunadeer.dominion.utils.Misc.isPaper;
  * item.addBlockDisplay("red_axis", Material.RED_CONCRETE)
  *     .offset(0.5f, 0, 0)
  *     .scale(1.0f, 0.1f, 0.1f)
- *     .glow(true)
  *     .glowColor(Color.RED)
  *     .brightness(15, 15);
  * }</pre>
@@ -46,7 +43,7 @@ public class HoloElement {
 
     private final String name;
     private final Type type;
-    private Display entity;
+    private FakeEntity fakeEntity;
     private HoloItem parent;
 
     // Relative position within the parent HoloItem
@@ -63,43 +60,37 @@ public class HoloElement {
     private ItemStack itemStack;
 
     /**
-     * Create a new HoloElement backed by a BlockDisplay entity.
+     * Create a new HoloElement backed by a client-side BlockDisplay entity.
      *
      * @param name          unique name of this element within its parent HoloItem
      * @param parent        the parent HoloItem
-     * @param world         the world to spawn in
      * @param spawnLocation initial spawn location
      * @param blockData     the block data to display
      */
-    HoloElement(String name, HoloItem parent, World world, Location spawnLocation, BlockData blockData) {
+    HoloElement(String name, HoloItem parent, Location spawnLocation, BlockData blockData) {
         this.name = name;
         this.type = Type.BLOCK_DISPLAY;
         this.parent = parent;
         this.blockData = blockData;
-        this.entity = world.spawn(spawnLocation, BlockDisplay.class, display -> {
-            display.setBlock(blockData);
-            display.setPersistent(false);
-        });
+        this.fakeEntity = NMSManager.instance().getFakeEntityFactory()
+                .createBlockDisplay(spawnLocation, blockData);
     }
 
     /**
-     * Create a new HoloElement backed by an ItemDisplay entity.
+     * Create a new HoloElement backed by a client-side ItemDisplay entity.
      *
      * @param name          unique name of this element within its parent HoloItem
      * @param parent        the parent HoloItem
-     * @param world         the world to spawn in
      * @param spawnLocation initial spawn location
      * @param itemStack     the item to display
      */
-    HoloElement(String name, HoloItem parent, World world, Location spawnLocation, ItemStack itemStack) {
+    HoloElement(String name, HoloItem parent, Location spawnLocation, ItemStack itemStack) {
         this.name = name;
         this.type = Type.ITEM_DISPLAY;
         this.parent = parent;
         this.itemStack = itemStack;
-        this.entity = world.spawn(spawnLocation, ItemDisplay.class, display -> {
-            display.setItemStack(itemStack);
-            display.setPersistent(false);
-        });
+        this.fakeEntity = NMSManager.instance().getFakeEntityFactory()
+                .createItemDisplay(spawnLocation, itemStack);
     }
 
     // ==================== Getters ====================
@@ -119,12 +110,12 @@ public class HoloElement {
     }
 
     /**
-     * Get the underlying Display entity.
+     * Get the underlying FakeEntity.
      *
-     * @return the Display entity, or null if removed
+     * @return the FakeEntity, or null if removed
      */
-    public Display getEntity() {
-        return entity;
+    public FakeEntity getFakeEntity() {
+        return fakeEntity;
     }
 
     /**
@@ -184,7 +175,7 @@ public class HoloElement {
      */
     public HoloElement offset(float x, float y, float z) {
         this.relativeOffset.set(x, y, z);
-        update();
+        updateTransform();
         return this;
     }
 
@@ -198,7 +189,7 @@ public class HoloElement {
      */
     public HoloElement scale(float x, float y, float z) {
         this.localScale.set(x, y, z);
-        update();
+        updateTransform();
         return this;
     }
 
@@ -226,7 +217,7 @@ public class HoloElement {
                 .rotateY((float) Math.toRadians(-yaw))
                 .rotateX((float) Math.toRadians(pitch))
                 .rotateZ((float) Math.toRadians(roll));
-        update();
+        updateTransform();
         return this;
     }
 
@@ -238,7 +229,7 @@ public class HoloElement {
      */
     public HoloElement rotate(Quaternionf rotation) {
         this.localRotation = new Quaternionf(rotation);
-        update();
+        updateTransform();
         return this;
     }
 
@@ -256,20 +247,22 @@ public class HoloElement {
      */
     public HoloElement translation(float x, float y, float z) {
         this.translationOffset.set(x, y, z);
-        update();
+        updateTransform();
         return this;
     }
 
     /**
      * Set whether this element is glowing.
+     * <p>
+     * Note: For packet-based fake entities, glow is controlled via the glow color.
+     * Setting glow(true) without a glowColor may have no visible effect.
      *
-     * @param glowing true to make the element glow
+     * @param glowing true to make the element glow (currently a no-op for NMS entities)
      * @return this element for chaining
      */
     public HoloElement glow(boolean glowing) {
-        if (entity != null && !entity.isDead()) {
-            entity.setGlowing(glowing);
-        }
+        // Glow is implicitly enabled when glowColorOverride != -1
+        // For packet-based entities, we don't need a separate glow flag
         return this;
     }
 
@@ -280,8 +273,9 @@ public class HoloElement {
      * @return this element for chaining
      */
     public HoloElement glowColor(Color color) {
-        if (entity != null && !entity.isDead()) {
-            entity.setGlowColorOverride(color);
+        if (fakeEntity != null) {
+            fakeEntity.setGlowColor(color);
+            syncToViewers();
         }
         return this;
     }
@@ -294,8 +288,9 @@ public class HoloElement {
      * @return this element for chaining
      */
     public HoloElement brightness(int blockLight, int skyLight) {
-        if (entity != null && !entity.isDead()) {
-            entity.setBrightness(new Display.Brightness(blockLight, skyLight));
+        if (fakeEntity != null) {
+            fakeEntity.setBrightness(blockLight, skyLight);
+            syncToViewers();
         }
         return this;
     }
@@ -305,18 +300,19 @@ public class HoloElement {
      * <p>
      * Billboard mode controls whether the display rotates to face the viewer:
      * <ul>
-     *   <li>{@link Display.Billboard#FIXED} - no billboarding (default)</li>
-     *   <li>{@link Display.Billboard#VERTICAL} - rotates around Y axis to face viewer</li>
-     *   <li>{@link Display.Billboard#HORIZONTAL} - rotates around horizontal axis</li>
-     *   <li>{@link Display.Billboard#CENTER} - always faces the viewer</li>
+     *   <li>0 = FIXED - no billboarding (default)</li>
+     *   <li>1 = VERTICAL - rotates around Y axis to face viewer</li>
+     *   <li>2 = HORIZONTAL - rotates around horizontal axis</li>
+     *   <li>3 = CENTER - always faces the viewer</li>
      * </ul>
      *
-     * @param billboard the billboard mode
+     * @param billboard the billboard mode byte
      * @return this element for chaining
      */
-    public HoloElement billboard(Display.Billboard billboard) {
-        if (entity != null && !entity.isDead()) {
-            entity.setBillboard(billboard);
+    public HoloElement billboard(byte billboard) {
+        if (fakeEntity != null) {
+            fakeEntity.setBillboard(billboard);
+            syncToViewers();
         }
         return this;
     }
@@ -328,8 +324,9 @@ public class HoloElement {
      * @return this element for chaining
      */
     public HoloElement viewRange(float range) {
-        if (entity != null && !entity.isDead()) {
-            entity.setViewRange(range);
+        if (fakeEntity != null) {
+            fakeEntity.setViewRange(range);
+            syncToViewers();
         }
         return this;
     }
@@ -342,9 +339,9 @@ public class HoloElement {
      * @return this element for chaining
      */
     public HoloElement shadow(float radius, float strength) {
-        if (entity != null && !entity.isDead()) {
-            entity.setShadowRadius(radius);
-            entity.setShadowStrength(strength);
+        if (fakeEntity != null) {
+            fakeEntity.setShadow(radius, strength);
+            syncToViewers();
         }
         return this;
     }
@@ -356,8 +353,9 @@ public class HoloElement {
      * @return this element for chaining
      */
     public HoloElement interpolationDuration(int ticks) {
-        if (entity != null && !entity.isDead()) {
-            entity.setInterpolationDuration(ticks);
+        if (fakeEntity != null) {
+            fakeEntity.setInterpolationDuration(ticks);
+            syncToViewers();
         }
         return this;
     }
@@ -369,8 +367,9 @@ public class HoloElement {
      * @return this element for chaining
      */
     public HoloElement interpolationDelay(int ticks) {
-        if (entity != null && !entity.isDead()) {
-            entity.setInterpolationDelay(ticks);
+        if (fakeEntity != null) {
+            fakeEntity.setInterpolationDelay(ticks);
+            syncToViewers();
         }
         return this;
     }
@@ -382,9 +381,10 @@ public class HoloElement {
      * @return this element for chaining
      */
     public HoloElement setBlockData(BlockData data) {
-        if (type == Type.BLOCK_DISPLAY && entity instanceof BlockDisplay bd && !entity.isDead()) {
+        if (type == Type.BLOCK_DISPLAY && fakeEntity != null) {
             this.blockData = data;
-            bd.setBlock(data);
+            fakeEntity.setBlockData(data);
+            syncToViewers();
         }
         return this;
     }
@@ -396,23 +396,27 @@ public class HoloElement {
      * @return this element for chaining
      */
     public HoloElement setItemStack(ItemStack stack) {
-        if (type == Type.ITEM_DISPLAY && entity instanceof ItemDisplay id && !entity.isDead()) {
+        if (type == Type.ITEM_DISPLAY && fakeEntity != null) {
             this.itemStack = stack;
-            id.setItemStack(stack);
+            fakeEntity.setItemStack(stack);
+            syncToViewers();
         }
         return this;
     }
 
     /**
      * Set the item display transform mode (only works for ITEM_DISPLAY elements).
-     * Controls how the item is rendered (e.g., NONE, THIRDPERSON_LEFTHAND, HEAD, GROUND, FIXED, GUI).
+     * Controls how the item is rendered (e.g., NONE=0, THIRDPERSON_LEFTHAND=1,
+     * THIRDPERSON_RIGHTHAND=2, FIRSTPERSON_LEFTHAND=3, FIRSTPERSON_RIGHTHAND=4,
+     * HEAD=5, GUI=6, GROUND=7, FIXED=8).
      *
-     * @param transform the item display transform
+     * @param transform the item display transform byte
      * @return this element for chaining
      */
-    public HoloElement itemTransform(ItemDisplay.ItemDisplayTransform transform) {
-        if (type == Type.ITEM_DISPLAY && entity instanceof ItemDisplay id && !entity.isDead()) {
-            id.setItemDisplayTransform(transform);
+    public HoloElement itemTransform(byte transform) {
+        if (type == Type.ITEM_DISPLAY && fakeEntity != null) {
+            fakeEntity.setItemTransform(transform);
+            syncToViewers();
         }
         return this;
     }
@@ -420,30 +424,37 @@ public class HoloElement {
     // ==================== Internal Methods ====================
 
     /**
-     * Update the entity's position and transformation based on the parent HoloItem's state.
-     * <p>
-     * This recalculates the world position from the parent's anchor + rotated relative offset,
-     * and applies the combined rotation and scale via the Display's Transformation.
+     * Send the current metadata to all online viewers.
+     * This is a helper method called by property setters to sync changes immediately.
      */
-    void update() {
-        if (entity == null || entity.isDead()) return;
+    private void syncToViewers() {
+        if (fakeEntity == null || parent == null) return;
+        java.util.Set<Player> viewers = parent.getViewers();
+        if (!viewers.isEmpty()) {
+            java.util.List<Player> onlineViewers = new java.util.ArrayList<>();
+            for (Player viewer : viewers) {
+                if (viewer.isOnline()) {
+                    onlineViewers.add(viewer);
+                }
+            }
+            if (!onlineViewers.isEmpty()) {
+                fakeEntity.sendMetadata(onlineViewers);
+            }
+        }
+    }
+
+    /**
+     * Update the FakeEntity's transformation based on the parent HoloItem's state.
+     * <p>
+     * This recalculates the transformation from the parent's rotation and this element's
+     * local offset, scale, rotation, and translation. The changes are automatically
+     * sent to all current viewers.
+     */
+    void updateTransform() {
+        if (fakeEntity == null) return;
         if (parent == null) return;
 
-        Location anchor = parent.getAnchor();
         Quaternionf parentRotation = parent.getRotation();
-
-        // Calculate world position: anchor + parentRotation.transform(relativeOffset)
-        Vector3f rotatedOffset = parentRotation.transform(new Vector3f(relativeOffset));
-        Location worldPos = anchor.clone().add(rotatedOffset.x, rotatedOffset.y, rotatedOffset.z);
-        worldPos.setYaw(0);
-        worldPos.setPitch(0);
-
-        // Teleport entity to calculated world position
-        if (!isPaper()) {
-            entity.teleport(worldPos);
-        } else {
-            entity.teleportAsync(worldPos);
-        }
 
         // Calculate combined rotation: parent rotation * local rotation
         Quaternionf combinedRotation = new Quaternionf(parentRotation).mul(localRotation);
@@ -451,31 +462,127 @@ public class HoloElement {
         // Transform the translation offset by parent rotation to keep it consistent with world space
         Vector3f rotatedTranslation = parentRotation.transform(new Vector3f(translationOffset));
 
-        // Apply transformation with rotated translation offset, combined rotation, and local scale
-        Transformation transformation = new Transformation(
-                rotatedTranslation,
-                combinedRotation,
-                new Vector3f(localScale),
-                new Quaternionf() // identity rightRotation
-        );
-        entity.setTransformation(transformation);
+        // Apply transformation properties to the fake entity
+        fakeEntity.setTranslation(rotatedTranslation);
+        fakeEntity.setLeftRotation(combinedRotation);
+        fakeEntity.setScale(new Vector3f(localScale));
+        fakeEntity.setRightRotation(new Quaternionf()); // identity
+
+        // Send the updated transformation to all current viewers
+        java.util.Set<Player> viewers = parent.getViewers();
+        if (!viewers.isEmpty()) {
+            java.util.List<Player> onlineViewers = new java.util.ArrayList<>();
+            for (Player viewer : viewers) {
+                if (viewer.isOnline()) {
+                    onlineViewers.add(viewer);
+                }
+            }
+            if (!onlineViewers.isEmpty()) {
+                sendTo(onlineViewers);
+            }
+        }
     }
 
     /**
-     * Remove the display entity from the world.
+     * Calculate the world position for this element based on the parent's anchor and rotation.
+     *
+     * @return the world position for this element
+     */
+    Location calculateWorldPosition() {
+        if (parent == null) return location();
+        Location anchor = parent.getAnchor();
+        Quaternionf parentRotation = parent.getRotation();
+        Vector3f rotatedOffset = parentRotation.transform(new Vector3f(relativeOffset));
+        Location worldPos = anchor.clone().add(rotatedOffset.x, rotatedOffset.y, rotatedOffset.z);
+        worldPos.setYaw(0);
+        worldPos.setPitch(0);
+        return worldPos;
+    }
+
+    /**
+     * Get the current location from the fake entity.
+     */
+    private Location location() {
+        return fakeEntity != null ? fakeEntity.getLocation() : null;
+    }
+
+    /**
+     * Spawn this element on specific players' clients and send current state.
+     *
+     * @param players the players who should see this element
+     */
+    void spawnFor(Collection<? extends Player> players) {
+        if (fakeEntity == null) return;
+        updateTransform();
+        // Teleport to correct position first
+        Location pos = calculateWorldPosition();
+        fakeEntity.teleport(pos, players);
+        // Spawn (sends spawn + metadata)
+        fakeEntity.spawn(players);
+    }
+
+    /**
+     * Spawn this element on a single player's client.
+     *
+     * @param player the player who should see this element
+     */
+    void spawnFor(Player player) {
+        spawnFor(java.util.Collections.singleton(player));
+    }
+
+    /**
+     * Remove this element from specific players' clients.
+     *
+     * @param players the players who should no longer see this element
+     */
+    void destroyFor(Collection<? extends Player> players) {
+        if (fakeEntity == null) return;
+        fakeEntity.destroy(players);
+    }
+
+    /**
+     * Remove this element from a single player's client.
+     *
+     * @param player the player who should no longer see this element
+     */
+    void destroyFor(Player player) {
+        destroyFor(java.util.Collections.singleton(player));
+    }
+
+    /**
+     * Send updated position and metadata to specific players.
+     *
+     * @param players the players to update
+     */
+    void sendTo(Collection<? extends Player> players) {
+        if (fakeEntity == null) return;
+        Location pos = calculateWorldPosition();
+        fakeEntity.teleport(pos, players);
+        fakeEntity.sendMetadata(players);
+    }
+
+    /**
+     * Send updated position and metadata to a single player.
+     *
+     * @param player the player to update
+     */
+    void sendTo(Player player) {
+        sendTo(java.util.Collections.singleton(player));
+    }
+
+    /**
+     * Clean up this element's resources. Called when the element is removed from its parent.
+     * Note: This does NOT send destroy packets. Call {@link #destroyFor} first.
      */
     void remove() {
-        if (entity != null && !entity.isDead()) {
-            entity.remove();
-        }
-        entity = null;
+        fakeEntity = null;
     }
 
     /**
-     * Check if the underlying entity is valid (exists and is not dead).
+     * Check if the underlying fake entity is valid.
      */
     public boolean isValid() {
-        return entity != null && !entity.isDead();
+        return fakeEntity != null;
     }
 
     @Override

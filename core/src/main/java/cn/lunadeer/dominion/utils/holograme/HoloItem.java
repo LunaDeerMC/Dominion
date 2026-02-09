@@ -4,19 +4,27 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.joml.Quaternionf;
 
 import java.util.*;
 
 /**
- * Represents a holographic item composed of multiple {@link HoloElement}s (BlockDisplay / ItemDisplay entities).
+ * Represents a holographic item composed of multiple {@link HoloElement}s (client-side Display entities).
  * <p>
  * A HoloItem has an <b>anchor position</b> and a <b>rotation</b> in the world.
  * Each child element is positioned relative to the anchor, and when the HoloItem
  * moves or rotates, all child elements update accordingly.
  * <p>
- * HoloItems are non-persistent — they are removed when the server restarts.
+ * HoloItems use NMS packets to create purely client-side entities — no real entities
+ * are spawned on the server. This means:
+ * <ul>
+ *   <li>Zero server-side entity overhead</li>
+ *   <li>Per-player visibility control via {@link #show(Player)} / {@link #hide(Player)}</li>
+ *   <li>No interference with other plugins or world saves</li>
+ * </ul>
+ * <p>
  * Use {@link HoloManager} to create and manage HoloItems.
  *
  * <h3>Usage Example:</h3>
@@ -30,27 +38,14 @@ import java.util.*;
  *     .scale(1.0f, 0.1f, 0.1f)
  *     .translation(-0.5f, -0.05f, -0.05f);
  *
- * // Y axis - green
- * axes.addBlockDisplay("y_axis", Material.GREEN_CONCRETE)
- *     .offset(0, 0.5f, 0)
- *     .scale(0.1f, 1.0f, 0.1f)
- *     .translation(-0.05f, -0.5f, -0.05f);
+ * // Show to a specific player
+ * axes.show(player);
  *
- * // Z axis - blue
- * axes.addBlockDisplay("z_axis", Material.BLUE_CONCRETE)
- *     .offset(0, 0, 0.5f)
- *     .scale(0.1f, 0.1f, 1.0f)
- *     .translation(-0.05f, -0.05f, -0.5f);
+ * // Hide from that player
+ * axes.hide(player);
  *
- * // Rotate the entire thing 45 degrees
- * axes.setRotation(45, 0);
- *
- * // Move it somewhere else
- * axes.setPosition(newLocation);
- *
- * // Hide / show
- * axes.hide();
- * axes.show();
+ * // Show to multiple players
+ * axes.show(playerList);
  *
  * // Clean up
  * axes.remove();
@@ -62,8 +57,7 @@ public class HoloItem {
     private Location anchor;
     private Quaternionf rotation = new Quaternionf(); // identity
     private final Map<String, HoloElement> elements = new LinkedHashMap<>();
-    private boolean visible = true;
-    private float savedViewRange = 1.0f;
+    private final Set<Player> viewers = new HashSet<>();
 
     /**
      * Create a new HoloItem at the specified anchor location.
@@ -108,12 +102,13 @@ public class HoloItem {
         if (world == null) {
             throw new IllegalStateException("Anchor location has no world");
         }
-        HoloElement element = new HoloElement(elementName, this, world, anchor.clone(), blockData);
+        HoloElement element = new HoloElement(elementName, this, anchor.clone(), blockData);
         elements.put(elementName, element);
-        if (!visible) {
-            element.viewRange(0);
+        element.updateTransform();
+        // If there are active viewers, spawn this new element for them
+        if (!viewers.isEmpty()) {
+            element.spawnFor(getOnlineViewers());
         }
-        element.update();
         return element;
     }
 
@@ -143,12 +138,13 @@ public class HoloItem {
         if (world == null) {
             throw new IllegalStateException("Anchor location has no world");
         }
-        HoloElement element = new HoloElement(elementName, this, world, anchor.clone(), itemStack);
+        HoloElement element = new HoloElement(elementName, this, anchor.clone(), itemStack);
         elements.put(elementName, element);
-        if (!visible) {
-            element.viewRange(0);
+        element.updateTransform();
+        // If there are active viewers, spawn this new element for them
+        if (!viewers.isEmpty()) {
+            element.spawnFor(getOnlineViewers());
         }
-        element.update();
         return element;
     }
 
@@ -161,6 +157,10 @@ public class HoloItem {
     public HoloItem removeElement(String elementName) {
         HoloElement element = elements.remove(elementName);
         if (element != null) {
+            // Destroy for all viewers first
+            if (!viewers.isEmpty()) {
+                element.destroyFor(getOnlineViewers());
+            }
             element.remove();
         }
         return this;
@@ -273,58 +273,118 @@ public class HoloItem {
         return this;
     }
 
-    // ==================== Visibility ====================
+    // ==================== Per-Player Visibility ====================
 
     /**
-     * Show the HoloItem (make all elements visible).
+     * Show the HoloItem to a specific player.
+     * Spawns all elements on the player's client via NMS packets.
      *
+     * @param player the player who should see this HoloItem
      * @return this HoloItem for chaining
      */
-    public HoloItem show() {
-        if (visible) return this;
-        visible = true;
+    public HoloItem show(Player player) {
+        if (player == null || !player.isOnline()) return this;
+        if (viewers.contains(player)) return this;
+        viewers.add(player);
         for (HoloElement element : elements.values()) {
-            element.viewRange(savedViewRange);
+            element.spawnFor(player);
         }
         return this;
     }
 
     /**
-     * Hide the HoloItem (make all elements invisible by setting view range to 0).
+     * Show the HoloItem to multiple players.
      *
+     * @param players the players who should see this HoloItem
      * @return this HoloItem for chaining
      */
-    public HoloItem hide() {
-        if (!visible) return this;
-        visible = false;
-        for (HoloElement element : elements.values()) {
-            element.viewRange(0);
+    public HoloItem show(Collection<? extends Player> players) {
+        for (Player player : players) {
+            show(player);
         }
         return this;
     }
 
     /**
-     * Check if the HoloItem is currently visible.
-     */
-    public boolean isVisible() {
-        return visible;
-    }
-
-    /**
-     * Set the view range for all elements.
-     * This value is saved and re-applied when the HoloItem is shown.
+     * Hide the HoloItem from a specific player.
+     * Destroys all elements on the player's client via NMS packets.
      *
-     * @param range the view range multiplier (default 1.0)
+     * @param player the player who should no longer see this HoloItem
      * @return this HoloItem for chaining
      */
-    public HoloItem setViewRange(float range) {
-        this.savedViewRange = range;
-        if (visible) {
+    public HoloItem hide(Player player) {
+        if (player == null) return this;
+        if (!viewers.remove(player)) return this;
+        if (player.isOnline()) {
             for (HoloElement element : elements.values()) {
-                element.viewRange(range);
+                element.destroyFor(player);
             }
         }
         return this;
+    }
+
+    /**
+     * Hide the HoloItem from multiple players.
+     *
+     * @param players the players who should no longer see this HoloItem
+     * @return this HoloItem for chaining
+     */
+    public HoloItem hide(Collection<? extends Player> players) {
+        for (Player player : players) {
+            hide(player);
+        }
+        return this;
+    }
+
+    /**
+     * Hide the HoloItem from all current viewers.
+     *
+     * @return this HoloItem for chaining
+     */
+    public HoloItem hideAll() {
+        List<Player> currentViewers = new ArrayList<>(viewers);
+        for (Player player : currentViewers) {
+            hide(player);
+        }
+        return this;
+    }
+
+    /**
+     * Check if a specific player is currently viewing this HoloItem.
+     *
+     * @param player the player to check
+     * @return true if the player can see this HoloItem
+     */
+    public boolean isViewedBy(Player player) {
+        return viewers.contains(player);
+    }
+
+    /**
+     * Get an unmodifiable set of all current viewers.
+     *
+     * @return the set of players currently viewing this HoloItem
+     */
+    public Set<Player> getViewers() {
+        return Collections.unmodifiableSet(viewers);
+    }
+
+    /**
+     * Get the list of online viewers (filters out disconnected players).
+     *
+     * @return list of currently online viewers
+     */
+    private List<Player> getOnlineViewers() {
+        List<Player> online = new ArrayList<>();
+        Iterator<Player> it = viewers.iterator();
+        while (it.hasNext()) {
+            Player p = it.next();
+            if (p.isOnline()) {
+                online.add(p);
+            } else {
+                it.remove(); // Clean up disconnected players
+            }
+        }
+        return online;
     }
 
     // ==================== Getters ====================
@@ -353,37 +413,46 @@ public class HoloItem {
     // ==================== Lifecycle ====================
 
     /**
-     * Update all elements' positions and transformations.
+     * Update all elements' positions and transformations and send to all viewers.
      * <p>
      * Called automatically when the HoloItem's position or rotation changes.
      * Can also be called manually to force a refresh.
      */
     public void updateAll() {
+        List<Player> online = getOnlineViewers();
         for (HoloElement element : elements.values()) {
-            element.update();
+            element.updateTransform();
+            if (!online.isEmpty()) {
+                element.sendTo(online);
+            }
         }
     }
 
     /**
      * Remove all elements and clean up this HoloItem.
-     * Also unregisters this HoloItem from the {@link HoloManager}.
+     * Sends destroy packets to all viewers and unregisters from {@link HoloManager}.
      */
     public void remove() {
+        List<Player> online = getOnlineViewers();
         for (HoloElement element : elements.values()) {
+            if (!online.isEmpty()) {
+                element.destroyFor(online);
+            }
             element.remove();
         }
         elements.clear();
+        viewers.clear();
         HoloManager.instance().untrack(name);
     }
 
     @Override
     public String toString() {
-        return String.format("HoloItem{name='%s', anchor=%s, elements=%d, visible=%s}",
+        return String.format("HoloItem{name='%s', anchor=%s, elements=%d, viewers=%d}",
                 name,
                 anchor.getWorld() != null
                         ? String.format("(%s, %.1f, %.1f, %.1f)", anchor.getWorld().getName(),
                         anchor.getX(), anchor.getY(), anchor.getZ())
                         : "null",
-                elements.size(), visible);
+                elements.size(), viewers.size());
     }
 }

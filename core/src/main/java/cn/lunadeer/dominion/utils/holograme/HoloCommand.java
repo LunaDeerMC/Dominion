@@ -253,8 +253,8 @@ public class HoloCommand {
                         String.format("%.2f", anchor.getY()),
                         String.format("%.2f", anchor.getZ()),
                         anchor.getWorld() != null ? anchor.getWorld().getName() : "null");
-                Notification.info(sender, "[Holo] Visible: {0}, Elements: {1}",
-                        String.valueOf(item.isVisible()), String.valueOf(item.getElementCount()));
+                Notification.info(sender, "[Holo] Viewers: {0}, Elements: {1}",
+                        String.valueOf(item.getViewers().size()), String.valueOf(item.getElementCount()));
                 for (HoloElement element : item.getElements()) {
                     Notification.info(sender, "[Holo]   {0}", element.toString());
                 }
@@ -310,28 +310,32 @@ public class HoloCommand {
         // /dom holo_show <name>
         reg(new SecondaryCommand("holo_show", List.of(
                 holoNameArg()
-        ), "[Debug] Show a hidden HoloItem") {
+        ), "[Debug] Show a HoloItem to yourself") {
             @Override
             public void executeHandler(CommandSender sender) {
+                Player player = toPlayer(sender);
+                if (player == null) return;
                 String name = getArgumentValue(0);
                 HoloItem item = getItem(sender, name);
                 if (item == null) return;
-                item.show();
-                Notification.info(sender, "[Holo] HoloItem ''{0}'' is now visible.", name);
+                item.show(player);
+                Notification.info(sender, "[Holo] HoloItem ''{0}'' is now visible to you.", name);
             }
         });
 
         // /dom holo_hide <name>
         reg(new SecondaryCommand("holo_hide", List.of(
                 holoNameArg()
-        ), "[Debug] Hide a HoloItem") {
+        ), "[Debug] Hide a HoloItem from yourself") {
             @Override
             public void executeHandler(CommandSender sender) {
+                Player player = toPlayer(sender);
+                if (player == null) return;
                 String name = getArgumentValue(0);
                 HoloItem item = getItem(sender, name);
                 if (item == null) return;
-                item.hide();
-                Notification.info(sender, "[Holo] HoloItem ''{0}'' is now hidden.", name);
+                item.hide(player);
+                Notification.info(sender, "[Holo] HoloItem ''{0}'' is now hidden from you.", name);
             }
         });
 
@@ -650,6 +654,9 @@ public class HoloCommand {
                             .brightness(15, 15)
                             .glow(true)
                             .glowColor(Color.BLUE);
+
+                    // Show the demo to the player who created it
+                    axes.show(player);
 
                     Notification.info(sender, "[Holo] Demo coordinate axes ''{0}'' created at ({1}, {2}, {3})",
                             demoName,

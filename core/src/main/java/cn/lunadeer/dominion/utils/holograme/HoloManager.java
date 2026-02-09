@@ -77,13 +77,14 @@ public class HoloManager {
 
     /**
      * Remove and clean up a HoloItem by name.
-     * This removes all child display entities from the world.
+     * This sends destroy packets to all viewers and removes elements.
      *
      * @param name the name of the HoloItem to remove
      */
     public void remove(String name) {
         HoloItem item = items.remove(name);
         if (item != null) {
+            item.hideAll();
             for (HoloElement element : item.getElements()) {
                 element.remove();
             }
@@ -115,10 +116,11 @@ public class HoloManager {
      * Remove and clean up all HoloItems.
      * <p>
      * Should be called when the plugin is disabled to ensure
-     * all non-persistent display entities are removed from the world.
+     * all fake entities are destroyed on all viewers' clients.
      */
     public void removeAll() {
         for (HoloItem item : items.values()) {
+            item.hideAll();
             for (HoloElement element : item.getElements()) {
                 element.remove();
             }

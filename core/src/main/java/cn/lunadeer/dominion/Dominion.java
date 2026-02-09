@@ -15,6 +15,7 @@ import cn.lunadeer.dominion.utils.VaultConnect.VaultConnect;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.XVersionManager;
 import cn.lunadeer.dominion.utils.holograme.HoloManager;
+import cn.lunadeer.dominion.nms.NMSManager;
 import cn.lunadeer.dominion.utils.bStatsMetrics;
 import cn.lunadeer.dominion.utils.command.CommandManager;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
@@ -68,6 +69,7 @@ public final class Dominion extends JavaPlugin {
         }
         Notification.instance.setPrefix(Language.dominionText.notificationPrefix);
         XVersionManager.VERSION = XVersionManager.GetVersion(this);
+        NMSManager.initialize();
 
         new VaultConnect(this);
         new MultiServerManager(this);

@@ -95,9 +95,27 @@ dependencies {
     implementation(project(":v1_21_9"))
 }
 
+// Reobfuscate all subproject JARs that have paperweight reobfJar task
+val reobfAllJars = tasks.register("reobfAllJars") {
+    description = "Reobfuscate all subproject JARs with paperweight (skip if task doesn't exist)"
+    group = "build"
+}
+
+subprojects {
+    afterEvaluate {
+        tasks.findByName("reobfJar")?.let { reobfTask ->
+            reobfAllJars.configure {
+                dependsOn(reobfTask)
+            }
+        }
+    }
+}
+
 tasks.shadowJar {
     archiveClassifier.set("")
     archiveVersion.set(project.version.toString())
+    // Ensure all NMS modules are reobfuscated before assembling the final JAR
+    dependsOn(reobfAllJars)
 }
 
 tasks.register("Clean&Build") { // <<<< RUN THIS TASK TO BUILD PLUGIN
@@ -126,6 +144,8 @@ hangarPublish {
 tasks.named("publishPluginPublicationToHangar") {
     dependsOn(tasks.named("jar"))
 }
+
+
 
 // Function to get current git branch
 fun getCurrentGitBranch(): String {
