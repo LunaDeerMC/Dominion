@@ -5,7 +5,7 @@ import java.util.*
 
 plugins {
     id("java")
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.gradleup.shadow") version "9.0.0-beta4"
     id("io.papermc.hangar-publish-plugin") version "0.1.2"
 }
 
@@ -34,7 +34,7 @@ tasks.withType<JavaCompile> {
 
 allprojects {
     apply(plugin = "java")
-    apply(plugin = "com.github.johnrengelman.shadow")
+    apply(plugin = "com.gradleup.shadow")
 
     repositories {
         mavenLocal()
