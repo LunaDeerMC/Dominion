@@ -15,7 +15,7 @@ import cn.lunadeer.dominion.events.dominion.modify.*;
 import cn.lunadeer.dominion.misc.DominionException;
 import cn.lunadeer.dominion.providers.DominionProvider;
 import cn.lunadeer.dominion.utils.Notification;
-import cn.lunadeer.dominion.utils.ParticleUtil;
+import cn.lunadeer.dominion.utils.BorderRenderUtil;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -124,7 +124,7 @@ public class DominionProviderHandler extends DominionProvider {
                 }
                 // do db insert
                 DominionDTO inserted = DominionDOO.insert(toBeCreated);
-                ParticleUtil.showBorder(event.getOperator(), inserted);
+                BorderRenderUtil.showBorder(event.getOperator(), inserted);
                 Notification.info(event.getOperator(), Language.dominionProviderHandlerText.createSuccess, event.getName());
                 return inserted;
             } catch (Exception e) {
@@ -159,7 +159,7 @@ public class DominionProviderHandler extends DominionProvider {
                     assertEconomy(event.getOperator(), event.getOldCuboid(), event.getNewCuboid(), dominion.getParentDomId() != -1);
                 }
                 event.setDominion(event.getDominion().setCuboid(event.getNewCuboid()));
-                ParticleUtil.showBorder(event.getOperator(), event.getDominion());
+                BorderRenderUtil.showBorder(event.getOperator(), event.getDominion());
                 if (expand) {
                     Notification.info(event.getOperator(), Language.dominionProviderHandlerText.expandSuccess, event.getDominion().getName());
                 } else {

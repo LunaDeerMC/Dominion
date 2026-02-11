@@ -7,7 +7,7 @@ import cn.lunadeer.dominion.events.PlayerCrossDominionBorderEvent;
 import cn.lunadeer.dominion.events.PlayerMoveInDominionEvent;
 import cn.lunadeer.dominion.events.PlayerMoveOutDominionEvent;
 import cn.lunadeer.dominion.utils.MessageDisplay;
-import cn.lunadeer.dominion.utils.ParticleUtil;
+import cn.lunadeer.dominion.utils.BorderRenderUtil;
 import cn.lunadeer.dominion.utils.XLogger;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,7 +33,7 @@ public class CacheEventHandler implements Listener {
         );
         // show border
         if (event.getDominion().getEnvironmentFlagValue().getOrDefault(Flags.SHOW_BORDER, false)) {
-            ParticleUtil.showBorder(event.getPlayer(), event.getDominion());
+            BorderRenderUtil.showBorder(event.getPlayer(), event.getDominion());
         }
     }
 
@@ -53,7 +53,7 @@ public class CacheEventHandler implements Listener {
         );
         // show border
         if (event.getDominion().getEnvironmentFlagValue().getOrDefault(Flags.SHOW_BORDER, false)) {
-            ParticleUtil.showBorder(event.getPlayer(), event.getDominion());
+            BorderRenderUtil.showBorder(event.getPlayer(), event.getDominion());
         }
     }
 

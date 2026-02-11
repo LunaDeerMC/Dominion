@@ -7,7 +7,7 @@ import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.utils.Notification;
-import cn.lunadeer.dominion.utils.ParticleUtil;
+import cn.lunadeer.dominion.utils.BorderRenderUtil;
 import cn.lunadeer.dominion.utils.VaultConnect.VaultConnect;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import org.bukkit.Location;
@@ -110,7 +110,7 @@ public class SelectPointEventsHandler implements Listener {
                     double price = amount * Configuration.getPlayerLimitation(player).economy.pricePerBlock;
                     Notification.info(player, Language.selectPointEventsHandlerText.price, price, VaultConnect.instance.currencyNamePlural());
                 }
-                ParticleUtil.showBorder(player, points.get(0).getWorld(), cuboid);
+                BorderRenderUtil.showBorder(player, points.get(0).getWorld(), cuboid);
                 Notification.info(player, Language.selectPointEventsHandlerText.size, cuboid.xLength(), cuboid.yLength(), cuboid.zLength());
                 Notification.info(player, Language.selectPointEventsHandlerText.square, cuboid.getSquare());
                 Notification.info(player, Language.selectPointEventsHandlerText.volume, cuboid.getVolume());
@@ -146,7 +146,7 @@ public class SelectPointEventsHandler implements Listener {
             Notification.info(player, Language.selectPointEventsHandlerText.size, cuboid.xLength(), cuboid.yLength(), cuboid.zLength());
             Notification.info(player, Language.selectPointEventsHandlerText.square, cuboid.getSquare());
             Notification.info(player, Language.selectPointEventsHandlerText.volume, cuboid.getVolume());
-            ParticleUtil.showBorder(player, dominion);
+            BorderRenderUtil.showBorder(player, dominion);
         }
     }
 }

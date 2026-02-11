@@ -8,7 +8,7 @@ import cn.lunadeer.dominion.uis.MainMenu;
 import cn.lunadeer.dominion.uis.dominion.DominionList;
 import cn.lunadeer.dominion.uis.dominion.DominionManage;
 import cn.lunadeer.dominion.utils.Notification;
-import cn.lunadeer.dominion.utils.ParticleUtil;
+import cn.lunadeer.dominion.utils.BorderRenderUtil;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import cn.lunadeer.dominion.utils.stui.ListView;
 import cn.lunadeer.dominion.utils.stui.components.Line;
@@ -51,7 +51,7 @@ public class Info {
             boolean isOwner = false;
             if (player.getUniqueId().equals(dominion.getOwner())) {
                 isOwner = true;
-                ParticleUtil.showBorder(player, dominion);
+                BorderRenderUtil.showBorder(player, dominion);
             }
 
             if (!isOwner) {
