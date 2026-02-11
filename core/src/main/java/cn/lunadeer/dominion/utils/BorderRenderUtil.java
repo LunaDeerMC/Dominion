@@ -32,10 +32,9 @@ public class BorderRenderUtil {
     private static final float WALL_THICKNESS = 0.08f;
 
     /** Material used for border walls. */
-    private static final Material BORDER_MATERIAL = Material.YELLOW_STAINED_GLASS;
+    private static final Material BORDER_MATERIAL = Material.WHITE_STAINED_GLASS;
 
-    /** Glow color for border walls. */
-    private static final Color GLOW_COLOR = Color.fromRGB(0, 180, 255);
+    public static final Color DEFAULT_GLOW_COLOR = Color.fromRGB(0, 180, 255);
 
     public static void showBorder(CommandSender sender, DominionDTO dominion) {
         if (!(sender instanceof Player player)) {
@@ -43,19 +42,21 @@ public class BorderRenderUtil {
         }
         showBorder(player,
                 dominion.getWorld(),
-                dominion.getCuboid()
+                dominion.getCuboid(),
+                Color.fromRGB(dominion.getColorR(), dominion.getColorG(), dominion.getColorB())
         );
     }
 
     public static void showBorder(Player player, DominionDTO dominion) {
         showBorder(player,
                 dominion.getWorld(),
-                dominion.getCuboid()
+                dominion.getCuboid(),
+                Color.fromRGB(dominion.getColorR(), dominion.getColorG(), dominion.getColorB())
         );
     }
 
-    public static void showBorder(Player player, World world, CuboidDTO cuboid) {
-        Scheduler.runTask(() -> showBorderDisplay(player, world, cuboid));
+    public static void showBorder(Player player, World world, CuboidDTO cuboid, Color GLOW_COLOR) {
+        Scheduler.runTask(() -> showBorderDisplay(player, world, cuboid, GLOW_COLOR));
     }
 
     /**
@@ -63,7 +64,7 @@ public class BorderRenderUtil {
      * Any previously displayed border for this player is removed first. The border auto-removes
      * after {@link #DISPLAY_DURATION_TICKS} ticks.
      */
-    private static void showBorderDisplay(Player player, World world, CuboidDTO cuboid) {
+    private static void showBorderDisplay(Player player, World world, CuboidDTO cuboid, Color GLOW_COLOR) {
         if (player == null || !player.isOnline() || world == null) return;
 
         String holoName = "border_" + player.getUniqueId();

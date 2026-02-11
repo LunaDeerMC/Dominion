@@ -4,11 +4,7 @@ import cn.lunadeer.dominion.nms.FakeEntity;
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import net.minecraft.network.protocol.game.ClientboundBundlePacket;
-import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
-import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
-import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
+import net.minecraft.network.protocol.game.*;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -26,11 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Fake entity implementation for Minecraft 1.20.1.
@@ -60,6 +52,8 @@ public class FakeEntityImpl implements FakeEntity {
     // ==================== Metadata Accessors (1.20.1 indices) ====================
     // These are created manually because Display.DATA_*_ID fields are private.
 
+    private static final EntityDataAccessor<Byte> DATA_SHARED_FLAGS_ID =
+            new EntityDataAccessor<>(0, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Integer> INTERPOLATION_START =
             new EntityDataAccessor<>(8, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> INTERPOLATION_DURATION =
@@ -117,6 +111,7 @@ public class FakeEntityImpl implements FakeEntity {
     private float width = 0.0f;
     private float height = 0.0f;
     private int glowColorOverride = -1;
+    private byte entityFlags = 0;
 
     // BlockDisplay specific
     private BlockState blockState;
@@ -245,8 +240,10 @@ public class FakeEntityImpl implements FakeEntity {
     public void setGlowColor(Color color) {
         if (color == null) {
             this.glowColorOverride = -1;
+            this.entityFlags = (byte) (this.entityFlags & ~0x40); // Clear glow flag (bit 6)
         } else {
             this.glowColorOverride = color.asARGB();
+            this.entityFlags = (byte) (this.entityFlags | 0x40); // Set glow flag (bit 6)
         }
     }
 
@@ -331,6 +328,7 @@ public class FakeEntityImpl implements FakeEntity {
     private ClientboundSetEntityDataPacket createMetadataPacket() {
         List<SynchedEntityData.DataValue<?>> dataValues = new ArrayList<>();
 
+        dataValues.add(SynchedEntityData.DataValue.create(DATA_SHARED_FLAGS_ID, entityFlags));
         dataValues.add(SynchedEntityData.DataValue.create(INTERPOLATION_START, interpolationDelay));
         dataValues.add(SynchedEntityData.DataValue.create(INTERPOLATION_DURATION, interpolationDuration));
         dataValues.add(SynchedEntityData.DataValue.create(TRANSLATION, translation));

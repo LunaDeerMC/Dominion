@@ -55,6 +55,7 @@ public class FakeEntityImpl implements FakeEntity {
     // server forks (e.g., DeerFolia adds CopperGolemState serializer, shifting field mappings).
     // Instead, we reflectively extract Display's own EntityDataAccessor fields and match by index.
 
+    private static final EntityDataAccessor<Byte> DATA_SHARED_FLAGS_ID;
     private static final EntityDataAccessor<Integer> INTERPOLATION_START;
     private static final EntityDataAccessor<Integer> INTERPOLATION_DURATION;
     private static final EntityDataAccessor<Integer> POS_ROT_INTERPOLATION_DURATION;
@@ -75,10 +76,12 @@ public class FakeEntityImpl implements FakeEntity {
     private static final EntityDataAccessor<Byte> ITEM_TRANSFORM;
 
     static {
+        Map<Integer, EntityDataAccessor<?>> ea = resolveAccessors(net.minecraft.world.entity.Entity.class);
         Map<Integer, EntityDataAccessor<?>> da = resolveAccessors(Display.class);
         Map<Integer, EntityDataAccessor<?>> bda = resolveAccessors(Display.BlockDisplay.class);
         Map<Integer, EntityDataAccessor<?>> ida = resolveAccessors(Display.ItemDisplay.class);
 
+        DATA_SHARED_FLAGS_ID = (EntityDataAccessor<Byte>) ea.get(0);
         INTERPOLATION_START = (EntityDataAccessor<Integer>) da.get(8);
         INTERPOLATION_DURATION = (EntityDataAccessor<Integer>) da.get(9);
         POS_ROT_INTERPOLATION_DURATION = (EntityDataAccessor<Integer>) da.get(10);
@@ -139,6 +142,7 @@ public class FakeEntityImpl implements FakeEntity {
     private float width = 0.0f;
     private float height = 0.0f;
     private int glowColorOverride = -1;
+    private byte entityFlags = 0;
 
     // BlockDisplay specific
     private BlockState blockState;
@@ -259,8 +263,10 @@ public class FakeEntityImpl implements FakeEntity {
     public void setGlowColor(Color color) {
         if (color == null) {
             this.glowColorOverride = -1;
+            this.entityFlags = (byte) (this.entityFlags & ~0x40); // Clear glow flag (bit 6)
         } else {
             this.glowColorOverride = color.asARGB();
+            this.entityFlags = (byte) (this.entityFlags | 0x40); // Set glow flag (bit 6)
         }
     }
 
@@ -341,6 +347,7 @@ public class FakeEntityImpl implements FakeEntity {
     private ClientboundSetEntityDataPacket createMetadataPacket() {
         List<SynchedEntityData.DataValue<?>> dataValues = new ArrayList<>();
 
+        dataValues.add(SynchedEntityData.DataValue.create(DATA_SHARED_FLAGS_ID, entityFlags));
         dataValues.add(SynchedEntityData.DataValue.create(INTERPOLATION_START, interpolationDelay));
         dataValues.add(SynchedEntityData.DataValue.create(INTERPOLATION_DURATION, interpolationDuration));
         dataValues.add(SynchedEntityData.DataValue.create(POS_ROT_INTERPOLATION_DURATION, posRotInterpolationDuration));

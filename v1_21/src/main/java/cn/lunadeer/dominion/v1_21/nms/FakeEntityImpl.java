@@ -4,17 +4,13 @@ import cn.lunadeer.dominion.nms.FakeEntity;
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import net.minecraft.network.protocol.game.ClientboundBundlePacket;
-import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
-import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
-import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
+import net.minecraft.network.protocol.game.*;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -25,12 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Fake entity implementation for Minecraft 1.21.
@@ -64,6 +55,7 @@ public class FakeEntityImpl implements FakeEntity {
     // server forks (e.g., DeerFolia adds CopperGolemState serializer, shifting field mappings).
     // Instead, we reflectively extract Display's own EntityDataAccessor fields and match by index.
 
+    private static final EntityDataAccessor<Byte> DATA_SHARED_FLAGS_ID;
     private static final EntityDataAccessor<Integer> INTERPOLATION_START;
     private static final EntityDataAccessor<Integer> INTERPOLATION_DURATION;
     private static final EntityDataAccessor<Integer> POS_ROT_INTERPOLATION_DURATION;
@@ -84,10 +76,12 @@ public class FakeEntityImpl implements FakeEntity {
     private static final EntityDataAccessor<Byte> ITEM_TRANSFORM;
 
     static {
+        Map<Integer, EntityDataAccessor<?>> ea = resolveAccessors(net.minecraft.world.entity.Entity.class);
         Map<Integer, EntityDataAccessor<?>> da = resolveAccessors(Display.class);
         Map<Integer, EntityDataAccessor<?>> bda = resolveAccessors(Display.BlockDisplay.class);
         Map<Integer, EntityDataAccessor<?>> ida = resolveAccessors(Display.ItemDisplay.class);
 
+        DATA_SHARED_FLAGS_ID = (EntityDataAccessor<Byte>) ea.get(0);
         INTERPOLATION_START = (EntityDataAccessor<Integer>) da.get(8);
         INTERPOLATION_DURATION = (EntityDataAccessor<Integer>) da.get(9);
         POS_ROT_INTERPOLATION_DURATION = (EntityDataAccessor<Integer>) da.get(10);
@@ -148,6 +142,7 @@ public class FakeEntityImpl implements FakeEntity {
     private float width = 0.0f;
     private float height = 0.0f;
     private int glowColorOverride = -1;
+    private byte entityFlags = 0;
 
     // BlockDisplay specific
     private BlockState blockState;
@@ -268,8 +263,10 @@ public class FakeEntityImpl implements FakeEntity {
     public void setGlowColor(Color color) {
         if (color == null) {
             this.glowColorOverride = -1;
+            this.entityFlags = (byte) (this.entityFlags & ~0x40); // Clear glow flag (bit 6)
         } else {
             this.glowColorOverride = color.asARGB();
+            this.entityFlags = (byte) (this.entityFlags | 0x40); // Set glow flag (bit 6)
         }
     }
 
@@ -350,6 +347,7 @@ public class FakeEntityImpl implements FakeEntity {
     private ClientboundSetEntityDataPacket createMetadataPacket() {
         List<SynchedEntityData.DataValue<?>> dataValues = new ArrayList<>();
 
+        dataValues.add(SynchedEntityData.DataValue.create(DATA_SHARED_FLAGS_ID, entityFlags));
         dataValues.add(SynchedEntityData.DataValue.create(INTERPOLATION_START, interpolationDelay));
         dataValues.add(SynchedEntityData.DataValue.create(INTERPOLATION_DURATION, interpolationDuration));
         dataValues.add(SynchedEntityData.DataValue.create(POS_ROT_INTERPOLATION_DURATION, posRotInterpolationDuration));
