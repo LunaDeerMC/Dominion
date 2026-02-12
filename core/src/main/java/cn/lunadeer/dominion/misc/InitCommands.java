@@ -1,6 +1,7 @@
 package cn.lunadeer.dominion.misc;
 
 import cn.lunadeer.dominion.commands.*;
+import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.uis.*;
 import cn.lunadeer.dominion.uis.dominion.DominionList;
 import cn.lunadeer.dominion.uis.dominion.DominionManage;
@@ -64,7 +65,7 @@ public class InitCommands {
         new TemplateList();
         new TemplateFlags();
 
-        // cn.lunadeer.dominion.utils.holograme (debug - remove when done)
-        new HoloCommand();
+        // cn.lunadeer.dominion.utils.holograme (only for debug)
+        if (Configuration.debug) new HoloCommand();
     }
 }
