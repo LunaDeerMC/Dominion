@@ -1,7 +1,10 @@
 package cn.lunadeer.dominion.nms;
 
+import cn.lunadeer.dominion.Dominion;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.XVersionManager;
+
+import static cn.lunadeer.dominion.utils.Misc.listClassOfPackage;
 
 /**
  * Manages NMS version-specific implementations.
@@ -74,7 +77,17 @@ public class NMSManager {
             throw new RuntimeException("Server version not determined. Cannot load NMS implementations.");
         }
 
-        String nmsPackage = "cn.lunadeer.dominion." + version.name() + ".nms.";
+        String nmsPackage = "cn.lunadeer.dominion." + version.name() + ".nms";
+        while (listClassOfPackage(Dominion.instance, nmsPackage).isEmpty()) {
+            version = XVersionManager.VERSION.getPrevious();
+            if (version == null) {
+                throw new RuntimeException("No compatible NMS implementations found for server version " + XVersionManager.VERSION.name() + " or any previous versions.");
+            }
+            nmsPackage = "cn.lunadeer.dominion." + version.name() + ".nms";
+        }
+        nmsPackage += ".";
+
+
         XLogger.debug("Loading NMS implementations from package: {0}", nmsPackage);
 
         try {

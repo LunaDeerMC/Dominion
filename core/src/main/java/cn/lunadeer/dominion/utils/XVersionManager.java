@@ -15,11 +15,13 @@ public class XVersionManager {
                     || version.contains("1.21.11")) {
                 return ImplementationVersion.v1_21_9;
             }
+            if (version.contains("1.21.8")) {
+                return ImplementationVersion.v1_21_8;
+            }
             if (version.contains("1.21.4")
                     || version.contains("1.21.5")
                     || version.contains("1.21.6")
-                    || version.contains("1.21.7")
-                    || version.contains("1.21.8")) {
+                    || version.contains("1.21.7")) {
                 return ImplementationVersion.v1_21_4;
             }
             return ImplementationVersion.v1_21;
@@ -35,6 +37,7 @@ public class XVersionManager {
 
     public enum ImplementationVersion {
         v1_21_9,
+        v1_21_8,
         v1_21_4,
         v1_21,
         v1_20_1;
@@ -72,6 +75,15 @@ public class XVersionManager {
                 }
             }
             return this.value.length - other.value.length;
+        }
+
+        public ImplementationVersion getPrevious() {
+            for (ImplementationVersion version : ImplementationVersion.values()) {
+                if (version.compareWith(this) < 0) {
+                    return version;
+                }
+            }
+            return null;
         }
     }
 
