@@ -90,11 +90,11 @@ allprojects {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":v1_20_1"))
-    implementation(project(":v1_21"))
-    implementation(project(":v1_21_4"))
-    implementation(project(":v1_21_8"))
-    implementation(project(":v1_21_9"))
+    implementation(project("versions:v1_20_1"))
+    implementation(project("versions:v1_21"))
+    implementation(project("versions:v1_21_4"))
+    implementation(project("versions:v1_21_8"))
+    implementation(project("versions:v1_21_9"))
 }
 
 // Reobfuscate all subproject JARs that have paperweight reobfJar task
