@@ -63,5 +63,6 @@ public class ChestUserInterface extends ConfigurationFile {
     public static MemberList.MemberListCui memberListCui = new MemberList.MemberListCui();
     public static MemberFlags.MemberSettingCui memberSettingCui = new MemberFlags.MemberSettingCui();
     public static SelectPlayer.SelectPlayerCui selectPlayerCui = new SelectPlayer.SelectPlayerCui();
+    public static SelectPlayer.SearchResultsCui searchResultsCui = new SelectPlayer.SearchResultsCui();
     public static SelectTemplate.SelectTemplateCui selectTemplateCui = new SelectTemplate.SelectTemplateCui();
 }

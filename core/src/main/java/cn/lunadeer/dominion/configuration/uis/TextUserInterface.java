@@ -52,6 +52,7 @@ public class TextUserInterface extends ConfigurationFile {
     public static MigrateList.MigrateListTuiText migrateListTuiText = new MigrateList.MigrateListTuiText();
     public static MemberList.MemberListTuiText memberListTuiText = new MemberList.MemberListTuiText();
     public static SelectPlayer.SelectPlayerTuiText selectPlayerTuiText = new SelectPlayer.SelectPlayerTuiText();
+    public static SelectPlayer.SearchResultsTuiText searchResultsTuiText = new SelectPlayer.SearchResultsTuiText();
     public static MemberFlags.MemberSettingTuiText memberSettingTuiText = new MemberFlags.MemberSettingTuiText();
     public static TemplateList.TemplateListTuiText templateListTuiText = new TemplateList.TemplateListTuiText();
     public static SelectTemplate.SelectTemplateTuiText selectTemplateTuiText = new SelectTemplate.SelectTemplateTuiText();
