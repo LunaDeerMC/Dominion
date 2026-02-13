@@ -517,7 +517,12 @@ resize-dominion-inputter-text:
   contract-hint: 请输入要将领地 {0} 从 {1} 方向缩小多少格。
 search-player-inputter-text:
   button: 搜索
-  hint: 输入要搜索的玩家的游戏ID（精确匹配）。
+  hint: 输入要搜索的玩家名称（支持模糊搜索）。
+  no-results: 没有找到匹配的玩家。
+search-player-dominion-inputter-text:
+  button: 搜索
+  hint: 输入要搜索领地的玩家名称。
+  no-results: 没有找到该玩家的领地。
 set-map-color-inputter-text:
   button: 地图颜色
   hint: '输入领地在卫星地图上的颜色（十六进制颜色代码，例如 #FF0000）。'
