@@ -27,12 +27,25 @@ public class DominionNodeSectored {
         B | A
      */
 
-    private volatile ConcurrentHashMap<UUID, CopyOnWriteArrayList<DominionNode>> world_dominion_tree_sector_a; // x >= 0, z >= 0
-    private volatile ConcurrentHashMap<UUID, CopyOnWriteArrayList<DominionNode>> world_dominion_tree_sector_b; // x <= 0, z >= 0
-    private volatile ConcurrentHashMap<UUID, CopyOnWriteArrayList<DominionNode>> world_dominion_tree_sector_c; // x >= 0, z <= 0
-    private volatile ConcurrentHashMap<UUID, CopyOnWriteArrayList<DominionNode>> world_dominion_tree_sector_d; // x <= 0, z <= 0
-    private volatile Integer section_origin_x = 0;
-    private volatile Integer section_origin_z = 0;
+    private volatile Snapshot snapshot = Snapshot.empty();
+
+    /**
+     * @param sectorA x >= originX, z >= originZ
+     * @param sectorB x <= originX, z >= originZ
+     * @param sectorC x >= originX, z <= originZ
+     * @param sectorD x <= originX, z <= originZ
+     */
+    private record Snapshot(ConcurrentHashMap<UUID, CopyOnWriteArrayList<DominionNode>> sectorA,
+                            ConcurrentHashMap<UUID, CopyOnWriteArrayList<DominionNode>> sectorB,
+                            ConcurrentHashMap<UUID, CopyOnWriteArrayList<DominionNode>> sectorC,
+                            ConcurrentHashMap<UUID, CopyOnWriteArrayList<DominionNode>> sectorD, int originX,
+                            int originZ) {
+
+        private static Snapshot empty() {
+                return new Snapshot(new ConcurrentHashMap<>(), new ConcurrentHashMap<>(),
+                        new ConcurrentHashMap<>(), new ConcurrentHashMap<>(), 0, 0);
+            }
+        }
 
     /**
      * Gets the DominionDTO for a given location.
@@ -81,28 +94,18 @@ public class DominionNodeSectored {
      * @return the list of DominionNodes
      */
     public CopyOnWriteArrayList<DominionNode> getNodes(UUID world, int x, int z) {
-        // Capture current references to avoid race conditions
-        ConcurrentHashMap<UUID, CopyOnWriteArrayList<DominionNode>> sectorA = world_dominion_tree_sector_a;
-        ConcurrentHashMap<UUID, CopyOnWriteArrayList<DominionNode>> sectorB = world_dominion_tree_sector_b;
-        ConcurrentHashMap<UUID, CopyOnWriteArrayList<DominionNode>> sectorC = world_dominion_tree_sector_c;
-        ConcurrentHashMap<UUID, CopyOnWriteArrayList<DominionNode>> sectorD = world_dominion_tree_sector_d;
-        int originX = section_origin_x;
-        int originZ = section_origin_z;
+        Snapshot current = snapshot;
 
-        if (x >= originX && z >= originZ) {
-            if (sectorA == null) return null;
-            return sectorA.get(world);
+        if (x >= current.originX && z >= current.originZ) {
+            return current.sectorA.get(world);
         }
-        if (x <= originX && z >= originZ) {
-            if (sectorB == null) return null;
-            return sectorB.get(world);
+        if (x <= current.originX && z >= current.originZ) {
+            return current.sectorB.get(world);
         }
-        if (x >= originX) {
-            if (sectorC == null) return null;
-            return sectorC.get(world);
+        if (x >= current.originX) {
+            return current.sectorC.get(world);
         }
-        if (sectorD == null) return null;
-        return sectorD.get(world);
+        return current.sectorD.get(world);
     }
 
     /**
@@ -143,15 +146,8 @@ public class DominionNodeSectored {
                     placeDominionInSectors(n, d, tempOriginX, tempOriginZ, tempSectorA, tempSectorB, tempSectorC, tempSectorD);
                 });
 
-                // Atomically replace all sector data
-                synchronized (this) {
-                    world_dominion_tree_sector_a = tempSectorA;
-                    world_dominion_tree_sector_b = tempSectorB;
-                    world_dominion_tree_sector_c = tempSectorC;
-                    world_dominion_tree_sector_d = tempSectorD;
-                    section_origin_x = tempOriginX;
-                    section_origin_z = tempOriginZ;
-                }
+                // Atomically publish a new immutable snapshot
+                snapshot = new Snapshot(tempSectorA, tempSectorB, tempSectorC, tempSectorD, tempOriginX, tempOriginZ);
             }
         }, ForkJoinPool.commonPool());
     }
