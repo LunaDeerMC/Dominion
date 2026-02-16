@@ -1211,7 +1211,7 @@ select-player-cui:
   list-configuration:
     item-symbol: i
     layout:
-      - <######s#
+      - <#####Ns#
       - '#iiiiiii#'
       - '#iiiiiii#'
       - '#iiiiiii#'
@@ -1243,6 +1243,7 @@ select-player-cui:
     lore:
       - §7ユーザー名を入力して特定のプレイヤーを
       - §7検索します。
+      - §7あいまい検索対応（75%類似度マッチ）
       - ''
       - §6▶ 検索するにはクリック
       - ''
@@ -1256,6 +1257,114 @@ select-player-cui:
     - '§7プレイヤー: §e{0}'
     - ''
     - §2▶ メンバーとして追加するにはクリック
+  nearby-players-button:
+    symbol: N
+    name: §b👥 §3近くのプレイヤー
+    lore:
+      - §7現在このドミニオン内にいる
+      - §7プレイヤーを表示します。
+      - ''
+      - §3▶ 近くのプレイヤーを表示するにはクリック
+      - ''
+      - §8ここにいるプレイヤーを素早く追加！
+    material: OAK_SIGN
+search-results-cui:
+  title: '§6✦ §5§l検索結果: {0} §6✦'
+  list-configuration:
+    item-symbol: i
+    layout:
+      - <######r#
+      - '#iiiiiii#'
+      - '#iiiiiii#'
+      - '#iiiiiii#'
+      - p#######n
+    preview-button:
+      symbol: p
+      name: <<<
+      lore:
+        - 'ページ: {0}/{1}'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWRiZWIwZmJjNWU2NjAxZmU1MDQ3MDJjYWZmZGFhYzBlOGVhMTllMTFiY2FkZmJlZTBkMThjODlmNDZiYzFmZCJ9fX0=
+    next-button:
+      symbol: n
+      name: '>>>'
+      lore:
+        - 'ページ: {0}/{1}'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWI5Y2VjYzIxZDY3MGMxZmYyNzc4MTc2MjI1ZTI4NTBlMmVlMmY3Y2Y1NDEzYmIxNTY2N2Q5OGRiYjNjZjhiNSJ9fX0=
+  back-button:
+    symbol: <
+    name: §c« プレイヤーリストに戻る
+    lore:
+      - §7プレイヤーを選択せずに
+      - §7完全なプレイヤーリストに戻ります。
+      - ''
+      - §e▶ 戻るにはクリック
+    material: RED_STAINED_GLASS_PANE
+  search-again-button:
+    symbol: r
+    name: §e🔍 §6再検索
+    lore:
+      - §7別のユーザー名を入力して
+      - §7別のプレイヤーを検索します。
+      - ''
+      - §6▶ 再検索するにはクリック
+    material: COMPASS
+  player-button-name: §a➕ §2{0}
+  player-button-lore:
+    - §7このプレイヤーをあなたのドミニオンのメンバーとして追加
+    - §7します。
+    - ''
+    - '§7プレイヤー: §e{0}'
+    - ''
+    - §2▶ メンバーとして追加するにはクリック
+select-player-in-dominion-cui:
+  title: §6✦ §3§l{0}内のプレイヤー §6✦
+  list-configuration:
+    item-symbol: i
+    layout:
+      - <########
+      - '#iiiiiii#'
+      - '#iiiiiii#'
+      - '#iiiiiii#'
+      - p#######n
+    preview-button:
+      symbol: p
+      name: <<<
+      lore:
+        - 'ページ: {0}/{1}'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWRiZWIwZmJjNWU2NjAxZmU1MDQ3MDJjYWZmZGFhYzBlOGVhMTllMTFiY2FkZmJlZTBkMThjODlmNDZiYzFmZCJ9fX0=
+    next-button:
+      symbol: n
+      name: '>>>'
+      lore:
+        - 'ページ: {0}/{1}'
+      material: PLAYER_HEAD;B64;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWI5Y2VjYzIxZDY3MGMxZmYyNzc4MTc2MjI1ZTI4NTBlMmVlMmY3Y2Y1NDEzYmIxNTY2N2Q5OGRiYjNjZjhiNSJ9fX0=
+  back-button:
+    symbol: <
+    name: §c« プレイヤー選択に戻る
+    lore:
+      - §7完全なプレイヤーリストに戻って
+      - §7すべてのプレイヤーから選択します。
+      - ''
+      - §e▶ 戻るにはクリック
+    material: RED_STAINED_GLASS_PANE
+  player-button-name: §a➕ §2{0}
+  player-button-lore:
+    - §7このプレイヤーは現在あなたの
+    - §7ドミニオン内にいます。
+    - ''
+    - '§7プレイヤー: §e{0}'
+    - ''
+    - §2▶ メンバーとして追加するにはクリック
+  no-player-button:
+    symbol: i
+    name: §c✘ §7近くにプレイヤーがいません
+    lore:
+      - §7現在このドミニオン内に
+      - §7プレイヤーはいません。
+      - ''
+      - §8プレイヤーが入るのを待つか
+      - §8完全なプレイヤーリストを使用してください。
+    material: BARRIER
 select-template-cui:
   title: §6✦ §5§l{0}のテンプレートを選択 §6✦
   list-configuration:

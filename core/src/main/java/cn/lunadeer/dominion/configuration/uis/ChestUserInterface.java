@@ -15,6 +15,7 @@ import cn.lunadeer.dominion.uis.dominion.manage.group.SelectMember;
 import cn.lunadeer.dominion.uis.dominion.manage.member.MemberFlags;
 import cn.lunadeer.dominion.uis.dominion.manage.member.MemberList;
 import cn.lunadeer.dominion.uis.dominion.manage.member.SelectPlayer;
+import cn.lunadeer.dominion.uis.dominion.manage.member.SelectPlayerInDominion;
 import cn.lunadeer.dominion.uis.dominion.manage.member.SelectTemplate;
 import cn.lunadeer.dominion.uis.template.TemplateFlags;
 import cn.lunadeer.dominion.uis.template.TemplateList;
@@ -63,5 +64,7 @@ public class ChestUserInterface extends ConfigurationFile {
     public static MemberList.MemberListCui memberListCui = new MemberList.MemberListCui();
     public static MemberFlags.MemberSettingCui memberSettingCui = new MemberFlags.MemberSettingCui();
     public static SelectPlayer.SelectPlayerCui selectPlayerCui = new SelectPlayer.SelectPlayerCui();
+    public static SelectPlayer.SearchResultsCui searchResultsCui = new SelectPlayer.SearchResultsCui();
+    public static SelectPlayerInDominion.SelectPlayerInDominionCui selectPlayerInDominionCui = new SelectPlayerInDominion.SelectPlayerInDominionCui();
     public static SelectTemplate.SelectTemplateCui selectTemplateCui = new SelectTemplate.SelectTemplateCui();
 }

@@ -77,6 +77,14 @@ select-player-tui-text:
   button: プレイヤー追加
   description: プレイヤーをこのドミニオンのメンバーとして追加します。
   back: 戻る
+  nearby-players: 近くのプレイヤー
+  nearby-players-description: 現在このドミニオン内にいるプレイヤーを表示します。
+select-player-in-dominion-tui-text:
+  title: ドミニオン内のプレイヤー
+  button: 近く
+  description: 現在このドミニオン内にいるプレイヤーから選択します。
+  back: 戻る
+  no-player: 現在このドミニオン内にプレイヤーはいません。
 member-setting-tui-text:
   title: '{0} メンバー設定'
   description: メンバーのドミニオンの権限を設定します。

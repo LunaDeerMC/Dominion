@@ -67,6 +67,104 @@ public class PlayerDOO implements PlayerDTO {
         return res.stream().map(PlayerDOO::parse).collect(Collectors.toList());
     }
 
+    /**
+     * Fuzzy search for players by name using Levenshtein distance algorithm.
+     * Returns players whose names match the search term with at least the specified similarity threshold.
+     *
+     * @param searchTerm The name to search for
+     * @param threshold  The minimum similarity threshold
+     * @return List of matching players sorted by similarity
+     * @throws SQLException if database query fails
+     */
+    public static List<PlayerDTO> fuzzySearch(String searchTerm, double threshold) throws SQLException {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            return List.of();
+        }
+        
+        List<PlayerDTO> allPlayers = all();
+        String lowerSearchTerm = searchTerm.toLowerCase();
+        
+        return allPlayers.stream()
+                .map(player -> new PlayerWithSimilarity(player, calculateSimilarity(lowerSearchTerm, player.getLastKnownName().toLowerCase())))
+                .filter(pws -> pws.similarity >= threshold)
+                .sorted((a, b) -> Double.compare(b.similarity, a.similarity))
+                .map(pws -> pws.player)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Fuzzy search with default 75% threshold
+     */
+    public static List<PlayerDTO> fuzzySearch(String searchTerm) throws SQLException {
+        return fuzzySearch(searchTerm, 0.75);
+    }
+
+    /**
+     * Calculate similarity between two strings using Levenshtein distance.
+     * Returns a value between 0.0 (completely different) and 1.0 (identical).
+     */
+    private static double calculateSimilarity(String s1, String s2) {
+        if (s1 == null || s2 == null) {
+            return 0.0;
+        }
+        if (s1.equals(s2)) {
+            return 1.0;
+        }
+        if (s1.isEmpty() || s2.isEmpty()) {
+            return 0.0;
+        }
+        
+        // Check if one string contains the other (boost similarity for substring matches)
+        if (s1.contains(s2) || s2.contains(s1)) {
+            int minLen = Math.min(s1.length(), s2.length());
+            int maxLen = Math.max(s1.length(), s2.length());
+            return (double) minLen / maxLen;
+        }
+        
+        int distance = levenshteinDistance(s1, s2);
+        int maxLength = Math.max(s1.length(), s2.length());
+        return 1.0 - ((double) distance / maxLength);
+    }
+
+    /**
+     * Calculate Levenshtein distance between two strings.
+     */
+    private static int levenshteinDistance(String s1, String s2) {
+        int[][] dp = new int[s1.length() + 1][s2.length() + 1];
+        
+        for (int i = 0; i <= s1.length(); i++) {
+            dp[i][0] = i;
+        }
+        for (int j = 0; j <= s2.length(); j++) {
+            dp[0][j] = j;
+        }
+        
+        for (int i = 1; i <= s1.length(); i++) {
+            for (int j = 1; j <= s2.length(); j++) {
+                int cost = (s1.charAt(i - 1) == s2.charAt(j - 1)) ? 0 : 1;
+                dp[i][j] = Math.min(
+                        Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1),
+                        dp[i - 1][j - 1] + cost
+                );
+            }
+        }
+        
+        return dp[s1.length()][s2.length()];
+    }
+
+    /**
+     * Helper class to hold player with similarity score for sorting
+     */
+    private static class PlayerWithSimilarity {
+        final PlayerDTO player;
+        final double similarity;
+        
+        PlayerWithSimilarity(PlayerDTO player, double similarity) {
+            this.player = player;
+            this.similarity = similarity;
+        }
+    }
+
     public static PlayerDOO selectById(Integer id) throws SQLException {
         List<Map<String, Field<?>>> res = Select.select(fields())
                 .from("player_name")

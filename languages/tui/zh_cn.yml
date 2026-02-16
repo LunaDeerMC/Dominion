@@ -79,6 +79,18 @@ select-player-tui-text:
   button: 添加成员
   description: 选择一个登陆过的玩家添加为领地成员
   back: 返回
+  nearby-players: 附近玩家
+  nearby-players-description: 显示当前在领地内的玩家
+select-player-in-dominion-tui-text:
+  title: 领地内的玩家
+  button: 附近玩家
+  description: 选择当前在领地内的玩家添加为成员
+  back: 返回
+  no-players: 当前领地内没有其他玩家
+search-results-tui-text:
+  title: 搜索结果
+  button: 搜索结果
+  description: 匹配搜索条件的玩家列表
 member-setting-tui-text:
   title: 成员 {0} 权限设置
   description: 设置成员在此领地的权限

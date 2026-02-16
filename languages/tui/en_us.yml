@@ -77,6 +77,14 @@ select-player-tui-text:
   button: ADD PLAYER
   description: Add a player as a member of this dominion.
   back: BACK
+  nearby-players: NEARBY PLAYERS
+  nearby-players-description: Show players currently in this dominion.
+select-player-in-dominion-tui-text:
+  title: Players In Dominion
+  button: NEARBY
+  description: Select from players currently in this dominion.
+  back: BACK
+  no-player: No players currently in this dominion.
 member-setting-tui-text:
   title: '{0} Member Setting'
   description: Set member's privilege of dominion.
