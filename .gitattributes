@@ -8,4 +8,3 @@
 *.tff binary
 *.woff binary
 *.woff2 binary
-gradlew text eol=lf
