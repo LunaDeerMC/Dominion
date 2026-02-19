@@ -16,6 +16,8 @@ public class Dispenser implements Listener {
         if (event.isCancelled()) return;
         if (!event.getBlock().getType().equals(Material.DISPENSER)) return;
         BlockFace blockFace = null;
+        DominionDTO dispenserDom = CacheManager.instance.getDominion(event.getBlock().getLocation());
+        if (dispenserDom != null) return;   // if the dispenser itself is in a dominion, we don't care about it
         if (event.getBlock().getBlockData() instanceof Directional directional) {
             blockFace = directional.getFacing();
         }
