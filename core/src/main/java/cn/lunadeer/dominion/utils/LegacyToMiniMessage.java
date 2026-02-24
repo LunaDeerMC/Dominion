@@ -1,8 +1,9 @@
 package cn.lunadeer.dominion.utils;
 
+import com.google.common.base.Preconditions;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.ChatColor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -37,15 +38,29 @@ public class LegacyToMiniMessage {
             Map.entry("§k", "<obfuscated>")
     );
 
+    public static final char COLOR_CHAR = '§';
+
     public static Component parse(String legacyText) {
         if (miniMessage == null) {
             miniMessage = MiniMessage.miniMessage();
         }
-        String miniMessageText = ChatColor.translateAlternateColorCodes('&', legacyText);
+        String miniMessageText = translateAlternateColorCodes('&', legacyText);
         for (Map.Entry<String, String> entry : legacyToMiniMessageMap.entrySet()) {
             miniMessageText = miniMessageText.replace(entry.getKey(), entry.getValue());
         }
         return miniMessage.deserialize(miniMessageText);
     }
 
+    @NotNull
+    public static String translateAlternateColorCodes(char altColorChar, String textToTranslate) {
+        Preconditions.checkArgument(textToTranslate != null, "无法翻译空文本");
+        char[] b = textToTranslate.toCharArray();
+        for (int i = 0; i < b.length - 1; i++) {
+            if (b[i] == altColorChar && "0123456789AaBbCcDdEeFfKkLlMmNnOoRrXx".indexOf(b[i + 1]) > -1) {
+                b[i] = COLOR_CHAR;
+                b[i + 1] = Character.toLowerCase(b[i + 1]);
+            }
+        }
+        return new String(b);
+    }
 }
