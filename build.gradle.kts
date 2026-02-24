@@ -21,7 +21,7 @@ libraries += "net.kyori:adventure-text-minimessage:4.22.0"
 var suffixes = getAndIncrementVersion()
 
 group = "cn.lunadeer"
-version = "4.7.4-$suffixes"
+version = "4.7.5-$suffixes"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -93,6 +93,7 @@ dependencies {
     implementation(project("versions:v1_20_1"))
     implementation(project("versions:v1_21"))
     implementation(project("versions:v1_21_4"))
+    implementation(project("versions:v1_21_6"))
     implementation(project("versions:v1_21_8"))
     implementation(project("versions:v1_21_9"))
 }
@@ -172,15 +173,15 @@ fun getAndIncrementVersion(): String {
     }
 
     val currentBranch = getCurrentGitBranch()
-    val versionType = if (currentBranch.startsWith("dev/")) "alpha" else "RLS"
+    val versionType = if (currentBranch.startsWith("dev/")) "alpha" else "beta"
 
-    val currentSuffix = props.getProperty("suffixes", if (versionType == "RLS") "RLS" else "${versionType}.24")
+    val currentSuffix = props.getProperty("suffixes", if (versionType == "beta") "beta" else "${versionType}.24")
 
     // Check if we need to switch version type (branch changed)
     val currentType = currentSuffix.split(".")[0]
     if (currentType != versionType) {
         // Branch changed, reset to default for new type
-        val newSuffix = if (versionType == "RLS") "RLS" else "${versionType}.1"
+        val newSuffix = if (versionType == "beta") "beta" else "${versionType}.1"
         props.setProperty("suffixes", newSuffix)
         FileOutputStream(versionFile).use {
             props.store(it, "Auto-generated version file - branch: $currentBranch")
@@ -188,13 +189,13 @@ fun getAndIncrementVersion(): String {
         return newSuffix
     }
 
-    // For release, just return "RLS" without incrementing
-    if (versionType == "RLS") {
-        props.setProperty("suffixes", "RLS")
+    // For release, just return "beta" without incrementing
+    if (versionType == "beta") {
+        props.setProperty("suffixes", "beta")
         FileOutputStream(versionFile).use {
             props.store(it, "Auto-generated version file - branch: $currentBranch")
         }
-        return "RLS"
+        return "beta"
     }
 
     // For alpha, increment the number
