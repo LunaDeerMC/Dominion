@@ -73,19 +73,19 @@ jobs:
           name: release-artifacts
           path: staging
       - name: "Modrinth Release"
-        uses: dsx137/modrinth-release-action@main
+        uses: dsx137/modrinth-releaser@main
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
         with:
           name: ${{ needs.build.outputs.TAG }}
           project_id: vVZc7jAV
-          loaders: bukkit,folia,paper,purpur,spigot
-          game_versions: 1.20.1-1.20.6, 1.21, 1.21.1-1.21.11
+          loaders: bukkit, folia, paper ,purpur ,spigot
+          game_versions: 1.20.1:1.21.11
           version_number: ${{ needs.build.outputs.TAG }}
           files: |
             staging/*-lite.jar
           changelog: "See https://github.com/ColdeZhang/Dominion/releases/tag/${{ needs.build.outputs.TAG }}"
-          version_type: beta
+          version_type: release
           featured: false
 
   release-hangar:

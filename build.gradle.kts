@@ -173,15 +173,15 @@ fun getAndIncrementVersion(): String {
     }
 
     val currentBranch = getCurrentGitBranch()
-    val versionType = if (currentBranch.startsWith("dev/")) "alpha" else "beta"
+    val versionType = if (currentBranch.startsWith("dev/")) "alpha" else "release"
 
-    val currentSuffix = props.getProperty("suffixes", if (versionType == "beta") "beta" else "${versionType}.24")
+    val currentSuffix = props.getProperty("suffixes", if (versionType == "release") "r" else "${versionType}.24")
 
     // Check if we need to switch version type (branch changed)
     val currentType = currentSuffix.split(".")[0]
     if (currentType != versionType) {
         // Branch changed, reset to default for new type
-        val newSuffix = if (versionType == "beta") "beta" else "${versionType}.1"
+        val newSuffix = if (versionType == "release") "r" else "${versionType}.1"
         props.setProperty("suffixes", newSuffix)
         FileOutputStream(versionFile).use {
             props.store(it, "Auto-generated version file - branch: $currentBranch")
@@ -190,12 +190,12 @@ fun getAndIncrementVersion(): String {
     }
 
     // For release, just return "beta" without incrementing
-    if (versionType == "beta") {
-        props.setProperty("suffixes", "beta")
+    if (versionType == "release") {
+        props.setProperty("suffixes", "r")
         FileOutputStream(versionFile).use {
             props.store(it, "Auto-generated version file - branch: $currentBranch")
         }
-        return "beta"
+        return "r"
     }
 
     // For alpha, increment the number
