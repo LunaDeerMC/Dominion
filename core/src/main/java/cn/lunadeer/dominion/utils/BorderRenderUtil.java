@@ -92,76 +92,76 @@ public class BorderRenderUtil {
         border.addBlockDisplay("bottom_north", BORDER_MATERIAL)
                 .offset(0, 0, 0)
                 .scale(sizeX, WALL_THICKNESS, WALL_THICKNESS)
-                .brightness(15, 15)
-                .glowColor(GLOW_COLOR);
+                .brightness(15, 15);
+                //.glowColor(GLOW_COLOR);
 
         border.addBlockDisplay("bottom_south", BORDER_MATERIAL)
                 .offset(0, 0, sizeZ)
                 .scale(sizeX, WALL_THICKNESS, WALL_THICKNESS)
-                .brightness(15, 15)
-                .glowColor(GLOW_COLOR);
+                .brightness(15, 15);
+                //.glowColor(GLOW_COLOR);
 
         border.addBlockDisplay("bottom_west", BORDER_MATERIAL)
                 .offset(0, 0, 0)
                 .scale(WALL_THICKNESS, WALL_THICKNESS, sizeZ)
-                .brightness(15, 15)
-                .glowColor(GLOW_COLOR);
+                .brightness(15, 15);
+                //.glowColor(GLOW_COLOR);
 
         border.addBlockDisplay("bottom_east", BORDER_MATERIAL)
                 .offset(sizeX, 0, 0)
                 .scale(WALL_THICKNESS, WALL_THICKNESS, sizeZ)
-                .brightness(15, 15)
-                .glowColor(GLOW_COLOR);
+                .brightness(15, 15);
+                //.glowColor(GLOW_COLOR);
 
         // 顶部4条边 (y2层)
         border.addBlockDisplay("top_north", BORDER_MATERIAL)
                 .offset(0, sizeY, 0)
                 .scale(sizeX, WALL_THICKNESS, WALL_THICKNESS)
-                .brightness(15, 15)
-                .glowColor(GLOW_COLOR);
+                .brightness(15, 15);
+                //.glowColor(GLOW_COLOR);
 
         border.addBlockDisplay("top_south", BORDER_MATERIAL)
                 .offset(0, sizeY, sizeZ)
                 .scale(sizeX, WALL_THICKNESS, WALL_THICKNESS)
-                .brightness(15, 15)
-                .glowColor(GLOW_COLOR);
+                .brightness(15, 15);
+                //.glowColor(GLOW_COLOR);
 
         border.addBlockDisplay("top_west", BORDER_MATERIAL)
                 .offset(0, sizeY, 0)
                 .scale(WALL_THICKNESS, WALL_THICKNESS, sizeZ)
-                .brightness(15, 15)
-                .glowColor(GLOW_COLOR);
+                .brightness(15, 15);
+                //.glowColor(GLOW_COLOR);
 
         border.addBlockDisplay("top_east", BORDER_MATERIAL)
                 .offset(sizeX, sizeY, 0)
                 .scale(WALL_THICKNESS, WALL_THICKNESS, sizeZ)
-                .brightness(15, 15)
-                .glowColor(GLOW_COLOR);
+                .brightness(15, 15);
+                //.glowColor(GLOW_COLOR);
 
         // 4条竖直边
         border.addBlockDisplay("vertical_nw", BORDER_MATERIAL)
                 .offset(0, 0, 0)
                 .scale(WALL_THICKNESS, sizeY, WALL_THICKNESS)
-                .brightness(15, 15)
-                .glowColor(GLOW_COLOR);
+                .brightness(15, 15);
+                //.glowColor(GLOW_COLOR);
 
         border.addBlockDisplay("vertical_ne", BORDER_MATERIAL)
                 .offset(sizeX, 0, 0)
                 .scale(WALL_THICKNESS, sizeY, WALL_THICKNESS)
-                .brightness(15, 15)
-                .glowColor(GLOW_COLOR);
+                .brightness(15, 15);
+                //.glowColor(GLOW_COLOR);
 
         border.addBlockDisplay("vertical_sw", BORDER_MATERIAL)
                 .offset(0, 0, sizeZ)
                 .scale(WALL_THICKNESS, sizeY, WALL_THICKNESS)
-                .brightness(15, 15)
-                .glowColor(GLOW_COLOR);
+                .brightness(15, 15);
+                //.glowColor(GLOW_COLOR);
 
         border.addBlockDisplay("vertical_se", BORDER_MATERIAL)
                 .offset(sizeX, 0, sizeZ)
                 .scale(WALL_THICKNESS, sizeY, WALL_THICKNESS)
-                .brightness(15, 15)
-                .glowColor(GLOW_COLOR);
+                .brightness(15, 15);
+                //.glowColor(GLOW_COLOR);
 
         // ===== 玩家高度的水平线（前后左右四条）=====
         double playerY = player.getLocation().getY();
@@ -171,26 +171,26 @@ public class BorderRenderUtil {
             border.addBlockDisplay("player_north", BORDER_MATERIAL)
                     .offset(0, playerOffsetY, 0)
                     .scale(sizeX, WALL_THICKNESS, WALL_THICKNESS)
-                    .brightness(15, 15)
-                    .glowColor(GLOW_COLOR);
+                    .brightness(15, 15);
+                    //.glowColor(GLOW_COLOR);
 
             border.addBlockDisplay("player_south", BORDER_MATERIAL)
                     .offset(0, playerOffsetY, sizeZ)
                     .scale(sizeX, WALL_THICKNESS, WALL_THICKNESS)
-                    .brightness(15, 15)
-                    .glowColor(GLOW_COLOR);
+                    .brightness(15, 15);
+                    //.glowColor(GLOW_COLOR);
 
             border.addBlockDisplay("player_west", BORDER_MATERIAL)
                     .offset(0, playerOffsetY, 0)
                     .scale(WALL_THICKNESS, WALL_THICKNESS, sizeZ)
-                    .brightness(15, 15)
-                    .glowColor(GLOW_COLOR);
+                    .brightness(15, 15);
+                    //.glowColor(GLOW_COLOR);
 
             border.addBlockDisplay("player_east", BORDER_MATERIAL)
                     .offset(sizeX, playerOffsetY, 0)
                     .scale(WALL_THICKNESS, WALL_THICKNESS, sizeZ)
-                    .brightness(15, 15)
-                    .glowColor(GLOW_COLOR);
+                    .brightness(15, 15);
+                    //.glowColor(GLOW_COLOR);
         }
 
         // Only show to the requesting player (client-side only)

@@ -17,11 +17,11 @@ libraries += "net.kyori:adventure-platform-bukkit:4.3.3"
 libraries += "com.zaxxer:HikariCP:6.2.1"
 libraries += "net.kyori:adventure-text-minimessage:4.22.0"
 
-// beta or alpha based on git branch
+// release or alpha based on git branch
 var suffixes = getAndIncrementVersion()
 
 group = "cn.lunadeer"
-version = "4.7.5-$suffixes"
+version = "4.7.6-$suffixes"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))

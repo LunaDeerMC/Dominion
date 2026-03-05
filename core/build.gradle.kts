@@ -14,7 +14,7 @@ tasks.withType<JavaCompile> {
 repositories {
     maven("https://repo.mikeprimm.com/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    maven("https://repo.codemc.org/repository/maven-public")
+    maven("https://repo.codemc.io/repository/creatorfromhell/")
     maven("https://api.modrinth.com/maven")
     maven("https://maven.enginehub.org/repo/")
 }
@@ -25,6 +25,6 @@ dependencies {
 
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
-    compileOnly("net.milkbowl.vault:VaultUnlockedAPI:2.15")
+    compileOnly("net.milkbowl.vault:VaultUnlockedAPI:2.16")
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9-SNAPSHOT")
 }
