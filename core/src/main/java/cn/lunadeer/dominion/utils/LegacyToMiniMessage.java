@@ -31,7 +31,7 @@ public class LegacyToMiniMessage {
             // Legacy formatting codes
             Map.entry("§l", "<bold>"),
             Map.entry("§m", "<strikethrough>"),
-            Map.entry("§n", "<underline>"),
+            Map.entry("§n", "<underlined>"),
             Map.entry("§o", "<italic>"),
             Map.entry("§r", "<reset>"),
             Map.entry("§k", "<obfuscated>")
