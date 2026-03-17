@@ -165,7 +165,7 @@ public class CommandManager implements TabExecutor, Listener {
             cmd.run(commandSender, strings);
         } catch (Exception e) {
             commandSender.sendMessage(e.getMessage());
-            plugin.getLogger().severe(e.getMessage());
+            plugin.getLogger().info(e.getMessage());
         }
         return true;
     }
