@@ -393,7 +393,7 @@ public class Asserts {
             return;
         }
         int spawnProtection = Configuration.serverSpawnProtectionRadius;
-        if (spawnProtection == -1) {
+        if (spawnProtection <= 0) {
             return;
         }
         World world = dominion.getWorld();

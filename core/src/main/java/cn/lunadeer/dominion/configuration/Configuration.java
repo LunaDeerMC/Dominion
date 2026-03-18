@@ -155,7 +155,7 @@ public class Configuration extends ConfigurationFile {
     })
     public static int autoCleanAfterDays = 180;
 
-    @Comments("Prevent player from creating dominion around the spawn point.")
+    @Comments({"Prevent player from creating dominion around the spawn point.", "Set to 0 or -1 to disable."})
     public static int serverSpawnProtectionRadius = 10;
 
     @Comments("Tool used to select position for creating dominion.")
