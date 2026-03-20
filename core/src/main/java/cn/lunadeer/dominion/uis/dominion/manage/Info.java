@@ -51,7 +51,7 @@ public class Info {
             boolean isOwner = false;
             if (player.getUniqueId().equals(dominion.getOwner())) {
                 isOwner = true;
-                BorderRenderUtil.showBorder(player, dominion);
+                BorderRenderUtil.showAreaBorder(player, dominion);
             }
 
             if (!isOwner) {

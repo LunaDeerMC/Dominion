@@ -89,7 +89,7 @@ public class Configuration extends ConfigurationFile {
     }
 
     @Comments("Do not modify this value.")
-    public static int version = 2;  // <<<<<< When you change the configuration, you should increment this value.
+    public static int version = 3;  // <<<<<< When you change the configuration, you should increment this value.
 
     @Comments("The settings of the database.")
     public static Database database = new Database();
@@ -189,6 +189,30 @@ public class Configuration extends ConfigurationFile {
         })
         public String noPermissionDisplayPlace = "ACTION_BAR";
         public String enterLeaveDisplayPlace = "ACTION_BAR";
+    }
+
+    @Comments("The settings of the border display effect.")
+    public static BorderDisplay borderDisplay = new BorderDisplay();
+
+    public static class BorderDisplay extends ConfigurationPart {
+        @Comments({
+                "Block material used for area border display (when creating/editing dominions).",
+                "Must be a valid Bukkit Material name, e.g. WHITE_STAINED_GLASS, LIGHT_BLUE_STAINED_GLASS, GLASS, ICE, etc."
+        })
+        public String borderBlockMaterial = "WHITE_STAINED_GLASS";
+
+        @Comments({
+                "Particle type used for border crossing effect (when player crosses dominion border).",
+                "Must be a valid Bukkit Particle name, e.g. END_ROD, CLOUD, SNOWFLAKE, BUBBLE, DRIPPING_WATER, etc."
+        })
+        public String crossingParticleType = "END_ROD";
+
+        @Comments({
+            "Particle count used for border crossing effect (when player crosses dominion border).",
+            "Higher values may increase bandwidth pressure.",
+            "Recommended not to exceed 60."
+        })
+        public int crossingParticleCount = 30;
     }
 
     @Comments("Weather the player can migrate residence data to dominion.")

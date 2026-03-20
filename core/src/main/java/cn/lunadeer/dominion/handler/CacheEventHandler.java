@@ -31,9 +31,9 @@ public class CacheEventHandler implements Listener {
                                 .replace("{PLAYER}", event.getPlayer().getName())
                 )
         );
-        // show border
+        // show crossing effect (particle ripple on border plane)
         if (event.getDominion().getEnvironmentFlagValue().getOrDefault(Flags.SHOW_BORDER, false)) {
-            BorderRenderUtil.showBorder(event.getPlayer(), event.getDominion());
+            BorderRenderUtil.showCrossingEffect(event.getPlayer(), event.getDominion());
         }
     }
 
@@ -51,9 +51,9 @@ public class CacheEventHandler implements Listener {
                                 .replace("{PLAYER}", event.getPlayer().getName())
                 )
         );
-        // show border
+        // show crossing effect (particle ripple on border plane)
         if (event.getDominion().getEnvironmentFlagValue().getOrDefault(Flags.SHOW_BORDER, false)) {
-            BorderRenderUtil.showBorder(event.getPlayer(), event.getDominion());
+            BorderRenderUtil.showCrossingEffect(event.getPlayer(), event.getDominion());
         }
     }
 

@@ -129,7 +129,7 @@ public class DominionProviderHandler extends DominionProvider {
                 }
                 // do db insert
                 DominionDTO inserted = DominionDOO.insert(toBeCreated);
-                BorderRenderUtil.showBorder(event.getOperator(), inserted);
+                BorderRenderUtil.showAreaBorder(event.getOperator(), inserted);
                 Notification.info(event.getOperator(), Language.dominionProviderHandlerText.createSuccess, event.getName());
                 return inserted;
             } catch (Exception e) {
@@ -164,7 +164,7 @@ public class DominionProviderHandler extends DominionProvider {
                     assertEconomy(event.getOperator(), event.getOldCuboid(), event.getNewCuboid(), dominion.getParentDomId() != -1);
                 }
                 event.setDominion(event.getDominion().setCuboid(event.getNewCuboid()));
-                BorderRenderUtil.showBorder(event.getOperator(), event.getDominion());
+                BorderRenderUtil.showAreaBorder(event.getOperator(), event.getDominion());
                 if (expand) {
                     Notification.info(event.getOperator(), Language.dominionProviderHandlerText.expandSuccess, event.getDominion().getName());
                 } else {
