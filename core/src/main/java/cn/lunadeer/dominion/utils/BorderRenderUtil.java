@@ -247,7 +247,7 @@ public class BorderRenderUtil {
                     dirZ = 0;
                     break;
             }
-            player.spawnParticle(particleType, spawnX, spawnY, spawnZ,
+            player.spawnParticle(particleType, spawnX, spawnY + 1.5, spawnZ,
                     0, dirX, dirY, dirZ, CROSSING_PARTICLE_SPEED);
         }
     }
