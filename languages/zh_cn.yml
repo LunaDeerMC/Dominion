@@ -337,7 +337,7 @@ flags:
     description: 末影龙冲撞是否可以破坏方块
   ender_man:
     display-name: 末影人行为
-    description: 包含：末影人是否可以生成、瞬移
+    description: 包含：末影人是否可以搬运方块、生成、瞬移
   break:
     display-name: 破坏方块
     description: 是否可以破坏方块（包括：一般方块、展示框、盔甲架）
