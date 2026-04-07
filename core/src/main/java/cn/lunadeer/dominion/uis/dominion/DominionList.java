@@ -32,11 +32,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import static cn.lunadeer.dominion.Dominion.defaultPermission;
 import static cn.lunadeer.dominion.managers.TeleportManager.teleportToDominion;
 import static cn.lunadeer.dominion.misc.Converts.toIntegrity;
+import static cn.lunadeer.dominion.utils.Misc.formatString;
 
 public class DominionList extends AbstractUI {
 
@@ -125,6 +128,29 @@ public class DominionList extends AbstractUI {
                 view.add(Line.create().append(manage).append(dominion.getName()));
             }
         }
+        // Show dominions on other servers that the player has access to
+        for (var serverCache : CacheManager.instance.getOtherServerCaches().values()) {
+            List<DominionDTO> otherServerDominions = new ArrayList<>();
+            for (DominionDTO dominion : serverCache.getDominionCache().getPlayerOwnDominionDTOs(player.getUniqueId())) {
+                otherServerDominions.add(dominion);
+            }
+            for (DominionDTO dominion : serverCache.getDominionCache().getPlayerAdminDominionDTOs(player.getUniqueId())) {
+                otherServerDominions.add(dominion);
+            }
+            if (!otherServerDominions.isEmpty()) {
+                view.add(Line.create().append(""));
+                view.add(Line.create().append(Component.text(formatString(TextUserInterface.dominionListTuiText.serverSection, serverCache.getServerId()), ViewStyles.PRIMARY)));
+                for (DominionDTO dominion : otherServerDominions) {
+                    TextComponent tp = new FunctionalButton("TP") {
+                        @Override
+                        public void function() {
+                            teleportToDominion(player, dominion);
+                        }
+                    }.build();
+                    view.add(Line.create().append(tp).append(dominion.getName()));
+                }
+            }
+        }
         view.showOn(player, page);
     }
 
@@ -169,6 +195,18 @@ public class DominionList extends AbstractUI {
                         "§b▶ Right Click: teleport",
                         "",
                         "§7Status: §9Administrator"
+                )
+        );
+
+        public ButtonConfiguration otherServerDominionButton = ButtonConfiguration.createMaterial(
+                'i', Material.PAPER, "§7🌐 §b{0}",
+                List.of(
+                        "§7This dominion is on another server.",
+                        "§8You can only teleport to it, but cannot manage it.",
+                        "",
+                        "§b▶ Right Click: teleport",
+                        "",
+                        "§7Status: §7Other Server Dominion"
                 )
         );
 
@@ -220,6 +258,34 @@ public class DominionList extends AbstractUI {
             };
             btn = btn.setDisplayNameArgs(dominion.getName());
             btn = btn.setLoreArgs(List.of(dominion.getOwnerDTO().getLastKnownName()));
+            view = view.addItem(btn);
+        }
+
+        // Show dominions on other servers that the player has access to
+        List<DominionDTO> otherServer = new ArrayList<>();
+        Set<Integer> addedDominionIds = new LinkedHashSet<>();
+        for (var serverCache : CacheManager.instance.getOtherServerCaches().values()) {
+            for (DominionDTO dominion : serverCache.getDominionCache().getPlayerOwnDominionDTOs(player.getUniqueId())) {
+                if (addedDominionIds.add(dominion.getId())) {
+                    otherServer.add(dominion);
+                }
+            }
+            for (DominionDTO dominion : serverCache.getDominionCache().getPlayerAdminDominionDTOs(player.getUniqueId())) {
+                if (addedDominionIds.add(dominion.getId())) {
+                    otherServer.add(dominion);
+                }
+            }
+        }
+        for (DominionDTO dominion : otherServer) {
+            ChestButton btn = new ChestButton(ChestUserInterface.dominionListCui.otherServerDominionButton) {
+                @Override
+                public void onClick(ClickType type) {
+                    if (type.isRightClick()) {
+                        teleportToDominion(player, dominion);
+                    }
+                }
+            };
+            btn = btn.setDisplayNameArgs(dominion.getName());
             view = view.addItem(btn);
         }
 
