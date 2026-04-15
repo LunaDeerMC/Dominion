@@ -7,6 +7,7 @@ plugins {
     id("java")
     id("com.gradleup.shadow") version "9.0.0-beta4"
     id("io.papermc.hangar-publish-plugin") version "0.1.2"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.21" apply false
 }
 
 var buildFull = properties["BuildFull"].toString() == "true"
@@ -96,6 +97,7 @@ dependencies {
     implementation(project("versions:v1_21_6"))
     implementation(project("versions:v1_21_8"))
     implementation(project("versions:v1_21_9"))
+    implementation(project("versions:v26"))
 }
 
 // Reobfuscate all subproject JARs that have paperweight reobfJar task
@@ -138,7 +140,7 @@ hangarPublish {
             register(Platforms.PAPER) {
                 jar.set(tasks.shadowJar.flatMap { it.archiveFile })
                 println("ShadowJar: ${tasks.shadowJar.flatMap { it.archiveFile }}")
-                platformVersions.set(listOf("1.20.1-1.20.6", "1.21.x"))
+                platformVersions.set(listOf("1.20.1-1.20.6", "1.21.x", "26.1.2"))
             }
         }
     }

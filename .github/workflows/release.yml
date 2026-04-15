@@ -24,6 +24,11 @@ jobs:
           java-version: '21'
           distribution: 'zulu'
           cache: gradle
+      - name: "Set up JDK 25"
+        uses: actions/setup-java@v3
+        with:
+          java-version: '25'
+          distribution: 'zulu'
       - name: "Build with Gradle"
         run: |
           chmod +x gradlew
@@ -80,7 +85,7 @@ jobs:
           name: ${{ needs.build.outputs.TAG }}
           project_id: vVZc7jAV
           loaders: bukkit, folia, paper ,purpur ,spigot
-          game_versions: 1.20.1:1.21.11
+          game_versions: 1.20.1:1.21.11, 26.1.2
           version_number: ${{ needs.build.outputs.TAG }}
           files: |
             staging/*-lite.jar
@@ -102,6 +107,11 @@ jobs:
           java-version: '21'
           distribution: 'zulu'
           cache: gradle
+      - name: "Set up JDK 25"
+        uses: actions/setup-java@v3
+        with:
+          java-version: '25'
+          distribution: 'zulu'
       - name: "Hangar Release"
         env:
           HANGAR_TOKEN: ${{ secrets.HANGAR_API_TOKEN }}

@@ -16,6 +16,11 @@ jobs:
           java-version: '21'
           distribution: 'zulu'
           cache: gradle
+      - name: "Set up JDK 25"
+        uses: actions/setup-java@v3
+        with:
+          java-version: '25'
+          distribution: 'zulu'
       - name: "Build with Gradle"
         run: ./gradlew shadowJar
       - name: "Done!"
