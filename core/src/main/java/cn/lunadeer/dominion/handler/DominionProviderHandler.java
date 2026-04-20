@@ -83,6 +83,10 @@ public class DominionProviderHandler extends DominionProvider {
         public String setGuestFlagSuccess = "Set guest flag {0} to {1} success.";
         public String setGuestFlagFailed = "Set guest flag {0} to {1} failed, reason: {2}";
 
+        public String setOwnerGlowFlagSuccess = "Set owner Glow Flag to {0} success.";
+        public String setOwnerGlowFlagFailed = "Set owner Glow Flag to {0} failed, reason: {1}";
+
+
     }
 
     public DominionProviderHandler(JavaPlugin plugin) {
@@ -405,6 +409,26 @@ public class DominionProviderHandler extends DominionProvider {
                 return event.getDominion();
             } catch (Exception e) {
                 Notification.error(event.getOperator(), Language.dominionProviderHandlerText.setGuestFlagFailed, event.getFlag().getDisplayName(), event.getNewValue(), e.getMessage());
+                return null;
+            }
+        });
+    }
+
+    @Override
+    public CompletableFuture<DominionDTO> setDominionOwnerGlow(@NotNull CommandSender operator,
+                                                              @NotNull DominionDTO dominion,
+                                                              boolean ownerGlow) {
+        DominionSetOwnerGlowEvent event = new DominionSetOwnerGlowEvent(operator, dominion, ownerGlow);
+        if (!event.call())
+            return CompletableFuture.completedFuture(null);
+        return event.getFutureToComplete().completeAsync(() -> {
+            try {
+                assertDominionAdmin(event.getOperator(), event.getDominion());
+                event.setDominion(event.getDominion().setOwnerGlow(event.getNewValue()));
+                Notification.info(event.getOperator(), Language.dominionProviderHandlerText.setOwnerGlowFlagSuccess, event.getNewValue());
+                return event.getDominion();
+            } catch (Exception e) {
+                Notification.error(event.getOperator(), Language.dominionProviderHandlerText.setOwnerGlowFlagFailed, event.getNewValue(), e.getMessage());
                 return null;
             }
         });

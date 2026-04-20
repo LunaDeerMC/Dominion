@@ -319,6 +319,12 @@ public class DatabaseTables {
                     .column(tp_cache_dom_id)
                     .execute();
         }
+
+        // 4.7.7 add owner glow flag
+        if (!Show.show().columns().from("dominion").execute().containsKey("owner_glow")) {
+            Column owner_glow = Column.of(new FieldBoolean("owner_glow")).notNull().defaultSqlVal("false");
+            Alter.alter().table("dominion").add().column(owner_glow).execute();
+        }
     }
 
     public static class DatabaseManagerText extends ConfigurationPart {

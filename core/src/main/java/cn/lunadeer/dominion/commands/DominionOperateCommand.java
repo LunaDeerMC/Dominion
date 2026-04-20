@@ -358,4 +358,14 @@ public class DominionOperateCommand {
         }
     }
 
+    public static void setOwnerGlow(CommandSender sender, String dominionName, String ownerGlowStr) {
+        try {
+            DominionDTO dominion = toDominionDTO(dominionName);
+            boolean ownerGlow = Boolean.parseBoolean(ownerGlowStr);
+            DominionProviderHandler.getInstance().setDominionOwnerGlow(sender, dominion, ownerGlow);
+        } catch (Exception e) {
+            Notification.error(sender, e);
+        }
+    }
+
 }

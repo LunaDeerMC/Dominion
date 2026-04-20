@@ -1,8 +1,11 @@
 package cn.lunadeer.dominion.uis.dominion;
 
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
+import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
+import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.commands.CopyCommand;
 import cn.lunadeer.dominion.commands.DominionOperateCommand;
+import cn.lunadeer.dominion.commands.MemberCommand;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
 import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
@@ -44,7 +47,9 @@ import static cn.lunadeer.dominion.Dominion.defaultPermission;
 import static cn.lunadeer.dominion.misc.Asserts.assertDominionAdmin;
 import static cn.lunadeer.dominion.misc.Converts.toDominionDTO;
 import static cn.lunadeer.dominion.misc.Converts.toIntegrity;
+import static cn.lunadeer.dominion.utils.Misc.foldLore2Line;
 import static cn.lunadeer.dominion.utils.Misc.formatString;
+import static cn.lunadeer.dominion.utils.Misc.formatStringList;
 
 public class DominionManage extends AbstractUI {
 
@@ -69,6 +74,8 @@ public class DominionManage extends AbstractUI {
         public String button = "MANAGE";
         public String setTpButton = "SET TP";
         public String setTpDescription = "Set your current location as tp location.";
+        public String ownerGlowButton = "Owner Glow: {0}";
+        public String ownerGlowDescription = "Set whether the dominion owner has a glow effect.";
     }
 
     public static ListViewButton button(CommandSender sender, String dominionName) {
@@ -118,6 +125,15 @@ public class DominionManage extends AbstractUI {
         Line leave_msg = Line.create()
                 .append(EditMessageInputter.createLeaveTuiButtonOn(player, dominion.getName()).needPermission(defaultPermission).build())
                 .append(Language.editMessageInputterText.leaveDescription);
+        Line owner_glod = Line.create()
+                .append(new FunctionalButton(String.format(TextUserInterface.dominionManageTuiText.ownerGlowButton, dominion.getOwnerGlow() ? "ON" : "OFF")) {
+                    @Override
+                    public void function() {
+                        DominionOperateCommand.setOwnerGlow(player, dominion.getName(), String.valueOf(!dominion.getOwnerGlow()));
+                        showTUI(player, args);
+                    }
+                }.needPermission(defaultPermission).build())
+                .append(TextUserInterface.dominionManageTuiText.ownerGlowDescription);
         Line map_color = Line.create()
                 .append(SetMapColorInputter.createTuiButtonOn(player, dominion.getName()).build())
                 .append(Component.text(Language.setMapColorInputterText.description)
@@ -140,7 +156,8 @@ public class DominionManage extends AbstractUI {
                 .add(set_tp)
                 .add(rename)
                 .add(enter_msg)
-                .add(leave_msg);
+                .add(leave_msg)
+                .add(owner_glod);
         view.add(map_color);
         view.add(copy_menu);
         view.showOn(player, page);
@@ -451,6 +468,26 @@ public class DominionManage extends AbstractUI {
                 DominionOperateCommand.delete(player, dominion.getName(), "");
                 view.close();
             }
+        });
+
+        // glow for owner
+        PriFlag flag = Flags.GLOW;
+        String flagState = dominion.getOwnerGlow() ? ChestUserInterface.memberSettingCui.flagItemStateTrue : ChestUserInterface.memberSettingCui.flagItemStateFalse;
+        String flagName = formatString(ChestUserInterface.memberSettingCui.flagItemName, flag.getDisplayName());
+        List<String> descriptions = foldLore2Line(flag.getDescription(), 30);
+        List<String> flagLore = formatStringList(ChestUserInterface.memberSettingCui.flagItemLore, flagState, descriptions.get(0), descriptions.get(1));
+        ButtonConfiguration btnConfig = ButtonConfiguration.createMaterial(
+                ChestUserInterface.memberSettingCui.listConfiguration.itemSymbol.charAt(0),
+                flag.getMaterial(),
+                flagName,
+                flagLore
+        );
+        view.addItem(new ChestButton(btnConfig) {
+                @Override
+                public void onClick(ClickType type) {
+                        DominionOperateCommand.setOwnerGlow(player, dominion.getName(), String.valueOf(!dominion.getOwnerGlow()));
+                        showCUI(player, args);
+                }
         });
 
         view.open();

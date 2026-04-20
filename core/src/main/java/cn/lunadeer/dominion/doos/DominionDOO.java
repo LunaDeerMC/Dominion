@@ -42,12 +42,20 @@ public class DominionDOO implements DominionDTO {
     private final FieldString color = new FieldString("color", "#00BFFF");
     private final FieldString world_uid = new FieldString("world_uid");
     private final FieldInteger serverId = new FieldInteger("server_id");
+    private final FieldBoolean owner_glow = new FieldBoolean("owner_glow", false);
 
     // Cache for the parsed UUID to avoid repeated string parsing
     private UUID cachedWorldUid = null;
 
     private static Field<?>[] fields() {
-        Field<?>[] fields = new Field<?>[6 + 6 + Flags.getAllEnvFlagsEnable().size() + Flags.getAllPriFlagsEnable().size() + 4];
+        /**
+         * 6: cuboid x1, y1, z1, x2, y2, z2
+         * 7: id, owner, name, world_uid, parent_dom_id, join_message, leave_message
+         * env flags
+         * pri flags
+         * 4: tp_location, color, server_id, owner_glow
+         */
+        Field<?>[] fields = new Field<?>[6 + 7 + Flags.getAllEnvFlagsEnable().size() + Flags.getAllPriFlagsEnable().size() + 4];
         fields[0] = rootDominion().cuboid.x1Field();
         fields[1] = rootDominion().cuboid.y1Field();
         fields[2] = rootDominion().cuboid.z1Field();
@@ -71,6 +79,7 @@ public class DominionDOO implements DominionDTO {
         fields[i++] = rootDominion().tp_location;
         fields[i++] = rootDominion().color;
         fields[i++] = rootDominion().serverId;
+        fields[i++] = rootDominion().owner_glow;
         return fields;
     }
 
@@ -104,7 +113,8 @@ public class DominionDOO implements DominionDTO {
                 preFlags,
                 (String) map.get("tp_location").getValue(),
                 (String) map.get("color").getValue(),
-                (Integer) map.get("server_id").getValue()
+                (Integer) map.get("server_id").getValue(),
+                (Boolean) map.get("owner_glow").getValue()
         );
     }
 
@@ -124,7 +134,7 @@ public class DominionDOO implements DominionDTO {
                 -1,
                 "null", "null",
                 new HashMap<>(), new HashMap<>(),
-                "default", "#00BFFF", -1);
+                "default", "#00BFFF", -1, false);
     }
 
     public static @Nullable DominionDOO select(Integer id) throws SQLException {
@@ -156,7 +166,8 @@ public class DominionDOO implements DominionDTO {
                         dominion.parentDomId,
                         dominion.joinMessage, dominion.leaveMessage,
                         dominion.tp_location,
-                        dominion.serverId)
+                        dominion.serverId,
+                        dominion.owner_glow)
                 .returning(fields())
                 .execute();
         if (res.isEmpty()) {
@@ -184,7 +195,8 @@ public class DominionDOO implements DominionDTO {
                         Map<PriFlag, Boolean> preFlags,
                         String tp_location,
                         String color,
-                        Integer serverId) {
+                        Integer serverId,
+                        Boolean ownerGlow) {
         this.id.setValue(id);
         this.owner.setValue(owner.toString());
         this.name.setValue(name);
@@ -198,6 +210,7 @@ public class DominionDOO implements DominionDTO {
         this.tp_location.setValue(tp_location);
         this.color.setValue(color);
         this.serverId.setValue(serverId);
+        this.owner_glow.setValue(ownerGlow);
     }
 
     // constructor for new dominion
@@ -214,6 +227,7 @@ public class DominionDOO implements DominionDTO {
         this.joinMessage.setValue(Configuration.pluginMessage.defaultEnterMessage);
         this.leaveMessage.setValue(Configuration.pluginMessage.defaultLeaveMessage);
         this.serverId.setValue(Configuration.multiServer.serverId);
+        this.owner_glow.setValue(false);
     }
 
     private static class DominionCuboid extends CuboidDTO {
@@ -537,5 +551,20 @@ public class DominionDOO implements DominionDTO {
      */
     public static void deleteByPlayerUuid(UUID playerUUID) throws SQLException {
         Delete.delete().from("dominion").where("owner = ?", playerUUID.toString()).execute();
+    }
+
+    @Override
+    public Boolean getOwnerGlow() {
+        return owner_glow.getValue();
+    }
+
+    @Override
+    public @NotNull DominionDOO setOwnerGlow(Boolean ownerGlow) throws SQLException {
+        this.owner_glow.setValue(ownerGlow);
+        Update.update("dominion")
+                .set(this.owner_glow)
+                .where("id = ?", id.getValue())
+                .execute();
+        return this;
     }
 }

@@ -34,7 +34,22 @@ public class FlyGlowCheckHandler implements Listener {
             return;
         }
         handle(event.getPlayer(), event.getTo(), Flags.FLY, () -> allowFly(player), () -> disableFly(player));
-        handle(event.getPlayer(), event.getTo(), Flags.GLOW, () -> player.setGlowing(true), () -> player.setGlowing(false));
+        handle(event.getPlayer(), event.getTo(), Flags.GLOW, 
+        () -> {
+            // If the player is the owner of the dominion, check the owner glow flag
+            if (event.getPlayer().getUniqueId().equals(event.getTo().getOwner())){
+                if (event.getTo().getOwnerGlow()) {
+                    player.setGlowing(true);
+                } else {
+                    player.setGlowing(false);
+                }
+                return;
+            }
+            player.setGlowing(true);
+        }, 
+        () -> {
+            player.setGlowing(false);
+        });
     }
 
     @EventHandler
