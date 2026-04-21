@@ -5,6 +5,7 @@ import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.configuration.Language;
+import cn.lunadeer.dominion.events.ExportMcaListEvent;
 import cn.lunadeer.dominion.managers.DatabaseTables;
 import cn.lunadeer.dominion.misc.DominionException;
 import cn.lunadeer.dominion.uis.MainMenu;
@@ -204,6 +205,7 @@ public class AdministratorCommand {
                     }
                 }
                 Notification.info(sender, Language.administratorCommandText.exportedMCAList, folder.getAbsolutePath());
+                new ExportMcaListEvent(CacheManager.instance.getCache().getMcaWhitelistCache()).call();
             });
         } catch (Exception e) {
             Notification.error(sender, e.getMessage());
