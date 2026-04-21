@@ -8,6 +8,7 @@ import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.managers.DatabaseTables;
 import cn.lunadeer.dominion.misc.DominionException;
 import cn.lunadeer.dominion.uis.MainMenu;
+import cn.lunadeer.dominion.utils.McaRecord;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.command.Option;
 import cn.lunadeer.dominion.utils.command.SecondaryCommand;
@@ -151,6 +152,7 @@ public class AdministratorCommand {
 
     public static void exportMCA(CommandSender sender) {
         try {
+            CacheManager.instance.getCache().getMcaWhitelistCache().clear();
             Scheduler.runTaskAsync(() -> {
                 Notification.info(sender, Language.administratorCommandText.exportingMcaList);
                 Map<String, List<String>> mca_cords = new HashMap<>();
@@ -171,6 +173,7 @@ public class AdministratorCommand {
                                 continue;
                             }
                             mca_cords.get(world.getName()).add(file_name);
+                            CacheManager.instance.getCache().getMcaWhitelistCache().add(new McaRecord(x, z, world.getName()));
                         }
                     }
                 }

@@ -10,6 +10,7 @@ import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.misc.Others;
+import cn.lunadeer.dominion.utils.McaRecord;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -18,6 +19,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.UUID;
+
+import static cn.lunadeer.dominion.commands.AdministratorCommand.exportMCA;
 
 public class DominionInterface extends DominionAPI {
 
@@ -166,6 +169,17 @@ public class DominionInterface extends DominionAPI {
     @Override
     public void reloadConfig() throws Exception {
         Configuration.loadConfigurationAndDatabase(Bukkit.getConsoleSender());
+    }
+
+    @Override
+    public List<McaRecord> getMcaWhiteListInitiative() {
+        exportMCA(Dominion.instance.getServer().getConsoleSender());
+        return CacheManager.instance.getCache().getMcaWhitelistCache();
+    }
+
+    @Override
+    public List<McaRecord> getMcaWhiteListPassive() {
+        return CacheManager.instance.getCache().getMcaWhitelistCache();
     }
 
 }
