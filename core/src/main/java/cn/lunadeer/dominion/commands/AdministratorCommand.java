@@ -14,6 +14,7 @@ import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.command.Option;
 import cn.lunadeer.dominion.utils.command.SecondaryCommand;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
+import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import cn.lunadeer.dominion.utils.stui.components.buttons.FunctionalButton;
 import cn.lunadeer.dominion.utils.stui.components.buttons.PermissionButton;
 import org.bukkit.World;
@@ -153,57 +154,59 @@ public class AdministratorCommand {
     public static void exportMCA(CommandSender sender) {
         try {
             CacheManager.instance.getCache().getMcaWhitelistCache().clear();
-            Notification.info(sender, Language.administratorCommandText.exportingMcaList);
-            Map<String, List<String>> mca_cords = new HashMap<>();
-            List<DominionDTO> doms = CacheManager.instance.getAllDominions();
-            for (DominionDTO dom : doms) {
-                World world = toWorld(dom.getWorldUid());
-                if (!mca_cords.containsKey(world.getName())) {
-                    mca_cords.put(world.getName(), new ArrayList<>());
-                }
-                int mca_x1 = convertWorld2Mca(dom.getCuboid().x1()) - 1;
-                int mca_x2 = convertWorld2Mca(dom.getCuboid().x2()) + 1;
-                int mca_z1 = convertWorld2Mca(dom.getCuboid().z1()) - 1;
-                int mca_z2 = convertWorld2Mca(dom.getCuboid().z2()) + 1;
-                for (int x = mca_x1; x <= mca_x2; x++) {
-                    for (int z = mca_z1; z <= mca_z2; z++) {
-                        String file_name = "r." + x + "." + z + ".mca";
-                        if (mca_cords.get(world.getName()).contains(file_name)) {
-                            continue;
+            Scheduler.runTaskAsync(() -> {
+                Notification.info(sender, Language.administratorCommandText.exportingMcaList);
+                Map<String, List<String>> mca_cords = new HashMap<>();
+                List<DominionDTO> doms = CacheManager.instance.getAllDominions();
+                for (DominionDTO dom : doms) {
+                    World world = toWorld(dom.getWorldUid());
+                    if (!mca_cords.containsKey(world.getName())) {
+                        mca_cords.put(world.getName(), new ArrayList<>());
+                    }
+                    int mca_x1 = convertWorld2Mca(dom.getCuboid().x1()) - 1;
+                    int mca_x2 = convertWorld2Mca(dom.getCuboid().x2()) + 1;
+                    int mca_z1 = convertWorld2Mca(dom.getCuboid().z1()) - 1;
+                    int mca_z2 = convertWorld2Mca(dom.getCuboid().z2()) + 1;
+                    for (int x = mca_x1; x <= mca_x2; x++) {
+                        for (int z = mca_z1; z <= mca_z2; z++) {
+                            String file_name = "r." + x + "." + z + ".mca";
+                            if (mca_cords.get(world.getName()).contains(file_name)) {
+                                continue;
+                            }
+                            mca_cords.get(world.getName()).add(file_name);
+                            CacheManager.instance.getCache().getMcaWhitelistCache().add(new McaRecord(x, z, world.getName()));
                         }
-                        mca_cords.get(world.getName()).add(file_name);
-                        CacheManager.instance.getCache().getMcaWhitelistCache().add(new McaRecord(x, z, world.getName()));
                     }
                 }
-            }
-            File folder = new File(Dominion.instance.getDataFolder(), "exported-mca-list");
-            if (!folder.exists()) {
-                boolean success = folder.mkdirs();
-                if (!success) {
-                    throw new DominionException(Language.administratorCommandText.createMcaFolderFailed);
+                File folder = new File(Dominion.instance.getDataFolder(), "exported-mca-list");
+                if (!folder.exists()) {
+                    boolean success = folder.mkdirs();
+                    if (!success) {
+                        throw new DominionException(Language.administratorCommandText.createMcaFolderFailed);
+                    }
                 }
-            }
-            for (String world : mca_cords.keySet()) {
-                File file = new File(folder, world + ".txt");
-                Notification.info(sender, Language.administratorCommandText.writingMcaList, world);
-                try {
-                    if (file.exists()) {
-                        File backup = new File(folder, world + ".txt.bak");
-                        boolean success = file.renameTo(backup);
+                for (String world : mca_cords.keySet()) {
+                    File file = new File(folder, world + ".txt");
+                    Notification.info(sender, Language.administratorCommandText.writingMcaList, world);
+                    try {
+                        if (file.exists()) {
+                            File backup = new File(folder, world + ".txt.bak");
+                            boolean success = file.renameTo(backup);
+                        }
+                        if (!file.createNewFile()) {
+                            throw new DominionException(Language.administratorCommandText.createMcaFileFailed, file.getName());
+                        }
+                        List<String> cords = mca_cords.get(world);
+                        for (String cord : cords) {
+                            Files.write(file.toPath(), (cord + "\n").getBytes(), StandardOpenOption.APPEND);
+                        }
+                    } catch (Exception e) {
+                        Notification.error(sender, Language.administratorCommandText.exportMCAListFailed, world, e.getMessage());
                     }
-                    if (!file.createNewFile()) {
-                        throw new DominionException(Language.administratorCommandText.createMcaFileFailed, file.getName());
-                    }
-                    List<String> cords = mca_cords.get(world);
-                    for (String cord : cords) {
-                        Files.write(file.toPath(), (cord + "\n").getBytes(), StandardOpenOption.APPEND);
-                    }
-                } catch (Exception e) {
-                    Notification.error(sender, Language.administratorCommandText.exportMCAListFailed, world, e.getMessage());
                 }
-            }
-            Notification.info(sender, Language.administratorCommandText.exportedMCAList, folder.getAbsolutePath());
-            new ExportMcaListEvent(CacheManager.instance.getCache().getMcaWhitelistCache()).call();
+                Notification.info(sender, Language.administratorCommandText.exportedMCAList, folder.getAbsolutePath());
+            });
+            Scheduler.runTaskLater(() -> new ExportMcaListEvent(CacheManager.instance.getCache().getMcaWhitelistCache()).call(), 10 * 20L);
         } catch (Exception e) {
             Notification.error(sender, e.getMessage());
         }
