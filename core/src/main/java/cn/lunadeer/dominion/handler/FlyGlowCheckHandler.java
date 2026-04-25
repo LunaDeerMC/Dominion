@@ -30,10 +30,6 @@ public class FlyGlowCheckHandler implements Listener {
     @EventHandler
     public void onPlayerCrossBorder(PlayerCrossDominionBorderEvent event) {
         Player player = event.getPlayer();
-        if (player.isOp() || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
-            return;
-        }
-        handle(event.getPlayer(), event.getTo(), Flags.FLY, () -> allowFly(player), () -> disableFly(player));
         handle(event.getPlayer(), event.getTo(), Flags.GLOW, 
         () -> {
             // If the player is the owner of the dominion, check the owner glow flag
@@ -50,6 +46,10 @@ public class FlyGlowCheckHandler implements Listener {
         () -> {
             player.setGlowing(false);
         });
+        if (player.isOp() || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
+            return;
+        }
+        handle(event.getPlayer(), event.getTo(), Flags.FLY, () -> allowFly(player), () -> disableFly(player));
     }
 
     @EventHandler
