@@ -2,14 +2,9 @@ package cn.lunadeer.dominion.managers;
 
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.configuration.Language;
+import cn.lunadeer.dominion.storage.repository.ServerRepository;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
-import cn.lunadeer.dominion.utils.databse.FIelds.Field;
-import cn.lunadeer.dominion.utils.databse.FIelds.FieldInteger;
-import cn.lunadeer.dominion.utils.databse.FIelds.FieldString;
-import cn.lunadeer.dominion.utils.databse.syntax.Insert;
-import cn.lunadeer.dominion.utils.databse.syntax.Select;
-import cn.lunadeer.dominion.utils.databse.syntax.Update;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.entity.Player;
@@ -17,7 +12,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static cn.lunadeer.dominion.utils.Misc.formatString;
@@ -39,25 +33,13 @@ public class MultiServerManager {
         this.plugin = plugin;
         plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
         try {
-            List<Map<String, Field<?>>> res = Select.select(
-                    new FieldString("name")
-            ).from("server_info").where("id = ?", Configuration.multiServer.serverId).execute();
-            if (res.isEmpty()) {
-                // insert
-                Insert.insert().into("server_info")
-                        .values(
-                                new FieldInteger("id", Configuration.multiServer.serverId),
-                                new FieldString("name", Configuration.multiServer.serverName)
-                        ).execute();
+            String name = ServerRepository.getServerName(Configuration.multiServer.serverId);
+            if (name == null) {
+                ServerRepository.insertServer(Configuration.multiServer.serverId, Configuration.multiServer.serverName);
             } else {
-                // update
-                String name = (String) res.get(0).get("name").getValue();
                 if (!name.equals(Configuration.multiServer.serverName)) {
                     XLogger.warn(Language.multiServerManagerText.warnUpdateServerName, Configuration.multiServer.serverId, name, Configuration.multiServer.serverName);
-                    Update.update("server_info")
-                            .set(new FieldString("name", Configuration.multiServer.serverName))
-                            .where("id = ?", Configuration.multiServer.serverId)
-                            .execute();
+                    ServerRepository.updateServerName(Configuration.multiServer.serverId, Configuration.multiServer.serverName);
                 }
             }
             cachedDerverMap.put(Configuration.multiServer.serverId, Configuration.multiServer.serverName);
@@ -78,13 +60,11 @@ public class MultiServerManager {
         if (cachedDerverMap.containsKey(serverId)) {
             return cachedDerverMap.get(serverId);
         }
-        List<Map<String, Field<?>>> res = Select.select(
-                new FieldString("name")
-        ).from("server_info").where("id = ?", serverId).execute();
-        if (res.isEmpty()) {
+        String name = ServerRepository.getServerName(serverId);
+        if (name == null) {
             throw new Exception(formatString(Language.multiServerManagerText.getNameByIdError, serverId));
         }
-        cachedDerverMap.put(serverId, (String) res.get(0).get("name").getValue());
+        cachedDerverMap.put(serverId, name);
         return cachedDerverMap.get(serverId);
     }
 
@@ -96,13 +76,10 @@ public class MultiServerManager {
                     .findFirst()
                     .orElseThrow(() -> new Exception(formatString(Language.multiServerManagerText.getIdByNameError, serverName)));
         }
-        List<Map<String, Field<?>>> res = Select.select(
-                new FieldInteger("id")
-        ).from("server_info").where("name = ?", serverName).execute();
-        if (res.isEmpty()) {
+        Integer id = ServerRepository.getServerId(serverName);
+        if (id == null) {
             throw new Exception(formatString(Language.multiServerManagerText.getIdByNameError, serverName));
         }
-        Integer id = (Integer) res.get(0).get("id").getValue();
         cachedDerverMap.put(id, serverName);
         return id;
     }

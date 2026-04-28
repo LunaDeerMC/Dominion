@@ -6,14 +6,9 @@ import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.configuration.Language;
+import cn.lunadeer.dominion.storage.repository.TeleportRepository;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
-import cn.lunadeer.dominion.utils.databse.FIelds.Field;
-import cn.lunadeer.dominion.utils.databse.FIelds.FieldInteger;
-import cn.lunadeer.dominion.utils.databse.FIelds.FieldString;
-import cn.lunadeer.dominion.utils.databse.syntax.Delete;
-import cn.lunadeer.dominion.utils.databse.syntax.Insert;
-import cn.lunadeer.dominion.utils.databse.syntax.Select;
 import cn.lunadeer.dominion.utils.scheduler.CancellableTask;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import org.bukkit.Bukkit;
@@ -27,7 +22,6 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -56,16 +50,11 @@ public class TeleportManager implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         try {
-            List<Map<String, Field<?>>> res = Select.select(
-                            new FieldInteger("dom_id")
-                    ).from("tp_cache")
-                    .where("uuid = ?", event.getPlayer().getUniqueId().toString())
-                    .execute();
-            if (res.isEmpty()) {
+            Integer dominionId = TeleportRepository.getCachedDominionId(event.getPlayer().getUniqueId());
+            if (dominionId == null) {
                 return;
             }
-            Integer dominionId = (Integer) res.get(0).get("dom_id").getValue();
-            Delete.delete().from("tp_cache").where("uuid = ?", event.getPlayer().getUniqueId().toString()).execute();
+            TeleportRepository.delete(event.getPlayer().getUniqueId());
             DominionDTO dominion = CacheManager.instance.getDominion(dominionId);
             if (dominion == null) {
                 Notification.error(event.getPlayer(), Language.convertsText.unknownDominion, dominionId);
@@ -155,12 +144,7 @@ public class TeleportManager implements Listener {
             } else {
                 if (!Configuration.multiServer.enable) return;
                 try {
-                    FieldString cacheUuid = new FieldString("uuid", player.getUniqueId().toString());
-                    FieldInteger cacheDomId = new FieldInteger("dom_id", dominion.getId());
-                    Insert.insert().into("tp_cache")
-                            .values(cacheUuid, cacheDomId)
-                            .onConflict("uuid").doUpdate()
-                            .execute();
+                    TeleportRepository.upsert(player.getUniqueId(), dominion.getId());
                     MultiServerManager.instance.connectToServer(player, MultiServerManager.instance.getServerName(dominion.getServerId()));
                 } catch (Exception e) {
                     Notification.error(player, e);

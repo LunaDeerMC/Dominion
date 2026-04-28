@@ -19,7 +19,7 @@ import cn.lunadeer.dominion.nms.NMSManager;
 import cn.lunadeer.dominion.utils.bStatsMetrics;
 import cn.lunadeer.dominion.utils.command.CommandManager;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
-import cn.lunadeer.dominion.utils.databse.DatabaseManager;
+import cn.lunadeer.dominion.storage.DatabaseManager;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager;
 import cn.lunadeer.dominion.utils.stui.TextUserInterfaceManager;
