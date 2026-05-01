@@ -400,15 +400,18 @@ public class Asserts {
         if (world == null) {
             return;
         }
-        Location spawn = world.getSpawnLocation();
-        CuboidDTO spawnCuboid = new CuboidDTO(spawn.getBlockX() - spawnProtection, spawn.getBlockX() + spawnProtection,
-                spawn.getBlockY() - spawnProtection, spawn.getBlockY() + spawnProtection,
-                spawn.getBlockZ() - spawnProtection, spawn.getBlockZ() + spawnProtection);
-        if (cuboid.intersectWith(spawnCuboid)) {
-            throw new DominionException(Language.assertsText.intersectWithSpawn, dominion.getName());
-        }
         if (HooksManager.isConflictWithWorldGuard(cuboid, world)) {
             throw new DominionException(Language.assertsText.intersectWithDom, dominion.getName(), "WorldGuard");
+        }
+        if (world.getEnvironment() == World.Environment.NORMAL) {
+            // only check spawn protection in overworld
+            Location spawn = world.getSpawnLocation();
+            CuboidDTO spawnCuboid = new CuboidDTO(spawn.getBlockX() - spawnProtection, spawn.getBlockX() + spawnProtection,
+                    spawn.getBlockY() - spawnProtection, spawn.getBlockY() + spawnProtection,
+                    spawn.getBlockZ() - spawnProtection, spawn.getBlockZ() + spawnProtection);
+            if (cuboid.intersectWith(spawnCuboid)) {
+                throw new DominionException(Language.assertsText.intersectWithSpawn, dominion.getName());
+            }
         }
     }
 
