@@ -1,0 +1,74 @@
+name: Question / 提问
+description: Ask a question about Dominion usage or development
+title: "[Question] "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question about Dominion? Feel free to ask here!
+        有关于 Dominion 的问题？欢迎在此提问！
+        
+        > **Tip / 提示:** Before asking, please check the [documentation](https://dominion.lunadeer.cn/) and existing issues.
+        > 提问前请先查看[文档](https://dominion.lunadeer.cn/)和已有的 Issue。
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question / 你的问题
+      description: Describe your question in detail.
+      placeholder: What would you like to know?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context / 上下文
+      description: What are you trying to achieve? What have you already tried?
+      placeholder: |
+        I'm trying to...
+        I've already tried...
+    validations:
+      required: false
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Question Category / 问题类别
+      options:
+        - Configuration / 配置
+        - Commands / 命令
+        - API / 插件开发
+        - Permissions / 权限
+        - Multi-server / 多服务器
+        - Other / 其他
+    validations:
+      required: true
+
+  - type: input
+    id: server-version
+    attributes:
+      label: Server Version / 服务端版本
+      description: "e.g. Paper 1.21.4"
+      placeholder: "Paper 1.21.4"
+    validations:
+      required: false
+
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Dominion Version / Dominion 版本
+      description: "e.g. 4.7.2"
+      placeholder: "4.7.2"
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context / 补充信息
+      description: Any other information that might help answer your question.
+      placeholder: Screenshots, config snippets, etc.
+    validations:
+      required: false

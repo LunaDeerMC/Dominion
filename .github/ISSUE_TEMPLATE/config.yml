@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation / 文档
+    url: https://dominion.lunadeer.cn/
+    about: Check the documentation before opening an issue / 提交 Issue 前请先查看文档
+  - name: API Documentation / API 文档
+    url: https://dominion.lunadeer.cn/en/notes/api/
+    about: For addon developers / 面向插件开发者

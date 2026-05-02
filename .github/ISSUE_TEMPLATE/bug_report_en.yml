@@ -1,0 +1,112 @@
+name: Bug Report / 报告 Bug
+description: Report a bug to help us improve Dominion
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the information below to help us investigate.
+        感谢您花时间报告 Bug！请填写以下信息以帮助我们调查。
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description / Bug 描述
+      description: A clear and concise description of the bug / 请清晰地描述 Bug 现象
+      placeholder: Describe what happened...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce / 复现步骤
+      description: How can we reproduce this bug?
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior / 期望行为
+      description: What did you expect to happen?
+      placeholder: Describe the expected behavior...
+    validations:
+      required: false
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior / 实际行为
+      description: What actually happened?
+      placeholder: Describe what actually happened...
+    validations:
+      required: false
+
+  - type: dropdown
+    id: server-software
+    attributes:
+      label: Server Software / 服务端核心
+      description: Which server software are you using?
+      options:
+        - Paper
+        - Purpur
+        - Spigot
+        - Folia
+        - Other / 其他
+    validations:
+      required: true
+
+  - type: input
+    id: server-version
+    attributes:
+      label: Server Version / 服务端版本
+      description: "e.g. 1.21.4"
+      placeholder: "1.21.4"
+    validations:
+      required: true
+
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Dominion Version / Dominion 版本
+      description: "e.g. 4.7.2-alpha.12"
+      placeholder: "4.7.2"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Server OS / 服务器操作系统
+      options:
+        - Linux
+        - Windows
+        - macOS
+        - Other / 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error Logs / 错误日志
+      description: If applicable, paste relevant error logs or stack traces.
+      render: text
+      placeholder: Paste logs here...
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context / 补充信息
+      description: Any other information that might be helpful.
+      placeholder: Screenshots, other plugins installed, etc.
+    validations:
+      required: false

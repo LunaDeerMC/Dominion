@@ -1,0 +1,65 @@
+name: Feature Request / 功能请求
+description: Suggest a new feature or improvement for Dominion
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! Please describe your idea below.
+        感谢您提出新功能建议！请在下方描述您的想法。
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Description / 功能描述
+      description: A clear and concise description of the feature you'd like.
+      placeholder: Describe the feature you want...
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem It Solves / 解决的问题
+      description: What problem does this feature solve? Why do you need it?
+      placeholder: "e.g. I always struggle with..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution / 建议方案
+      description: How do you think this feature should work?
+      placeholder: Describe your ideal solution...
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered / 替代方案
+      description: Have you considered any alternative solutions or workarounds?
+      placeholder: Describe any alternatives...
+    validations:
+      required: false
+
+  - type: dropdown
+    id: related
+    attributes:
+      label: Is this related to a bug? / 是否与 Bug 相关？
+      options:
+        - "Yes / 是"
+        - "No / 否"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context / 补充信息
+      description: Any other information, screenshots, or examples that help explain the feature.
+      placeholder: Add any other context...
+    validations:
+      required: false
