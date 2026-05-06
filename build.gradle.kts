@@ -13,9 +13,14 @@ plugins {
 var buildFull = properties["BuildFull"].toString() == "true"
 var libraries = listOf<String>()
 libraries += "org.postgresql:postgresql:42.7.2"
-libraries += "mysql:mysql-connector-java:8.0.33"
+libraries += "com.mysql:mysql-connector-j:8.4.0"
+libraries += "org.xerial:sqlite-jdbc:3.46.1.3"
 libraries += "net.kyori:adventure-platform-bukkit:4.3.3"
 libraries += "com.zaxxer:HikariCP:6.2.1"
+libraries += "org.jooq:jooq:3.19.15"
+libraries += "org.flywaydb:flyway-core:11.8.2"
+libraries += "org.flywaydb:flyway-database-postgresql:11.8.2"
+libraries += "org.flywaydb:flyway-mysql:11.8.2"
 libraries += "net.kyori:adventure-text-minimessage:4.22.0"
 
 // release or alpha based on git branch
@@ -84,6 +89,7 @@ allprojects {
         archiveClassifier.set("")
         archiveVersion.set(project.version.toString())
         dependsOn(tasks.withType<ProcessResources>())
+        mergeServiceFiles()
         // add -lite to the end of the file name if BuildLite is true or -full if BuildLite is false
         archiveFileName.set("${project.name}-${project.version}${if (buildFull) "-full" else "-lite"}.jar")
     }

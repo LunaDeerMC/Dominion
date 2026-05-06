@@ -4,12 +4,11 @@ import cn.lunadeer.dominion.Dominion;
 import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flag;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.managers.DatabaseTables;
 import cn.lunadeer.dominion.utils.MessageDisplay;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.configuration.*;
-import cn.lunadeer.dominion.utils.databse.DatabaseManager;
+import cn.lunadeer.dominion.storage.DatabaseManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -460,6 +459,6 @@ public class Configuration extends ConfigurationFile {
         DatabaseManager.instance.reconnect();
         Notification.info(sender != null ? sender : Dominion.instance.getServer().getConsoleSender()
                 , Language.configurationText.databaseConnected);
-        DatabaseTables.migrate();
+        DatabaseManager.instance.migrate();
     }
 }

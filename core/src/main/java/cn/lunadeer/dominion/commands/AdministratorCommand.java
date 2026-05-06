@@ -6,7 +6,7 @@ import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.events.ExportMcaListEvent;
-import cn.lunadeer.dominion.managers.DatabaseTables;
+import cn.lunadeer.dominion.managers.DatabaseBackupManager;
 import cn.lunadeer.dominion.misc.DominionException;
 import cn.lunadeer.dominion.uis.MainMenu;
 import cn.lunadeer.dominion.utils.McaRecord;
@@ -146,7 +146,7 @@ public class AdministratorCommand {
             if (getArgumentValue(0).toUpperCase().startsWith("M")) {
                 exportMCA(sender);
             } else {
-                DatabaseTables.exportTables(sender);
+                DatabaseBackupManager.exportTables(sender);
             }
         }
     }.needPermission(adminPermission).register();
@@ -224,7 +224,7 @@ public class AdministratorCommand {
                 Notification.warn(sender, Language.administratorCommandText.importConfirm);
                 return;
             }
-            DatabaseTables.importTables(sender);
+            DatabaseBackupManager.importTables(sender);
         }
     }.needPermission(adminPermission).register();
 

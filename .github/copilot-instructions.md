@@ -38,12 +38,13 @@ Output: `build/libs/Dominion-{version}-{lite|full}.jar`. **No automated tests** 
 
 ### Package Structure
 - `cn.lunadeer.dominion.api` — API module
-- `cn.lunadeer.dominion` — core module (`.cache`, `.commands`, `.configuration`, `.doos`, `.events`, `.handler`, `.managers`, `.uis`, `.utils`)
+- `cn.lunadeer.dominion` — core module (`.cache`, `.commands`, `.configuration`, `.doos`, `.events`, `.handler`, `.managers`, `.storage`, `.uis`, `.utils`)
 - `cn.lunadeer.dominion.v1_21_9.events.player` — version-specific handlers
 
-### Known Typos (maintain for compatibility)
-- Package `utils/databse/` (missing 'a') — do NOT fix
-- Class `FIelds` (capital I) — do NOT fix
+### Database Layer
+- Use `core/src/main/java/cn/lunadeer/dominion/storage/` for persistence.
+- `DatabaseManager` owns HikariCP, Flyway migrations, and the jOOQ `DSLContext`.
+- Repositories under `storage/repository/` are the only place that should issue database CRUD queries.
 
 ### Text/Translation Pattern
 Every class with user-facing text defines a static inner class extending `ConfigurationPart`. Java `camelCase` fields auto-convert to YAML `kebab-case`:
@@ -91,25 +92,21 @@ Key helpers from `misc/Others`: `checkPrivilegeFlag()`, `checkEnvironmentFlag()`
 ## Adding a New Flag
 
 1. Define in `api/dtos/flag/Flags.java`: `public static final EnvFlag MY_FLAG = new EnvFlag("my_flag", "Display", "desc", defaultVal, enabled, Material.ICON);`
-2. Add field mapping in `DominionDOO.java` and `fields()` method
-3. Add language keys in all `languages/*.yml` files
-4. Create event handler(s) in appropriate version module(s)
+2. Add language keys in all `languages/*.yml` files
+3. Create event handler(s) in appropriate version module(s)
+4. Do not add flag columns to entity tables; runtime flag values are stored in normalized flag tables.
 
-## Database ORM (`core/utils/databse/`)
+## Database ORM (`core/storage/`)
 
-Custom SQL builder with SQLite/MySQL/PostgreSQL backends:
-```java
-// SELECT
-Select.select(fields()).from("dominion").where("id = ?", id).execute();
-// INSERT with returning
-Insert.insert().into("dominion").values(field1, field2).returning(fields()).execute();
-// UPDATE
-Update.update("dominion").set(this.name).where("id = ?", id.getValue()).execute();
-// DELETE
-Delete.delete().from("dominion").where("id = ?", dominionId).execute();
-```
+Use jOOQ DSL with dynamic schema constants from `DatabaseSchema`; do not reintroduce raw SQL builders.
+Flyway Java migrations live under `storage/migration/` and must remain Java migrations, not SQL migration files.
 
-Field types: `FieldBoolean`, `FieldInteger`, `FieldString`, `FieldFloat`, `FieldLong`, `FieldTimestamp`.
+Flag values are normalized into dedicated tables:
+- `dominion_env_flag`
+- `dominion_guest_pri_flag`
+- `member_pri_flag`
+- `group_pri_flag`
+- `template_pri_flag`
 
 ## Security
 
