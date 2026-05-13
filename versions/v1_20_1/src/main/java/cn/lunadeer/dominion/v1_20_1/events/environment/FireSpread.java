@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 
 import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
@@ -17,6 +18,12 @@ public class FireSpread implements Listener {
         if (player != null) {
             return;
         }
+        checkEnvironmentFlag(event.getBlock().getLocation(), Flags.FIRE_SPREAD, event);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onBlockBurn(BlockBurnEvent event) {
+        if (event.isCancelled()) return;
         checkEnvironmentFlag(event.getBlock().getLocation(), Flags.FIRE_SPREAD, event);
     }
 }
