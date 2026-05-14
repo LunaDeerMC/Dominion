@@ -401,6 +401,9 @@ flags:
   fire_spread:
     display-name: 火焰蔓延
     description: 禁止火焰在領地內蔓延
+  burn:
+    display-name: 燒毀
+    description: 是否允許方塊被燒毀，以及實體受到高溫傷害（火焰、岩漿、營火、岩漿塊）
   shear:
     display-name: 剪刀
     description: 是否允許用剪刀剪取綿羊的羊毛

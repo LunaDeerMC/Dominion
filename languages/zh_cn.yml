@@ -320,6 +320,9 @@ flags:
   fire_spread:
     display-name: 火焰蔓延
     description: 是否可以火焰蔓延
+  burn:
+    display-name: 烧毁
+    description: 是否允许方块被烧毁，以及实体受到高温伤害（火焰、岩浆、营火、岩浆块）
   shear:
     display-name: 剪羊毛
     description: 是否可以剪羊毛

@@ -370,6 +370,9 @@ flags:
   fire_spread:
     display-name: 火の広がり
     description: ドミニオン内での火の広がりを防ぎます。
+  burn:
+    display-name: 焼失
+    description: ブロックが燃え尽きたり、エンティティが高温ダメージを受けたりできるかどうか。
   shear:
     display-name: シアー
     description: 羊からウールを刈ることができるかどうか。
