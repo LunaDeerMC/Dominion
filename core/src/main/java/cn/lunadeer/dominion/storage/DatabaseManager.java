@@ -62,6 +62,10 @@ public class DatabaseManager {
                 config.setDriverClassName("com.mysql.cj.jdbc.Driver");
                 config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + name + "?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true");
             }
+            case MARIADB -> {
+                config.setDriverClassName("org.mariadb.jdbc.Driver");
+                config.setJdbcUrl("jdbc:mariadb://" + host + ":" + port + "/" + name + "?useUnicode=true&characterEncoding=utf8&useSSL=false");
+            }
         }
     }
 
@@ -130,6 +134,7 @@ public class DatabaseManager {
             case PGSQL -> SQLDialect.POSTGRES;
             case SQLITE -> SQLDialect.SQLITE;
             case MYSQL -> SQLDialect.MYSQL;
+            case MARIADB -> SQLDialect.MARIADB;
         };
     }
 }

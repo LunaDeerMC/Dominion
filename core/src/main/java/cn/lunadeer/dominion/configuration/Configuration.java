@@ -94,7 +94,7 @@ public class Configuration extends ConfigurationFile {
     public static Database database = new Database();
 
     public static class Database extends ConfigurationPart {
-        @Comments("Supported types: sqlite, mysql, pgsql")
+        @Comments("Supported types: sqlite, mysql, mariadb, pgsql")
         public String type = "sqlite";
 
         @Comments("The host of the database.")

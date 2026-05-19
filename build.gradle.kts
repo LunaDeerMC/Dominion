@@ -14,6 +14,7 @@ var buildFull = properties["BuildFull"].toString() == "true"
 var libraries = listOf<String>()
 libraries += "org.postgresql:postgresql:42.7.2"
 libraries += "com.mysql:mysql-connector-j:8.4.0"
+libraries += "org.mariadb.jdbc:mariadb-java-client:3.5.3"
 libraries += "org.xerial:sqlite-jdbc:3.46.1.3"
 libraries += "net.kyori:adventure-platform-bukkit:4.3.3"
 libraries += "com.zaxxer:HikariCP:6.2.1"

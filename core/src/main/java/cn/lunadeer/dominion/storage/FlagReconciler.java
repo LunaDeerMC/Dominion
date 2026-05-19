@@ -87,11 +87,11 @@ final class FlagReconciler {
     }
 
     private String boolType() {
-        return type == DatabaseType.MYSQL ? "TINYINT(1)" : "BOOLEAN";
+        return type.isMySqlFamily() ? "TINYINT(1)" : "BOOLEAN";
     }
 
     private String booleanLiteral(boolean value) {
-        if (type == DatabaseType.MYSQL) {
+        if (type.isMySqlFamily()) {
             return value ? "1" : "0";
         }
         return value ? "true" : "false";
