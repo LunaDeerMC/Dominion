@@ -4,6 +4,7 @@ import cn.lunadeer.dominion.Dominion;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.storage.DatabaseManager;
+import cn.lunadeer.dominion.storage.DatabaseType;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
@@ -11,9 +12,6 @@ import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.jooq.Field;
-import org.jooq.Record;
-import org.jooq.Table;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,9 +20,8 @@ import java.nio.file.StandardOpenOption;
 import java.sql.*;
 import java.util.*;
 
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.name;
-import static org.jooq.impl.DSL.table;
+import static cn.lunadeer.dominion.storage.DatabaseSchema.identifier;
+import static cn.lunadeer.dominion.storage.DatabaseSchema.table;
 
 public class DatabaseBackupManager {
     public static class DatabaseManagerText extends ConfigurationPart {
@@ -116,11 +113,7 @@ public class DatabaseBackupManager {
                                 continue;
                             }
                             String new_uid = newWorld.getUID().toString();
-                            DatabaseManager.instance.dsl()
-                                    .update(table(name("dominion")))
-                                    .set(field(name("world_uid"), String.class), new_uid)
-                                    .where(field(name("world_uid"), String.class).eq(old_uid))
-                                    .execute();
+                            updateDominionWorldUid(old_uid, new_uid);
                         }
                     }
                 }
@@ -188,19 +181,53 @@ public class DatabaseBackupManager {
         }
     }
 
-    private static void importRow(String tableName, Map<String, Object> row, Set<String> existingColumns) {
-        Table<Record> table = table(name(tableName));
-        Map<Field<?>, Object> values = new LinkedHashMap<>();
+    private static void importRow(String tableName, Map<String, Object> row, Set<String> existingColumns) throws SQLException {
+        Map<String, Object> values = new LinkedHashMap<>();
         for (Map.Entry<String, Object> entry : row.entrySet()) {
             if (!existingColumns.contains(entry.getKey().toLowerCase(Locale.ROOT))) {
                 continue;
             }
-            Field<Object> field = field(name(entry.getKey()));
-            values.put(field, entry.getValue());
+            values.put(identifier(entry.getKey()), entry.getValue());
         }
         if (!values.isEmpty()) {
-            DatabaseManager.instance.dsl().insertInto(table).set(values).onDuplicateKeyIgnore().execute();
+            insertIgnore(tableName, values);
         }
+    }
+
+    private static void updateDominionWorldUid(String oldUid, String newUid) throws SQLException {
+        try (Connection connection = DatabaseManager.instance.getConnection();
+             PreparedStatement statement = connection.prepareStatement("UPDATE dominion SET world_uid = ? WHERE world_uid = ?")) {
+            statement.setString(1, newUid);
+            statement.setString(2, oldUid);
+            statement.executeUpdate();
+        }
+    }
+
+    private static void insertIgnore(String tableName, Map<String, Object> values) throws SQLException {
+        String sql = insertIgnoreSql(tableName, values.keySet(), defaultOrderKey(tableName), DatabaseManager.instance.getType());
+        try (Connection connection = DatabaseManager.instance.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            int index = 1;
+            for (Object value : values.values()) {
+                statement.setObject(index++, value);
+            }
+            statement.executeUpdate();
+        }
+    }
+
+    private static String insertIgnoreSql(String tableName, Collection<String> columns, String conflictColumn, DatabaseType type) {
+        StringJoiner columnList = new StringJoiner(", ");
+        StringJoiner placeholders = new StringJoiner(", ");
+        for (String column : columns) {
+            columnList.add(identifier(column));
+            placeholders.add("?");
+        }
+        String prefix = type.isMySqlFamily() ? "INSERT IGNORE INTO" : "INSERT INTO";
+        String sql = prefix + " " + table(tableName) + " (" + columnList + ") VALUES (" + placeholders + ")";
+        if (type.isMySqlFamily()) {
+            return sql;
+        }
+        return sql + " ON CONFLICT(" + identifier(conflictColumn) + ") DO NOTHING";
     }
 
     private static Set<String> tableColumns(String tableName) throws SQLException {

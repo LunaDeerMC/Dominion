@@ -7,19 +7,14 @@ import static cn.lunadeer.dominion.storage.DatabaseSchema.*;
 
 public class TeleportRepository extends RepositorySupport {
     public static Integer getCachedDominionId(UUID uuid) throws SQLException {
-        return sql(() -> db().select(TP_DOM_ID).from(TP_CACHE).where(TP_UUID.eq(uuid.toString())).fetchOne(TP_DOM_ID));
+        return sql((session, mapper) -> toInteger(mapper.selectValue(TP_CACHE, TP_DOM_ID, TP_UUID, uuid.toString())));
     }
 
     public static void delete(UUID uuid) throws SQLException {
-        sql(() -> db().deleteFrom(TP_CACHE).where(TP_UUID.eq(uuid.toString())).execute());
+        sql((session, mapper) -> mapper.deleteWhere(TP_CACHE, TP_UUID, uuid.toString()));
     }
 
     public static void upsert(UUID uuid, Integer dominionId) throws SQLException {
-        sql(() -> db().insertInto(TP_CACHE)
-                .set(TP_UUID, uuid.toString())
-                .set(TP_DOM_ID, dominionId)
-                .onDuplicateKeyUpdate()
-                .set(TP_DOM_ID, dominionId)
-                .execute());
+        sql((session, mapper) -> mapper.upsertTeleport(uuid.toString(), dominionId, databaseType()));
     }
 }

@@ -1,7 +1,6 @@
 package cn.lunadeer.dominion.storage.repository;
 
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
-import org.jooq.Record;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -13,65 +12,69 @@ public class TemplateRepository extends RepositorySupport {
     }
 
     public static TemplateRow create(UUID creator, String name) throws SQLException {
-        return sql(() -> {
-            Map<org.jooq.Field<?>, Object> values = new LinkedHashMap<>();
+        return sql((session, mapper) -> {
+            Map<String, Object> values = new LinkedHashMap<>();
             values.put(TEMPLATE_CREATOR, creator.toString());
             values.put(TEMPLATE_NAME, name);
             putPriFlags(values, defaultPriFlags());
-            Integer id = db().insertInto(TEMPLATE)
-                    .set(values)
-                    .returningResult(TEMPLATE_ID)
-                    .fetchOne(TEMPLATE_ID);
-            return select(id);
+            mapper.insert(TEMPLATE, values);
+            Integer id = toInteger(values.get(TEMPLATE_ID));
+            if (id != null) {
+                return row(mapper.selectWhere(TEMPLATE, TEMPLATE_ID, id));
+            }
+            return row(mapper.selectWhereAll(TEMPLATE, templateKey(creator, name)));
         });
     }
 
     public static TemplateRow select(Integer id) throws SQLException {
-        return sql(() -> {
-            Record record = db().select()
-                    .from(TEMPLATE).where(TEMPLATE_ID.eq(id)).fetchOne();
-            if (record == null) return null;
-            return rows(List.of(record)).get(0);
-        });
+        return sql((session, mapper) -> row(mapper.selectWhere(TEMPLATE, TEMPLATE_ID, id)));
     }
 
     public static TemplateRow select(UUID creator, String name) throws SQLException {
-        return sql(() -> {
-            Record record = db().select()
-                    .from(TEMPLATE).where(TEMPLATE_CREATOR.eq(creator.toString()).and(TEMPLATE_NAME.eq(name))).fetchOne();
-            if (record == null) return null;
-            return rows(List.of(record)).get(0);
-        });
+        return sql((session, mapper) -> row(mapper.selectWhereAll(TEMPLATE, templateKey(creator, name))));
     }
 
     public static List<TemplateRow> selectAll(UUID creator) throws SQLException {
-        return sql(() -> rows(db().select()
-                .from(TEMPLATE).where(TEMPLATE_CREATOR.eq(creator.toString())).fetch()));
+        return sql((session, mapper) -> rows(mapper.selectWhere(TEMPLATE, TEMPLATE_CREATOR, creator.toString())));
     }
 
     public static void delete(UUID creator, String name) throws SQLException {
-        sql(() -> db().deleteFrom(TEMPLATE)
-                .where(TEMPLATE_CREATOR.eq(creator.toString()).and(TEMPLATE_NAME.eq(name)))
-                .execute());
+        sql((session, mapper) -> mapper.deleteWhereAll(TEMPLATE, templateKey(creator, name)));
     }
 
     public static void updateFlag(Integer id, PriFlag flag, Boolean value) throws SQLException {
-        sql(() -> {
-            updateFlag(TEMPLATE, TEMPLATE_ID, id, flag, value);
+        sql((session, mapper) -> {
+            updateFlag(mapper, TEMPLATE, TEMPLATE_ID, id, flag, value);
             return 0;
         });
     }
 
     public static void updateName(Integer id, String name) throws SQLException {
-        sql(() -> db().update(TEMPLATE).set(TEMPLATE_NAME, name).where(TEMPLATE_ID.eq(id)).execute());
+        sql((session, mapper) -> {
+            Map<String, Object> values = new LinkedHashMap<>();
+            values.put(TEMPLATE_NAME, name);
+            return mapper.updateColumns(TEMPLATE, TEMPLATE_ID, id, values);
+        });
     }
 
-    private static List<TemplateRow> rows(Collection<? extends Record> records) {
-        List<TemplateRow> rows = new ArrayList<>();
-        for (Record record : records) {
-            rows.add(new TemplateRow(record.get(TEMPLATE_ID), UUID.fromString(record.get(TEMPLATE_CREATOR)),
-                    record.get(TEMPLATE_NAME), readPriFlags(record)));
-        }
-        return rows;
+    private static Map<String, Object> templateKey(UUID creator, String name) {
+        Map<String, Object> values = new LinkedHashMap<>();
+        values.put(TEMPLATE_CREATOR, creator.toString());
+        values.put(TEMPLATE_NAME, name);
+        return values;
+    }
+
+    private static TemplateRow row(List<Map<String, Object>> rows) {
+        if (rows == null || rows.isEmpty()) return null;
+        return row(rows.get(0));
+    }
+
+    private static List<TemplateRow> rows(List<Map<String, Object>> rows) {
+        return rows.stream().map(TemplateRepository::row).toList();
+    }
+
+    private static TemplateRow row(Map<String, Object> row) {
+        return new TemplateRow(integer(row, TEMPLATE_ID), UUID.fromString(string(row, TEMPLATE_CREATOR)),
+                string(row, TEMPLATE_NAME), readPriFlags(row));
     }
 }

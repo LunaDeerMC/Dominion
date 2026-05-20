@@ -43,7 +43,7 @@ Output: `build/libs/Dominion-{version}-{lite|full}.jar`. **No automated tests** 
 
 ### Database Layer
 - Use `core/src/main/java/cn/lunadeer/dominion/storage/` for persistence.
-- `DatabaseManager` owns HikariCP, Flyway migrations, and the jOOQ `DSLContext`.
+- `DatabaseManager` owns HikariCP, Flyway migrations, and the MyBatis `SqlSessionFactory`.
 - Repositories under `storage/repository/` are the only place that should issue database CRUD queries.
 
 ### Text/Translation Pattern
@@ -94,19 +94,18 @@ Key helpers from `misc/Others`: `checkPrivilegeFlag()`, `checkEnvironmentFlag()`
 1. Define in `api/dtos/flag/Flags.java`: `public static final EnvFlag MY_FLAG = new EnvFlag("my_flag", "Display", "desc", defaultVal, enabled, Material.ICON);`
 2. Add language keys in all `languages/*.yml` files
 3. Create event handler(s) in appropriate version module(s)
-4. Do not add flag columns to entity tables; runtime flag values are stored in normalized flag tables.
+4. `FlagReconciler` adds missing runtime flag columns to the relevant entity tables during migration.
 
 ## Database ORM (`core/storage/`)
 
-Use jOOQ DSL with dynamic schema constants from `DatabaseSchema`; do not reintroduce raw SQL builders.
+Use MyBatis mapper interfaces and SQL providers with schema constants from `DatabaseSchema`. Dynamic table and column names must be validated with `DatabaseSchema` helpers before they are interpolated into SQL providers.
 Flyway Java migrations live under `storage/migration/` and must remain Java migrations, not SQL migration files.
 
-Flag values are normalized into dedicated tables:
-- `dominion_env_flag`
-- `dominion_guest_pri_flag`
-- `member_pri_flag`
-- `group_pri_flag`
-- `template_pri_flag`
+Flag values are stored as boolean columns on the owning tables and reconciled after Flyway migration:
+- `dominion` — environment flags and guest privilege flags
+- `dominion_member` — member privilege flags
+- `dominion_group` — group privilege flags
+- `privilege_template` — template privilege flags
 
 ## Security
 
