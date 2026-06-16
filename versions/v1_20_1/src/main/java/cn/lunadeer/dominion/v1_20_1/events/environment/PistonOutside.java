@@ -36,6 +36,7 @@ public class PistonOutside implements Listener {
 
     private void checkPistonOutside(Block piston, Collection<Block> movedBlocks, Cancellable event) {
         List<DominionDTO> involvedDominions = collectInvolvedDominions(piston, movedBlocks);
+        if (involvedDominions.size() < 2) return;
         for (DominionDTO dominion : involvedDominions) {
             if (!checkEnvironmentFlag(dominion, Flags.PISTON_OUTSIDE, event)) return;
         }
