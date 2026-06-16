@@ -4,35 +4,58 @@ import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 
 public class PistonOutside implements Listener {
+    private static final int MAX_INVOLVED_DOMINIONS = 8;
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(BlockPistonExtendEvent event) {
         if (event.isCancelled()) return;
-        Block piston = event.getBlock();
-        DominionDTO pistonDom = CacheManager.instance.getDominion(piston.getLocation());
-        BlockFace direction = event.getDirection();
-        Block endBlockAfterPush = piston.getRelative(direction, event.getBlocks().size() + 1);
-        DominionDTO endBlockDom = CacheManager.instance.getDominion(endBlockAfterPush.getLocation());
-        if (pistonDom != null && endBlockDom == null) {
-            checkEnvironmentFlag(piston.getLocation(), Flags.PISTON_OUTSIDE, event);
+        checkPistonOutside(event.getBlock(), event.getBlocks(), event);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void handler(BlockPistonRetractEvent event) {
+        if (event.isCancelled()) return;
+        checkPistonOutside(event.getBlock(), event.getBlocks(), event);
+    }
+
+    private void checkPistonOutside(Block piston, Collection<Block> movedBlocks, Cancellable event) {
+        List<DominionDTO> involvedDominions = collectInvolvedDominions(piston, movedBlocks);
+        for (DominionDTO dominion : involvedDominions) {
+            if (!checkEnvironmentFlag(dominion, Flags.PISTON_OUTSIDE, event)) return;
         }
-        if (pistonDom == null && endBlockDom != null) {
-            checkEnvironmentFlag(endBlockAfterPush.getLocation(), Flags.PISTON_OUTSIDE, event);
+    }
+
+    private List<DominionDTO> collectInvolvedDominions(Block piston, Collection<Block> movedBlocks) {
+        List<DominionDTO> involvedDominions = new ArrayList<>(MAX_INVOLVED_DOMINIONS);
+        Set<Integer> involvedDominionIds = new HashSet<>(MAX_INVOLVED_DOMINIONS);
+
+        addDominion(piston, involvedDominions, involvedDominionIds);
+        for (Block block : movedBlocks) {
+            if (involvedDominions.size() >= MAX_INVOLVED_DOMINIONS) break;
+            addDominion(block, involvedDominions, involvedDominionIds);
         }
-        if (pistonDom != null && endBlockDom != null) {
-            if (!pistonDom.getId().equals(endBlockDom.getId())) {
-                if (!endBlockDom.getEnvironmentFlagValue().get(Flags.PISTON_OUTSIDE) || !pistonDom.getEnvironmentFlagValue().get(Flags.PISTON_OUTSIDE)) {
-                    event.setCancelled(true);
-                }
-            }
-        }
+        return involvedDominions;
+    }
+
+    private void addDominion(Block block, List<DominionDTO> involvedDominions, Set<Integer> involvedDominionIds) {
+        DominionDTO dominion = CacheManager.instance.getDominion(block.getLocation());
+        if (dominion == null || !involvedDominionIds.add(dominion.getId())) return;
+        involvedDominions.add(dominion);
     }
 }
