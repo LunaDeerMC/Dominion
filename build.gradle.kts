@@ -125,8 +125,11 @@ subprojects {
 tasks.shadowJar {
     archiveClassifier.set("")
     archiveVersion.set(project.version.toString())
-    // Ensure all NMS modules are reobfuscated before assembling the final JAR
     dependsOn(reobfAllJars)
+    dependsOn(project(":versions:v26_2").tasks.named("compileJava"))
+    from({
+        project(":versions:v26_2").buildDir.resolve("classes/java/main")
+    })
 }
 
 tasks.register("Clean&Build") { // <<<< RUN THIS TASK TO BUILD PLUGIN
@@ -146,7 +149,7 @@ hangarPublish {
             register(Platforms.PAPER) {
                 jar.set(tasks.shadowJar.flatMap { it.archiveFile })
                 println("ShadowJar: ${tasks.shadowJar.flatMap { it.archiveFile }}")
-                platformVersions.set(listOf("1.20.1-1.20.6", "1.21.x", "26.1.2"))
+                platformVersions.set(listOf("1.20.1-1.20.6", "1.21.x", "26.1.2", "26.2"))
             }
         }
     }
