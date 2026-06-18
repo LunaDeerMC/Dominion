@@ -104,6 +104,7 @@ dependencies {
     implementation(project("versions:v1_21_8"))
     implementation(project("versions:v1_21_9"))
     implementation(project(path = ":versions:v26", configuration = "shadowRuntimeElements"))
+    implementation(project(path = ":versions:v26_2", configuration = "shadowRuntimeElements"))
 }
 
 // Reobfuscate all subproject JARs that have paperweight reobfJar task
@@ -126,10 +127,6 @@ tasks.shadowJar {
     archiveClassifier.set("")
     archiveVersion.set(project.version.toString())
     dependsOn(reobfAllJars)
-    dependsOn(project(":versions:v26_2").tasks.named("compileJava"))
-    from({
-        project(":versions:v26_2").buildDir.resolve("classes/java/main")
-    })
 }
 
 tasks.register("Clean&Build") { // <<<< RUN THIS TASK TO BUILD PLUGIN
