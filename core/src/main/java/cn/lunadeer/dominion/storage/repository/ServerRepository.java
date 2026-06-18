@@ -1,27 +1,37 @@
 package cn.lunadeer.dominion.storage.repository;
 
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static cn.lunadeer.dominion.storage.DatabaseSchema.*;
 
 public class ServerRepository extends RepositorySupport {
     public static String getServerName(Integer id) throws SQLException {
-        return sql(() -> db().select(SERVER_NAME).from(SERVER_INFO).where(SERVER_ID.eq(id)).fetchOne(SERVER_NAME));
+        return sql((session, mapper) -> {
+            Object value = mapper.selectValue(SERVER_INFO, SERVER_NAME, SERVER_ID, id);
+            return value == null ? null : value.toString();
+        });
     }
 
     public static Integer getServerId(String name) throws SQLException {
-        return sql(() -> db().select(SERVER_ID).from(SERVER_INFO).where(SERVER_NAME.eq(name)).fetchOne(SERVER_ID));
+        return sql((session, mapper) -> toInteger(mapper.selectValue(SERVER_INFO, SERVER_ID, SERVER_NAME, name)));
     }
 
     public static void insertServer(Integer id, String name) throws SQLException {
-        sql(() -> db().insertInto(SERVER_INFO)
-                .set(SERVER_ID, id)
-                .set(SERVER_NAME, name)
-                .onDuplicateKeyIgnore()
-                .execute());
+        sql((session, mapper) -> {
+            Map<String, Object> values = new LinkedHashMap<>();
+            values.put(SERVER_ID, id);
+            values.put(SERVER_NAME, name);
+            return mapper.insertIgnore(SERVER_INFO, values, databaseType(), SERVER_ID);
+        });
     }
 
     public static void updateServerName(Integer id, String name) throws SQLException {
-        sql(() -> db().update(SERVER_INFO).set(SERVER_NAME, name).where(SERVER_ID.eq(id)).execute());
+        sql((session, mapper) -> {
+            Map<String, Object> values = new LinkedHashMap<>();
+            values.put(SERVER_NAME, name);
+            return mapper.updateColumns(SERVER_INFO, SERVER_ID, id, values);
+        });
     }
 }

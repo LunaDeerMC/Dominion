@@ -1,14 +1,16 @@
 package cn.lunadeer.dominion.storage;
 
+import cn.lunadeer.dominion.storage.mapper.GenericMapper;
 import cn.lunadeer.dominion.storage.migration.V1__LegacySchema;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.flywaydb.core.Flyway;
-import org.jooq.Configuration;
-import org.jooq.DSLContext;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
+import org.apache.ibatis.mapping.Environment;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -22,7 +24,7 @@ public class DatabaseManager {
     private final HikariConfig config = new HikariConfig();
     private DatabaseType type;
     private HikariDataSource dataSource;
-    private DSLContext dsl;
+    private SqlSessionFactory sqlSessionFactory;
 
     public DatabaseManager(JavaPlugin plugin, String type, String host, String port, String name, String user, String pass) {
         instance = this;
@@ -62,15 +64,20 @@ public class DatabaseManager {
                 config.setDriverClassName("com.mysql.cj.jdbc.Driver");
                 config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + name + "?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true");
             }
+            case MARIADB -> {
+                config.setDriverClassName("org.mariadb.jdbc.Driver");
+                config.setJdbcUrl("jdbc:mariadb://" + host + ":" + port + "/" + name + "?useUnicode=true&characterEncoding=utf8&useSSL=false");
+            }
         }
     }
 
     public void reconnect() {
         close();
         dataSource = new HikariDataSource(config);
-        System.setProperty("org.jooq.no-logo", "true");
-        System.setProperty("org.jooq.no-tips", "true");
-        dsl = DSL.using(dataSource, dialect());
+        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        configuration.setEnvironment(new Environment("Dominion", new JdbcTransactionFactory(), dataSource));
+        configuration.addMapper(GenericMapper.class);
+        sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
     }
 
     public void migrate() {
@@ -81,7 +88,7 @@ public class DatabaseManager {
                 .javaMigrations(new V1__LegacySchema(type))
                 .load()
                 .migrate();
-        FlagReconciler.SyncResult result = new FlagReconciler(dsl(), type).reconcile();
+        FlagReconciler.SyncResult result = new FlagReconciler(dataSource(), type).reconcile();
         if (result.changedEntries() > 0) {
             plugin.getLogger().info("Reconciled " + result.changedEntries() + " flag columns/values.");
         }
@@ -95,26 +102,25 @@ public class DatabaseManager {
     }
 
     public DataSource dataSource() {
+        if (dataSource == null) {
+            reconnect();
+        }
         return dataSource;
     }
 
-    public DSLContext dsl() {
-        if (dsl == null) {
+    public SqlSessionFactory sqlSessionFactory() {
+        if (sqlSessionFactory == null) {
             reconnect();
         }
-        return dsl;
+        return sqlSessionFactory;
     }
 
-    public <T> T transactionResult(org.jooq.TransactionalCallable<T> callable) {
-        return dsl().transactionResult(callable);
-    }
-
-    public DSLContext dsl(Configuration configuration) {
-        return DSL.using(configuration);
+    public SqlSession openSession() {
+        return sqlSessionFactory().openSession(false);
     }
 
     public void close() {
-        dsl = null;
+        sqlSessionFactory = null;
         if (dataSource != null) {
             dataSource.close();
             dataSource = null;
@@ -123,13 +129,5 @@ public class DatabaseManager {
 
     public DatabaseType getType() {
         return type;
-    }
-
-    public SQLDialect dialect() {
-        return switch (type) {
-            case PGSQL -> SQLDialect.POSTGRES;
-            case SQLITE -> SQLDialect.SQLITE;
-            case MYSQL -> SQLDialect.MYSQL;
-        };
     }
 }

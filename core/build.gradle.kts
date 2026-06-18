@@ -11,6 +11,10 @@ tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
 
+tasks.test {
+    useJUnitPlatform()
+}
+
 repositories {
     maven("https://repo.mikeprimm.com/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
@@ -22,6 +26,12 @@ repositories {
 dependencies {
     implementation(project(":api"))
     compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
+    testImplementation("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.mybatis:mybatis:3.5.16")
+    testImplementation("com.zaxxer:HikariCP:6.2.1")
 
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")

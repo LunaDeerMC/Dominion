@@ -1,5 +1,6 @@
 package cn.lunadeer.dominion.v1_21_9.nms;
 
+import cn.lunadeer.dominion.nms.EntityIdAllocator;
 import cn.lunadeer.dominion.nms.FakeEntity;
 import cn.lunadeer.dominion.nms.FakeEntityFactory;
 import net.minecraft.world.entity.Entity;
@@ -7,25 +8,10 @@ import org.bukkit.Location;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.inventory.ItemStack;
 
-import java.lang.reflect.Field;
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * Fake entity factory implementation for Minecraft 1.21.9+.
  */
 public class FakeEntityFactoryImpl implements FakeEntityFactory {
-
-    private static final AtomicInteger ENTITY_COUNTER;
-
-    static {
-        try {
-            Field counterField = Entity.class.getDeclaredField("ENTITY_COUNTER");
-            counterField.setAccessible(true);
-            ENTITY_COUNTER = (AtomicInteger) counterField.get(null);
-        } catch (ReflectiveOperationException e) {
-            throw new ExceptionInInitializerError("Failed to access Entity.ENTITY_COUNTER: " + e.getMessage());
-        }
-    }
 
     @Override
     public FakeEntity createBlockDisplay(Location location, BlockData blockData) {
@@ -41,6 +27,6 @@ public class FakeEntityFactoryImpl implements FakeEntityFactory {
 
     @Override
     public int nextEntityId() {
-        return ENTITY_COUNTER.incrementAndGet();
+        return EntityIdAllocator.nextEntityId(Entity.class);
     }
 }

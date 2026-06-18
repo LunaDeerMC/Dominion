@@ -4,35 +4,42 @@ import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
 
 import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
+import static cn.lunadeer.dominion.misc.Others.isInDominion;
 
 public class PistonOutside implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(BlockPistonExtendEvent event) {
         if (event.isCancelled()) return;
+
         Block piston = event.getBlock();
-        DominionDTO pistonDom = CacheManager.instance.getDominion(piston.getLocation());
-        BlockFace direction = event.getDirection();
-        Block endBlockAfterPush = piston.getRelative(direction, event.getBlocks().size() + 1);
-        DominionDTO endBlockDom = CacheManager.instance.getDominion(endBlockAfterPush.getLocation());
-        if (pistonDom != null && endBlockDom == null) {
-            checkEnvironmentFlag(piston.getLocation(), Flags.PISTON_OUTSIDE, event);
+        for (Block block : event.getBlocks()) {
+            Block targetBlock = block.getRelative(event.getDirection());
+            DominionDTO targetDominion = CacheManager.instance.getDominion(targetBlock.getLocation());
+            if (!isOutsideAction(piston, targetDominion)) continue;
+            if (!checkEnvironmentFlag(targetDominion, Flags.PISTON_OUTSIDE, event)) return;
         }
-        if (pistonDom == null && endBlockDom != null) {
-            checkEnvironmentFlag(endBlockAfterPush.getLocation(), Flags.PISTON_OUTSIDE, event);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void handler(BlockPistonRetractEvent event) {
+        if (event.isCancelled()) return;
+
+        Block piston = event.getBlock();
+        for (Block block : event.getBlocks()) {
+            DominionDTO sourceDominion = CacheManager.instance.getDominion(block.getLocation());
+            if (!isOutsideAction(piston, sourceDominion)) continue;
+            if (!checkEnvironmentFlag(sourceDominion, Flags.PISTON_OUTSIDE, event)) return;
         }
-        if (pistonDom != null && endBlockDom != null) {
-            if (!pistonDom.getId().equals(endBlockDom.getId())) {
-                if (!endBlockDom.getEnvironmentFlagValue().get(Flags.PISTON_OUTSIDE) || !pistonDom.getEnvironmentFlagValue().get(Flags.PISTON_OUTSIDE)) {
-                    event.setCancelled(true);
-                }
-            }
-        }
+    }
+
+    private boolean isOutsideAction(Block piston, DominionDTO protectedDominion) {
+        return protectedDominion != null && !isInDominion(protectedDominion, piston.getLocation());
     }
 }

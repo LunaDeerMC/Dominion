@@ -101,18 +101,18 @@ abstract class AbstractJavaMigration extends BaseJavaMigration {
 
     protected String autoId() {
         return switch (type) {
-            case MYSQL -> "INT NOT NULL AUTO_INCREMENT PRIMARY KEY";
+            case MYSQL, MARIADB -> "INT NOT NULL AUTO_INCREMENT PRIMARY KEY";
             case PGSQL -> "SERIAL PRIMARY KEY";
             case SQLITE -> "INTEGER PRIMARY KEY AUTOINCREMENT";
         };
     }
 
     protected String text() {
-        return type == DatabaseType.MYSQL ? "VARCHAR(255)" : "TEXT";
+        return type.isMySqlFamily() ? "VARCHAR(255)" : "TEXT";
     }
 
     protected String longText() {
-        return type == DatabaseType.MYSQL ? "VARCHAR(512)" : "TEXT";
+        return type.isMySqlFamily() ? "VARCHAR(512)" : "TEXT";
     }
 
     protected String uuidText() {
@@ -120,11 +120,11 @@ abstract class AbstractJavaMigration extends BaseJavaMigration {
     }
 
     protected String bool() {
-        return type == DatabaseType.MYSQL ? "TINYINT(1)" : "BOOLEAN";
+        return type.isMySqlFamily() ? "TINYINT(1)" : "BOOLEAN";
     }
 
     protected String timestamp() {
-        return type == DatabaseType.MYSQL ? "DATETIME" : "TIMESTAMP";
+        return type.isMySqlFamily() ? "DATETIME" : "TIMESTAMP";
     }
 
     protected boolean toBoolean(Object value, boolean defaultValue) {

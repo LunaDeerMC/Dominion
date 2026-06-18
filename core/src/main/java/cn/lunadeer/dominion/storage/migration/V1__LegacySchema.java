@@ -211,6 +211,6 @@ public class V1__LegacySchema extends AbstractJavaMigration {
     }
 
     private String falseLiteral() {
-        return type == DatabaseType.MYSQL ? "0" : "false";
+        return type.isMySqlFamily() ? "0" : "false";
     }
 }

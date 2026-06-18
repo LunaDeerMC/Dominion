@@ -2,7 +2,6 @@ package cn.lunadeer.dominion.storage.repository;
 
 import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
-import org.jooq.Record;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -18,40 +17,20 @@ public class DominionRepository extends RepositorySupport {
     }
 
     public static List<DominionRow> selectAll(Integer serverId) throws SQLException {
-        return sql(() -> {
-            var records = db().select()
-                    .from(DOMINION)
-                    .where(DOM_SERVER_ID.eq(serverId).and(DOM_ID.ge(0)))
-                    .fetch();
-            return rows(records);
-        });
+        return sql((session, mapper) -> rows(mapper.selectDominionsByServer(serverId)));
     }
 
     public static DominionRow select(Integer id) throws SQLException {
-        return sql(() -> {
-            Record record = db().select()
-                    .from(DOMINION)
-                    .where(DOM_ID.eq(id))
-                    .fetchOne();
-            if (record == null) return null;
-            return rows(List.of(record)).get(0);
-        });
+        return sql((session, mapper) -> row(mapper.selectWhere(DOMINION, DOM_ID, id)));
     }
 
     public static DominionRow select(String name) throws SQLException {
-        return sql(() -> {
-            Record record = db().select()
-                    .from(DOMINION)
-                    .where(DOM_NAME.eq(name))
-                    .fetchOne();
-            if (record == null) return null;
-            return rows(List.of(record)).get(0);
-        });
+        return sql((session, mapper) -> row(mapper.selectWhere(DOMINION, DOM_NAME, name)));
     }
 
     public static DominionRow insert(DominionRow dominion) throws SQLException {
-        return sql(() -> {
-            Map<org.jooq.Field<?>, Object> values = new LinkedHashMap<>();
+        return sql((session, mapper) -> {
+            Map<String, Object> values = new LinkedHashMap<>();
             values.put(DOM_OWNER, dominion.owner().toString());
             values.put(DOM_NAME, dominion.name());
             values.put(DOM_WORLD_UID, dominion.worldUid().toString());
@@ -70,20 +49,21 @@ public class DominionRepository extends RepositorySupport {
             values.put(DOM_OWNER_GLOW, dominion.ownerGlow());
             putEnvFlags(values, dominion.envFlags());
             putPriFlags(values, dominion.guestFlags());
-            Integer id = db().insertInto(DOMINION)
-                    .set(values)
-                    .returningResult(DOM_ID)
-                    .fetchOne(DOM_ID);
-            return select(id);
+            mapper.insert(DOMINION, values);
+            Integer id = toInteger(values.get(DOM_ID));
+            if (id != null) {
+                return row(mapper.selectWhere(DOMINION, DOM_ID, id));
+            }
+            return row(mapper.selectWhere(DOMINION, DOM_NAME, dominion.name()));
         });
     }
 
     public static void deleteById(Integer id) throws SQLException {
-        sql(() -> db().deleteFrom(DOMINION).where(DOM_ID.eq(id)).execute());
+        sql((session, mapper) -> mapper.deleteWhere(DOMINION, DOM_ID, id));
     }
 
     public static void deleteByPlayerUuid(UUID playerUUID) throws SQLException {
-        sql(() -> db().deleteFrom(DOMINION).where(DOM_OWNER.eq(playerUUID.toString())).execute());
+        sql((session, mapper) -> mapper.deleteWhere(DOMINION, DOM_OWNER, playerUUID.toString()));
     }
 
     public static void updateOwner(Integer id, UUID owner) throws SQLException {
@@ -95,11 +75,16 @@ public class DominionRepository extends RepositorySupport {
     }
 
     public static void updateCuboid(Integer id, int x1, int y1, int z1, int x2, int y2, int z2) throws SQLException {
-        sql(() -> db().update(DOMINION)
-                .set(DOM_X1, x1).set(DOM_Y1, y1).set(DOM_Z1, z1)
-                .set(DOM_X2, x2).set(DOM_Y2, y2).set(DOM_Z2, z2)
-                .where(DOM_ID.eq(id))
-                .execute());
+        sql((session, mapper) -> {
+            Map<String, Object> values = new LinkedHashMap<>();
+            values.put(DOM_X1, x1);
+            values.put(DOM_Y1, y1);
+            values.put(DOM_Z1, z1);
+            values.put(DOM_X2, x2);
+            values.put(DOM_Y2, y2);
+            values.put(DOM_Z2, z2);
+            return mapper.updateColumns(DOMINION, DOM_ID, id, values);
+        });
     }
 
     public static void updateJoinMessage(Integer id, String message) throws SQLException {
@@ -123,48 +108,57 @@ public class DominionRepository extends RepositorySupport {
     }
 
     public static void updateEnvFlag(Integer id, EnvFlag flag, Boolean value) throws SQLException {
-        sql(() -> {
-            updateFlag(DOMINION, DOM_ID, id, flag, value);
+        sql((session, mapper) -> {
+            updateFlag(mapper, DOMINION, DOM_ID, id, flag, value);
             return 0;
         });
     }
 
     public static void updateGuestFlag(Integer id, PriFlag flag, Boolean value) throws SQLException {
-        sql(() -> {
-            updateFlag(DOMINION, DOM_ID, id, flag, value);
+        sql((session, mapper) -> {
+            updateFlag(mapper, DOMINION, DOM_ID, id, flag, value);
             return 0;
         });
     }
 
-    private static <T> void update(org.jooq.Field<T> field, T value, Integer id) throws SQLException {
-        sql(() -> db().update(DOMINION).set(field, value).where(DOM_ID.eq(id)).execute());
+    private static void update(String field, Object value, Integer id) throws SQLException {
+        sql((session, mapper) -> {
+            Map<String, Object> values = new LinkedHashMap<>();
+            values.put(field, value);
+            return mapper.updateColumns(DOMINION, DOM_ID, id, values);
+        });
     }
 
-    private static List<DominionRow> rows(Collection<? extends Record> records) {
-        List<DominionRow> rows = new ArrayList<>();
-        for (Record record : records) {
-            rows.add(new DominionRow(
-                    record.get(DOM_ID),
-                    UUID.fromString(record.get(DOM_OWNER)),
-                    record.get(DOM_NAME),
-                    UUID.fromString(record.get(DOM_WORLD_UID)),
-                    record.get(DOM_X1),
-                    record.get(DOM_Y1),
-                    record.get(DOM_Z1),
-                    record.get(DOM_X2),
-                    record.get(DOM_Y2),
-                    record.get(DOM_Z2),
-                    record.get(DOM_PARENT_DOM_ID),
-                    record.get(DOM_JOIN_MESSAGE),
-                    record.get(DOM_LEAVE_MESSAGE),
-                    readEnvFlags(record),
-                    readPriFlags(record),
-                    record.get(DOM_TP_LOCATION),
-                    record.get(DOM_COLOR),
-                    record.get(DOM_SERVER_ID),
-                    toBoolean(record.get(DOM_OWNER_GLOW), false)
-            ));
-        }
-        return rows;
+    private static DominionRow row(List<Map<String, Object>> rows) {
+        if (rows == null || rows.isEmpty()) return null;
+        return row(rows.get(0));
+    }
+
+    private static List<DominionRow> rows(List<Map<String, Object>> rows) {
+        return rows.stream().map(DominionRepository::row).toList();
+    }
+
+    private static DominionRow row(Map<String, Object> row) {
+        return new DominionRow(
+                integer(row, DOM_ID),
+                UUID.fromString(string(row, DOM_OWNER)),
+                string(row, DOM_NAME),
+                UUID.fromString(string(row, DOM_WORLD_UID)),
+                integer(row, DOM_X1),
+                integer(row, DOM_Y1),
+                integer(row, DOM_Z1),
+                integer(row, DOM_X2),
+                integer(row, DOM_Y2),
+                integer(row, DOM_Z2),
+                integer(row, DOM_PARENT_DOM_ID),
+                string(row, DOM_JOIN_MESSAGE),
+                string(row, DOM_LEAVE_MESSAGE),
+                readEnvFlags(row),
+                readPriFlags(row),
+                string(row, DOM_TP_LOCATION),
+                string(row, DOM_COLOR),
+                integer(row, DOM_SERVER_ID),
+                toBoolean(value(row, DOM_OWNER_GLOW), false)
+        );
     }
 }

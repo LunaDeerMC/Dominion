@@ -1,7 +1,6 @@
 package cn.lunadeer.dominion.storage.repository;
 
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
-import org.jooq.Record;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -13,63 +12,65 @@ public class GroupRepository extends RepositorySupport {
     }
 
     public static GroupRow create(Integer domId, String plainName, String coloredName, Map<PriFlag, Boolean> flags) throws SQLException {
-        return sql(() -> {
-            Map<org.jooq.Field<?>, Object> values = new LinkedHashMap<>();
+        return sql((session, mapper) -> {
+            Map<String, Object> values = new LinkedHashMap<>();
             values.put(GROUP_DOM_ID, domId);
             values.put(GROUP_NAME, plainName);
             values.put(GROUP_NAME_COLORED, coloredName);
             putPriFlags(values, flags);
-            Integer id = db().insertInto(GROUP)
-                    .set(values)
-                    .returningResult(GROUP_ID)
-                    .fetchOne(GROUP_ID);
-            return select(id);
+            mapper.insert(GROUP, values);
+            Integer id = toInteger(values.get(GROUP_ID));
+            if (id != null) {
+                return row(mapper.selectWhere(GROUP, GROUP_ID, id));
+            }
+            return rows(mapper.selectWhere(GROUP, GROUP_DOM_ID, domId))
+                    .stream().filter(row -> Objects.equals(row.namePlain(), plainName)).findFirst().orElse(null);
         });
     }
 
     public static List<GroupRow> select() throws SQLException {
-        return sql(() -> rows(db().select().from(GROUP).fetch()));
+        return sql((session, mapper) -> rows(mapper.selectAll(GROUP)));
     }
 
     public static GroupRow select(Integer id) throws SQLException {
-        return sql(() -> {
-            Record record = db().select()
-                    .from(GROUP).where(GROUP_ID.eq(id)).fetchOne();
-            if (record == null) return null;
-            return rows(List.of(record)).get(0);
-        });
+        return sql((session, mapper) -> row(mapper.selectWhere(GROUP, GROUP_ID, id)));
     }
 
     public static List<GroupRow> selectByDominionId(Integer domId) throws SQLException {
-        return sql(() -> rows(db().select()
-                .from(GROUP).where(GROUP_DOM_ID.eq(domId)).fetch()));
+        return sql((session, mapper) -> rows(mapper.selectWhere(GROUP, GROUP_DOM_ID, domId)));
     }
 
     public static void deleteById(Integer id) throws SQLException {
-        sql(() -> db().deleteFrom(GROUP).where(GROUP_ID.eq(id)).execute());
+        sql((session, mapper) -> mapper.deleteWhere(GROUP, GROUP_ID, id));
     }
 
     public static void updateName(Integer id, String plainName, String coloredName) throws SQLException {
-        sql(() -> db().update(GROUP)
-                .set(GROUP_NAME, plainName)
-                .set(GROUP_NAME_COLORED, coloredName)
-                .where(GROUP_ID.eq(id))
-                .execute());
+        sql((session, mapper) -> {
+            Map<String, Object> values = new LinkedHashMap<>();
+            values.put(GROUP_NAME, plainName);
+            values.put(GROUP_NAME_COLORED, coloredName);
+            return mapper.updateColumns(GROUP, GROUP_ID, id, values);
+        });
     }
 
     public static void updateFlag(Integer id, PriFlag flag, Boolean value) throws SQLException {
-        sql(() -> {
-            updateFlag(GROUP, GROUP_ID, id, flag, value);
+        sql((session, mapper) -> {
+            updateFlag(mapper, GROUP, GROUP_ID, id, flag, value);
             return 0;
         });
     }
 
-    private static List<GroupRow> rows(Collection<? extends Record> records) {
-        List<GroupRow> rows = new ArrayList<>();
-        for (Record record : records) {
-            rows.add(new GroupRow(record.get(GROUP_ID), record.get(GROUP_DOM_ID), record.get(GROUP_NAME),
-                    readPriFlags(record), record.get(GROUP_NAME_COLORED)));
-        }
-        return rows;
+    private static GroupRow row(List<Map<String, Object>> rows) {
+        if (rows == null || rows.isEmpty()) return null;
+        return row(rows.get(0));
+    }
+
+    private static List<GroupRow> rows(List<Map<String, Object>> rows) {
+        return rows.stream().map(GroupRepository::row).toList();
+    }
+
+    private static GroupRow row(Map<String, Object> row) {
+        return new GroupRow(integer(row, GROUP_ID), integer(row, GROUP_DOM_ID), string(row, GROUP_NAME),
+                readPriFlags(row), string(row, GROUP_NAME_COLORED));
     }
 }

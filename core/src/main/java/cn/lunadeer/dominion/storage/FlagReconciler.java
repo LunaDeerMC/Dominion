@@ -2,8 +2,8 @@ package cn.lunadeer.dominion.storage;
 
 import cn.lunadeer.dominion.api.dtos.flag.Flag;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import org.jooq.DSLContext;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -14,16 +14,20 @@ import java.util.Locale;
 
 final class FlagReconciler {
 
-    private final DSLContext dsl;
+    private final DataSource dataSource;
     private final DatabaseType type;
 
-    FlagReconciler(DSLContext dsl, DatabaseType type) {
-        this.dsl = dsl;
+    FlagReconciler(DataSource dataSource, DatabaseType type) {
+        this.dataSource = dataSource;
         this.type = type;
     }
 
     SyncResult reconcile() {
-        return dsl.connectionResult(this::reconcile);
+        try (Connection connection = dataSource.getConnection()) {
+            return reconcile(connection);
+        } catch (SQLException exception) {
+            throw new IllegalStateException("Failed to reconcile flag columns", exception);
+        }
     }
 
     private SyncResult reconcile(Connection connection) throws SQLException {
@@ -87,11 +91,11 @@ final class FlagReconciler {
     }
 
     private String boolType() {
-        return type == DatabaseType.MYSQL ? "TINYINT(1)" : "BOOLEAN";
+        return type.isMySqlFamily() ? "TINYINT(1)" : "BOOLEAN";
     }
 
     private String booleanLiteral(boolean value) {
-        if (type == DatabaseType.MYSQL) {
+        if (type.isMySqlFamily()) {
             return value ? "1" : "0";
         }
         return value ? "true" : "false";
