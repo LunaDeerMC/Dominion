@@ -104,7 +104,7 @@ dependencies {
     implementation(project("versions:v1_21_6"))
     implementation(project("versions:v1_21_8"))
     implementation(project("versions:v1_21_9"))
-    implementation(project(path = ":versions:v26", configuration = "shadowRuntimeElements"))
+    implementation(project("versions:v26"))
 }
 
 // Reobfuscate all subproject JARs that have paperweight reobfJar task
@@ -182,7 +182,7 @@ fun getAndIncrementVersion(): String {
     }
 
     val currentBranch = getCurrentGitBranch()
-    val versionType = if (currentBranch.startsWith("dev/")) "alpha" else "release"
+    val versionType = if (currentBranch.startsWith("dev/")) "build" else "release"
 
     val currentSuffix = props.getProperty("suffixes", if (versionType == "release") "release" else "${versionType}.24")
 
@@ -207,8 +207,8 @@ fun getAndIncrementVersion(): String {
         return "release"
     }
 
-    // For alpha, increment the number
-    if (currentSuffix.startsWith("alpha.")) {
+    // For build, increment the number
+    if (currentSuffix.startsWith("build.")) {
         val parts = currentSuffix.split(".")
         if (parts.size >= 2) {
             val currentNumber = parts[1].toIntOrNull() ?: 1
