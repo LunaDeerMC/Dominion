@@ -5,141 +5,141 @@ style:
   severe-color: '#FF6048'
   normal-color: '#8BFF7B'
 menu-tui-text:
-  title: Dominion Menu
-  button: MENU
-  admin-only-section: Only admin can see this section
-  document-button: DOCUMENT
-  document-description: Open the documentation external link.
-  command-help-button: COMMAND HELP
-  command-help-description: Open the command help external link.
-  switch-to-cui-button: ' SWITCH TO CUI 🆕 '
-  fail-to-switch-message: 'Failed to switch to {0}: {1}'
+  title: Dominionメニュー
+  button: メニュー
+  admin-only-section: このセクションは管理者のみ閲覧できます
+  document-button: ドキュメント
+  document-description: ドキュメントの外部リンクを開きます。
+  command-help-button: コマンドヘルプ
+  command-help-description: コマンドヘルプの外部リンクを開きます。
+  switch-to-cui-button: ' CUIに切り替え 🆕 '
+  fail-to-switch-message: '{0} への切り替えに失敗しました: {1}'
 dominion-list-tui-text:
-  title: Your Dominions
-  button: DOMINIONS
-  description: List all of your dominions.
-  delete-button: DELETE
-  admin-section: Your admin dominions section.
-  server-section: Server {0} dominions section.
+  title: あなたの領地
+  button: 領地
+  description: あなたのすべての領地を一覧表示します。
+  delete-button: 削除
+  admin-section: あなたが管理する領地のセクションです。
+  server-section: サーバー {0} の領地セクションです。
 dominion-manage-tui-text:
-  title: Manage {0}
-  button: MANAGE
-  set-tp-button: SET TP
-  set-tp-description: Set your current location as tp location.
-  owner-glow-button: 'Owner Glow: {0}'
-  owner-glow-description: Set whether the dominion owner has a glow effect.
+  title: '{0} を管理'
+  button: 管理
+  set-tp-button: TP設定
+  set-tp-description: 現在地をTP地点として設定します。
+  owner-glow-button: '所有者の発光: {0}'
+  owner-glow-description: 領地の所有者に発光エフェクトを付けるかどうかを設定します。
 set-size-tui-text:
-  title: Resize {0}
-  button: RESIZE
-  north: North(z-)
-  south: South(z+)
-  west: West(x-)
-  east: East(x+)
-  up: Up(y+)
-  down: Down(y-)
+  title: '{0} のサイズ変更'
+  button: サイズ変更
+  north: 北(z-)
+  south: 南(z+)
+  west: 西(x-)
+  east: 東(x+)
+  up: 上(y+)
+  down: 下(y-)
 env-setting-tui-text:
-  title: '{0} Env Setting'
-  button: ENV SET
-  description: Set environment of dominion.
+  title: '{0} の環境設定'
+  button: 環境設定
+  description: 領地の環境を設定します。
 guest-setting-tui-text:
-  title: '{0} Guest Setting'
-  button: GUEST SET
-  description: Set guest behavior of dominion.
+  title: '{0} のゲスト設定'
+  button: ゲスト設定
+  description: 領地内でのゲストの挙動を設定します。
 size-info-tui-text:
-  title: '{0} Size Info'
-  button: SIZE INFO
-  description: Show dominion size information
-  owner-name: This dominion is owned by {0}.
-  info-lwh: 'Size: {0} x {1} x {2}'
-  info-height: 'Height: {0} ~ {1}'
-  square: 'Square: {0}'
-  volume: 'Volume: {0}'
+  title: '{0} のサイズ情報'
+  button: サイズ情報
+  description: 領地のサイズ情報を表示します
+  owner-name: この領地の所有者は {0} です。
+  info-lwh: 'サイズ: {0} x {1} x {2}'
+  info-height: '高さ: {0} ~ {1}'
+  square: '面積: {0}'
+  volume: '体積: {0}'
 migrate-list-tui-text:
-  title: Migrate From Residence
-  description: Migrate residence data to dominion.
-  button: MIGRATE
-  not-enabled: Residence migration is not enabled.
-  no-data: No data to migrate.
-  cant-migrate: Sub-residence will be migrated with the parent.
-  migrate-all: MIGRATE ALL
+  title: Residenceから移行
+  description: ResidenceのデータをDominionへ移行します。
+  button: 移行
+  not-enabled: Residence移行は有効化されていません。
+  no-data: 移行するデータがありません。
+  cant-migrate: 子Residenceは親と一緒に移行されます。
+  migrate-all: すべて移行
 member-list-tui-text:
-  title: '{0} Member List'
-  description: List of members of this dominion.
-  button: MEMBERS
-  remove: REMOVE
-  remove-description: Remove this member from this dominion.
-  owner-only: Only owner can manage admin member.
-  group-only: This member belong to group {0} so you can't manage it separately.
-  tag-admin: Admin can manage members and groups of this dominion.
-  tag-normal: Normal members.
-  tag-ban: Who don't have MOVE privilege.
-  tag-group: This player belong to a group, you can't manage it separately.
+  title: '{0} のメンバー一覧'
+  description: この領地のメンバー一覧です。
+  button: メンバー
+  remove: 削除
+  remove-description: このメンバーをこの領地から削除します。
+  owner-only: 管理メンバーを管理できるのは所有者のみです。
+  group-only: このメンバーはグループ {0} に属しているため、個別に管理できません。
+  tag-admin: 管理者はこの領地のメンバーとグループを管理できます。
+  tag-normal: 通常メンバー。
+  tag-ban: MOVE 権限を持たないメンバー。
+  tag-group: このプレイヤーはグループに所属しているため、個別に管理できません。
 select-player-tui-text:
-  title: Select Player
-  button: ADD PLAYER
-  description: Add a player as a member of this dominion.
-  back: BACK
+  title: プレイヤーを選択
+  button: プレイヤー追加
+  description: プレイヤーをこの領地のメンバーとして追加します。
+  back: 戻る
 member-setting-tui-text:
-  title: '{0} Member Setting'
-  description: Set member's privilege of dominion.
-  button: SETTING
+  title: '{0} のメンバー設定'
+  description: 領地内でのメンバー権限を設定します。
+  button: 設定
 template-list-tui-text:
-  title: Template List
-  button: TEMPLATES
-  description: Templates can be used to quickly setup privileges of member.
-  delete-button: DELETE
+  title: テンプレート一覧
+  button: テンプレート
+  description: テンプレートを使ってメンバー権限を素早く設定できます。
+  delete-button: 削除
 select-template-tui-text:
-  title: Select Template
-  description: Select a template to apply to this member.
-  button: SELECT TEMPLATE
-  back: BACK
-  apply: APPLY
+  title: テンプレートを選択
+  description: このメンバーに適用するテンプレートを選択します。
+  button: テンプレート選択
+  back: 戻る
+  apply: 適用
 group-list-tui-text:
-  title: '{0} Group List'
-  description: List of groups of this dominion.
-  button: GROUPS
-  delete-button: DELETE
-  delete-description: Delete this group, all members will be move out of this group.
-  remove-member-description: Remove {0} from group {1} to default group.
+  title: '{0} のグループ一覧'
+  description: この領地のグループ一覧です。
+  button: グループ
+  delete-button: 削除
+  delete-description: このグループを削除し、すべてのメンバーをデフォルトグループへ移動します。
+  remove-member-description: {0} をグループ {1} からデフォルトグループへ移動します。
 group-setting-tui-text:
-  title: Group {0} Settings
-  description: Manage the settings of group {0}.
-  button: SETTING
+  title: グループ {0} の設定
+  description: グループ {0} の設定を管理します。
+  button: 設定
 select-member-tui-text:
-  title: Select Member
-  description: Select a member to add to the group.
-  back: BACK
+  title: メンバーを選択
+  description: グループに追加するメンバーを選択します。
+  back: 戻る
 title-list-tui-text:
-  title: Group Title List
-  description: List of group titles you can use.
-  button: TITLES
-  use-button: USE
-  disuse-button: DISUSE
-  from-dominion: From dominion {0}
+  title: グループ称号一覧
+  description: 使用可能なグループ称号の一覧です。
+  button: 称号
+  use-button: 使用
+  disuse-button: 使用解除
+  from-dominion: 領地 {0} から
 all-dominion-tui-text:
-  title: All Dominions
-  description: List all dominions.
-  button: LIST ALL
+  title: すべての領地
+  description: すべての領地を一覧表示します。
+  button: すべて表示
 all-dominion-of-player-tui-text:
-  title: All Dominions of {0}
-  button: LIST ALL OF
+  title: '{0} のすべての領地'
+  button: すべて表示
 template-setting-tui-text:
-  title: Template Setting
-  button: SETTING
-  not-found: Template {0} not found.
+  title: テンプレート設定
+  button: 設定
+  not-found: テンプレート {0} が見つかりません。
 copy-menu-tui-text:
-  button: COPY
-  description: Copy Privilege Settings From Other Dominion.
-  title: Select Copy Type
+  button: コピー
+  description: 他の領地から権限設定をコピーします。
+  title: コピー種類を選択
 dominion-copy-tui-text:
-  back: BACK
-  copy: COPY FROM
-  title: Select Dominion to Copy From
-  env-button: ENV
-  env-description: Copy Env Settings From Other Dominion.
-  group-button: GROUPS
-  group-description: Copy Group & Settings From Other Dominion.
-  guest-button: GUEST
-  guest-description: Copy Guest Settings From Other Dominion.
-  member-button: MEMBERS
-  member-description: Copy Member & Settings From Other Dominion.
+  back: 戻る
+  copy: コピー元
+  title: コピー元の領地を選択
+  env-button: 環境
+  env-description: 他の領地から環境設定をコピーします。
+  group-button: グループ
+  group-description: 他の領地からグループと設定をコピーします。
+  guest-button: ゲスト
+  guest-description: 他の領地からゲスト設定をコピーします。
+  member-button: メンバー
+  member-description: 他の領地からメンバーと設定をコピーします。

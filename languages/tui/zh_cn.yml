@@ -5,141 +5,141 @@ style:
   severe-color: '#FF6048'
   normal-color: '#8BFF7B'
 menu-tui-text:
-  title: Dominion Menu
-  button: MENU
-  admin-only-section: Only admin can see this section
-  document-button: DOCUMENT
-  document-description: Open the documentation external link.
-  command-help-button: COMMAND HELP
-  command-help-description: Open the command help external link.
-  switch-to-cui-button: ' SWITCH TO CUI 🆕 '
-  fail-to-switch-message: 'Failed to switch to {0}: {1}'
+  title: Dominion 菜单
+  button: 菜单
+  admin-only-section: 只有管理员可以看到这个区域
+  document-button: 文档
+  document-description: 打开文档外部链接。
+  command-help-button: 命令帮助
+  command-help-description: 打开命令帮助外部链接。
+  switch-to-cui-button: ' 切换到 CUI 🆕 '
+  fail-to-switch-message: '切换到 {0} 失败：{1}'
 dominion-list-tui-text:
-  title: Your Dominions
-  button: DOMINIONS
-  description: List all of your dominions.
-  delete-button: DELETE
-  admin-section: Your admin dominions section.
-  server-section: Server {0} dominions section.
+  title: 你的领地
+  button: 领地
+  description: 列出你的所有领地。
+  delete-button: 删除
+  admin-section: 你管理的领地区域。
+  server-section: 服务器 {0} 的领地区域。
 dominion-manage-tui-text:
-  title: Manage {0}
-  button: MANAGE
-  set-tp-button: SET TP
-  set-tp-description: Set your current location as tp location.
-  owner-glow-button: 'Owner Glow: {0}'
-  owner-glow-description: Set whether the dominion owner has a glow effect.
+  title: 管理 {0}
+  button: 管理
+  set-tp-button: 设置 TP
+  set-tp-description: 将你当前位置设置为传送点。
+  owner-glow-button: '领主发光: {0}'
+  owner-glow-description: 设置领地所有者是否拥有发光效果。
 set-size-tui-text:
-  title: Resize {0}
-  button: RESIZE
-  north: North(z-)
-  south: South(z+)
-  west: West(x-)
-  east: East(x+)
-  up: Up(y+)
-  down: Down(y-)
+  title: 调整 {0} 大小
+  button: 调整大小
+  north: 北(z-)
+  south: 南(z+)
+  west: 西(x-)
+  east: 东(x+)
+  up: 上(y+)
+  down: 下(y-)
 env-setting-tui-text:
-  title: '{0} Env Setting'
-  button: ENV SET
-  description: Set environment of dominion.
+  title: '{0} 环境设置'
+  button: 环境设置
+  description: 设置领地环境。
 guest-setting-tui-text:
-  title: '{0} Guest Setting'
-  button: GUEST SET
-  description: Set guest behavior of dominion.
+  title: '{0} 访客设置'
+  button: 访客设置
+  description: 设置访客在领地中的行为。
 size-info-tui-text:
-  title: '{0} Size Info'
-  button: SIZE INFO
-  description: Show dominion size information
-  owner-name: This dominion is owned by {0}.
-  info-lwh: 'Size: {0} x {1} x {2}'
-  info-height: 'Height: {0} ~ {1}'
-  square: 'Square: {0}'
-  volume: 'Volume: {0}'
+  title: '{0} 尺寸信息'
+  button: 尺寸信息
+  description: 显示领地尺寸信息
+  owner-name: 这个领地属于 {0}。
+  info-lwh: '尺寸：{0} x {1} x {2}'
+  info-height: '高度：{0} ~ {1}'
+  square: '面积：{0}'
+  volume: '体积：{0}'
 migrate-list-tui-text:
-  title: Migrate From Residence
-  description: Migrate residence data to dominion.
-  button: MIGRATE
-  not-enabled: Residence migration is not enabled.
-  no-data: No data to migrate.
-  cant-migrate: Sub-residence will be migrated with the parent.
-  migrate-all: MIGRATE ALL
+  title: 从 Residence 迁移
+  description: 将 Residence 数据迁移到 Dominion。
+  button: 迁移
+  not-enabled: Residence 迁移功能未启用。
+  no-data: 没有可迁移的数据。
+  cant-migrate: 子 Residence 会随父级一起迁移。
+  migrate-all: 全部迁移
 member-list-tui-text:
-  title: '{0} Member List'
-  description: List of members of this dominion.
-  button: MEMBERS
-  remove: REMOVE
-  remove-description: Remove this member from this dominion.
-  owner-only: Only owner can manage admin member.
-  group-only: This member belong to group {0} so you can't manage it separately.
-  tag-admin: Admin can manage members and groups of this dominion.
-  tag-normal: Normal members.
-  tag-ban: Who don't have MOVE privilege.
-  tag-group: This player belong to a group, you can't manage it separately.
+  title: '{0} 成员列表'
+  description: 这个领地的成员列表。
+  button: 成员
+  remove: 移除
+  remove-description: 将这个成员从当前领地中移除。
+  owner-only: 只有领主可以管理管理员成员。
+  group-only: 该成员属于组 {0}，因此你不能单独管理它。
+  tag-admin: 管理员可以管理这个领地的成员和群组。
+  tag-normal: 普通成员。
+  tag-ban: 没有 MOVE 权限的成员。
+  tag-group: 这个玩家属于某个群组，你不能单独管理它。
 select-player-tui-text:
-  title: Select Player
-  button: ADD PLAYER
-  description: Add a player as a member of this dominion.
-  back: BACK
+  title: 选择玩家
+  button: 添加玩家
+  description: 将一名玩家添加为这个领地的成员。
+  back: 返回
 member-setting-tui-text:
-  title: '{0} Member Setting'
-  description: Set member's privilege of dominion.
-  button: SETTING
+  title: '{0} 成员设置'
+  description: 设置成员在领地中的权限。
+  button: 设置
 template-list-tui-text:
-  title: Template List
-  button: TEMPLATES
-  description: Templates can be used to quickly setup privileges of member.
-  delete-button: DELETE
+  title: 模板列表
+  button: 模板
+  description: 模板可用于快速设置成员权限。
+  delete-button: 删除
 select-template-tui-text:
-  title: Select Template
-  description: Select a template to apply to this member.
-  button: SELECT TEMPLATE
-  back: BACK
-  apply: APPLY
+  title: 选择模板
+  description: 选择要应用到该成员的模板。
+  button: 选择模板
+  back: 返回
+  apply: 应用
 group-list-tui-text:
-  title: '{0} Group List'
-  description: List of groups of this dominion.
-  button: GROUPS
-  delete-button: DELETE
-  delete-description: Delete this group, all members will be move out of this group.
-  remove-member-description: Remove {0} from group {1} to default group.
+  title: '{0} 群组列表'
+  description: 这个领地的群组列表。
+  button: 群组
+  delete-button: 删除
+  delete-description: 删除这个群组，所有成员都会被移出该群组。
+  remove-member-description: 将 {0} 从群组 {1} 移动到默认群组。
 group-setting-tui-text:
-  title: Group {0} Settings
-  description: Manage the settings of group {0}.
-  button: SETTING
+  title: 群组 {0} 设置
+  description: 管理群组 {0} 的设置。
+  button: 设置
 select-member-tui-text:
-  title: Select Member
-  description: Select a member to add to the group.
-  back: BACK
+  title: 选择成员
+  description: 选择要添加到群组的成员。
+  back: 返回
 title-list-tui-text:
-  title: Group Title List
-  description: List of group titles you can use.
-  button: TITLES
-  use-button: USE
-  disuse-button: DISUSE
-  from-dominion: From dominion {0}
+  title: 群组称号列表
+  description: 你可以使用的群组称号列表。
+  button: 称号
+  use-button: 使用
+  disuse-button: 停用
+  from-dominion: 来自领地 {0}
 all-dominion-tui-text:
-  title: All Dominions
-  description: List all dominions.
-  button: LIST ALL
+  title: 所有领地
+  description: 列出所有领地。
+  button: 全部列出
 all-dominion-of-player-tui-text:
-  title: All Dominions of {0}
-  button: LIST ALL OF
+  title: '{0} 的所有领地'
+  button: 列出全部
 template-setting-tui-text:
-  title: Template Setting
-  button: SETTING
-  not-found: Template {0} not found.
+  title: 模板设置
+  button: 设置
+  not-found: 未找到模板 {0}。
 copy-menu-tui-text:
-  button: COPY
-  description: Copy Privilege Settings From Other Dominion.
-  title: Select Copy Type
+  button: 复制
+  description: 从其他领地复制权限设置。
+  title: 选择复制类型
 dominion-copy-tui-text:
-  back: BACK
-  copy: COPY FROM
-  title: Select Dominion to Copy From
-  env-button: ENV
-  env-description: Copy Env Settings From Other Dominion.
-  group-button: GROUPS
-  group-description: Copy Group & Settings From Other Dominion.
-  guest-button: GUEST
-  guest-description: Copy Guest Settings From Other Dominion.
-  member-button: MEMBERS
-  member-description: Copy Member & Settings From Other Dominion.
+  back: 返回
+  copy: 复制来源
+  title: 选择要复制的领地
+  env-button: 环境
+  env-description: 从其他领地复制环境设置。
+  group-button: 群组
+  group-description: 从其他领地复制群组及其设置。
+  guest-button: 访客
+  guest-description: 从其他领地复制访客设置。
+  member-button: 成员
+  member-description: 从其他领地复制成员及其设置。
