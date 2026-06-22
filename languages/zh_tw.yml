@@ -1,622 +1,589 @@
+flags:
+  animal_spawn:
+    display-name: 動物生成（繁殖）
+    description: 是否允許動物生成（包括刷怪蛋與繁殖）。
+  animal_move:
+    display-name: 動物移動
+    description: 是否允許動物在領地內移動。
+  villager_spawn:
+    display-name: 村民繁殖
+    description: 是否允許村民繁殖（包括刷怪蛋）。
+  monster_spawn:
+    display-name: 怪物生成
+    description: 是否允許怪物生成（包括刷怪蛋）。
+  monster_move:
+    display-name: 怪物移動
+    description: 是否允許怪物在領地內移動。
+  monster_damage:
+    display-name: 怪物傷害玩家
+    description: 是否允許怪物傷害玩家。
+  ender_man:
+    display-name: 末影人
+    description: 關閉後可阻止末影人拾取方塊、生成和傳送。
+  tnt_explode:
+    display-name: TNT 爆炸
+    description: 是否允許 TNT 爆炸。
+  wither_spawn:
+    display-name: 凋靈生成
+    description: 是否允許生成凋靈及凋靈爆炸。
+  creeper_explode:
+    display-name: 實體爆炸（非 TNT）
+    description: 苦力怕、凋靈頭顱、末影水晶、火球、床、重生錨等爆炸。
+  dragon_break_block:
+    display-name: 末影龍破壞方塊
+    description: 是否允許末影龍破壞方塊。
+  fire_spread:
+    display-name: 火焰蔓延
+    description: 阻止火焰在領地內蔓延。
+  burn_block:
+    display-name: 方塊燃燒
+    description: 是否允許方塊燃燒。
+  burn_entity:
+    display-name: 實體燃燒
+    description: 是否允許實體燃燒或受到高溫傷害（不包括玩家）。
+  flow_in_protection:
+    display-name: 液體流入
+    description: 防止外部水流/岩漿流入領地。
+  gravity_block:
+    display-name: 掉落方塊
+    description: 是否允許受重力影響的方塊在領地內下落（關閉後會變為掉落物）。
+  ice_melt:
+    display-name: 冰融化
+    description: 是否允許冰融化。
+  ice_form:
+    display-name: 結冰
+    description: 是否允許形成冰（會阻止冰霜行者）。
+  snow_accumulation:
+    display-name: 積雪堆積
+    description: 是否允許積雪堆積。
+  snow_melt:
+    display-name: 積雪融化
+    description: 是否允許積雪融化。
+  trample:
+    display-name: 踩踏耕地
+    description: 是否允許耕地被踩踏（關閉表示保護耕地）。
+  decay:
+    display-name: 樹葉腐爛
+    description: 是否允許樹葉腐爛。
+  hopper_outside:
+    display-name: 漏斗（外部）
+    description: 關閉後可阻止外部漏斗吸取領地內容器的物品。
+  piston_outside:
+    display-name: 活塞
+    description: 關閉後可阻止活塞跨領地推動/拉動方塊。
+  trig_pressure_proj:
+    display-name: 壓力板（投射物）
+    description: 投射物（箭/雪球）是否可以觸發壓力板。
+  trig_pressure_mob:
+    display-name: 壓力板（生物）
+    description: 生物（不包括玩家）是否可以觸發壓力板。
+  trig_pressure_drop:
+    display-name: 壓力板（掉落物）
+    description: 掉落物是否可以觸發壓力板。
+  item_frame_proj_damage:
+    display-name: 投射物破壞物品展示框
+    description: 投射物（箭/雪球）是否可以破壞物品展示框。
+  mob_drop_item:
+    display-name: 生物掉落物品
+    description: 生物被擊殺時是否掉落物品。
+  show_border:
+    display-name: 顯示邊界
+    description: 玩家進入時顯示領地邊界。
+  admin:
+    display-name: 管理員
+    description: 擁有此許可權的成員可以管理普通成員和分組。
+  move:
+    display-name: 玩家移動
+    description: 玩家是否可以在領地內移動。
+  teleport:
+    display-name: 傳送
+    description: 關閉表示不能傳送到此領地。
+  fly:
+    display-name: 飛行
+    description: 不是鞘翅飛行，而是類似創造模式飛行。
+  riding:
+    display-name: 騎乘
+    description: 是否可以騎乘載具（船、礦車、馬等）。
+  ender_pearl:
+    display-name: 末影珍珠
+    description: 是否可以投擲末影珍珠。
+  raid:
+    display-name: 襲擊
+    description: 是否可以觸發襲擊。
+  place:
+    display-name: 放置方塊
+    description: 是否可以放置方塊（普通方塊、物品展示框、岩漿、水等）。
+  break:
+    display-name: 破壞方塊
+    description: 是否可以破壞方塊（包括物品展示框、盔甲架）。
+  ignite:
+    display-name: 點火
+    description: 是否可以點燃火焰。
+  pick_up:
+    display-name: 拾取物品
+    description: 玩家是否可以在領地內拾取物品。
+  drop_item:
+    display-name: 丟棄物品
+    description: 玩家是否可以在領地內丟棄物品。
+  door:
+    display-name: 門
+    description: 是否可以與門互動（包括活板門、柵欄門）。
+  button:
+    display-name: 按鈕
+    description: 是否可以點選按鈕。
+  lever:
+    display-name: 拉桿
+    description: 是否可以切換拉桿。
+  pressure:
+    display-name: 壓力板（玩家）
+    description: 玩家是否可以觸發壓力板。
+  repeater:
+    display-name: 中繼器
+    description: 是否可以更改（互動）中繼器。
+  comparer:
+    display-name: 比較器
+    description: 是否可以與比較器互動。
+  note_block:
+    display-name: 音符盒
+    description: 是否可以與音符盒互動。
+  container:
+    display-name: 特殊容器
+    description: 例如漏斗、熔爐、投擲器、發射器、高爐、煙燻爐。
+  hopper:
+    display-name: 特殊容器
+    description: 例如漏斗、熔爐、投擲器、發射器、高爐、煙燻爐。
+  craft:
+    display-name: 工作臺
+    description: 是否可以使用工作臺。
+  crafter:
+    display-name: 合成器
+    description: 是否可以與合成器互動（1.21）。
+  anvil:
+    display-name: 鐵砧
+    description: 是否可以使用鐵砧。
+  enchant:
+    display-name: 附魔臺
+    description: 是否可以使用附魔臺。
+  brew:
+    display-name: 釀造臺
+    description: 是否可以使用釀造臺。
+  beacon:
+    display-name: 信標
+    description: 是否可以與信標互動。
+  jukebox:
+    display-name: 唱片機
+    description: 是否可以與唱片機互動。
+  lectern:
+    display-name: 講臺
+    description: 是否可以與講臺互動。
+  bookshelf:
+    display-name: 雕紋書架
+    description: 是否可以與雕紋書架互動。
+  dragon_egg:
+    display-name: 龍蛋
+    description: 是否可以與龍蛋互動。
+  item_frame_interactive:
+    display-name: 物品展示框互動
+    description: 是否可以與物品展示框互動（旋轉物品）。
+  edit_sign:
+    display-name: 編輯告示牌
+    description: 是否可以編輯告示牌。
+  bed:
+    display-name: 床
+    description: 是否可以在床上睡覺（設定重生點）。
+  anchor:
+    display-name: 重生錨
+    description: 是否可以設定/使用重生錨。
+  vehicle_spawn:
+    display-name: 生成載具
+    description: 是否可以生成載具（船、礦車）。
+  vehicle_destroy:
+    display-name: 破壞載具
+    description: 是否可以破壞載具（船、礦車）。
+  harvest:
+    display-name: 收穫
+    description: 玩家是否可以收穫作物。
+  sowing:
+    display-name: 播種
+    description: 是否允許播種作物（小麥、胡蘿蔔等）。
+  feed:
+    display-name: 餵養動物
+    description: 是否可以餵養動物。
+  shear:
+    display-name: 剪羊毛
+    description: 是否可以從羊身上剪羊毛。
+  leash:
+    display-name: 拴繩
+    description: 是否允許給動物/生物/實體拴繩。
+  dye:
+    display-name: 染色
+    description: 可以給什麼染色（羊、狗項圈、貓項圈）。
+  honey:
+    display-name: 蜂蜜
+    description: 是否可以與蜂巢互動（獲取蜂蜜）。
+  cake:
+    display-name: 蛋糕
+    description: 是否可以吃蛋糕。
+  trade:
+    display-name: 村民交易
+    description: 是否可以與村民交易。
+  shoot:
+    display-name: 射擊
+    description: 包括箭、雪球、三叉戟、火球、風彈（1.21）。
+  egg:
+    display-name: 扔雞蛋
+    description: 是否可以扔雞蛋。
+  hook:
+    display-name: 魚竿
+    description: 是否可以使用魚竿。
+  pvp:
+    display-name: PVP
+    description: 玩家之間的傷害。
+  monster_killing:
+    display-name: 擊殺怪物
+    description: 是否可以傷害怪物。
+  animal_killing:
+    display-name: 擊殺動物
+    description: 是否可以傷害動物。
+  villager_killing:
+    display-name: 擊殺村民
+    description: 是否可以傷害村民。
+  glow:
+    display-name: 發光
+    description: 類似發光箭效果。
 dominion-text:
-  loading-config: 正在載入設定…
-  plugin-enabled: 插件已啟用！
-  plugin-version: 插件版本：{0}
-  notification-prefix: '&6[&e領地&6]&f'
-
+  loading-config: 正在載入配置...
+  plugin-enabled: 外掛已啟用！
+  plugin-version: '外掛版本：{0}'
+  notification-prefix: '&6[&eDominion&6]&f'
+console-text:
+  in-game-only: 此介面在控制檯模式下不可用。請在遊戲內使用。
+  page-info: §7 第 {0}/{1} 頁 - 共 {2} 條
+  desc-prefix: §7      - §f{0}
+ui-commands-description:
+  main-menu: 開啟 Dominion 主選單。
+  list-all: 列出本伺服器的所有領地。
+  migrate-list: 列出所有可遷移到 Dominion 的 Residence 領地。
+  dominion-list: 列出你可以管理的所有領地。
+  dominion-manage: 領地管理選單。
+  group-list: 列出領地的分組。
+  group-flags: 管理分組許可權。
+  member-list: 列出領地成員。
+  member-flags: 管理成員許可權。
+  environment-flags: 管理領地環境許可權。
+  guest-flags: 管理領地訪客許可權。
+  list-all-of-description: 列出某玩家擁有的所有領地。
 multi-server-manager-text:
-  get-id-by-name-error: 伺服器名稱({0})不存在。
-  get-name-by-id-error: 伺服器 ID({0})不存在。
-  warn-update-server-name: 資料庫中 ID 為 {0}、名稱為「{1}」的伺服器，現行設定為「{2}」，已更新資料庫名稱為「{2}」。
-
+  get-id-by-name-error: 伺服器名稱（{0}）不存在。
+  get-name-by-id-error: 伺服器 ID（{0}）不存在。
+  warn-update-server-name: 已存在 ID 為 {0}、名稱為 {1} 的伺服器，但當前伺服器名稱為 {2}。正在將名稱更新為 {2}。
 asserts-text:
-  dom-name-should-not-empty: 領地名稱不可空白。
-  dom-name-invalid: 領地名稱不可包含空格、句點、§、&、~ 或逗號。
-  dom-name-exist: 已有相同領地名稱：{0}。
-  group-name-should-not-empty: 權限組名稱不可空白。
-  group-name-invalid: 權限組名稱不可包含空格或句點。
-  group-name-exist: 已有相同權限組名稱：{0}。
-  not-allow-dom-in-world: 玩家 {0} 不允許在世界「{1}」建立領地。
-  exceed-max-amount: 玩家 {0} 已達領地數量上限(最多：{1})。
-  exceed-max-amount-of-world: 玩家 {0} 在世界「{1}」已達領地數量上限(最多：{2})。
-  x-length-too-short: 東西向長度 (X) {0} 應大於 {1}。
-  y-length-too-short: 垂直高度 (Y) {0} 應大於 {1}。
-  z-length-too-short: 南北向長度 (Z) {0} 應大於 {1}。
-  x-length-too-long: 東西向長度 (X) {0} 應小於 {1}。
-  y-length-too-long: 垂直高度 (Y) {0} 應小於 {1}。
-  z-length-too-long: 南北向長度 (Z) {0} 應小於 {1}。
-  y-too-high: 領地 {0} 的最高點應小於 {1}。
-  y-too-low: 領地 {0} 的最低點應大於 {1}。
-  not-owner: 此指令或操作僅限領地 {0} 的擁有者。
-  not-admin: 此指令或操作僅限領地 {0} 的管理員或擁有者。
-  intersect-with-dom: 領地 {0} 與領地 {1} 範圍衝突。
-  intersect-with-spawn: 領地 {0} 與重生點保護範圍衝突。
-  outside-of-parent-dom: 領地 {0} 超出父領地 {1} 範圍。
-  cant-contain-child: 領地 {0} 無法包含子領地 {1}。
-  missing-parent-dom: 找不到父領地：{0}。
-  sub-dom-too-deep: 玩家 {0} 的子領地層級不可超過 {1}。
-  with-draw-money: 已成功支付 {0} 給領地。
-  deposit-money: 已從領地獲得退款 {0}。
-  group-not-belong-dominion: 權限組 {0} 不屬於領地 {1}。
-
+  dom-name-should-not-empty: 領地名稱不能為空。
+  dom-name-invalid: 領地名稱不能包含空格、點號、§、&、~ 或 ,。
+  dom-name-exist: '領地名稱：{0} 已存在。'
+  group-name-should-not-empty: 分組名稱不能為空。
+  group-name-invalid: 分組名稱不能包含空格或點號。
+  group-name-exist: '分組名稱：{0} 已存在。'
+  not-allow-dom-in-world: 玩家 {0} 不允許在世界 {1} 中建立領地。
+  exceed-max-amount: '玩家 {0} 不能建立更多領地（最大：{1}）。'
+  exceed-max-amount-of-world: '玩家 {0} 不能在世界 {1} 中建立更多領地（最大：{2}）。'
+  x-length-too-short: 西-東（X）長度 {0} 應大於 {1}。
+  y-length-too-short: 下-上（Y）長度 {0} 應大於 {1}。
+  z-length-too-short: 南-北（Z）長度 {0} 應大於 {1}。
+  x-length-too-long: 西-東（X）長度 {0} 應小於 {1}。
+  y-length-too-long: 下-上（Y）長度 {0} 應小於 {1}。
+  z-length-too-long: 南-北（Z）長度 {0} 應小於 {1}。
+  y-too-high: 領地 {0} 的最高點應低於 {1}。
+  y-too-low: 領地 {0} 的最低點應高於 {1}。
+  not-owner: 只有 {0} 的所有者可以執行此命令/操作。
+  not-admin: 只有 {0} 的管理員可以執行此命令/操作。
+  intersect-with-dom: 領地 {0} 與領地 {1} 重疊。
+  intersect-with-spawn: 領地 {0} 與出生點保護區域重疊。
+  outside-of-parent-dom: 領地 {0} 位於其父領地 {1} 之外。
+  cant-contain-child: 領地 {0} 不能包含它的子領地 {1}。
+  missing-parent-dom: '{0} 的父領地缺失。'
+  sub-dom-too-deep: 玩家 {0} 不能建立深度超過 {1} 的子領地。
+  with-draw-money: 已成功支付 {0} 用於領地。
+  deposit-money: 已成功從領地退還 {0}。
+  group-not-belong-dominion: 分組 {0} 不屬於領地 {1}。
 converts-text:
-  must-be-player: 此指令或操作必須由玩家執行。
-  must-be-online: 玩家 {0} 必須在線上。
-  world-not-exist: 找不到世界：{0}。
-  unknown-env-flag: 未知的環境權限：{0}。
-  unknown-pre-flag: 未知的權限權限：{0}。
-  unknown-dominion: 找不到領地：{0}。
-  invalid-number-format: 參數 {0} 必須為數字格式。
-  invalid-boolean-format: 參數 {0} 必須為 true 或 false。
-  invalid-points: 建立領地需選擇同一世界的兩個點。
-  unknown-block-face: 未知方向參數：{0}。
-  unknown-resize-type: 未知尺寸調整類型：{0}。
-  unknown-message-type: 未知訊息類型：{0}。
-  invalid-color-format: 顏色參數 {0} 格式錯誤，應為十六進位色碼 (0xRRGGBB)。
-  unknown-player: 找不到玩家 {0} 資料(可能安裝後未曾上線)。
+  must-be-player: 此命令/操作必須由玩家執行。
+  must-be-online: 玩家（{0}）必須線上。
+  world-not-exist: 世界（{0}）不存在。
+  unknown-env-flag: '未知環境許可權：{0}。'
+  unknown-pre-flag: '未知許可權標記：{0}。'
+  unknown-dominion: '未知領地：{0}。'
+  invalid-number-format: '引數數量無效：{0}。'
+  invalid-boolean-format: '引數布林值無效：{0}，應為 true 或 false。'
+  invalid-points: 你需要在同一世界中選擇兩個點來建立領地。
+  unknown-block-face: '未知方向：{0}。'
+  unknown-resize-type: '未知調整型別：{0}。'
+  unknown-message-type: '未知訊息型別：{0}。'
+  invalid-color-format: '引數顏色值無效：{0}，應為十六進位制顏色值（0xRRGGBB）。'
+  unknown-player: 玩家 {0} 尚未被記錄（外掛安裝後）。
   not-member: 玩家 {0} 不是領地 {1} 的成員。
-  no-group-found: 在領地 {0} 中找不到權限組 {1}。
-
+  no-group-found: 在領地 {1} 中未找到名為 {0} 的分組。
 others-text:
-  auto-clean-start: 開始自動清理 {0} 天未登入的玩家資料…
-  auto-cleaning-player: 已清理玩家 {0} 的資料。
-  auto-clean-end: 自動清理完成！
-  no-permission-for-flag: 你沒有 {0}({1})權限。
-
+  auto-clean-start: 開始自動清理 {0} 天未登入的玩家。
+  auto-cleaning-player: 已清理 {0} 的資料。
+  auto-clean-end: 自動清理完成。
+  no-permission-for-flag: '&4&l你沒有 {0}（{1}）許可權。'
 vault-connect-text:
-  vault-unavailable: 找不到 Vault 前置，請安裝 Vault 或 VaultUnlock 及經濟插件以啟用經濟功能。
-  economy-unavailable: 未偵測到經濟插件，請安裝至少一個經濟插件以啟用經濟功能。
-  insufficient-funds: 餘額不足，需要 {0}{1}，但你僅有 {2}{1}。
-
+  vault-unavailable: Vault 不可用，請安裝 Vault 或 VaultUnlock 以使用經濟功能。
+  economy-unavailable: 未找到經濟外掛，你需要安裝一個經濟外掛才能使用經濟功能。
+  insufficient-funds: 資金不足，需要 {0} {1}，但只有 {2} {1}。
 dominion-provider-handler-text:
-  create-success: 成功建立領地 {0}。
-  create-failed: 建立領地 {0} 失敗，原因：{1}。
-  expand-success: 成功擴張領地 {0}。
-  expand-failed: 擴張領地 {0} 失敗，原因：{1}。
-  contract-success: 成功縮小領地 {0}。
-  contract-failed: 縮小領地 {0} 失敗，原因：{1}。
-  delete-success: 成功刪除領地 {0}。
-  delete-failed: 刪除領地 {0} 失敗，原因：{1}。
-  delete-confirm: 請使用指令「{0}」確認刪除領地 {1} 及其子領地，此操作無法還原！
-  list-sub-doms: 領地 {0} 的子領地列表：{1}。
-  rename-failed: 重新命名領地 {0} 失敗，原因：{1}。
-  rename-success: 領地 {0} 已成功重新命名為 {1}。
-  same-name: 新名稱與原名稱相同。
-  give-success: 成功將領地 {0} 轉讓給 {1}。
-  give-failed: 轉讓領地 {0} 給 {1} 失敗，原因：{1}。
-  give-confirm: 請使用指令「{0}」確認將領地 {1} 轉讓給 {2}，此操作無法還原！
+  create-success: 建立領地 {0} 成功。
+  create-failed: '建立領地 {0} 失敗，原因：{1}'
+  expand-success: 擴張領地 {0} 成功。
+  expand-failed: '擴張領地 {0} 失敗，原因：{1}'
+  contract-success: 收縮領地 {0} 成功。
+  contract-failed: '收縮領地 {0} 失敗，原因：{1}'
+  delete-success: 刪除領地 {0} 成功。
+  delete-failed: '刪除領地 {0} 失敗，原因：{1}'
+  delete-confirm: 使用命令 '{0}' 確認刪除領地 {1} 及其子領地，此操作無法撤銷。
+  list-sub-doms: '領地 {0} 擁有子領地：{1}'
+  rename-failed: '重新命名領地 {0} 失敗，原因：{1}'
+  rename-success: 將領地 {0} 重新命名為 {1} 成功。
+  same-name: 新名稱與舊名稱相同。
+  give-success: 將領地 {0} 轉讓給 {1} 成功。
+  give-failed: '將領地 {0} 轉讓給他人失敗，原因：{1}'
+  give-confirm: 使用命令 '{0}' 確認將領地 {1} 轉讓給 {2}，此操作無法撤銷。
   already-belong: 領地 {0} 已屬於 {1}。
-  cannot-give-sub: 子領地 {0} 不可單獨轉讓。
-  tp-location-not-in-dominion: 所設定的傳送點不在領地 {0} 內。
-  tp-location-set-success: 成功設定領地 {0} 的傳送點。
-  tp-location-set-failed: 設定領地 {0} 的傳送點失敗，原因：{1}。
-  set-enter-message-success: 成功設定領地 {0} 的進入訊息。
-  set-enter-message-failed: 設定領地 {0} 的進入訊息失敗，原因：{1}。
-  set-leave-message-success: 成功設定領地 {0} 的離開訊息。
-  set-leave-message-failed: 設定領地 {0} 的離開訊息失敗，原因：{1}。
-  set-map-color-success: 成功設定領地 {0} 的地圖顏色。
-  set-map-color-failed: 設定領地 {0} 的地圖顏色失敗，原因：{1}。
-  set-env-flag-success: 成功將環境權限 {0} 設定為 {1}。
-  set-env-flag-failed: 設定環境權限 {0} 為 {1} 失敗，原因：{2}。
-  set-guest-flag-success: 成功將通用權限 {0} 設定為 {1}。
-  set-guest-flag-failed: 設定通用權限 {0} 為 {1} 失敗，原因：{2}。
-
+  cannot-give-sub: 領地 {0} 是子領地，不能轉讓給他人。
+  tp-location-not-in-dominion: 傳送位置不在領地 {0} 內。
+  tp-location-set-success: 設定領地 {0} 的傳送位置成功。
+  tp-location-set-failed: '設定領地 {0} 的傳送位置失敗，原因：{1}'
+  set-enter-message-success: 設定領地 {0} 的進入訊息成功。
+  set-enter-message-failed: '設定領地 {0} 的進入訊息失敗，原因：{1}'
+  set-leave-message-success: 設定領地 {0} 的離開訊息成功。
+  set-leave-message-failed: '設定領地 {0} 的離開訊息失敗，原因：{1}'
+  set-map-color-success: 設定領地 {0} 的地圖顏色成功。
+  set-map-color-failed: '設定領地 {0} 的地圖顏色失敗，原因：{1}'
+  set-env-flag-success: 設定環境許可權 {0} 為 {1} 成功。
+  set-env-flag-failed: '設定環境許可權 {0} 為 {1} 失敗，原因：{2}'
+  set-guest-flag-success: 設定訪客許可權 {0} 為 {1} 成功。
+  set-guest-flag-failed: '設定訪客許可權 {0} 為 {1} 失敗，原因：{2}'
+  set-owner-glow-flag-success: 設定所有者發光許可權為 {0} 成功。
+  set-owner-glow-flag-failed: '設定所有者發光許可權為 {0} 失敗，原因：{1}'
 member-provider-handler-text:
-  set-flag-success: 已成功在領地 {2} 為 {1} 設定權限 {0}。
-  owner-only: 僅有領地擁有者可管理管理員。
-  group-already: 該成員已屬於權限組 {0}，無法重複設定。
-  set-flag-failed: 設定權限失敗，原因：{0}。
-  add-member-success: 成功將玩家 {0} 加入領地 {1}。
-  already-member: 玩家 {0} 已是領地 {1} 成員。
-  cant-be-owner: 無法將領地擁有者新增為成員。
-  add-member-failed: 新增成員失敗，原因：{0}。
-  remove-member-success: 成功將成員 {0} 從領地 {1} 移除。
-  remove-member-failed: 移除成員失敗，原因：{0}。
-
+  set-flag-success: 已成功為 {1} 在 {2} 中設定許可權 {0}。
+  owner-only: 只有所有者可以管理管理員成員。
+  group-already: 此成員屬於分組 {0}，因此不能單獨管理。
+  set-flag-failed: '設定許可權失敗，原因：{0}'
+  add-member-success: 已成功將 {0} 新增到 {1}。
+  already-member: '{0} 已經是 {1} 的成員。'
+  cant-be-owner: 不能將領地所有者新增為成員。
+  add-member-failed: '新增成員失敗，原因：{0}'
+  remove-member-success: 已成功從 {1} 移除 {0}。
+  remove-member-failed: '移除成員失敗，原因：{0}'
 group-provider-handler-text:
-  owner-only: 僅有領地擁有者可管理管理員群組。
-  set-flag-success: 成功將群組 {0} 的權限 {1} 設定為 {2}。
-  set-flag-failed: 設定群組權限失敗，原因：{0}。
-  create-group-success: 成功建立群組 {0}。
-  create-group-failed: 建立群組失敗，原因：{0}。
-  delete-group-success: 成功刪除群組 {0}。
-  delete-group-failed: 刪除群組失敗，原因：{0}。
-  rename-group-success: 成功將群組 {0} 重新命名為 {1}。
-  rename-group-failed: 重新命名群組失敗，原因：{0}。
-  add-member-success: 成功將成員 {0} 新增至群組 {1}。
-  add-member-failed: 新增成員至群組失敗，原因：{0}。
-  remove-member-success: 成功將成員 {0} 從群組 {1} 移除。
-  remove-member-failed: 從群組移除成員失敗，原因：{0}。
-
+  owner-only: 只有所有者可以管理管理員分組。
+  set-flag-success: 已成功將分組 {0} 的許可權 {1} 設定為 {2}。
+  set-flag-failed: '設定分組許可權失敗，原因：{3}'
+  create-group-success: 分組 {0} 建立成功。
+  create-group-failed: '建立分組失敗，原因：{0}'
+  delete-group-success: 分組 {0} 刪除成功。
+  delete-group-failed: '刪除分組失敗，原因：{0}'
+  rename-group-success: 分組 {0} 已成功重新命名為 {1}。
+  rename-group-failed: '重新命名分組失敗，原因：{0}'
+  add-member-success: 成員 {0} 已成功新增到分組 {1}。
+  add-member-failed: '新增成員到分組失敗，原因：{0}'
+  remove-member-success: 成員 {0} 已成功從分組 {1} 移除。
+  remove-member-failed: '從分組移除成員失敗，原因：{0}'
 select-point-events-handler-text:
-  first-point: 第一個選取點：{0}, {1}, {2}。
-  second-point: 第二個選取點：{0}, {1}, {2}。
-  not-same-world: 兩個選取點不在同一世界。
-  price: 領地費用預估：{0}{1}。
-  owner: 擁有者：{0}。
-  size: 尺寸：{0}×{1}×{2}。
-  square: 面積：{0}。
-  volume: 體積：{0}。
-  no-dominion: 座標 {0}, {1}, {2} 未在任何領地內。
-  found-dominion: 座標 {0}, {1}, {2} 位於領地 {3}。
-
+  first-point: 已選擇第一個點：{0}, {1}, {2}。
+  second-point: 已選擇第二個點：{0}, {1}, {2}。
+  not-same-world: 兩個點不在同一個世界。
+  price: 此領地價格為 {0} {1}。
+  owner: '所有者：{0}'
+  size: '尺寸：{0}x{1}x{2}'
+  square: '面積：{0}'
+  volume: '體積：{0}'
+  no-dominion: 位置 {0}, {1}, {2} 未找到領地。
+  found-dominion: 位置 {0}, {1}, {2} 位於領地 {3} 內。
 create-dominion-inputter-text:
   button: 建立
-  description: 建立新的領地。
-  hint: 輸入名稱後，將以你為中心建立領地。
-
+  description: 建立一個新領地。
+  hint: 將圍繞你當前位置使用輸入的名稱建立一個新 Dominion 領地。
 create-group-inputter-text:
   button: 建立
-  hint: 輸入欲建立的新權限組名稱。
-
+  hint: 輸入你想建立的新分組名稱。
 rename-dominion-inputter-text:
   button: 重新命名
   hint: 輸入新的領地名稱。
-  description: 將此領地重新命名。
-
+  description: 重新命名此領地。
 edit-message-inputter-text:
   enter-button: 進入訊息
   enter-description: 進入領地時顯示的訊息。
   enter-hint: 輸入新的進入訊息。
   leave-button: 離開訊息
-  leave-description: 離開領地時顯示的訊息。
+  leave-description: 玩家離開領地時顯示的訊息。
   leave-hint: 輸入新的離開訊息。
-
 create-template-inputter-text:
   button: 建立
-  hint: 輸入新範本的名稱。
-
+  hint: 輸入新模板的名稱。
 rename-group-inputter-text:
   button: 重新命名
-  hint: 輸入新的權限組名稱。
-  description: 重新命名此權限組。
-
+  hint: 輸入新的分組名稱。
+  description: 重新命名此分組。
 resize-dominion-inputter-text:
   expand: 擴張
-  contract: 縮小
-  expand-hint: 輸入將 {0} 擴張到 {1} 的新尺寸。
-  contract-hint: 輸入將 {0} 縮小到 {1} 的新尺寸。
-
+  contract: 收縮
+  expand-hint: 輸入 {0} 向 {1} 擴張後的新大小。
+  contract-hint: 輸入 {0} 向 {1} 收縮後的新大小。
 search-player-inputter-text:
   button: 搜尋
-  hint: 輸入欲搜尋的玩家精確名稱。
-
+  hint: 輸入你想搜尋的玩家的準確名稱。
 set-map-color-inputter-text:
   button: 顏色
-  hint: 輸入十六進位色碼(例如：#FF5733)以設定地圖顏色。
-  description: Web 地圖上領地的顏色。
-administrator-command-text:
-  reload-cache-button: 重新載入快取
-  reload-cache-description: 重新載入快取(請勿頻繁執行)
-  reload-config-button: 重新載入設定
-  reload-config-description: 重新載入設定
-  reloading-dominion-cache: 正在重新載入領地快取…
-  reloaded-dominion-cache: 領地快取重新載入成功！
-  reloading-member-cache: 正在重新載入成員權限快取…
-  reloaded-member-cache: 成員權限快取重新載入成功！
-  reloading-group-cache: 正在重新載入群組快取…
-  reloaded-group-cache: 群組快取重新載入成功！
-  reloading-config: 正在重新載入設定…
-  exporting-mca-list: 正在匯出 MCA 清單…
-  create-mca-folder-failed: 建立 MCA 清單資料夾失敗
-  writing-mca-list: 正在為世界 {0} 寫入 MCA 清單…
-  create-mca-file-failed: 建立 MCA 清單檔案 {0} 失敗
-  export-mcalist-failed: 匯出世界 {0} 的 MCA 清單失敗，原因：{1}
-  exported-mcalist: 已成功匯出 MCA 清單至 {0}
-  import-hint: 匯入資料庫僅供遷移或還原備份；請勿用於合併資料庫
-  import-info: 若目前資料庫已有資料，可能會發生錯誤或資料遺失
-  import-confirm: 請在指令末尾加上 confirm 以確認匯入操作
-  reload-description: 重新載入快取、設定，或兩者同時
-  export-description: 匯出資料(MCA 清單或資料庫)
-  import-description: 匯入資料庫資料
-  update-language-description: 由內建語系檔重新產生語系檔
-  update-language-confirm: 這將覆蓋現有語系檔；請在指令末尾加上 confirm 以確認
-
-migration-command-text:
-  create-player-failed: 建立玩家快取 {0} 失敗
-  migrate-success: 已成功將 Residence 的領地 {0} 遷移至 Dominion
-  migrate-failed: 從 Residence 遷移領地失敗，原因：{0}
-  missing-residence: 找不到 Residence 領地 {0}
-  not-your-residence: Residence 領地 {0} 不屬於你
-  migrate-description: 將指定的 Residence 領地遷移至 Dominion
-  migrate-all-description: 將所有 Residence 領地遷移至 Dominion
-
-template-command-text:
-  name-not-valid: 範本名稱不可包含空格
-  template-name-exist: 範本 {0} 已存在
-  create-template-fail: 建立範本失敗，原因：{0}
-  create-template-success: 已成功建立範本 {0}
-  template-not-exist: 範本 {0} 不存在
-  delete-template-success: 已成功刪除範本 {0}
-  delete-template-fail: 刪除範本失敗，原因：{0}
-  apply-template-success: 已成功將範本 {0} 套用至 {1}
-  apply-template-fail: 套用範本失敗，原因：{0}
-  set-flag-success: 已成功將權限 {0} 設定於範本 {1} 為 {2}
-  set-flag-fail: 設定權限失敗，原因：{0}
-  rename-template-success: 已成功將範本重新命名為 {0}
-  rename-template-fail: 重新命名範本失敗，原因：{0}
-  create-template-description: 建立新的權限範本
-  delete-template-description: 刪除現有的權限範本
-  set-template-flag-description: 在範本中設定權限權限
-  member-apply-template-description: 將權限範本套用至成員
-  rename-template-description: 重新命名現有的權限範本
-
-group-title-command-text:
-  group-not-belonging: 不屬於群組 {0}
-  using-title-success: 已成功套用稱號 {0}
-  using-title-fail: 套用稱號失敗，原因：{0}
-  use-title-description: 使用群組稱號或停用目前稱號
-
-copy-command-text:
-  copy-env-success: 已成功從 {0} 複製環境權限至 {1}
-  copy-guest-success: 已成功從 {0} 複製通用權限至 {1}
-  copy-member-success: 已成功從 {0} 複製成員至 {1}
-  copy-group-success: 已成功從 {0} 複製群組至 {1}
-  copy-environment-description: 將環境權限從一個領地複製到另一個
-  copy-guest-description: 將通用權限從一個領地複製到另一個
-  copy-member-description: 將成員從一個領地複製到另一個
-  copy-group-description: 將群組從一個領地複製到另一個
-
-configuration-text:
-  loading-language: 正在載入語系 {0}…
-  load-language-fail: 載入語系 {0} 失敗，原因：{1}，使用預設 en_us
-  load-language-success: 已成功載入語系 {0}
-  loading-flag: 正在載入權限設定…
-  load-flag-success: 已成功載入權限設定
-  loading-limitations: 正在載入限制設定…
-  saving-default-limitation: 未找到限制檔，正在儲存預設限制檔
-  save-limitation-fail: 儲存限制檔失敗：{0}
-  loading-limitation: 正在載入限制檔 {0}…
-  load-limitation-fail: 載入限制檔 {0} 失敗，原因：{1}
-  load-limitations: 已成功載入 {0} 個限制：{1}
-  load-configuration: 已成功載入設定
-  debug-enabled: 除錯模式已啟用
-  prepare-database: 正在準備資料庫…
-  database-connected: 資料庫已成功連線
-  multi-server-sqlite: SQLite 不支援多伺服器模式，已停用多伺服器
-  server-id-invalid: 伺服器 ID 必須為正整數 (>0)，已停用多伺服器模式
-
-limitation-text:
-  loading-world-settings: 正在載入世界設定…
-  loading-world-setting: 正在載入世界 {0} 的設定…
-  load-world-setting-failed: 載入 {0} 的世界設定失敗，原因：{1}
-  load-world-settings-success: 已成功載入 {0} 的世界設定：{1}
-
-database-manager-text:
-  exporting-database-tables: 正在匯出資料庫資料表…
-  export-table-fail: 資料表匯出失敗，原因：{0}
-  export-world-mapping-fail: 世界 UID 對應匯出失敗，原因：{0}
-  export-database-success: 已成功匯出資料庫至 {0}
-  file-not-found: 找不到資料表檔案路徑：{0}
-  importing-database: 正在匯入資料庫…
-  file-corrupted: 部分資料表檔案遺失，請重新匯出資料庫資料表
-  import-database-fail: 匯入資料庫失敗，原因：{0}
-  import-database-success: 資料庫匯入成功
-  convert-world-failed: 找不到舊世界 {0}({1})，請確認世界名稱存在於存檔中
-
-teleport-manager-text:
-  cooling-down: 請等待 {0} 秒後再傳送
-  disabled: 你所屬權限組已停用傳送功能
-  delay: 將在 {0} 秒後傳送，請勿移動…
-  unfinished-cancelled: 已取消先前未完成的傳送
-  cancel-move: 因移動而取消傳送
-
-blue-map-connect-text:
-  register-fail: 註冊 BlueMap API 失敗
-  info-label: <div>{0}</div><div>擁有者：{1}</div>
-
-dynmap-connect-text:
-  register-success: 已成功註冊 Dynmap
-  register-fail: 註冊 Dynmap 失敗
-  info-label: <div>{0}</div><div>擁有者：{1}</div>
-
-command-exception-text:
-  no-permission: 你沒有 {0} 權限
-  invalid-arguments: 參數錯誤，範例用法：{0}
-
-inputter-text:
-  only-player: 僅玩家可使用此文字介面
-  cancel: ' [傳送 C 以取消輸入]'
-  inputter-cancelled: 輸入已取消
-
-flags:
-  tnt_explode:
-    display-name: TNT 爆炸
-    description: 是否允許 TNT 爆炸
-  comparer:
-    display-name: 比較器
-    description: 是否允許操作比較器
-  edit_sign:
-    display-name: 編輯告示牌
-    description: 是否允許編輯告示牌
-  cake:
-    display-name: 吃蛋糕
-    description: 是否允許食用蛋糕
-  dragon_egg:
-    display-name: 龍蛋
-    description: 是否允許操作龍蛋
-  bed:
-    display-name: 床
-    description: 是否允許睡床(設定重生點)
-  villager_spawn:
-    display-name: 村民繁殖
-    description: 是否允許繁殖村民(含刷蛋)
-  trade:
-    display-name: 村民交易
-    description: 是否允許與村民交易
-  note_block:
-    display-name: 音階盒
-    description: 是否允許操作音階盒
-  ignite:
-    display-name: 點燃
-    description: 是否允許點燃火源
-  wither_spawn:
-    display-name: 凋零怪召喚
-    description: 是否允許召喚凋零怪及其爆炸
-  trig_pressure_drop:
-    display-name: 壓力板(掉落)
-    description: 是否允許掉落物品觸發壓力板
-  animal_spawn:
-    display-name: 動物生成(繁殖)
-    description: 是否允許動物生成(含刷蛋及繁殖)
-  animal_move:
-    display-name: 動物移動
-    description: 是否允許動物在領地內移動
-  villager_killing:
-    display-name: 村民傷害
-    description: 是否允許傷害村民
-  animal_killing:
-    display-name: 動物傷害
-    description: 是否允許傷害動物
-  monster_killing:
-    display-name: 怪物傷害
-    description: 是否允許傷害怪物
-  place:
-    display-name: 放置方塊
-    description: 是否允許放置方塊(正常方塊、物品展示框、岩漿、水等)
-  fly:
-    display-name: 飛行
-    description: 創造模式飛行，不是鞘翅
-  honey:
-    display-name: 取蜂蜜
-    description: 是否允許操作蜂巢(取得蜂蜜)
-  monster_damage:
-    display-name: 怪物傷人
-    description: 是否允許怪物傷害玩家
-  monster_spawn:
-    display-name: 怪物生成
-    description: 是否允許怪物生成(含刷蛋)
-  monster_move:
-    display-name: 怪物移動
-    description: 是否允許怪物在領地內移動
-  admin:
-    display-name: 管理員
-    description: 擁有此權限者可管理一般成員與群組
-  crafter:
-    display-name: 合成器
-    description: 是否允許操作合成器(1.21)
-  piston_outside:
-    display-name: 活塞
-    description: false 即禁止活塞推出或拉入跨越領地的方塊
-  fire_spread:
-    display-name: 火焰蔓延
-    description: 禁止火焰在領地內蔓延
-  burn:
-    display-name: 燒毀
-    description: 是否允許方塊被燒毀，以及實體受到高溫傷害（火焰、岩漿、營火、岩漿塊）
-  shear:
-    display-name: 剪刀
-    description: 是否允許用剪刀剪取綿羊的羊毛
-  teleport:
-    display-name: 傳送
-    description: false 即禁止傳送至此領地
-  hopper_outside:
-    display-name: 漏斗(外部)
-    description: false 即禁止外部漏斗吸取領地內的容器物品
-  door:
-    display-name: 門
-    description: 是否允許操作門(包括地板門及柵欄門)
-  dragon_break_block:
-    display-name: 終界龍破壞方塊
-    description: 是否允許終界龍破壞方塊
-  ender_man:
-    display-name: 終界使者
-    description: false 即禁止終界使者撿取方塊或生成或傳送
-  break:
-    display-name: 破壞方塊
-    description: 是否允許破壞方塊(包括物品展示框、盔甲座)
-  vehicle_destroy:
-    display-name: 破壞載具
-    description: 是否允許破壞載具(船、礦車)
-  riding:
-    display-name: 騎乘
-    description: 是否允許騎乘載具(船、礦車、馬等)
-  dye:
-    display-name: 染色
-    description: 是否允許為綿羊、狗項圈或貓項圈染色
-  egg:
-    display-name: 丟擲雞蛋
-    description: 是否允許丟擲雞蛋
-  vehicle_spawn:
-    display-name: 生成載具
-    description: 是否允許生成載具(船、礦車)
-  trig_pressure_mob:
-    display-name: 壓力板(生物)
-    description: 是否允許生物(不含玩家)觸發壓力板
-  creeper_explode:
-    display-name: 實體爆炸(非TNT)
-    description: 包括苦力怕或凋零骷髏頭或終界水晶或火球或床或重生錨爆炸
-  mob_drop_item:
-    display-name: 生物掉落物品
-    description: 是否允許生物死亡時掉落物品
-  button:
-    display-name: 按鈕
-    description: 是否允許點擊按鈕
-  hook:
-    display-name: 釣竿
-    description: 是否允許使用釣竿
-  enchant:
-    display-name: 附魔台
-    description: 是否允許使用附魔台
-  craft:
-    display-name: 工作台
-    description: 是否允許使用工作台
-  lever:
-    display-name: 控制桿
-    description: 是否允許切換控制桿
-  brew:
-    display-name: 釀造台
-    description: 是否允許使用釀造台
-  anvil:
-    display-name: 鐵砧
-    description: 是否允許使用鐵砧
-  harvest:
-    display-name: 收割
-    description: 是否允許玩家收割作物
-  hopper:
-    display-name: 特殊容器
-    description: 如漏斗、熔爐、投擲器、發射器、高爐、煙燻爐
-  ender_pearl:
-    display-name: 丟擲終界珍珠
-    description: 是否允許丟擲終界珍珠
-  trig_pressure_proj:
-    display-name: 壓力板(投射物)
-    description: 是否允許投射物(箭或雪球)觸發壓力板
-  item_frame_proj_damage:
-    display-name: 投射物破壞展示框
-    description: 是否允許投射物(箭或雪球)破壞物品展示框
-  shoot:
-    display-name: 射擊
-    description: 包括箭或雪球或三叉戟或火球或風彈(1.21)
-  flow_in_protection:
-    display-name: 流入阻擋
-    description: 阻止外部水流或熔岩流入領地
-  player_damage:
-    display-name: 玩家互毆
-    description: 是否允許玩家直接傷害其他玩家
-  glow:
-    display-name: 發光
-    description: 如追跡之箭效果
-  feed:
-    display-name: 餵食動物
-    description: 是否允許餵食動物
-  show_border:
-    display-name: 顯示邊界
-    description: 玩家進入領地時顯示領地邊界
-  beacon:
-    display-name: 烽火台
-    description: 是否允許操作烽火台
-  pressure:
-    display-name: 壓力板(玩家)
-    description: 是否允許玩家觸發壓力板
-  container:
-    display-name: 容器
-    description: 箱子或木桶或界伏盒或盔甲座或物品展示框
-  move:
-    display-name: 玩家移動
-    description: 是否允許玩家在領地內移動
-  gravity_block:
-    display-name: 重力方塊
-    description: 是否允許重力方塊在領地內下落(false 會轉為物品)
-  item_frame_interactive:
-    display-name: 互動展示框
-    description: 是否允許互動展示框(旋轉物品)
-  repeater:
-    display-name: 中繼器
-    description: 是否允許切換或互動中繼器
-  anchor:
-    display-name: 重生錨
-    description: 是否允許設定或使用重生錨
-  trample:
-    display-name: 踩踏農田
-    description: 是否允許踩踏農田(false 表示保護農田)
-  ice_melt:
-    display-name: 冰塊融化
-    description: 是否允許冰塊融化
-  ice_form:
-    display-name: 冰塊形成
-    description: 是否允許冰塊形成(防止冰霜漫遊)
-  snow_accumulation:
-    display-name: 累積積雪
-    description: 是否允許積雪累積
-  snow_melt:
-    display-name: 累積積雪融化
-    description: 是否允許積雪融化
-  pvp:
-    display-name: PVP
-    description: 玩家間傷害
-  leash:
-    display-name: 拴繩
-    description: 是否允許用拴繩套住動物或生物
-  sowing:
-    display-name: 播種
-    description: 是否允許播種作物(小麥、紅蘿蔔等)
-  drop_item:
-    display-name: 丢弃物品
-    description: 是否可以丢弃背包中的物品
-  jukebox:
-    display-name: 唱片机
-    description: 是否可以使用唱片机
-  lectern:
-    display-name: 讲台
-    description: 是否可以使用讲台
-  pick_up:
-    display-name: 拾取物品
-    description: 是否可以拾取地上的物品
-  decay:
-    display-name: 樹葉腐爛
-    description: 是否允許樹葉自然腐爛
-  bookshelf:
-    display-name: 雕紋書架
-    description: 是否可以與雕紋書架互動
+  hint: '輸入十六進位制顏色程式碼（例如 #FF5733）以設定地圖顏色。'
+  description: 領地在網頁地圖上的顏色。
 rename-template-inputter-text:
   button: 重新命名
-  hint: 輸入新的範本名稱
-  description: 重新命名此範本
+  hint: 輸入新的模板名稱。
+  description: 重新命名此模板。
+administrator-command-text:
+  reload-cache-button: 過載快取
+  reload-cache-description: 過載快取（不要頻繁執行）。
+  reload-config-button: 過載配置
+  reload-config-description: 過載配置。
+  reload-description: 過載快取、配置或兩者。
+  export-description: 匯出資料（MCA 列表或資料庫）。
+  import-description: 匯入資料庫資料。
+  update-language-description: 從外掛內部語言檔案重新生成語言檔案。
+  update-language-confirm: 這將覆蓋你當前的語言檔案，如需確認請在命令末尾新增 'confirm'。
+  reloading-dominion-cache: 正在過載領地快取...
+  reloaded-dominion-cache: 領地快取過載成功！
+  reloading-member-cache: 正在過載成員許可權快取...
+  reloaded-member-cache: 成員許可權快取過載成功！
+  reloading-group-cache: 正在過載分組快取...
+  reloaded-group-cache: 分組快取過載成功！
+  reloading-config: 正在過載配置...
+  exporting-mca-list: 正在匯出 MCA 列表...
+  create-mca-folder-failed: 建立 MCA 列表資料夾失敗。
+  writing-mca-list: 正在寫入世界 {0} 的列表...
+  create-mca-file-failed: 建立 MCA 列表檔案 {0} 失敗。
+  export-mcalist-failed: '匯出世界 {0} 的 MCA 列表失敗，原因：{1}。'
+  exported-mcalist: 已成功將 MCA 列表匯出到 {0}。
+  import-hint: 匯入資料庫僅用於遷移或恢復備份，請勿用於合併兩個資料庫。
+  import-info: 如果當前資料庫不為空，將丟擲一些錯誤，並可能導致資料丟失或損壞。
+  import-confirm: 請在命令末尾新增 'confirm' 以確認匯入操作。
+migration-command-text:
+  migrate-success: 已成功將 Residence 領地 {0} 遷移為 Dominion 領地。
+  migrate-failed: '遷移 Residence 失敗。原因：{0}'
+  missing-residence: 找不到 Residence 領地 {0}。
+  not-your-residence: Residence 領地 {0} 不屬於你。
+  migrate-description: 將指定 Residence 領地遷移為 Dominion 領地。
+  migrate-all-description: 將所有 Residence 領地遷移為 Dominion 領地。
+template-command-text:
+  name-not-valid: 模板名稱不能包含空格
+  template-name-exist: 模板 {0} 已存在
+  create-template-fail: '建立模板失敗，原因：{0}'
+  create-template-success: 已成功建立模板 {0}
+  template-not-exist: 模板 {0} 不存在
+  delete-template-success: 已成功刪除模板 {0}
+  delete-template-fail: '刪除模板失敗，原因：{0}'
+  apply-template-success: 已成功將模板 {0} 應用於 {1}
+  apply-template-fail: '應用模板失敗，原因：{0}'
+  set-flag-success: 已成功將模板 {1} 的 {0} 許可權設定為 {2}
+  set-flag-fail: '設定許可權失敗，原因：{0}'
+  rename-template-success: 已成功將模板重新命名為 {0}
+  rename-template-fail: '重新命名模板失敗，原因：{0}'
+  create-template-description: 建立新的許可權模板。
+  delete-template-description: 刪除已有許可權模板。
+  set-template-flag-description: 設定模板中的許可權標記。
+  member-apply-template-description: 將許可權模板應用於成員。
+  rename-template-description: 重新命名已有許可權模板。
+group-title-command-text:
+  group-not-belonging: 不屬於分組 {0}。
+  using-title-success: 已成功使用稱號 {0}。
+  using-title-fail: '使用稱號失敗，原因：{0}'
+  use-title-description: 使用分組稱號或禁用當前稱號。
+copy-command-text:
+  copy-env-success: 已成功將環境許可權從 {0} 複製到 {1}。
+  copy-guest-success: 已成功將訪客許可權從 {0} 複製到 {1}。
+  copy-member-success: 已成功將成員從 {0} 複製到 {1}。
+  copy-group-success: 已成功將分組從 {0} 複製到 {1}。
+  copy-environment-description: 將環境許可權從一個領地複製到另一個領地。
+  copy-guest-description: 將訪客許可權從一個領地複製到另一個領地。
+  copy-member-description: 將成員從一個領地複製到另一個領地。
+  copy-group-description: 將分組從一個領地複製到另一個領地。
 dominion-operate-command-text:
-  resize-description: 以指定大小與方向調整領地尺寸
-  easy-expand-description: 根據玩家目前位置輕鬆擴張領地
-  easy-contract-description: 根據玩家目前位置輕鬆縮小領地
-  delete-description: 刪除領地；使用 'force' 確認刪除
-  set-message-description: 設定領地進入或離開訊息
-  set-teleport-description: 設定領地傳送點
-  rename-description: 重新命名領地
-  set-map-color-description: 設定領地地圖顏色
-  give-description: 將領地轉讓給玩家
-  tp-description: 傳送至領地
-  switch-ui-description: 切換領地指令的介面模式
+  resize-description: 按指定大小和方向調整領地大小。
+  easy-expand-description: 根據玩家當前位置輕鬆擴張領地大小。
+  easy-contract-description: 根據玩家當前位置輕鬆收縮領地大小。
+  delete-description: 刪除領地。使用 'force' 確認刪除。
+  set-message-description: 設定領地訊息，可設定進入或離開訊息。
+  set-teleport-description: 設定領地傳送位置。
+  rename-description: 重新命名領地。
+  set-map-color-description: 設定領地地圖顏色。
+  give-description: 將領地轉讓給玩家。
+  tp-description: 傳送到領地。
+  switch-ui-description: 切換領地命令的 UI 型別。
 dominion-create-command-text:
-  create-description: 使用選取點建立新領地
-  create-sub-description: 在既有領地中建立子領地
-  auto-create-description: 自動於目前位置周圍建立領地
-  auto-create-sub-description: 自動於既有領地中建立子領地
+  create-description: 使用已選擇的點建立新領地。
+  create-sub-description: 在已有領地內建立子領地。
+  auto-create-description: 自動圍繞你當前位置建立領地。
+  auto-create-sub-description: 自動在已有領地內建立子領地。
 dominion-flag-command-text:
-  set-env-description: 設定領地環境權限
-  set-guest-description: 設定領地通用權限權限
+  set-env-description: 設定領地環境許可權。
+  set-guest-description: 設定領地訪客許可權。
 group-command-text:
-  create-group-description: 在領地中建立新群組
-  delete-group-description: 從領地中刪除群組
-  rename-group-description: 重新命名領地內群組
-  set-group-flag-description: 設定群組權限權限
-  add-member-description: 新增成員至群組
-  remove-member-description: 從群組中移除成員
+  create-group-description: 在領地中建立新分組。
+  delete-group-description: 從領地中刪除分組。
+  rename-group-description: 重新命名領地中的分組。
+  set-group-flag-description: 設定分組許可權。
+  add-member-description: 將成員新增到分組。
+  remove-member-description: 從分組中移除成員。
 member-command-text:
-  add-member-description: 新增玩家為領地成員
-  set-member-privilege-description: 設定成員的權限權限
-  remove-member-description: 從領地移除成員
-console-text:
-  in-game-only: 此介面僅限遊戲內使用，請於遊戲中操作
-  page-info: §7 第 {0}/{1} 頁 - 共 {2} 項
-  desc-prefix: §7      - §f{0}
-ui-commands-description:
-  main-menu: 開啟領地主選單
-  list-all: 列出伺服器所有領地
-  migrate-list: 列出可遷移的 Residence 領地
-  dominion-list: 列出你可管理的領地
-  dominion-manage: 管理領地功能選單
-  group-list: 列出領地群組
-  group-flags: 管理群組權限權限
-  member-list: 列出領地成員
-  member-flags: 管理成員權限權限
-  environment-flags: 管理領地環境權限
-  guest-flags: 管理領地通用權限權限
+  add-member-description: 將玩家新增為領地成員。
+  set-member-privilege-description: 設定成員在領地中的許可權。
+  remove-member-description: 從領地中移除成員。
+configuration-text:
+  loading-language: 正在載入語言 {0}...
+  load-language-fail: '載入語言 {0} 失敗，原因：{1}，使用預設 en_us。'
+  load-language-success: 已成功載入語言 {0}。
+  loading-flag: 正在載入許可權配置...
+  load-flag-success: 許可權配置載入成功。
+  loading-limitations: 正在載入限制配置...
+  saving-default-limitation: 未找到限制檔案，正在儲存預設限制檔案。
+  save-limitation-fail: '儲存限制檔案失敗：{0}'
+  loading-limitation: '正在載入限制檔案：{0}...'
+  load-limitation-fail: '載入限制檔案 {0} 失敗，原因：{1}'
+  load-limitations: '已成功載入 {0} 個限制：{1}。'
+  load-configuration: 配置載入成功。
+  debug-enabled: 除錯模式已啟用。
+  prepare-database: 正在準備資料庫...
+  database-connected: 資料庫連線成功。
+  multi-server-sqlite: sqlite 型別資料庫不支援多伺服器模式，已禁用多伺服器模式。
+  server-id-invalid: 伺服器 ID 必須為正整數（> 0），已禁用多伺服器模式。
+limitation-text:
+  loading-world-settings: 正在載入世界設定...
+  loading-world-setting: 正在載入 {0} 的世界設定...
+  load-world-setting-failed: '載入 {0} 的世界設定失敗，原因：{1}'
+  load-world-settings-success: '已成功載入 {0} 個世界設定：{1}。'
+database-manager-text:
+  exporting-database-tables: 正在匯出資料庫表...
+  export-table-fail: '匯出表失敗，原因：{0}'
+  export-world-mapping-fail: '匯出世界 UID 對映失敗，原因：{0}'
+  export-database-success: 已成功將資料庫匯出到 {0}。
+  file-not-found: 找不到資料庫表檔案路徑 {0}。
+  importing-database: 正在匯入資料庫...
+  file-corrupted: 部分資料庫表檔案缺失，請重新匯出資料庫表。
+  convert-world-failed: 無法在當前存檔中找到舊世界 {0}（{1}），請確認當前存檔中存在該世界名稱。
+  import-database-fail: '匯入資料庫失敗，原因：{0}'
+  import-database-success: 資料庫匯入成功。
+teleport-manager-text:
+  cooling-down: 請等待 {0} 秒後再傳送。
+  disabled: 你的許可權組已禁用傳送。
+  delay: 將在 {0} 秒後傳送，請不要移動...
+  unfinished-cancelled: 已取消上一次未完成的傳送。
+  cancel-move: 因移動而取消傳送。
+command-exception-text:
+  no-permission: 你沒有許可權 {0} 執行此操作。
+  invalid-arguments: 引數無效，用法示例：{0}。
+inputter-text:
+  only-player: TUI 輸入器只能由玩家使用。
+  cancel: ' [傳送 ''C'' 以取消輸入。]'
+  inputter-cancelled: 輸入已取消。

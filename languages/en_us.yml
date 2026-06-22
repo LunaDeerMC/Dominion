@@ -1,8 +1,278 @@
+flags:
+  animal_spawn:
+    display-name: Animal Spawn (Breeding)
+    description: Whether animals can spawn (including spawn egg & breeding).
+  animal_move:
+    display-name: Animal Move
+    description: Whether animals can move in dominion.
+  villager_spawn:
+    display-name: Villager Breed
+    description: Whether villager can breeding (including spawn egg).
+  monster_spawn:
+    display-name: Monster Spawn
+    description: Whether monster can spawn (including spawn egg).
+  monster_move:
+    display-name: Monster Move
+    description: Whether monster can move in dominion.
+  monster_damage:
+    display-name: Monster Kill Player
+    description: Whether monster can do harm to player.
+  ender_man:
+    display-name: Ender Man
+    description: False to prevent ender-man from picking up blocks, spawning, teleporting.
+  tnt_explode:
+    display-name: TNT Explode
+    description: Whether TNT can explode.
+  wither_spawn:
+    display-name: Wither Spawn
+    description: Whether can spawn wither, and wither' explode.
+  creeper_explode:
+    display-name: Entity Explode (No-TNT)
+    description: Creeper/Wither Skull/Ender Crystal/Fireball/Bed/Respawn Anchor.
+  dragon_break_block:
+    display-name: Ender Dragon Break Block
+    description: Whether ender dragon can break blocks.
+  fire_spread:
+    display-name: Fire Spread
+    description: Prevent fire spread in dominion.
+  burn_block:
+    display-name: Burn Block
+    description: Whether blocks can burn.
+  burn_entity:
+    display-name: Burn Entity
+    description: Whether entity can burn or take high-temperature damage (not including player).
+  flow_in_protection:
+    display-name: Flow In
+    description: Prevent external water/lava flow into dominion.
+  gravity_block:
+    display-name: Falling Block
+    description: Whether gravity block can fall in dominion (false will make them to item).
+  ice_melt:
+    display-name: Ice Melt
+    description: Whether to allow ice to melt.
+  ice_form:
+    display-name: Ice Form
+    description: Whether to allow ice to form (prevents Frost Walker).
+  snow_accumulation:
+    display-name: Snow Accumulation
+    description: Whether to allow snow accumulation.
+  snow_melt:
+    display-name: Snow Melt
+    description: Whether to allow snow to melt.
+  trample:
+    display-name: Trample Farmland
+    description: Whether farmland can be trampled (false means protect farmland).
+  decay:
+    display-name: Leaf Decay
+    description: Whether leaves can decay.
+  hopper_outside:
+    display-name: Hopper (Outside)
+    description: False to prevent outside hopper from sucking container in dominion.
+  piston_outside:
+    display-name: Piston
+    description: False to prevent piston from pushing/pulling blocks across dominion.
+  trig_pressure_proj:
+    display-name: Pressure Plate (Projectile)
+    description: When projectile (arrow/snowball) can trigger pressure plate.
+  trig_pressure_mob:
+    display-name: Pressure Plate (Mob)
+    description: Whether mob (player not included) can trigger pressure plate.
+  trig_pressure_drop:
+    display-name: Pressure Plate (Dropping)
+    description: Whether dropping items can trigger pressure plate.
+  item_frame_proj_damage:
+    display-name: Projectile Damage Item Frame
+    description: Whether projectile (arrow/snowball) can break item frame.
+  mob_drop_item:
+    display-name: Mob Drop Item
+    description: Whether mob drop item when killed.
+  show_border:
+    display-name: Show Border
+    description: Show dominion border to player when walking in.
+  admin:
+    display-name: Administrator
+    description: Member with this flag can manage normal members and groups.
+  move:
+    display-name: Player Move
+    description: Whether player can move in dominion.
+  teleport:
+    display-name: Teleportation
+    description: False means can't teleport to this dominion.
+  fly:
+    display-name: Fly
+    description: NOT elytra fly, it's like creative mode fly.
+  riding:
+    display-name: Riding
+    description: Whether can ride vehicle (boat, minecart, horse etc.).
+  ender_pearl:
+    display-name: End Pearl
+    description: Whether can throw ender pearl.
+  raid:
+    display-name: Raid
+    description: Whether can trigger raid.
+  place:
+    display-name: Place Block
+    description: Whether can place blocks (normal blocks, item frame, lava, water).
+  break:
+    display-name: Break Block
+    description: Whether can break blocks (including item frame, armor stand).
+  ignite:
+    display-name: Ignite
+    description: Whether can ignite fire.
+  pick_up:
+    display-name: Pick Up Item
+    description: Whether player can pick up items in dominion.
+  drop_item:
+    display-name: Drop Item
+    description: Whether player can drop item in dominion.
+  door:
+    display-name: Door
+    description: Whether can interact with door (including trapdoor, fence gate).
+  button:
+    display-name: Button
+    description: Whether can click button.
+  lever:
+    display-name: Lever
+    description: Whether can switch lever.
+  pressure:
+    display-name: Pressure Plate (Player)
+    description: Whether player can trigger pressure plate.
+  repeater:
+    display-name: Repeater
+    description: Whether can change (interact with) repeater.
+  comparer:
+    display-name: Comparer
+    description: Whether can interact with comparer.
+  note_block:
+    display-name: Note Block
+    description: Whether can interact with note block.
+  container:
+    display-name: Special Container
+    description: Such as hopper, furnace, dropper, dispenser, blast furnace, smoker.
+  hopper:
+    display-name: Special Container
+    description: Such as hopper, furnace, dropper, dispenser, blast furnace, smoker.
+  craft:
+    display-name: Crafting Table
+    description: Whether can use crafting table.
+  crafter:
+    display-name: Crafter
+    description: Whether can interact with crafter (1.21).
+  anvil:
+    display-name: Anvil
+    description: Whether can use anvil.
+  enchant:
+    display-name: Enchant Table
+    description: Whether can use enchant table.
+  brew:
+    display-name: Brewing Stand
+    description: Whether can use brewing stand.
+  beacon:
+    display-name: Beacon
+    description: Whether can interact with beacon.
+  jukebox:
+    display-name: Jukebox
+    description: Whether can interact with jukebox.
+  lectern:
+    display-name: Lectern
+    description: Whether can interact with lectern.
+  bookshelf:
+    display-name: Chiseled Bookshelf
+    description: Whether can interact with chiseled bookshelf.
+  dragon_egg:
+    display-name: Dragon Egg
+    description: Whether can interact with dragon egg.
+  item_frame_interactive:
+    display-name: Item Frame Interactive
+    description: Whether can interact with item frame (rotate item).
+  edit_sign:
+    display-name: Edit Sign
+    description: Whether can edit sign.
+  bed:
+    display-name: Bed
+    description: Weather can sleep in bed (set spawn point).
+  anchor:
+    display-name: Respawn Anchor
+    description: Weather can set/use respawn anchor.
+  vehicle_spawn:
+    display-name: Vehicle Spawn
+    description: Whether can spawn vehicle (boat, minecart).
+  vehicle_destroy:
+    display-name: Vehicle Destroy
+    description: Whether can destroy vehicle (boat, minecart).
+  harvest:
+    display-name: Harvest
+    description: Whether player can harvest crops.
+  sowing:
+    display-name: Sowing
+    description: Whether to allow sowing crops (wheat, carrot etc.).
+  feed:
+    display-name: Feed Animal
+    description: Whether can feed animals.
+  shear:
+    display-name: Shear
+    description: Whether can cut wool from sheep.
+  leash:
+    display-name: Leash
+    description: Whether to allow leashing animals/mobs/entities.
+  dye:
+    display-name: Dye
+    description: What can dye (sheep, dog collar, cat collar).
+  honey:
+    display-name: Honey
+    description: Whether can interact with hive (to get honey).
+  cake:
+    display-name: Cake
+    description: Whether can eat cake.
+  trade:
+    display-name: Villager Trade
+    description: Whether can trade with villager.
+  shoot:
+    display-name: Shooting
+    description: Include arrow/snowball/trident/fireball/wind-charge(1.21).
+  egg:
+    display-name: Throw Egg
+    description: Whether can throw egg.
+  hook:
+    display-name: Hook
+    description: Whether can use fishing rod.
+  pvp:
+    display-name: PVP
+    description: Damage between players.
+  monster_killing:
+    display-name: Monster Killing
+    description: Whether can do harm to monsters.
+  animal_killing:
+    display-name: Animal Killing
+    description: Whether can do harm to animals.
+  villager_killing:
+    display-name: Villager Killing
+    description: Whether can do harm to villager.
+  glow:
+    display-name: Glow
+    description: Like glowing arrow effect.
 dominion-text:
   loading-config: Loading Configurations...
   plugin-enabled: Plugin Enabled!
   plugin-version: 'Plugin Version: {0}'
   notification-prefix: '&6[&eDominion&6]&f'
+console-text:
+  in-game-only: This ui is not available in console mode. Please use it in-game.
+  page-info: §7 Page {0}/{1} - Total {2}
+  desc-prefix: §7      - §f{0}
+ui-commands-description:
+  main-menu: Open the Dominion main menu.
+  list-all: List all dominions of this server.
+  migrate-list: List all residences can migrate to Dominion.
+  dominion-list: List all dominions you can manage.
+  dominion-manage: Manage menu of a dominion.
+  group-list: List groups of a dominion.
+  group-flags: Manage flags of a group.
+  member-list: List members of a dominion.
+  member-flags: Manage flags of a member.
+  environment-flags: Manage environment flags of a dominion.
+  guest-flags: Manage guest privilege flags of a dominion.
+  list-all-of-description: List all dominions owned by a player.
 multi-server-manager-text:
   get-id-by-name-error: Server name ({0}) does not exist.
   get-name-by-id-error: Server ID ({0}) does not exist.
@@ -57,7 +327,7 @@ others-text:
   auto-clean-start: Start auto clean players who have not logged in for {0} days.
   auto-cleaning-player: Cleaned {0}'s data.
   auto-clean-end: Auto clean finished.
-  no-permission-for-flag: You do not have {0}({1}) permission.
+  no-permission-for-flag: '&4&lYou do not have {0}({1}) permission.'
 vault-connect-text:
   vault-unavailable: Vault not available, please install Vault or VaultUnlock to use economy features.
   economy-unavailable: Economy plugin not found, you need to install one Economy plugin to use economy features.
@@ -94,6 +364,8 @@ dominion-provider-handler-text:
   set-env-flag-failed: 'Set env flag {0} to {1} failed, reason: {2}'
   set-guest-flag-success: Set guest flag {0} to {1} success.
   set-guest-flag-failed: 'Set guest flag {0} to {1} failed, reason: {2}'
+  set-owner-glow-flag-success: Set owner Glow Flag to {0} success.
+  set-owner-glow-flag-failed: 'Set owner Glow Flag to {0} failed, reason: {1}'
 member-provider-handler-text:
   set-flag-success: Successfully set flag {0} for {1} in {2}.
   owner-only: Only owner can manage admin member.
@@ -167,11 +439,20 @@ set-map-color-inputter-text:
   button: COLOR
   hint: 'Enter the hex color code (e.g., #FF5733) to set the map color.'
   description: Color of the dominion on the web map.
+rename-template-inputter-text:
+  button: RENAME
+  hint: Enter new template name.
+  description: Rename this template.
 administrator-command-text:
   reload-cache-button: RELOAD CACHE
   reload-cache-description: Reload the cache (dont do this frequently).
   reload-config-button: RELOAD CONFIG
   reload-config-description: Reload the configuration.
+  reload-description: Reload cache, configuration, or both.
+  export-description: Export data (MCA list or database).
+  import-description: Import database data.
+  update-language-description: Regenerate language files from plugin internal language files.
+  update-language-confirm: This will overwrite your current language files, please confirm by adding 'confirm' at the end of the command.
   reloading-dominion-cache: Reloading dominion cache...
   reloaded-dominion-cache: Reload dominion cache success!
   reloading-member-cache: Reloading member privilege cache...
@@ -188,13 +469,7 @@ administrator-command-text:
   import-hint: Import database is only for migration or restore-backup, don't use it to merge two databases.
   import-info: If current database is not empty, it will throw some errors and may cause data loss or corruption.
   import-confirm: Please confirm the import operation by adding 'confirm' at the end of the command.
-  reload-description: Reload cache, configuration, or both.
-  export-description: Export data (MCA list or database).
-  import-description: Import database data.
-  update-language-description: Regenerate language files from plugin internal language files.
-  update-language-confirm: This will overwrite your current language files, please confirm by adding 'confirm' at the end of the command.
 migration-command-text:
-  create-player-failed: Failed to create player cache for {0}.
   migrate-success: Migrated residence {0} to dominion successfully.
   migrate-failed: 'Failed to migrate residence. Reason: {0}'
   missing-residence: Residence {0} not found.
@@ -234,314 +509,6 @@ copy-command-text:
   copy-guest-description: Copy guest privilege flags from one dominion to another.
   copy-member-description: Copy members from one dominion to another.
   copy-group-description: Copy groups from one dominion to another.
-configuration-text:
-  loading-language: Loading language {0}...
-  load-language-fail: 'Failed to load language {0} reason: {1}, using default en_us.'
-  load-language-success: Successfully loaded language {0}.
-  loading-flag: Loading flag configuration...
-  load-flag-success: Successfully loaded flag configuration.
-  loading-limitations: Loading limitation configuration...
-  saving-default-limitation: Because no limitation file found, saving default limitation file.
-  save-limitation-fail: 'Failed to save limitation file: {0}'
-  loading-limitation: 'Loading limitation file: {0}...'
-  load-limitation-fail: 'Failed to load limitation file: {0} reason: {1}'
-  load-limitations: 'Successfully loaded {0} limitations: {1}.'
-  load-configuration: Successfully loaded configuration.
-  debug-enabled: Debug mode enabled.
-  prepare-database: Preparing database...
-  database-connected: Database connected successfully.
-  multi-server-sqlite: Database with type sqlite is not supported in multi-server mode, disabled multi-server mode.
-  server-id-invalid: Server id must be positive integer (> 0), disabled multi-server mode.
-limitation-text:
-  loading-world-settings: Loading world-settings...
-  loading-world-setting: Loading world-settings of {0}...
-  load-world-setting-failed: 'Failed to world-settings of {0} reason: {1}'
-  load-world-settings-success: 'Successfully loaded {0} world-settings: {1}.'
-database-manager-text:
-  exporting-database-tables: Exporting database tables...
-  export-table-fail: 'Export table failed, reason: {0}'
-  export-world-mapping-fail: 'Export world uid mapping failed, reason: {0}'
-  export-database-success: Export database to {0} successfully.
-  file-not-found: Database table file path {0} not found.
-  importing-database: Importing database...
-  file-corrupted: Some database table file is missing, please re-export the database tables.
-  import-database-fail: 'Import database failed, reason: {0}'
-  import-database-success: Import database successfully.
-  convert-world-failed: The old world {0}({1}) is unable to find in current save, please make sure the world name is exist in current save.
-teleport-manager-text:
-  cooling-down: Please wait for {0} seconds before teleporting again.
-  disabled: Teleportation is disabled for your permission group.
-  delay: Will teleport in {0} seconds, don't move...
-  unfinished-cancelled: Cancelled previous unfinished teleportation.
-  cancel-move: Cancelled teleportation due to movement.
-blue-map-connect-text:
-  register-fail: Failed to register BlueMap API.
-  info-label: '<div>{0}</div><div>Owner: {1}</div>'
-dynmap-connect-text:
-  register-success: Register to dynmap success!
-  register-fail: Register to dynmap failed!
-  info-label: '<div>{0}</div><div>Owner: {1}</div>'
-command-exception-text:
-  no-permission: You do not have permission {0} to do this.
-  invalid-arguments: Invalid arguments, usage e.g. {0}.
-inputter-text:
-  only-player: TUI inputter can only be used by a player.
-  cancel: ' [Send ''C'' to cancel the inputter.]'
-  inputter-cancelled: Inputter cancelled.
-flags:
-  tnt_explode:
-    display-name: TNT Explode
-    description: Whether TNT can explode.
-  comparer:
-    display-name: Comparer
-    description: Whether can interact with comparer.
-  edit_sign:
-    display-name: Edit Sign
-    description: Whether can edit sign.
-  cake:
-    display-name: Cake
-    description: Whether can eat cake.
-  dragon_egg:
-    display-name: Dragon Egg
-    description: Whether can interact with dragon egg.
-  bed:
-    display-name: Bed
-    description: Weather can sleep in bed (set spawn point).
-  villager_spawn:
-    display-name: Villager Breed
-    description: Whether villager can breeding (including spawn egg).
-  trade:
-    display-name: Villager Trade
-    description: Whether can trade with villager.
-  note_block:
-    display-name: Note Block
-    description: Whether can interact with note block.
-  ignite:
-    display-name: Ignite
-    description: Whether can ignite fire.
-  wither_spawn:
-    display-name: Wither Spawn
-    description: Whether can spawn wither, and wither' explode.
-  trig_pressure_drop:
-    display-name: Pressure Plate (Dropping)
-    description: Whether dropping items can trigger pressure plate.
-  animal_spawn:
-    display-name: Animal Spawn (Breeding)
-    description: Whether animals can spawn (including spawn egg & breeding).
-  animal_move:
-    display-name: Animal Move
-    description: Whether animals can move in dominion.
-  villager_killing:
-    display-name: Villager Killing
-    description: Whether can do harm to villager.
-  animal_killing:
-    display-name: Animal Killing
-    description: Whether can do harm to animals.
-  monster_killing:
-    display-name: Monster Killing
-    description: Whether can do harm to monsters.
-  place:
-    display-name: Place Block
-    description: Whether can place blocks (normal blocks, item frame, lava, water).
-  fly:
-    display-name: Fly
-    description: NOT elytra fly, it's like creative mode fly.
-  honey:
-    display-name: Honey
-    description: Whether can interact with hive (to get honey).
-  monster_damage:
-    display-name: Monster Kill Player
-    description: Whether monster can do harm to player.
-  monster_spawn:
-    display-name: Monster Spawn
-    description: Whether monster can spawn (including spawn egg).
-  monster_move:
-    display-name: Monster Move
-    description: Whether monster can move in dominion.
-  admin:
-    display-name: Administrator
-    description: Member with this flag can manage normal members and groups.
-  crafter:
-    display-name: Crafter
-    description: Whether can interact with crafter (1.21).
-  piston_outside:
-    display-name: Piston
-    description: False to prevent piston from pushing/pulling blocks across dominion.
-  fire_spread:
-    display-name: Fire Spread
-    description: Prevent fire spread in dominion.
-  burn:
-    display-name: Burn
-    description: Whether blocks can burn and entities can take high-temperature damage.
-  shear:
-    display-name: Shear
-    description: Whether can cut wool from sheep.
-  teleport:
-    display-name: Teleportation
-    description: False means can't teleport to this dominion.
-  hopper_outside:
-    display-name: Hopper (Outside)
-    description: False to prevent outside hopper from sucking container in dominion.
-  door:
-    display-name: Door
-    description: Whether can interact with door (including trapdoor, fence gate).
-  dragon_break_block:
-    display-name: Ender Dragon Break Block
-    description: Whether ender dragon can break blocks.
-  ender_man:
-    display-name: Ender Man
-    description: False to prevent ender-man from picking up blocks, spawning, teleporting.
-  break:
-    display-name: Break Block
-    description: Whether can break blocks (including item frame, armor stand).
-  vehicle_destroy:
-    display-name: Vehicle Destroy
-    description: Whether can destroy vehicle (boat, minecart).
-  riding:
-    display-name: Riding
-    description: Whether can ride vehicle (boat, minecart, horse etc.).
-  dye:
-    display-name: Dye
-    description: What can dye (sheep, dog collar, cat collar).
-  egg:
-    display-name: Throw Egg
-    description: Whether can throw egg.
-  vehicle_spawn:
-    display-name: Vehicle Spawn
-    description: Whether can spawn vehicle (boat, minecart).
-  trig_pressure_mob:
-    display-name: Pressure Plate (Mob)
-    description: Whether mob (player not included) can trigger pressure plate.
-  creeper_explode:
-    display-name: Entity Explode (No-TNT)
-    description: Creeper/Wither Skull/Ender Crystal/Fireball/Bed/Respawn Anchor.
-  mob_drop_item:
-    display-name: Mob Drop Item
-    description: Whether mob drop item when killed.
-  button:
-    display-name: Button
-    description: Whether can click button.
-  hook:
-    display-name: Hook
-    description: Whether can use fishing rod.
-  enchant:
-    display-name: Enchant Table
-    description: Whether can use enchant table.
-  craft:
-    display-name: Crafting Table
-    description: Whether can use crafting table.
-  lever:
-    display-name: Lever
-    description: Whether can switch lever.
-  brew:
-    display-name: Brewing Stand
-    description: Whether can use brewing stand.
-  anvil:
-    display-name: Anvil
-    description: Whether can use anvil.
-  harvest:
-    display-name: Harvest
-    description: Whether player can harvest crops.
-  hopper:
-    display-name: Special Container
-    description: Such as hopper, furnace, dropper, dispenser, blast furnace, smoker.
-  ender_pearl:
-    display-name: End Pearl
-    description: Whether can throw ender pearl.
-  trig_pressure_proj:
-    display-name: Pressure Plate (Projectile)
-    description: When projectile (arrow/snowball) can trigger pressure plate.
-  item_frame_proj_damage:
-    display-name: Projectile Damage Item Frame
-    description: Whether projectile (arrow/snowball) can break item frame.
-  shoot:
-    display-name: Shooting
-    description: Include arrow/snowball/trident/fireball/wind-charge(1.21).
-  flow_in_protection:
-    display-name: Flow In
-    description: Prevent external water/lava flow into dominion.
-  player_damage:
-    display-name: Player Kill Player
-    description: Weather player can do (directly) harm to other player.
-  glow:
-    display-name: Glow
-    description: Like glowing arrow effect.
-  feed:
-    display-name: Feed Animal
-    description: Whether can feed animals.
-  show_border:
-    display-name: Show Border
-    description: Show dominion border to player when walking in.
-  beacon:
-    display-name: Beacon
-    description: Whether can interact with beacon.
-  pressure:
-    display-name: Pressure Plate (Player)
-    description: Whether player can trigger pressure plate.
-  container:
-    display-name: Container
-    description: Chest / Barrel/ ShulkerBox / ArmorStand / Item Frame
-  move:
-    display-name: Player Move
-    description: Whether player can move in dominion.
-  gravity_block:
-    display-name: Falling Block
-    description: Whether gravity block can fall in dominion (false will make them to item).
-  item_frame_interactive:
-    display-name: Item Frame Interactive
-    description: Whether can interact with item frame (rotate item).
-  repeater:
-    display-name: Repeater
-    description: Whether can change (interact with) repeater.
-  anchor:
-    display-name: Respawn Anchor
-    description: Weather can set/use respawn anchor.
-  trample:
-    display-name: Trample Farmland
-    description: Whether farmland can be trampled (false means protect farmland).
-  ice_melt:
-    display-name: Ice Melt
-    description: Whether to allow ice to melt.
-  ice_form:
-    display-name: Ice Form
-    description: Whether to allow ice to form (prevents Frost Walker).
-  snow_accumulation:
-    display-name: Snow Accumulation
-    description: Whether to allow snow accumulation.
-  snow_melt:
-    display-name: Snow Melt
-    description: Whether to allow snow to melt.
-  pvp:
-    display-name: PVP
-    description: Damage between players.
-  leash:
-    display-name: Leash
-    description: Whether to allow leashing animals/mobs/entities.
-  sowing:
-    display-name: Sowing
-    description: Whether to allow sowing crops (wheat, carrot etc.).
-  drop_item:
-    display-name: Drop Item
-    description: Whether player can drop item in dominion.
-  jukebox:
-    display-name: Jukebox
-    description: Whether can interact with jukebox.
-  lectern:
-    display-name: Lectern
-    description: Whether can interact with lectern.
-  pick_up:
-    display-name: Pick Up Item
-    description: Whether player can pick up items in dominion.
-  decay:
-    display-name: Leaf Decay
-    description: Whether leaves can decay.
-  bookshelf:
-    display-name: Chiseled Bookshelf
-    description: Whether can interact with chiseled bookshelf.
-rename-template-inputter-text:
-  button: RENAME
-  hint: Enter new template name.
-  description: Rename this template.
 dominion-operate-command-text:
   resize-description: Resize a dominion with a specific size and direction.
   easy-expand-description: Expand the dominion size easily based on the player's current location.
@@ -573,19 +540,50 @@ member-command-text:
   add-member-description: Add a player as member to a dominion.
   set-member-privilege-description: Set privilege flag for a member in a dominion.
   remove-member-description: Remove a member from a dominion.
-console-text:
-  in-game-only: This ui is not available in console mode. Please use it in-game.
-  page-info: §7 Page {0}/{1} - Total {2}
-  desc-prefix: §7      - §f{0}
-ui-commands-description:
-  main-menu: Open the Dominion main menu.
-  list-all: List all dominions of this server.
-  migrate-list: List all residences can migrate to Dominion.
-  dominion-list: List all dominions you can manage.
-  dominion-manage: Manage menu of a dominion.
-  group-list: List groups of a dominion.
-  group-flags: Manage flags of a group.
-  member-list: List members of a dominion.
-  member-flags: Manage flags of a member.
-  environment-flags: Manage environment flags of a dominion.
-  guest-flags: Manage guest privilege flags of a dominion.
+configuration-text:
+  loading-language: Loading language {0}...
+  load-language-fail: 'Failed to load language {0} reason: {1}, using default en_us.'
+  load-language-success: Successfully loaded language {0}.
+  loading-flag: Loading flag configuration...
+  load-flag-success: Successfully loaded flag configuration.
+  loading-limitations: Loading limitation configuration...
+  saving-default-limitation: Because no limitation file found, saving default limitation file.
+  save-limitation-fail: 'Failed to save limitation file: {0}'
+  loading-limitation: 'Loading limitation file: {0}...'
+  load-limitation-fail: 'Failed to load limitation file: {0} reason: {1}'
+  load-limitations: 'Successfully loaded {0} limitations: {1}.'
+  load-configuration: Successfully loaded configuration.
+  debug-enabled: Debug mode enabled.
+  prepare-database: Preparing database...
+  database-connected: Database connected successfully.
+  multi-server-sqlite: Database with type sqlite is not supported in multi-server mode, disabled multi-server mode.
+  server-id-invalid: Server id must be positive integer (> 0), disabled multi-server mode.
+limitation-text:
+  loading-world-settings: Loading world-settings...
+  loading-world-setting: Loading world-settings of {0}...
+  load-world-setting-failed: 'Failed to world-settings of {0} reason: {1}'
+  load-world-settings-success: 'Successfully loaded {0} world-settings: {1}.'
+database-manager-text:
+  exporting-database-tables: Exporting database tables...
+  export-table-fail: 'Export table failed, reason: {0}'
+  export-world-mapping-fail: 'Export world uid mapping failed, reason: {0}'
+  export-database-success: Export database to {0} successfully.
+  file-not-found: Database table file path {0} not found.
+  importing-database: Importing database...
+  file-corrupted: Some database table file is missing, please re-export the database tables.
+  convert-world-failed: The old world {0}({1}) is unable to find in current save, please make sure the world name is exist in current save.
+  import-database-fail: 'Import database failed, reason: {0}'
+  import-database-success: Import database successfully.
+teleport-manager-text:
+  cooling-down: Please wait for {0} seconds before teleporting again.
+  disabled: Teleportation is disabled for your permission group.
+  delay: Will teleport in {0} seconds, don't move...
+  unfinished-cancelled: Cancelled previous unfinished teleportation.
+  cancel-move: Cancelled teleportation due to movement.
+command-exception-text:
+  no-permission: You do not have permission {0} to do this.
+  invalid-arguments: Invalid arguments, usage e.g. {0}.
+inputter-text:
+  only-player: TUI inputter can only be used by a player.
+  cancel: ' [Send ''C'' to cancel the inputter.]'
+  inputter-cancelled: Inputter cancelled.
