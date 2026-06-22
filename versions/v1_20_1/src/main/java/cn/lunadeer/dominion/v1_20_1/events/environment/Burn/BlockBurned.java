@@ -12,6 +12,6 @@ public class BlockBurned implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(BlockBurnEvent event) {
         if (event.isCancelled()) return;
-        checkEnvironmentFlag(event.getBlock().getLocation(), Flags.BURN, event);
+        checkEnvironmentFlag(event.getBlock().getLocation(), Flags.BURN_BLOCK, event);
     }
 }

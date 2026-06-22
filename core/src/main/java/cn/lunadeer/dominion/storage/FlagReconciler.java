@@ -32,12 +32,32 @@ final class FlagReconciler {
 
     private SyncResult reconcile(Connection connection) throws SQLException {
         int changed = 0;
+        changed += reconcileSplitBurnFlag(connection);
         changed += reconcileFlags(connection, "dominion", Flags.getAllEnvFlags());
         changed += reconcileFlags(connection, "dominion", Flags.getAllPriFlags());
         changed += reconcileFlags(connection, "dominion_member", Flags.getAllPriFlags());
         changed += reconcileFlags(connection, "dominion_group", Flags.getAllPriFlags());
         changed += reconcileFlags(connection, "privilege_template", Flags.getAllPriFlags());
         return new SyncResult(changed);
+    }
+
+    private int reconcileSplitBurnFlag(Connection connection) throws SQLException {
+        int changed = 0;
+        boolean oldBurnExists = columnExists(connection, "dominion", "burn");
+        changed += reconcileSplitFlagColumn(connection, oldBurnExists, Flags.BURN_BLOCK);
+        changed += reconcileSplitFlagColumn(connection, oldBurnExists, Flags.BURN_ENTITY);
+        return changed;
+    }
+
+    private int reconcileSplitFlagColumn(Connection connection, boolean oldBurnExists, Flag newFlag) throws SQLException {
+        if (columnExists(connection, "dominion", newFlag.getFlagName())) {
+            return 0;
+        }
+        addFlagColumn(connection, "dominion", newFlag);
+        if (oldBurnExists) {
+            copyFlagColumn(connection, "dominion", "burn", newFlag.getFlagName());
+        }
+        return 1;
     }
 
     private int reconcileFlags(Connection connection, String tableName, List<? extends Flag> flags) throws SQLException {
@@ -64,6 +84,12 @@ final class FlagReconciler {
                 "UPDATE " + tableName + " SET " + flag.getFlagName() + " = ? WHERE " + flag.getFlagName() + " IS NULL")) {
             statement.setBoolean(1, flag.getDefaultValue());
             return statement.executeUpdate();
+        }
+    }
+
+    private void copyFlagColumn(Connection connection, String tableName, String sourceColumn, String targetColumn) throws SQLException {
+        try (var statement = connection.createStatement()) {
+            statement.executeUpdate("UPDATE " + tableName + " SET " + targetColumn + " = " + sourceColumn);
         }
     }
 

@@ -370,9 +370,12 @@ flags:
   fire_spread:
     display-name: Fire Spread
     description: Prevent fire spread in dominion.
-  burn:
-    display-name: Burn
-    description: Whether blocks can burn and entities can take high-temperature damage.
+  burn_block:
+    display-name: Burn Block
+    description: Whether blocks can burn.
+  burn_entity:
+    display-name: Burn Entity
+    description: Whether entity can burn or take high-temperature damage (not including player).
   shear:
     display-name: Shear
     description: Whether can cut wool from sheep.
