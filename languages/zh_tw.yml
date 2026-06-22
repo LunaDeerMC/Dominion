@@ -1,625 +1,589 @@
-dominion-text:
-  loading-config: 正在載入設定…
-  plugin-enabled: 插件已啟用！
-  plugin-version: 插件版本：{0}
-  notification-prefix: '&6[&e領地&6]&f'
-
-multi-server-manager-text:
-  get-id-by-name-error: 伺服器名稱({0})不存在。
-  get-name-by-id-error: 伺服器 ID({0})不存在。
-  warn-update-server-name: 資料庫中 ID 為 {0}、名稱為「{1}」的伺服器，現行設定為「{2}」，已更新資料庫名稱為「{2}」。
-
-asserts-text:
-  dom-name-should-not-empty: 領地名稱不可空白。
-  dom-name-invalid: 領地名稱不可包含空格、句點、§、&、~ 或逗號。
-  dom-name-exist: 已有相同領地名稱：{0}。
-  group-name-should-not-empty: 權限組名稱不可空白。
-  group-name-invalid: 權限組名稱不可包含空格或句點。
-  group-name-exist: 已有相同權限組名稱：{0}。
-  not-allow-dom-in-world: 玩家 {0} 不允許在世界「{1}」建立領地。
-  exceed-max-amount: 玩家 {0} 已達領地數量上限(最多：{1})。
-  exceed-max-amount-of-world: 玩家 {0} 在世界「{1}」已達領地數量上限(最多：{2})。
-  x-length-too-short: 東西向長度 (X) {0} 應大於 {1}。
-  y-length-too-short: 垂直高度 (Y) {0} 應大於 {1}。
-  z-length-too-short: 南北向長度 (Z) {0} 應大於 {1}。
-  x-length-too-long: 東西向長度 (X) {0} 應小於 {1}。
-  y-length-too-long: 垂直高度 (Y) {0} 應小於 {1}。
-  z-length-too-long: 南北向長度 (Z) {0} 應小於 {1}。
-  y-too-high: 領地 {0} 的最高點應小於 {1}。
-  y-too-low: 領地 {0} 的最低點應大於 {1}。
-  not-owner: 此指令或操作僅限領地 {0} 的擁有者。
-  not-admin: 此指令或操作僅限領地 {0} 的管理員或擁有者。
-  intersect-with-dom: 領地 {0} 與領地 {1} 範圍衝突。
-  intersect-with-spawn: 領地 {0} 與重生點保護範圍衝突。
-  outside-of-parent-dom: 領地 {0} 超出父領地 {1} 範圍。
-  cant-contain-child: 領地 {0} 無法包含子領地 {1}。
-  missing-parent-dom: 找不到父領地：{0}。
-  sub-dom-too-deep: 玩家 {0} 的子領地層級不可超過 {1}。
-  with-draw-money: 已成功支付 {0} 給領地。
-  deposit-money: 已從領地獲得退款 {0}。
-  group-not-belong-dominion: 權限組 {0} 不屬於領地 {1}。
-
-converts-text:
-  must-be-player: 此指令或操作必須由玩家執行。
-  must-be-online: 玩家 {0} 必須在線上。
-  world-not-exist: 找不到世界：{0}。
-  unknown-env-flag: 未知的環境權限：{0}。
-  unknown-pre-flag: 未知的權限權限：{0}。
-  unknown-dominion: 找不到領地：{0}。
-  invalid-number-format: 參數 {0} 必須為數字格式。
-  invalid-boolean-format: 參數 {0} 必須為 true 或 false。
-  invalid-points: 建立領地需選擇同一世界的兩個點。
-  unknown-block-face: 未知方向參數：{0}。
-  unknown-resize-type: 未知尺寸調整類型：{0}。
-  unknown-message-type: 未知訊息類型：{0}。
-  invalid-color-format: 顏色參數 {0} 格式錯誤，應為十六進位色碼 (0xRRGGBB)。
-  unknown-player: 找不到玩家 {0} 資料(可能安裝後未曾上線)。
-  not-member: 玩家 {0} 不是領地 {1} 的成員。
-  no-group-found: 在領地 {0} 中找不到權限組 {1}。
-
-others-text:
-  auto-clean-start: 開始自動清理 {0} 天未登入的玩家資料…
-  auto-cleaning-player: 已清理玩家 {0} 的資料。
-  auto-clean-end: 自動清理完成！
-  no-permission-for-flag: 你沒有 {0}({1})權限。
-
-vault-connect-text:
-  vault-unavailable: 找不到 Vault 前置，請安裝 Vault 或 VaultUnlock 及經濟插件以啟用經濟功能。
-  economy-unavailable: 未偵測到經濟插件，請安裝至少一個經濟插件以啟用經濟功能。
-  insufficient-funds: 餘額不足，需要 {0}{1}，但你僅有 {2}{1}。
-
-dominion-provider-handler-text:
-  create-success: 成功建立領地 {0}。
-  create-failed: 建立領地 {0} 失敗，原因：{1}。
-  expand-success: 成功擴張領地 {0}。
-  expand-failed: 擴張領地 {0} 失敗，原因：{1}。
-  contract-success: 成功縮小領地 {0}。
-  contract-failed: 縮小領地 {0} 失敗，原因：{1}。
-  delete-success: 成功刪除領地 {0}。
-  delete-failed: 刪除領地 {0} 失敗，原因：{1}。
-  delete-confirm: 請使用指令「{0}」確認刪除領地 {1} 及其子領地，此操作無法還原！
-  list-sub-doms: 領地 {0} 的子領地列表：{1}。
-  rename-failed: 重新命名領地 {0} 失敗，原因：{1}。
-  rename-success: 領地 {0} 已成功重新命名為 {1}。
-  same-name: 新名稱與原名稱相同。
-  give-success: 成功將領地 {0} 轉讓給 {1}。
-  give-failed: 轉讓領地 {0} 給 {1} 失敗，原因：{1}。
-  give-confirm: 請使用指令「{0}」確認將領地 {1} 轉讓給 {2}，此操作無法還原！
-  already-belong: 領地 {0} 已屬於 {1}。
-  cannot-give-sub: 子領地 {0} 不可單獨轉讓。
-  tp-location-not-in-dominion: 所設定的傳送點不在領地 {0} 內。
-  tp-location-set-success: 成功設定領地 {0} 的傳送點。
-  tp-location-set-failed: 設定領地 {0} 的傳送點失敗，原因：{1}。
-  set-enter-message-success: 成功設定領地 {0} 的進入訊息。
-  set-enter-message-failed: 設定領地 {0} 的進入訊息失敗，原因：{1}。
-  set-leave-message-success: 成功設定領地 {0} 的離開訊息。
-  set-leave-message-failed: 設定領地 {0} 的離開訊息失敗，原因：{1}。
-  set-map-color-success: 成功設定領地 {0} 的地圖顏色。
-  set-map-color-failed: 設定領地 {0} 的地圖顏色失敗，原因：{1}。
-  set-env-flag-success: 成功將環境權限 {0} 設定為 {1}。
-  set-env-flag-failed: 設定環境權限 {0} 為 {1} 失敗，原因：{2}。
-  set-guest-flag-success: 成功將通用權限 {0} 設定為 {1}。
-  set-guest-flag-failed: 設定通用權限 {0} 為 {1} 失敗，原因：{2}。
-
-member-provider-handler-text:
-  set-flag-success: 已成功在領地 {2} 為 {1} 設定權限 {0}。
-  owner-only: 僅有領地擁有者可管理管理員。
-  group-already: 該成員已屬於權限組 {0}，無法重複設定。
-  set-flag-failed: 設定權限失敗，原因：{0}。
-  add-member-success: 成功將玩家 {0} 加入領地 {1}。
-  already-member: 玩家 {0} 已是領地 {1} 成員。
-  cant-be-owner: 無法將領地擁有者新增為成員。
-  add-member-failed: 新增成員失敗，原因：{0}。
-  remove-member-success: 成功將成員 {0} 從領地 {1} 移除。
-  remove-member-failed: 移除成員失敗，原因：{0}。
-
-group-provider-handler-text:
-  owner-only: 僅有領地擁有者可管理管理員群組。
-  set-flag-success: 成功將群組 {0} 的權限 {1} 設定為 {2}。
-  set-flag-failed: 設定群組權限失敗，原因：{0}。
-  create-group-success: 成功建立群組 {0}。
-  create-group-failed: 建立群組失敗，原因：{0}。
-  delete-group-success: 成功刪除群組 {0}。
-  delete-group-failed: 刪除群組失敗，原因：{0}。
-  rename-group-success: 成功將群組 {0} 重新命名為 {1}。
-  rename-group-failed: 重新命名群組失敗，原因：{0}。
-  add-member-success: 成功將成員 {0} 新增至群組 {1}。
-  add-member-failed: 新增成員至群組失敗，原因：{0}。
-  remove-member-success: 成功將成員 {0} 從群組 {1} 移除。
-  remove-member-failed: 從群組移除成員失敗，原因：{0}。
-
-select-point-events-handler-text:
-  first-point: 第一個選取點：{0}, {1}, {2}。
-  second-point: 第二個選取點：{0}, {1}, {2}。
-  not-same-world: 兩個選取點不在同一世界。
-  price: 領地費用預估：{0}{1}。
-  owner: 擁有者：{0}。
-  size: 尺寸：{0}×{1}×{2}。
-  square: 面積：{0}。
-  volume: 體積：{0}。
-  no-dominion: 座標 {0}, {1}, {2} 未在任何領地內。
-  found-dominion: 座標 {0}, {1}, {2} 位於領地 {3}。
-
-create-dominion-inputter-text:
-  button: 建立
-  description: 建立新的領地。
-  hint: 輸入名稱後，將以你為中心建立領地。
-
-create-group-inputter-text:
-  button: 建立
-  hint: 輸入欲建立的新權限組名稱。
-
-rename-dominion-inputter-text:
-  button: 重新命名
-  hint: 輸入新的領地名稱。
-  description: 將此領地重新命名。
-
-edit-message-inputter-text:
-  enter-button: 進入訊息
-  enter-description: 進入領地時顯示的訊息。
-  enter-hint: 輸入新的進入訊息。
-  leave-button: 離開訊息
-  leave-description: 離開領地時顯示的訊息。
-  leave-hint: 輸入新的離開訊息。
-
-create-template-inputter-text:
-  button: 建立
-  hint: 輸入新範本的名稱。
-
-rename-group-inputter-text:
-  button: 重新命名
-  hint: 輸入新的權限組名稱。
-  description: 重新命名此權限組。
-
-resize-dominion-inputter-text:
-  expand: 擴張
-  contract: 縮小
-  expand-hint: 輸入將 {0} 擴張到 {1} 的新尺寸。
-  contract-hint: 輸入將 {0} 縮小到 {1} 的新尺寸。
-
-search-player-inputter-text:
-  button: 搜尋
-  hint: 輸入欲搜尋的玩家精確名稱。
-
-set-map-color-inputter-text:
-  button: 顏色
-  hint: 輸入十六進位色碼(例如：#FF5733)以設定地圖顏色。
-  description: Web 地圖上領地的顏色。
-administrator-command-text:
-  reload-cache-button: 重新載入快取
-  reload-cache-description: 重新載入快取(請勿頻繁執行)
-  reload-config-button: 重新載入設定
-  reload-config-description: 重新載入設定
-  reloading-dominion-cache: 正在重新載入領地快取…
-  reloaded-dominion-cache: 領地快取重新載入成功！
-  reloading-member-cache: 正在重新載入成員權限快取…
-  reloaded-member-cache: 成員權限快取重新載入成功！
-  reloading-group-cache: 正在重新載入群組快取…
-  reloaded-group-cache: 群組快取重新載入成功！
-  reloading-config: 正在重新載入設定…
-  exporting-mca-list: 正在匯出 MCA 清單…
-  create-mca-folder-failed: 建立 MCA 清單資料夾失敗
-  writing-mca-list: 正在為世界 {0} 寫入 MCA 清單…
-  create-mca-file-failed: 建立 MCA 清單檔案 {0} 失敗
-  export-mcalist-failed: 匯出世界 {0} 的 MCA 清單失敗，原因：{1}
-  exported-mcalist: 已成功匯出 MCA 清單至 {0}
-  import-hint: 匯入資料庫僅供遷移或還原備份；請勿用於合併資料庫
-  import-info: 若目前資料庫已有資料，可能會發生錯誤或資料遺失
-  import-confirm: 請在指令末尾加上 confirm 以確認匯入操作
-  reload-description: 重新載入快取、設定，或兩者同時
-  export-description: 匯出資料(MCA 清單或資料庫)
-  import-description: 匯入資料庫資料
-  update-language-description: 由內建語系檔重新產生語系檔
-  update-language-confirm: 這將覆蓋現有語系檔；請在指令末尾加上 confirm 以確認
-
-migration-command-text:
-  create-player-failed: 建立玩家快取 {0} 失敗
-  migrate-success: 已成功將 Residence 的領地 {0} 遷移至 Dominion
-  migrate-failed: 從 Residence 遷移領地失敗，原因：{0}
-  missing-residence: 找不到 Residence 領地 {0}
-  not-your-residence: Residence 領地 {0} 不屬於你
-  migrate-description: 將指定的 Residence 領地遷移至 Dominion
-  migrate-all-description: 將所有 Residence 領地遷移至 Dominion
-
-template-command-text:
-  name-not-valid: 範本名稱不可包含空格
-  template-name-exist: 範本 {0} 已存在
-  create-template-fail: 建立範本失敗，原因：{0}
-  create-template-success: 已成功建立範本 {0}
-  template-not-exist: 範本 {0} 不存在
-  delete-template-success: 已成功刪除範本 {0}
-  delete-template-fail: 刪除範本失敗，原因：{0}
-  apply-template-success: 已成功將範本 {0} 套用至 {1}
-  apply-template-fail: 套用範本失敗，原因：{0}
-  set-flag-success: 已成功將權限 {0} 設定於範本 {1} 為 {2}
-  set-flag-fail: 設定權限失敗，原因：{0}
-  rename-template-success: 已成功將範本重新命名為 {0}
-  rename-template-fail: 重新命名範本失敗，原因：{0}
-  create-template-description: 建立新的權限範本
-  delete-template-description: 刪除現有的權限範本
-  set-template-flag-description: 在範本中設定權限權限
-  member-apply-template-description: 將權限範本套用至成員
-  rename-template-description: 重新命名現有的權限範本
-
-group-title-command-text:
-  group-not-belonging: 不屬於群組 {0}
-  using-title-success: 已成功套用稱號 {0}
-  using-title-fail: 套用稱號失敗，原因：{0}
-  use-title-description: 使用群組稱號或停用目前稱號
-
-copy-command-text:
-  copy-env-success: 已成功從 {0} 複製環境權限至 {1}
-  copy-guest-success: 已成功從 {0} 複製通用權限至 {1}
-  copy-member-success: 已成功從 {0} 複製成員至 {1}
-  copy-group-success: 已成功從 {0} 複製群組至 {1}
-  copy-environment-description: 將環境權限從一個領地複製到另一個
-  copy-guest-description: 將通用權限從一個領地複製到另一個
-  copy-member-description: 將成員從一個領地複製到另一個
-  copy-group-description: 將群組從一個領地複製到另一個
-
-configuration-text:
-  loading-language: 正在載入語系 {0}…
-  load-language-fail: 載入語系 {0} 失敗，原因：{1}，使用預設 en_us
-  load-language-success: 已成功載入語系 {0}
-  loading-flag: 正在載入權限設定…
-  load-flag-success: 已成功載入權限設定
-  loading-limitations: 正在載入限制設定…
-  saving-default-limitation: 未找到限制檔，正在儲存預設限制檔
-  save-limitation-fail: 儲存限制檔失敗：{0}
-  loading-limitation: 正在載入限制檔 {0}…
-  load-limitation-fail: 載入限制檔 {0} 失敗，原因：{1}
-  load-limitations: 已成功載入 {0} 個限制：{1}
-  load-configuration: 已成功載入設定
-  debug-enabled: 除錯模式已啟用
-  prepare-database: 正在準備資料庫…
-  database-connected: 資料庫已成功連線
-  multi-server-sqlite: SQLite 不支援多伺服器模式，已停用多伺服器
-  server-id-invalid: 伺服器 ID 必須為正整數 (>0)，已停用多伺服器模式
-
-limitation-text:
-  loading-world-settings: 正在載入世界設定…
-  loading-world-setting: 正在載入世界 {0} 的設定…
-  load-world-setting-failed: 載入 {0} 的世界設定失敗，原因：{1}
-  load-world-settings-success: 已成功載入 {0} 的世界設定：{1}
-
-database-manager-text:
-  exporting-database-tables: 正在匯出資料庫資料表…
-  export-table-fail: 資料表匯出失敗，原因：{0}
-  export-world-mapping-fail: 世界 UID 對應匯出失敗，原因：{0}
-  export-database-success: 已成功匯出資料庫至 {0}
-  file-not-found: 找不到資料表檔案路徑：{0}
-  importing-database: 正在匯入資料庫…
-  file-corrupted: 部分資料表檔案遺失，請重新匯出資料庫資料表
-  import-database-fail: 匯入資料庫失敗，原因：{0}
-  import-database-success: 資料庫匯入成功
-  convert-world-failed: 找不到舊世界 {0}({1})，請確認世界名稱存在於存檔中
-
-teleport-manager-text:
-  cooling-down: 請等待 {0} 秒後再傳送
-  disabled: 你所屬權限組已停用傳送功能
-  delay: 將在 {0} 秒後傳送，請勿移動…
-  unfinished-cancelled: 已取消先前未完成的傳送
-  cancel-move: 因移動而取消傳送
-
-blue-map-connect-text:
-  register-fail: 註冊 BlueMap API 失敗
-  info-label: <div>{0}</div><div>擁有者：{1}</div>
-
-dynmap-connect-text:
-  register-success: 已成功註冊 Dynmap
-  register-fail: 註冊 Dynmap 失敗
-  info-label: <div>{0}</div><div>擁有者：{1}</div>
-
-command-exception-text:
-  no-permission: 你沒有 {0} 權限
-  invalid-arguments: 參數錯誤，範例用法：{0}
-
-inputter-text:
-  only-player: 僅玩家可使用此文字介面
-  cancel: ' [傳送 C 以取消輸入]'
-  inputter-cancelled: 輸入已取消
-
 flags:
-  tnt_explode:
-    display-name: TNT 爆炸
-    description: 是否允許 TNT 爆炸
-  comparer:
-    display-name: 比較器
-    description: 是否允許操作比較器
-  edit_sign:
-    display-name: 編輯告示牌
-    description: 是否允許編輯告示牌
-  cake:
-    display-name: 吃蛋糕
-    description: 是否允許食用蛋糕
-  dragon_egg:
-    display-name: 龍蛋
-    description: 是否允許操作龍蛋
-  bed:
-    display-name: 床
-    description: 是否允許睡床(設定重生點)
-  villager_spawn:
-    display-name: 村民繁殖
-    description: 是否允許繁殖村民(含刷蛋)
-  trade:
-    display-name: 村民交易
-    description: 是否允許與村民交易
-  note_block:
-    display-name: 音階盒
-    description: 是否允許操作音階盒
-  ignite:
-    display-name: 點燃
-    description: 是否允許點燃火源
-  wither_spawn:
-    display-name: 凋零怪召喚
-    description: 是否允許召喚凋零怪及其爆炸
-  trig_pressure_drop:
-    display-name: 壓力板(掉落)
-    description: 是否允許掉落物品觸發壓力板
   animal_spawn:
-    display-name: 動物生成(繁殖)
-    description: 是否允許動物生成(含刷蛋及繁殖)
+    display-name: Animal Spawn (Breeding)
+    description: Whether animals can spawn (including spawn egg & breeding).
   animal_move:
-    display-name: 動物移動
-    description: 是否允許動物在領地內移動
-  villager_killing:
-    display-name: 村民傷害
-    description: 是否允許傷害村民
-  animal_killing:
-    display-name: 動物傷害
-    description: 是否允許傷害動物
-  monster_killing:
-    display-name: 怪物傷害
-    description: 是否允許傷害怪物
-  place:
-    display-name: 放置方塊
-    description: 是否允許放置方塊(正常方塊、物品展示框、岩漿、水等)
-  fly:
-    display-name: 飛行
-    description: 創造模式飛行，不是鞘翅
-  honey:
-    display-name: 取蜂蜜
-    description: 是否允許操作蜂巢(取得蜂蜜)
-  monster_damage:
-    display-name: 怪物傷人
-    description: 是否允許怪物傷害玩家
+    display-name: Animal Move
+    description: Whether animals can move in dominion.
+  villager_spawn:
+    display-name: Villager Breed
+    description: Whether villager can breeding (including spawn egg).
   monster_spawn:
-    display-name: 怪物生成
-    description: 是否允許怪物生成(含刷蛋)
+    display-name: Monster Spawn
+    description: Whether monster can spawn (including spawn egg).
   monster_move:
-    display-name: 怪物移動
-    description: 是否允許怪物在領地內移動
-  admin:
-    display-name: 管理員
-    description: 擁有此權限者可管理一般成員與群組
-  crafter:
-    display-name: 合成器
-    description: 是否允許操作合成器(1.21)
-  piston_outside:
-    display-name: 活塞
-    description: false 即禁止活塞推出或拉入跨越領地的方塊
-  fire_spread:
-    display-name: 火焰蔓延
-    description: 禁止火焰在領地內蔓延
-  burn_block:
-    display-name: 方塊燒毀
-    description: 是否允許方塊被燒毀
-  burn_entity:
-    display-name: 實體燃燒
-    description: 是否允許實體受到燃燒或高溫傷害（不包含玩家）
-  shear:
-    display-name: 剪刀
-    description: 是否允許用剪刀剪取綿羊的羊毛
-  teleport:
-    display-name: 傳送
-    description: false 即禁止傳送至此領地
-  hopper_outside:
-    display-name: 漏斗(外部)
-    description: false 即禁止外部漏斗吸取領地內的容器物品
-  door:
-    display-name: 門
-    description: 是否允許操作門(包括地板門及柵欄門)
-  dragon_break_block:
-    display-name: 終界龍破壞方塊
-    description: 是否允許終界龍破壞方塊
+    display-name: Monster Move
+    description: Whether monster can move in dominion.
+  monster_damage:
+    display-name: Monster Kill Player
+    description: Whether monster can do harm to player.
   ender_man:
-    display-name: 終界使者
-    description: false 即禁止終界使者撿取方塊或生成或傳送
-  break:
-    display-name: 破壞方塊
-    description: 是否允許破壞方塊(包括物品展示框、盔甲座)
-  vehicle_destroy:
-    display-name: 破壞載具
-    description: 是否允許破壞載具(船、礦車)
-  riding:
-    display-name: 騎乘
-    description: 是否允許騎乘載具(船、礦車、馬等)
-  dye:
-    display-name: 染色
-    description: 是否允許為綿羊、狗項圈或貓項圈染色
-  egg:
-    display-name: 丟擲雞蛋
-    description: 是否允許丟擲雞蛋
-  vehicle_spawn:
-    display-name: 生成載具
-    description: 是否允許生成載具(船、礦車)
-  trig_pressure_mob:
-    display-name: 壓力板(生物)
-    description: 是否允許生物(不含玩家)觸發壓力板
+    display-name: Ender Man
+    description: False to prevent ender-man from picking up blocks, spawning, teleporting.
+  tnt_explode:
+    display-name: TNT Explode
+    description: Whether TNT can explode.
+  wither_spawn:
+    display-name: Wither Spawn
+    description: Whether can spawn wither, and wither' explode.
   creeper_explode:
-    display-name: 實體爆炸(非TNT)
-    description: 包括苦力怕或凋零骷髏頭或終界水晶或火球或床或重生錨爆炸
-  mob_drop_item:
-    display-name: 生物掉落物品
-    description: 是否允許生物死亡時掉落物品
-  button:
-    display-name: 按鈕
-    description: 是否允許點擊按鈕
-  hook:
-    display-name: 釣竿
-    description: 是否允許使用釣竿
-  enchant:
-    display-name: 附魔台
-    description: 是否允許使用附魔台
-  craft:
-    display-name: 工作台
-    description: 是否允許使用工作台
-  lever:
-    display-name: 控制桿
-    description: 是否允許切換控制桿
-  brew:
-    display-name: 釀造台
-    description: 是否允許使用釀造台
-  anvil:
-    display-name: 鐵砧
-    description: 是否允許使用鐵砧
-  harvest:
-    display-name: 收割
-    description: 是否允許玩家收割作物
-  hopper:
-    display-name: 特殊容器
-    description: 如漏斗、熔爐、投擲器、發射器、高爐、煙燻爐
-  ender_pearl:
-    display-name: 丟擲終界珍珠
-    description: 是否允許丟擲終界珍珠
-  trig_pressure_proj:
-    display-name: 壓力板(投射物)
-    description: 是否允許投射物(箭或雪球)觸發壓力板
-  item_frame_proj_damage:
-    display-name: 投射物破壞展示框
-    description: 是否允許投射物(箭或雪球)破壞物品展示框
-  shoot:
-    display-name: 射擊
-    description: 包括箭或雪球或三叉戟或火球或風彈(1.21)
+    display-name: Entity Explode (No-TNT)
+    description: Creeper/Wither Skull/Ender Crystal/Fireball/Bed/Respawn Anchor.
+  dragon_break_block:
+    display-name: Ender Dragon Break Block
+    description: Whether ender dragon can break blocks.
+  fire_spread:
+    display-name: Fire Spread
+    description: Prevent fire spread in dominion.
+  burn_block:
+    display-name: Burn Block
+    description: Whether blocks can burn.
+  burn_entity:
+    display-name: Burn Entity
+    description: Whether entity can burn or take high-temperature damage (not including player).
   flow_in_protection:
-    display-name: 流入阻擋
-    description: 阻止外部水流或熔岩流入領地
-  player_damage:
-    display-name: 玩家互毆
-    description: 是否允許玩家直接傷害其他玩家
-  glow:
-    display-name: 發光
-    description: 如追跡之箭效果
-  feed:
-    display-name: 餵食動物
-    description: 是否允許餵食動物
-  show_border:
-    display-name: 顯示邊界
-    description: 玩家進入領地時顯示領地邊界
-  beacon:
-    display-name: 烽火台
-    description: 是否允許操作烽火台
-  pressure:
-    display-name: 壓力板(玩家)
-    description: 是否允許玩家觸發壓力板
-  container:
-    display-name: 容器
-    description: 箱子或木桶或界伏盒或盔甲座或物品展示框
-  move:
-    display-name: 玩家移動
-    description: 是否允許玩家在領地內移動
+    display-name: Flow In
+    description: Prevent external water/lava flow into dominion.
   gravity_block:
-    display-name: 重力方塊
-    description: 是否允許重力方塊在領地內下落(false 會轉為物品)
-  item_frame_interactive:
-    display-name: 互動展示框
-    description: 是否允許互動展示框(旋轉物品)
-  repeater:
-    display-name: 中繼器
-    description: 是否允許切換或互動中繼器
-  anchor:
-    display-name: 重生錨
-    description: 是否允許設定或使用重生錨
-  trample:
-    display-name: 踩踏農田
-    description: 是否允許踩踏農田(false 表示保護農田)
+    display-name: Falling Block
+    description: Whether gravity block can fall in dominion (false will make them to item).
   ice_melt:
-    display-name: 冰塊融化
-    description: 是否允許冰塊融化
+    display-name: Ice Melt
+    description: Whether to allow ice to melt.
   ice_form:
-    display-name: 冰塊形成
-    description: 是否允許冰塊形成(防止冰霜漫遊)
+    display-name: Ice Form
+    description: Whether to allow ice to form (prevents Frost Walker).
   snow_accumulation:
-    display-name: 累積積雪
-    description: 是否允許積雪累積
+    display-name: Snow Accumulation
+    description: Whether to allow snow accumulation.
   snow_melt:
-    display-name: 累積積雪融化
-    description: 是否允許積雪融化
+    display-name: Snow Melt
+    description: Whether to allow snow to melt.
+  trample:
+    display-name: Trample Farmland
+    description: Whether farmland can be trampled (false means protect farmland).
+  decay:
+    display-name: Leaf Decay
+    description: Whether leaves can decay.
+  hopper_outside:
+    display-name: Hopper (Outside)
+    description: False to prevent outside hopper from sucking container in dominion.
+  piston_outside:
+    display-name: Piston
+    description: False to prevent piston from pushing/pulling blocks across dominion.
+  trig_pressure_proj:
+    display-name: Pressure Plate (Projectile)
+    description: When projectile (arrow/snowball) can trigger pressure plate.
+  trig_pressure_mob:
+    display-name: Pressure Plate (Mob)
+    description: Whether mob (player not included) can trigger pressure plate.
+  trig_pressure_drop:
+    display-name: Pressure Plate (Dropping)
+    description: Whether dropping items can trigger pressure plate.
+  item_frame_proj_damage:
+    display-name: Projectile Damage Item Frame
+    description: Whether projectile (arrow/snowball) can break item frame.
+  mob_drop_item:
+    display-name: Mob Drop Item
+    description: Whether mob drop item when killed.
+  show_border:
+    display-name: Show Border
+    description: Show dominion border to player when walking in.
+  admin:
+    display-name: Administrator
+    description: Member with this flag can manage normal members and groups.
+  move:
+    display-name: Player Move
+    description: Whether player can move in dominion.
+  teleport:
+    display-name: Teleportation
+    description: False means can't teleport to this dominion.
+  fly:
+    display-name: Fly
+    description: NOT elytra fly, it's like creative mode fly.
+  riding:
+    display-name: Riding
+    description: Whether can ride vehicle (boat, minecart, horse etc.).
+  ender_pearl:
+    display-name: End Pearl
+    description: Whether can throw ender pearl.
+  raid:
+    display-name: Raid
+    description: Whether can trigger raid.
+  place:
+    display-name: Place Block
+    description: Whether can place blocks (normal blocks, item frame, lava, water).
+  break:
+    display-name: Break Block
+    description: Whether can break blocks (including item frame, armor stand).
+  ignite:
+    display-name: Ignite
+    description: Whether can ignite fire.
+  pick_up:
+    display-name: Pick Up Item
+    description: Whether player can pick up items in dominion.
+  drop_item:
+    display-name: Drop Item
+    description: Whether player can drop item in dominion.
+  door:
+    display-name: Door
+    description: Whether can interact with door (including trapdoor, fence gate).
+  button:
+    display-name: Button
+    description: Whether can click button.
+  lever:
+    display-name: Lever
+    description: Whether can switch lever.
+  pressure:
+    display-name: Pressure Plate (Player)
+    description: Whether player can trigger pressure plate.
+  repeater:
+    display-name: Repeater
+    description: Whether can change (interact with) repeater.
+  comparer:
+    display-name: Comparer
+    description: Whether can interact with comparer.
+  note_block:
+    display-name: Note Block
+    description: Whether can interact with note block.
+  container:
+    display-name: Special Container
+    description: Such as hopper, furnace, dropper, dispenser, blast furnace, smoker.
+  hopper:
+    display-name: Special Container
+    description: Such as hopper, furnace, dropper, dispenser, blast furnace, smoker.
+  craft:
+    display-name: Crafting Table
+    description: Whether can use crafting table.
+  crafter:
+    display-name: Crafter
+    description: Whether can interact with crafter (1.21).
+  anvil:
+    display-name: Anvil
+    description: Whether can use anvil.
+  enchant:
+    display-name: Enchant Table
+    description: Whether can use enchant table.
+  brew:
+    display-name: Brewing Stand
+    description: Whether can use brewing stand.
+  beacon:
+    display-name: Beacon
+    description: Whether can interact with beacon.
+  jukebox:
+    display-name: Jukebox
+    description: Whether can interact with jukebox.
+  lectern:
+    display-name: Lectern
+    description: Whether can interact with lectern.
+  bookshelf:
+    display-name: Chiseled Bookshelf
+    description: Whether can interact with chiseled bookshelf.
+  dragon_egg:
+    display-name: Dragon Egg
+    description: Whether can interact with dragon egg.
+  item_frame_interactive:
+    display-name: Item Frame Interactive
+    description: Whether can interact with item frame (rotate item).
+  edit_sign:
+    display-name: Edit Sign
+    description: Whether can edit sign.
+  bed:
+    display-name: Bed
+    description: Weather can sleep in bed (set spawn point).
+  anchor:
+    display-name: Respawn Anchor
+    description: Weather can set/use respawn anchor.
+  vehicle_spawn:
+    display-name: Vehicle Spawn
+    description: Whether can spawn vehicle (boat, minecart).
+  vehicle_destroy:
+    display-name: Vehicle Destroy
+    description: Whether can destroy vehicle (boat, minecart).
+  harvest:
+    display-name: Harvest
+    description: Whether player can harvest crops.
+  sowing:
+    display-name: Sowing
+    description: Whether to allow sowing crops (wheat, carrot etc.).
+  feed:
+    display-name: Feed Animal
+    description: Whether can feed animals.
+  shear:
+    display-name: Shear
+    description: Whether can cut wool from sheep.
+  leash:
+    display-name: Leash
+    description: Whether to allow leashing animals/mobs/entities.
+  dye:
+    display-name: Dye
+    description: What can dye (sheep, dog collar, cat collar).
+  honey:
+    display-name: Honey
+    description: Whether can interact with hive (to get honey).
+  cake:
+    display-name: Cake
+    description: Whether can eat cake.
+  trade:
+    display-name: Villager Trade
+    description: Whether can trade with villager.
+  shoot:
+    display-name: Shooting
+    description: Include arrow/snowball/trident/fireball/wind-charge(1.21).
+  egg:
+    display-name: Throw Egg
+    description: Whether can throw egg.
+  hook:
+    display-name: Hook
+    description: Whether can use fishing rod.
   pvp:
     display-name: PVP
-    description: 玩家間傷害
-  leash:
-    display-name: 拴繩
-    description: 是否允許用拴繩套住動物或生物
-  sowing:
-    display-name: 播種
-    description: 是否允許播種作物(小麥、紅蘿蔔等)
-  drop_item:
-    display-name: 丢弃物品
-    description: 是否可以丢弃背包中的物品
-  jukebox:
-    display-name: 唱片机
-    description: 是否可以使用唱片机
-  lectern:
-    display-name: 讲台
-    description: 是否可以使用讲台
-  pick_up:
-    display-name: 拾取物品
-    description: 是否可以拾取地上的物品
-  decay:
-    display-name: 樹葉腐爛
-    description: 是否允許樹葉自然腐爛
-  bookshelf:
-    display-name: 雕紋書架
-    description: 是否可以與雕紋書架互動
-rename-template-inputter-text:
-  button: 重新命名
-  hint: 輸入新的範本名稱
-  description: 重新命名此範本
-dominion-operate-command-text:
-  resize-description: 以指定大小與方向調整領地尺寸
-  easy-expand-description: 根據玩家目前位置輕鬆擴張領地
-  easy-contract-description: 根據玩家目前位置輕鬆縮小領地
-  delete-description: 刪除領地；使用 'force' 確認刪除
-  set-message-description: 設定領地進入或離開訊息
-  set-teleport-description: 設定領地傳送點
-  rename-description: 重新命名領地
-  set-map-color-description: 設定領地地圖顏色
-  give-description: 將領地轉讓給玩家
-  tp-description: 傳送至領地
-  switch-ui-description: 切換領地指令的介面模式
-dominion-create-command-text:
-  create-description: 使用選取點建立新領地
-  create-sub-description: 在既有領地中建立子領地
-  auto-create-description: 自動於目前位置周圍建立領地
-  auto-create-sub-description: 自動於既有領地中建立子領地
-dominion-flag-command-text:
-  set-env-description: 設定領地環境權限
-  set-guest-description: 設定領地通用權限權限
-group-command-text:
-  create-group-description: 在領地中建立新群組
-  delete-group-description: 從領地中刪除群組
-  rename-group-description: 重新命名領地內群組
-  set-group-flag-description: 設定群組權限權限
-  add-member-description: 新增成員至群組
-  remove-member-description: 從群組中移除成員
-member-command-text:
-  add-member-description: 新增玩家為領地成員
-  set-member-privilege-description: 設定成員的權限權限
-  remove-member-description: 從領地移除成員
+    description: Damage between players.
+  monster_killing:
+    display-name: Monster Killing
+    description: Whether can do harm to monsters.
+  animal_killing:
+    display-name: Animal Killing
+    description: Whether can do harm to animals.
+  villager_killing:
+    display-name: Villager Killing
+    description: Whether can do harm to villager.
+  glow:
+    display-name: Glow
+    description: Like glowing arrow effect.
+dominion-text:
+  loading-config: Loading Configurations...
+  plugin-enabled: Plugin Enabled!
+  plugin-version: 'Plugin Version: {0}'
+  notification-prefix: '&6[&eDominion&6]&f'
 console-text:
-  in-game-only: 此介面僅限遊戲內使用，請於遊戲中操作
-  page-info: §7 第 {0}/{1} 頁 - 共 {2} 項
+  in-game-only: This ui is not available in console mode. Please use it in-game.
+  page-info: §7 Page {0}/{1} - Total {2}
   desc-prefix: §7      - §f{0}
 ui-commands-description:
-  main-menu: 開啟領地主選單
-  list-all: 列出伺服器所有領地
-  migrate-list: 列出可遷移的 Residence 領地
-  dominion-list: 列出你可管理的領地
-  dominion-manage: 管理領地功能選單
-  group-list: 列出領地群組
-  group-flags: 管理群組權限權限
-  member-list: 列出領地成員
-  member-flags: 管理成員權限權限
-  environment-flags: 管理領地環境權限
-  guest-flags: 管理領地通用權限權限
+  main-menu: Open the Dominion main menu.
+  list-all: List all dominions of this server.
+  migrate-list: List all residences can migrate to Dominion.
+  dominion-list: List all dominions you can manage.
+  dominion-manage: Manage menu of a dominion.
+  group-list: List groups of a dominion.
+  group-flags: Manage flags of a group.
+  member-list: List members of a dominion.
+  member-flags: Manage flags of a member.
+  environment-flags: Manage environment flags of a dominion.
+  guest-flags: Manage guest privilege flags of a dominion.
+  list-all-of-description: List all dominions owned by a player.
+multi-server-manager-text:
+  get-id-by-name-error: Server name ({0}) does not exist.
+  get-name-by-id-error: Server ID ({0}) does not exist.
+  warn-update-server-name: There is already a server with ID {0} and name {1}, but the current server name is {2}. Updating the name to {2}.
+asserts-text:
+  dom-name-should-not-empty: Dominion name should not be empty.
+  dom-name-invalid: Dominion name should not contain space, dot, §, &, ~ or ,.
+  dom-name-exist: 'Dominion name: {0} already exists.'
+  group-name-should-not-empty: Group name should not be empty.
+  group-name-invalid: Group name should not contain space or dot.
+  group-name-exist: 'Group name: {0} already exists.'
+  not-allow-dom-in-world: Player {0} is not allowed to create dominions in world {1}.
+  exceed-max-amount: 'Player {0} can not create more dominions (max: {1}).'
+  exceed-max-amount-of-world: 'Player {0} can not create more dominions in world {1} (max: {2}).'
+  x-length-too-short: West-East(X) length {0} should more than {1}.
+  y-length-too-short: Down-Up(Y) length {0} should more than {1}.
+  z-length-too-short: South-North(Z) length {0} should more than {1}.
+  x-length-too-long: West-East(X) length {0} should less than {1}.
+  y-length-too-long: Down-Up(Y) length {0} should less than {1}.
+  z-length-too-long: South-North(Z) length {0} should less than {1}.
+  y-too-high: The highest point of the dominion {0} should less than {1}.
+  y-too-low: The lowest point of the dominion {0} should more than {1}.
+  not-owner: Only {0}'s owner can perform this command/operation.
+  not-admin: Only {0}'s admin can perform this command/operation.
+  intersect-with-dom: Dominion {0} intersects with dominion {1}.
+  intersect-with-spawn: Dominion {0} intersects with the spawn protection area.
+  outside-of-parent-dom: Dominion {0} is outside of it's parent dominion {1}.
+  cant-contain-child: Dominion {0} can not contain it's child dominion {1}.
+  missing-parent-dom: Parent dominion of {0} is missing.
+  sub-dom-too-deep: Player {0} can't create sub-dominion of depth more than {1}.
+  with-draw-money: Successfully paid {0} for dominion.
+  deposit-money: Successfully refunded {0} from dominion.
+  group-not-belong-dominion: Group {0} does not belong to dominion {1}.
+converts-text:
+  must-be-player: Must be a player for this command/operation.
+  must-be-online: The player ({0}) must be online.
+  world-not-exist: The world ({0}) does not exist.
+  unknown-env-flag: 'Unknown environment flag: {0}.'
+  unknown-pre-flag: 'Unknown privilege flag: {0}.'
+  unknown-dominion: 'Unknown dominion: {0}.'
+  invalid-number-format: 'Invalid number of arguments: {0}.'
+  invalid-boolean-format: 'Invalid boolean value of arguments: {0}, should be true or false.'
+  invalid-points: You need to select two points in the same world to create a dominion.
+  unknown-block-face: 'Unknown direction: {0}.'
+  unknown-resize-type: 'Unknown resize type: {0}.'
+  unknown-message-type: 'Unknown message type: {0}.'
+  invalid-color-format: 'Invalid color value of arguments: {0}, should be a hex color value (0xRRGGBB).'
+  unknown-player: Player {0} have not been recorded (after the plugin is installed).
+  not-member: Player {0} is not a member of dominion {1}.
+  no-group-found: No group found with the name {0} in dominion {1}.
+others-text:
+  auto-clean-start: Start auto clean players who have not logged in for {0} days.
+  auto-cleaning-player: Cleaned {0}'s data.
+  auto-clean-end: Auto clean finished.
+  no-permission-for-flag: '&4&lYou do not have {0}({1}) permission.'
+vault-connect-text:
+  vault-unavailable: Vault not available, please install Vault or VaultUnlock to use economy features.
+  economy-unavailable: Economy plugin not found, you need to install one Economy plugin to use economy features.
+  insufficient-funds: Insufficient money, need {0} {1}, but only have {2} {1}.
+dominion-provider-handler-text:
+  create-success: Create dominion {0} success.
+  create-failed: 'Create dominion {0} failed, reason: {1}'
+  expand-success: Expand dominion {0} success.
+  expand-failed: 'Expand dominion {0} failed, reason: {1}'
+  contract-success: Contract dominion {0} success.
+  contract-failed: 'Contract dominion {0} failed, reason: {1}'
+  delete-success: Delete dominion {0} success.
+  delete-failed: 'Delete dominion {0} failed, reason: {1}'
+  delete-confirm: Use command '{0}' to confirm delete the dominion {1} and its subs, this operation cannot be undone.
+  list-sub-doms: 'The dominion {0} has subs: {1}'
+  rename-failed: 'Rename dominion {0} failed, reason: {1}'
+  rename-success: Rename dominion {0} to {1} success.
+  same-name: The new name is the same as the old name.
+  give-success: Give dominion {0} to {1} success.
+  give-failed: 'Give dominion {0} to other failed, reason: {1}'
+  give-confirm: Use command '{0}' to confirm give the dominion {1} to {2}, this operation cannot be undone.
+  already-belong: The dominion {0} already belongs to {1}.
+  cannot-give-sub: Dominion {0} is a sub-dominion, cannot give it to others.
+  tp-location-not-in-dominion: The teleportation location is not in the dominion {0}.
+  tp-location-set-success: Set teleportation location for dominion {0} success.
+  tp-location-set-failed: 'Set teleportation location for dominion {0} failed, reason: {1}'
+  set-enter-message-success: Set enter message for dominion {0} success.
+  set-enter-message-failed: 'Set enter message for dominion {0} failed, reason: {1}'
+  set-leave-message-success: Set leave message for dominion {0} success.
+  set-leave-message-failed: 'Set leave message for dominion {0} failed, reason: {1}'
+  set-map-color-success: Set map color for dominion {0} success.
+  set-map-color-failed: 'Set map color for dominion {0} failed, reason: {1}'
+  set-env-flag-success: Set env flag {0} to {1} success.
+  set-env-flag-failed: 'Set env flag {0} to {1} failed, reason: {2}'
+  set-guest-flag-success: Set guest flag {0} to {1} success.
+  set-guest-flag-failed: 'Set guest flag {0} to {1} failed, reason: {2}'
+  set-owner-glow-flag-success: Set owner Glow Flag to {0} success.
+  set-owner-glow-flag-failed: 'Set owner Glow Flag to {0} failed, reason: {1}'
+member-provider-handler-text:
+  set-flag-success: Successfully set flag {0} for {1} in {2}.
+  owner-only: Only owner can manage admin member.
+  group-already: This member belong to group {0} so you can't manage it separately.
+  set-flag-failed: 'Failed to set flag, reason: {0}'
+  add-member-success: Successfully added {0} to {1}.
+  already-member: '{0} is already a member of {1}.'
+  cant-be-owner: You can't add dominion owner as a member.
+  add-member-failed: 'Failed to add member, reason: {0}'
+  remove-member-success: Successfully removed {0} from {1}.
+  remove-member-failed: 'Failed to remove member, reason: {0}'
+group-provider-handler-text:
+  owner-only: Only the owner can manage admin group.
+  set-flag-success: Set group {0} flag {1} to {2} successfully.
+  set-flag-failed: 'Failed to set group flag, reason: {3}'
+  create-group-success: Group {0} created successfully.
+  create-group-failed: 'Failed to create group, reason: {0}'
+  delete-group-success: Group {0} deleted successfully.
+  delete-group-failed: 'Failed to delete group, reason: {0}'
+  rename-group-success: Group {0} renamed to {1} successfully.
+  rename-group-failed: 'Failed to rename group, reason: {0}'
+  add-member-success: Member {0} added to group {1} successfully.
+  add-member-failed: 'Failed to add member to group, reason: {0}'
+  remove-member-success: Member {0} removed from group {1} successfully.
+  remove-member-failed: 'Failed to remove member from group, reason: {0}'
+select-point-events-handler-text:
+  first-point: First point selected at {0}, {1}, {2}.
+  second-point: Second point selected at {0}, {1}, {2}.
+  not-same-world: The two points are not in the same world.
+  price: The price of the dominion is {0} {1}.
+  owner: 'Owner: {0}'
+  size: 'Size: {0}x{1}x{2}'
+  square: 'Square: {0}'
+  volume: 'Volume: {0}'
+  no-dominion: No dominion found at the location {0}, {1}, {2}.
+  found-dominion: Location {0}, {1}, {2} is in dominion {3}.
+create-dominion-inputter-text:
+  button: CREATE
+  description: Create a new dominion.
+  hint: A new Dominion will be created around you with the input name.
+create-group-inputter-text:
+  button: CREATE
+  hint: Enter new group name you want to create.
+rename-dominion-inputter-text:
+  button: RENAME
+  hint: Enter new dominion name.
+  description: Rename this dominion.
+edit-message-inputter-text:
+  enter-button: ENTER MSG
+  enter-description: Message shown when entering dominion.
+  enter-hint: Enter new enter message.
+  leave-button: LEAVE MSG
+  leave-description: Message shown when player leaves dominion.
+  leave-hint: Enter new leave message.
+create-template-inputter-text:
+  button: CREATE
+  hint: Enter the name of the new template.
+rename-group-inputter-text:
+  button: RENAME
+  hint: Enter new group name.
+  description: Rename this group.
+resize-dominion-inputter-text:
+  expand: EXPAND
+  contract: CONTRACT
+  expand-hint: Enter the new size of the {0} expand to {1}.
+  contract-hint: Enter the new size of the {0} contract to {1}.
+search-player-inputter-text:
+  button: SEARCH
+  hint: Enter the exact name of the player you want to search.
+set-map-color-inputter-text:
+  button: COLOR
+  hint: 'Enter the hex color code (e.g., #FF5733) to set the map color.'
+  description: Color of the dominion on the web map.
+rename-template-inputter-text:
+  button: RENAME
+  hint: Enter new template name.
+  description: Rename this template.
+administrator-command-text:
+  reload-cache-button: RELOAD CACHE
+  reload-cache-description: Reload the cache (dont do this frequently).
+  reload-config-button: RELOAD CONFIG
+  reload-config-description: Reload the configuration.
+  reload-description: Reload cache, configuration, or both.
+  export-description: Export data (MCA list or database).
+  import-description: Import database data.
+  update-language-description: Regenerate language files from plugin internal language files.
+  update-language-confirm: This will overwrite your current language files, please confirm by adding 'confirm' at the end of the command.
+  reloading-dominion-cache: Reloading dominion cache...
+  reloaded-dominion-cache: Reload dominion cache success!
+  reloading-member-cache: Reloading member privilege cache...
+  reloaded-member-cache: Reload member privilege cache success!
+  reloading-group-cache: Reloading group cache...
+  reloaded-group-cache: Reload group cache success!
+  reloading-config: Reloading configuration...
+  exporting-mca-list: Exporting MCA list...
+  create-mca-folder-failed: Failed to create mca list folder.
+  writing-mca-list: Writing list of world {0}...
+  create-mca-file-failed: Failed to create mca list file {0}.
+  export-mcalist-failed: 'Failed to export MCA list of world {0}, reason: {1}.'
+  exported-mcalist: Exported MCA list to {0} successfully.
+  import-hint: Import database is only for migration or restore-backup, don't use it to merge two databases.
+  import-info: If current database is not empty, it will throw some errors and may cause data loss or corruption.
+  import-confirm: Please confirm the import operation by adding 'confirm' at the end of the command.
+migration-command-text:
+  migrate-success: Migrated residence {0} to dominion successfully.
+  migrate-failed: 'Failed to migrate residence. Reason: {0}'
+  missing-residence: Residence {0} not found.
+  not-your-residence: Residence {0} is not yours.
+  migrate-description: Migrate a specific residence to dominion.
+  migrate-all-description: Migrate all residences to dominions.
+template-command-text:
+  name-not-valid: Template name cannot contain space
+  template-name-exist: Template {0} already exists
+  create-template-fail: 'Failed to create template, reason: {0}'
+  create-template-success: Successfully created template {0}
+  template-not-exist: Template {0} does not exist
+  delete-template-success: Successfully deleted template {0}
+  delete-template-fail: 'Failed to delete template, reason: {0}'
+  apply-template-success: Successfully applied template {0} to {1}
+  apply-template-fail: 'Failed to apply template, reason: {0}'
+  set-flag-success: Successfully set {0} flag of template {1} to {2}
+  set-flag-fail: 'Failed to set flag, reason: {0}'
+  rename-template-success: Successfully renamed template to {0}
+  rename-template-fail: 'Failed to rename template, reason: {0}'
+  create-template-description: Create a new privilege template.
+  delete-template-description: Delete an existing privilege template.
+  set-template-flag-description: Set a privilege flag in a template.
+  member-apply-template-description: Apply a privilege template to a member.
+  rename-template-description: Rename an existing privilege template.
+group-title-command-text:
+  group-not-belonging: Don't belong to group {0}.
+  using-title-success: Using title {0} successfully.
+  using-title-fail: 'Failed to use title, reason: {0}'
+  use-title-description: Use a group title or disable current title.
+copy-command-text:
+  copy-env-success: Copied environment flag from {0} to {1} success.
+  copy-guest-success: Copied guest privilege flag from {0} to {1} success.
+  copy-member-success: Copied members from {0} to {1} success.
+  copy-group-success: Copied groups from {0} to {1} success.
+  copy-environment-description: Copy environment flags from one dominion to another.
+  copy-guest-description: Copy guest privilege flags from one dominion to another.
+  copy-member-description: Copy members from one dominion to another.
+  copy-group-description: Copy groups from one dominion to another.
+dominion-operate-command-text:
+  resize-description: Resize a dominion with a specific size and direction.
+  easy-expand-description: Expand the dominion size easily based on the player's current location.
+  easy-contract-description: Contract the dominion size easily based on the player's current location.
+  delete-description: Delete a dominion. Use 'force' to confirm deletion.
+  set-message-description: Set a message for a dominion, either for entering or leaving.
+  set-teleport-description: Set the teleport location for a dominion.
+  rename-description: Rename a dominion.
+  set-map-color-description: Set the map color for a dominion.
+  give-description: Give a dominion to a player.
+  tp-description: Teleport to a dominion.
+  switch-ui-description: Switch the UI type for the dominion commands.
+dominion-create-command-text:
+  create-description: Create a new dominion using selected points.
+  create-sub-description: Create a sub-dominion within an existing dominion.
+  auto-create-description: Automatically create a dominion around your current position.
+  auto-create-sub-description: Automatically create a sub-dominion within an existing dominion.
+dominion-flag-command-text:
+  set-env-description: Set environment flag for a dominion.
+  set-guest-description: Set guest privilege flag for a dominion.
+group-command-text:
+  create-group-description: Create a new group in a dominion.
+  delete-group-description: Delete a group from a dominion.
+  rename-group-description: Rename a group in a dominion.
+  set-group-flag-description: Set privilege flag for a group.
+  add-member-description: Add a member to a group.
+  remove-member-description: Remove a member from a group.
+member-command-text:
+  add-member-description: Add a player as member to a dominion.
+  set-member-privilege-description: Set privilege flag for a member in a dominion.
+  remove-member-description: Remove a member from a dominion.
+configuration-text:
+  loading-language: Loading language {0}...
+  load-language-fail: 'Failed to load language {0} reason: {1}, using default en_us.'
+  load-language-success: Successfully loaded language {0}.
+  loading-flag: Loading flag configuration...
+  load-flag-success: Successfully loaded flag configuration.
+  loading-limitations: Loading limitation configuration...
+  saving-default-limitation: Because no limitation file found, saving default limitation file.
+  save-limitation-fail: 'Failed to save limitation file: {0}'
+  loading-limitation: 'Loading limitation file: {0}...'
+  load-limitation-fail: 'Failed to load limitation file: {0} reason: {1}'
+  load-limitations: 'Successfully loaded {0} limitations: {1}.'
+  load-configuration: Successfully loaded configuration.
+  debug-enabled: Debug mode enabled.
+  prepare-database: Preparing database...
+  database-connected: Database connected successfully.
+  multi-server-sqlite: Database with type sqlite is not supported in multi-server mode, disabled multi-server mode.
+  server-id-invalid: Server id must be positive integer (> 0), disabled multi-server mode.
+limitation-text:
+  loading-world-settings: Loading world-settings...
+  loading-world-setting: Loading world-settings of {0}...
+  load-world-setting-failed: 'Failed to world-settings of {0} reason: {1}'
+  load-world-settings-success: 'Successfully loaded {0} world-settings: {1}.'
+database-manager-text:
+  exporting-database-tables: Exporting database tables...
+  export-table-fail: 'Export table failed, reason: {0}'
+  export-world-mapping-fail: 'Export world uid mapping failed, reason: {0}'
+  export-database-success: Export database to {0} successfully.
+  file-not-found: Database table file path {0} not found.
+  importing-database: Importing database...
+  file-corrupted: Some database table file is missing, please re-export the database tables.
+  convert-world-failed: The old world {0}({1}) is unable to find in current save, please make sure the world name is exist in current save.
+  import-database-fail: 'Import database failed, reason: {0}'
+  import-database-success: Import database successfully.
+teleport-manager-text:
+  cooling-down: Please wait for {0} seconds before teleporting again.
+  disabled: Teleportation is disabled for your permission group.
+  delay: Will teleport in {0} seconds, don't move...
+  unfinished-cancelled: Cancelled previous unfinished teleportation.
+  cancel-move: Cancelled teleportation due to movement.
+command-exception-text:
+  no-permission: You do not have permission {0} to do this.
+  invalid-arguments: Invalid arguments, usage e.g. {0}.
+inputter-text:
+  only-player: TUI inputter can only be used by a player.
+  cancel: ' [Send ''C'' to cancel the inputter.]'
+  inputter-cancelled: Inputter cancelled.
