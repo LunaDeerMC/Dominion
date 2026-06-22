@@ -1,589 +1,589 @@
 flags:
   animal_spawn:
-    display-name: Animal Spawn (Breeding)
-    description: Whether animals can spawn (including spawn egg & breeding).
+    display-name: 動物のスポーン（繁殖）
+    description: 動物のスポーンを許可するかどうか（スポーンエッグと繁殖を含む）。
   animal_move:
-    display-name: Animal Move
-    description: Whether animals can move in dominion.
+    display-name: 動物の移動
+    description: 領地内で動物の移動を許可するかどうか。
   villager_spawn:
-    display-name: Villager Breed
-    description: Whether villager can breeding (including spawn egg).
+    display-name: 村人の繁殖
+    description: 村人の繁殖を許可するかどうか（スポーンエッグを含む）。
   monster_spawn:
-    display-name: Monster Spawn
-    description: Whether monster can spawn (including spawn egg).
+    display-name: モンスターのスポーン
+    description: モンスターのスポーンを許可するかどうか（スポーンエッグを含む）。
   monster_move:
-    display-name: Monster Move
-    description: Whether monster can move in dominion.
+    display-name: モンスターの移動
+    description: 領地内でモンスターの移動を許可するかどうか。
   monster_damage:
-    display-name: Monster Kill Player
-    description: Whether monster can do harm to player.
+    display-name: モンスターのプレイヤー攻撃
+    description: モンスターがプレイヤーにダメージを与えられるかどうか。
   ender_man:
-    display-name: Ender Man
-    description: False to prevent ender-man from picking up blocks, spawning, teleporting.
+    display-name: エンダーマン
+    description: 無効にすると、エンダーマンのブロック持ち去り、スポーン、テレポートを防ぎます。
   tnt_explode:
-    display-name: TNT Explode
-    description: Whether TNT can explode.
+    display-name: TNT爆発
+    description: TNT の爆発を許可するかどうか。
   wither_spawn:
-    display-name: Wither Spawn
-    description: Whether can spawn wither, and wither' explode.
+    display-name: ウィザーのスポーン
+    description: ウィザーの召喚とウィザーによる爆発を許可するかどうか。
   creeper_explode:
-    display-name: Entity Explode (No-TNT)
-    description: Creeper/Wither Skull/Ender Crystal/Fireball/Bed/Respawn Anchor.
+    display-name: エンティティ爆発（TNT以外）
+    description: クリーパー、ウィザースカル、エンドクリスタル、火の玉、ベッド、リスポーンアンカーなど。
   dragon_break_block:
-    display-name: Ender Dragon Break Block
-    description: Whether ender dragon can break blocks.
+    display-name: エンダードラゴンのブロック破壊
+    description: エンダードラゴンがブロックを破壊できるかどうか。
   fire_spread:
-    display-name: Fire Spread
-    description: Prevent fire spread in dominion.
+    display-name: 火の延焼
+    description: 領地内での火の延焼を防ぎます。
   burn_block:
-    display-name: Burn Block
-    description: Whether blocks can burn.
+    display-name: ブロックの燃焼
+    description: ブロックが燃えることを許可するかどうか。
   burn_entity:
-    display-name: Burn Entity
-    description: Whether entity can burn or take high-temperature damage (not including player).
+    display-name: エンティティの燃焼
+    description: エンティティが燃える、または高温ダメージを受けることを許可するかどうか（プレイヤーを除く）。
   flow_in_protection:
-    display-name: Flow In
-    description: Prevent external water/lava flow into dominion.
+    display-name: 液体の流入
+    description: 外部からの水や溶岩が領地内へ流れ込むのを防ぎます。
   gravity_block:
-    display-name: Falling Block
-    description: Whether gravity block can fall in dominion (false will make them to item).
+    display-name: 落下ブロック
+    description: 領地内で重力ブロックの落下を許可するかどうか（無効にするとアイテム化します）。
   ice_melt:
-    display-name: Ice Melt
-    description: Whether to allow ice to melt.
+    display-name: 氷の融解
+    description: 氷が溶けることを許可するかどうか。
   ice_form:
-    display-name: Ice Form
-    description: Whether to allow ice to form (prevents Frost Walker).
+    display-name: 氷の生成
+    description: 氷の生成を許可するかどうか（氷渡りを防止します）。
   snow_accumulation:
-    display-name: Snow Accumulation
-    description: Whether to allow snow accumulation.
+    display-name: 雪の堆積
+    description: 雪が積もることを許可するかどうか。
   snow_melt:
-    display-name: Snow Melt
-    description: Whether to allow snow to melt.
+    display-name: 雪の融解
+    description: 雪が溶けることを許可するかどうか。
   trample:
-    display-name: Trample Farmland
-    description: Whether farmland can be trampled (false means protect farmland).
+    display-name: 耕地の踏み荒らし
+    description: 耕地が踏み荒らされることを許可するかどうか（無効で耕地を保護）。
   decay:
-    display-name: Leaf Decay
-    description: Whether leaves can decay.
+    display-name: 葉の自然消滅
+    description: 葉が自然消滅することを許可するかどうか。
   hopper_outside:
-    display-name: Hopper (Outside)
-    description: False to prevent outside hopper from sucking container in dominion.
+    display-name: ホッパー（外部）
+    description: 無効にすると、外部ホッパーが領地内コンテナからアイテムを吸い出すのを防ぎます。
   piston_outside:
-    display-name: Piston
-    description: False to prevent piston from pushing/pulling blocks across dominion.
+    display-name: ピストン
+    description: 無効にすると、ピストンが領地をまたいでブロックを押したり引いたりするのを防ぎます。
   trig_pressure_proj:
-    display-name: Pressure Plate (Projectile)
-    description: When projectile (arrow/snowball) can trigger pressure plate.
+    display-name: 感圧板（飛び道具）
+    description: 飛び道具（矢、雪玉）が感圧板を作動させられるかどうか。
   trig_pressure_mob:
-    display-name: Pressure Plate (Mob)
-    description: Whether mob (player not included) can trigger pressure plate.
+    display-name: 感圧板（モブ）
+    description: モブ（プレイヤーを除く）が感圧板を作動させられるかどうか。
   trig_pressure_drop:
-    display-name: Pressure Plate (Dropping)
-    description: Whether dropping items can trigger pressure plate.
+    display-name: 感圧板（ドロップ）
+    description: 落ちているアイテムが感圧板を作動させられるかどうか。
   item_frame_proj_damage:
-    display-name: Projectile Damage Item Frame
-    description: Whether projectile (arrow/snowball) can break item frame.
+    display-name: 飛び道具による額縁破壊
+    description: 飛び道具（矢、雪玉）が額縁を破壊できるかどうか。
   mob_drop_item:
-    display-name: Mob Drop Item
-    description: Whether mob drop item when killed.
+    display-name: モブのアイテムドロップ
+    description: モブが倒されたときにアイテムをドロップするかどうか。
   show_border:
-    display-name: Show Border
-    description: Show dominion border to player when walking in.
+    display-name: 境界を表示
+    description: プレイヤーが入ったときに領地の境界を表示します。
   admin:
-    display-name: Administrator
-    description: Member with this flag can manage normal members and groups.
+    display-name: 管理者
+    description: このフラグを持つメンバーは通常メンバーとグループを管理できます。
   move:
-    display-name: Player Move
-    description: Whether player can move in dominion.
+    display-name: プレイヤー移動
+    description: プレイヤーが領地内で移動できるかどうか。
   teleport:
-    display-name: Teleportation
-    description: False means can't teleport to this dominion.
+    display-name: テレポート
+    description: 無効にすると、この領地へテレポートできません。
   fly:
-    display-name: Fly
-    description: NOT elytra fly, it's like creative mode fly.
+    display-name: 飛行
+    description: エリトラ飛行ではなく、クリエイティブモードの飛行のようなものです。
   riding:
-    display-name: Riding
-    description: Whether can ride vehicle (boat, minecart, horse etc.).
+    display-name: 騎乗
+    description: 乗り物（ボート、トロッコ、馬など）に乗れるかどうか。
   ender_pearl:
-    display-name: End Pearl
-    description: Whether can throw ender pearl.
+    display-name: エンダーパール
+    description: エンダーパールを投げられるかどうか。
   raid:
-    display-name: Raid
-    description: Whether can trigger raid.
+    display-name: 襲撃
+    description: 襲撃を発生させられるかどうか。
   place:
-    display-name: Place Block
-    description: Whether can place blocks (normal blocks, item frame, lava, water).
+    display-name: ブロック設置
+    description: ブロックを設置できるかどうか（通常ブロック、額縁、溶岩、水などを含む）。
   break:
-    display-name: Break Block
-    description: Whether can break blocks (including item frame, armor stand).
+    display-name: ブロック破壊
+    description: ブロックを破壊できるかどうか（額縁や防具立てを含む）。
   ignite:
-    display-name: Ignite
-    description: Whether can ignite fire.
+    display-name: 着火
+    description: 火をつけられるかどうか。
   pick_up:
-    display-name: Pick Up Item
-    description: Whether player can pick up items in dominion.
+    display-name: アイテム拾得
+    description: プレイヤーが領地内でアイテムを拾えるかどうか。
   drop_item:
-    display-name: Drop Item
-    description: Whether player can drop item in dominion.
+    display-name: アイテム投棄
+    description: プレイヤーが領地内でアイテムを捨てられるかどうか。
   door:
-    display-name: Door
-    description: Whether can interact with door (including trapdoor, fence gate).
+    display-name: ドア
+    description: ドアと相互作用できるかどうか（トラップドア、フェンスゲートを含む）。
   button:
-    display-name: Button
-    description: Whether can click button.
+    display-name: ボタン
+    description: ボタンを押せるかどうか。
   lever:
-    display-name: Lever
-    description: Whether can switch lever.
+    display-name: レバー
+    description: レバーを切り替えられるかどうか。
   pressure:
-    display-name: Pressure Plate (Player)
-    description: Whether player can trigger pressure plate.
+    display-name: 感圧板（プレイヤー）
+    description: プレイヤーが感圧板を作動させられるかどうか。
   repeater:
-    display-name: Repeater
-    description: Whether can change (interact with) repeater.
+    display-name: リピーター
+    description: リピーターを変更（操作）できるかどうか。
   comparer:
-    display-name: Comparer
-    description: Whether can interact with comparer.
+    display-name: コンパレーター
+    description: コンパレーターと相互作用できるかどうか。
   note_block:
-    display-name: Note Block
-    description: Whether can interact with note block.
+    display-name: 音符ブロック
+    description: 音符ブロックと相互作用できるかどうか。
   container:
-    display-name: Special Container
-    description: Such as hopper, furnace, dropper, dispenser, blast furnace, smoker.
+    display-name: 特殊コンテナ
+    description: '例: ホッパー、かまど、ドロッパー、ディスペンサー、高炉、燻製器。'
   hopper:
-    display-name: Special Container
-    description: Such as hopper, furnace, dropper, dispenser, blast furnace, smoker.
+    display-name: 特殊コンテナ
+    description: '例: ホッパー、かまど、ドロッパー、ディスペンサー、高炉、燻製器。'
   craft:
-    display-name: Crafting Table
-    description: Whether can use crafting table.
+    display-name: 作業台
+    description: 作業台を使用できるかどうか。
   crafter:
-    display-name: Crafter
-    description: Whether can interact with crafter (1.21).
+    display-name: クラフター
+    description: クラフターと相互作用できるかどうか（1.21）。
   anvil:
-    display-name: Anvil
-    description: Whether can use anvil.
+    display-name: 金床
+    description: 金床を使用できるかどうか。
   enchant:
-    display-name: Enchant Table
-    description: Whether can use enchant table.
+    display-name: エンチャントテーブル
+    description: エンチャントテーブルを使用できるかどうか。
   brew:
-    display-name: Brewing Stand
-    description: Whether can use brewing stand.
+    display-name: 醸造台
+    description: 醸造台を使用できるかどうか。
   beacon:
-    display-name: Beacon
-    description: Whether can interact with beacon.
+    display-name: ビーコン
+    description: ビーコンと相互作用できるかどうか。
   jukebox:
-    display-name: Jukebox
-    description: Whether can interact with jukebox.
+    display-name: ジュークボックス
+    description: ジュークボックスと相互作用できるかどうか。
   lectern:
-    display-name: Lectern
-    description: Whether can interact with lectern.
+    display-name: 書見台
+    description: 書見台と相互作用できるかどうか。
   bookshelf:
-    display-name: Chiseled Bookshelf
-    description: Whether can interact with chiseled bookshelf.
+    display-name: 模様入りの本棚
+    description: 模様入りの本棚と相互作用できるかどうか。
   dragon_egg:
-    display-name: Dragon Egg
-    description: Whether can interact with dragon egg.
+    display-name: ドラゴンの卵
+    description: ドラゴンの卵と相互作用できるかどうか。
   item_frame_interactive:
-    display-name: Item Frame Interactive
-    description: Whether can interact with item frame (rotate item).
+    display-name: 額縁の操作
+    description: 額縁と相互作用できるかどうか（アイテムの回転）。
   edit_sign:
-    display-name: Edit Sign
-    description: Whether can edit sign.
+    display-name: 看板編集
+    description: 看板を編集できるかどうか。
   bed:
-    display-name: Bed
-    description: Weather can sleep in bed (set spawn point).
+    display-name: ベッド
+    description: ベッドで眠れるかどうか（リスポーン地点の設定）。
   anchor:
-    display-name: Respawn Anchor
-    description: Weather can set/use respawn anchor.
+    display-name: リスポーンアンカー
+    description: リスポーンアンカーを設定・使用できるかどうか。
   vehicle_spawn:
-    display-name: Vehicle Spawn
-    description: Whether can spawn vehicle (boat, minecart).
+    display-name: 乗り物の設置
+    description: 乗り物（ボート、トロッコ）を設置できるかどうか。
   vehicle_destroy:
-    display-name: Vehicle Destroy
-    description: Whether can destroy vehicle (boat, minecart).
+    display-name: 乗り物の破壊
+    description: 乗り物（ボート、トロッコ）を破壊できるかどうか。
   harvest:
-    display-name: Harvest
-    description: Whether player can harvest crops.
+    display-name: 収穫
+    description: プレイヤーが作物を収穫できるかどうか。
   sowing:
-    display-name: Sowing
-    description: Whether to allow sowing crops (wheat, carrot etc.).
+    display-name: 種まき
+    description: 作物（小麦、ニンジンなど）の植え付けを許可するかどうか。
   feed:
-    display-name: Feed Animal
-    description: Whether can feed animals.
+    display-name: 動物への餌やり
+    description: 動物に餌を与えられるかどうか。
   shear:
-    display-name: Shear
-    description: Whether can cut wool from sheep.
+    display-name: 毛刈り
+    description: 羊から羊毛を刈り取れるかどうか。
   leash:
-    display-name: Leash
-    description: Whether to allow leashing animals/mobs/entities.
+    display-name: リード
+    description: 動物・モブ・エンティティにリードを付けられるかどうか。
   dye:
-    display-name: Dye
-    description: What can dye (sheep, dog collar, cat collar).
+    display-name: 染色
+    description: 染色できるもの（羊、犬の首輪、猫の首輪）。
   honey:
-    display-name: Honey
-    description: Whether can interact with hive (to get honey).
+    display-name: ハチミツ
+    description: ハチの巣と相互作用できるかどうか（ハチミツ採取）。
   cake:
-    display-name: Cake
-    description: Whether can eat cake.
+    display-name: ケーキ
+    description: ケーキを食べられるかどうか。
   trade:
-    display-name: Villager Trade
-    description: Whether can trade with villager.
+    display-name: 村人取引
+    description: 村人と取引できるかどうか。
   shoot:
-    display-name: Shooting
-    description: Include arrow/snowball/trident/fireball/wind-charge(1.21).
+    display-name: 射撃
+    description: 矢、雪玉、トライデント、火の玉、ウィンドチャージ（1.21）を含みます。
   egg:
-    display-name: Throw Egg
-    description: Whether can throw egg.
+    display-name: 卵投げ
+    description: 卵を投げられるかどうか。
   hook:
-    display-name: Hook
-    description: Whether can use fishing rod.
+    display-name: 釣り竿
+    description: 釣り竿を使用できるかどうか。
   pvp:
     display-name: PVP
-    description: Damage between players.
+    description: プレイヤー同士のダメージ。
   monster_killing:
-    display-name: Monster Killing
-    description: Whether can do harm to monsters.
+    display-name: モンスター攻撃
+    description: モンスターにダメージを与えられるかどうか。
   animal_killing:
-    display-name: Animal Killing
-    description: Whether can do harm to animals.
+    display-name: 動物攻撃
+    description: 動物にダメージを与えられるかどうか。
   villager_killing:
-    display-name: Villager Killing
-    description: Whether can do harm to villager.
+    display-name: 村人攻撃
+    description: 村人にダメージを与えられるかどうか。
   glow:
-    display-name: Glow
-    description: Like glowing arrow effect.
+    display-name: 発光
+    description: 発光の矢のような効果です。
 dominion-text:
-  loading-config: Loading Configurations...
-  plugin-enabled: Plugin Enabled!
-  plugin-version: 'Plugin Version: {0}'
+  loading-config: 設定を読み込み中...
+  plugin-enabled: プラグインを有効化しました！
+  plugin-version: 'プラグインバージョン: {0}'
   notification-prefix: '&6[&eDominion&6]&f'
 console-text:
-  in-game-only: This ui is not available in console mode. Please use it in-game.
-  page-info: §7 Page {0}/{1} - Total {2}
+  in-game-only: この UI はコンソールモードでは使用できません。ゲーム内で使用してください。
+  page-info: §7 ページ {0}/{1} - 合計 {2}
   desc-prefix: §7      - §f{0}
 ui-commands-description:
-  main-menu: Open the Dominion main menu.
-  list-all: List all dominions of this server.
-  migrate-list: List all residences can migrate to Dominion.
-  dominion-list: List all dominions you can manage.
-  dominion-manage: Manage menu of a dominion.
-  group-list: List groups of a dominion.
-  group-flags: Manage flags of a group.
-  member-list: List members of a dominion.
-  member-flags: Manage flags of a member.
-  environment-flags: Manage environment flags of a dominion.
-  guest-flags: Manage guest privilege flags of a dominion.
-  list-all-of-description: List all dominions owned by a player.
+  main-menu: Dominion のメインメニューを開きます。
+  list-all: このサーバーのすべての領地を一覧表示します。
+  migrate-list: Dominion に移行可能なすべての Residence を一覧表示します。
+  dominion-list: あなたが管理できるすべての領地を一覧表示します。
+  dominion-manage: 領地の管理メニューです。
+  group-list: 領地内のグループを一覧表示します。
+  group-flags: グループのフラグを管理します。
+  member-list: 領地内のメンバーを一覧表示します。
+  member-flags: メンバーのフラグを管理します。
+  environment-flags: 領地の環境フラグを管理します。
+  guest-flags: 領地のゲスト権限フラグを管理します。
+  list-all-of-description: プレイヤーが所有するすべての領地を一覧表示します。
 multi-server-manager-text:
-  get-id-by-name-error: Server name ({0}) does not exist.
-  get-name-by-id-error: Server ID ({0}) does not exist.
-  warn-update-server-name: There is already a server with ID {0} and name {1}, but the current server name is {2}. Updating the name to {2}.
+  get-id-by-name-error: サーバー名 ({0}) は存在しません。
+  get-name-by-id-error: サーバー ID ({0}) は存在しません。
+  warn-update-server-name: ID {0}、名前 {1} のサーバーは既に存在しますが、現在のサーバー名は {2} です。名前を {2} に更新します。
 asserts-text:
-  dom-name-should-not-empty: Dominion name should not be empty.
-  dom-name-invalid: Dominion name should not contain space, dot, §, &, ~ or ,.
-  dom-name-exist: 'Dominion name: {0} already exists.'
-  group-name-should-not-empty: Group name should not be empty.
-  group-name-invalid: Group name should not contain space or dot.
-  group-name-exist: 'Group name: {0} already exists.'
-  not-allow-dom-in-world: Player {0} is not allowed to create dominions in world {1}.
-  exceed-max-amount: 'Player {0} can not create more dominions (max: {1}).'
-  exceed-max-amount-of-world: 'Player {0} can not create more dominions in world {1} (max: {2}).'
-  x-length-too-short: West-East(X) length {0} should more than {1}.
-  y-length-too-short: Down-Up(Y) length {0} should more than {1}.
-  z-length-too-short: South-North(Z) length {0} should more than {1}.
-  x-length-too-long: West-East(X) length {0} should less than {1}.
-  y-length-too-long: Down-Up(Y) length {0} should less than {1}.
-  z-length-too-long: South-North(Z) length {0} should less than {1}.
-  y-too-high: The highest point of the dominion {0} should less than {1}.
-  y-too-low: The lowest point of the dominion {0} should more than {1}.
-  not-owner: Only {0}'s owner can perform this command/operation.
-  not-admin: Only {0}'s admin can perform this command/operation.
-  intersect-with-dom: Dominion {0} intersects with dominion {1}.
-  intersect-with-spawn: Dominion {0} intersects with the spawn protection area.
-  outside-of-parent-dom: Dominion {0} is outside of it's parent dominion {1}.
-  cant-contain-child: Dominion {0} can not contain it's child dominion {1}.
-  missing-parent-dom: Parent dominion of {0} is missing.
-  sub-dom-too-deep: Player {0} can't create sub-dominion of depth more than {1}.
-  with-draw-money: Successfully paid {0} for dominion.
-  deposit-money: Successfully refunded {0} from dominion.
-  group-not-belong-dominion: Group {0} does not belong to dominion {1}.
+  dom-name-should-not-empty: 領地名は空にできません。
+  dom-name-invalid: '領地名にはスペース、ドット、§、&、~、, を含められません。'
+  dom-name-exist: '領地名: {0} は既に存在します。'
+  group-name-should-not-empty: グループ名は空にできません。
+  group-name-invalid: グループ名にはスペースまたはドットを含められません。
+  group-name-exist: 'グループ名: {0} は既に存在します。'
+  not-allow-dom-in-world: プレイヤー {0} はワールド {1} で領地を作成できません。
+  exceed-max-amount: 'プレイヤー {0} はこれ以上領地を作成できません（最大: {1}）。'
+  exceed-max-amount-of-world: 'プレイヤー {0} はワールド {1} でこれ以上領地を作成できません（最大: {2}）。'
+  x-length-too-short: 西-東(X) の長さ {0} は {1} より大きくする必要があります。
+  y-length-too-short: 下-上(Y) の長さ {0} は {1} より大きくする必要があります。
+  z-length-too-short: 南-北(Z) の長さ {0} は {1} より大きくする必要があります。
+  x-length-too-long: 西-東(X) の長さ {0} は {1} より小さくする必要があります。
+  y-length-too-long: 下-上(Y) の長さ {0} は {1} より小さくする必要があります。
+  z-length-too-long: 南-北(Z) の長さ {0} は {1} より小さくする必要があります。
+  y-too-high: 領地 {0} の最高地点は {1} 未満である必要があります。
+  y-too-low: 領地 {0} の最低地点は {1} より大きい必要があります。
+  not-owner: このコマンド/操作を実行できるのは {0} の所有者のみです。
+  not-admin: このコマンド/操作を実行できるのは {0} の管理者のみです。
+  intersect-with-dom: 領地 {0} は領地 {1} と重なっています。
+  intersect-with-spawn: 領地 {0} はスポーン保護エリアと重なっています。
+  outside-of-parent-dom: 領地 {0} は親領地 {1} の外側にあります。
+  cant-contain-child: 領地 {0} は子領地 {1} を含めることができません。
+  missing-parent-dom: '{0} の親領地が見つかりません。'
+  sub-dom-too-deep: プレイヤー {0} は深さ {1} を超える子領地を作成できません。
+  with-draw-money: 領地の料金として {0} を支払いました。
+  deposit-money: 領地から {0} が返金されました。
+  group-not-belong-dominion: グループ {0} は領地 {1} に属していません。
 converts-text:
-  must-be-player: Must be a player for this command/operation.
-  must-be-online: The player ({0}) must be online.
-  world-not-exist: The world ({0}) does not exist.
-  unknown-env-flag: 'Unknown environment flag: {0}.'
-  unknown-pre-flag: 'Unknown privilege flag: {0}.'
-  unknown-dominion: 'Unknown dominion: {0}.'
-  invalid-number-format: 'Invalid number of arguments: {0}.'
-  invalid-boolean-format: 'Invalid boolean value of arguments: {0}, should be true or false.'
-  invalid-points: You need to select two points in the same world to create a dominion.
-  unknown-block-face: 'Unknown direction: {0}.'
-  unknown-resize-type: 'Unknown resize type: {0}.'
-  unknown-message-type: 'Unknown message type: {0}.'
-  invalid-color-format: 'Invalid color value of arguments: {0}, should be a hex color value (0xRRGGBB).'
-  unknown-player: Player {0} have not been recorded (after the plugin is installed).
-  not-member: Player {0} is not a member of dominion {1}.
-  no-group-found: No group found with the name {0} in dominion {1}.
+  must-be-player: このコマンド/操作はプレイヤーのみ実行できます。
+  must-be-online: プレイヤー ({0}) はオンラインである必要があります。
+  world-not-exist: ワールド ({0}) は存在しません。
+  unknown-env-flag: '不明な環境フラグ: {0}。'
+  unknown-pre-flag: '不明な権限フラグ: {0}。'
+  unknown-dominion: '不明な領地: {0}。'
+  invalid-number-format: '引数の数が無効です: {0}。'
+  invalid-boolean-format: '引数の真偽値が無効です: {0}。true または false を指定してください。'
+  invalid-points: 領地を作成するには、同じワールド内の 2 点を選択する必要があります。
+  unknown-block-face: '不明な方向: {0}。'
+  unknown-resize-type: '不明な拡縮タイプ: {0}。'
+  unknown-message-type: '不明なメッセージタイプ: {0}。'
+  invalid-color-format: '色の値が無効です: {0}。16 進数カラー値 (0xRRGGBB) を指定してください。'
+  unknown-player: プレイヤー {0} は記録されていません（プラグイン導入後）。
+  not-member: プレイヤー {0} は領地 {1} のメンバーではありません。
+  no-group-found: 領地 {1} に名前 {0} のグループは見つかりませんでした。
 others-text:
-  auto-clean-start: Start auto clean players who have not logged in for {0} days.
-  auto-cleaning-player: Cleaned {0}'s data.
-  auto-clean-end: Auto clean finished.
-  no-permission-for-flag: '&4&lYou do not have {0}({1}) permission.'
+  auto-clean-start: '{0} 日間ログインしていないプレイヤーの自動クリーンを開始します。'
+  auto-cleaning-player: '{0} のデータを削除しました。'
+  auto-clean-end: 自動クリーンが完了しました。
+  no-permission-for-flag: '&4&lあなたには {0}({1}) の権限がありません。'
 vault-connect-text:
-  vault-unavailable: Vault not available, please install Vault or VaultUnlock to use economy features.
-  economy-unavailable: Economy plugin not found, you need to install one Economy plugin to use economy features.
-  insufficient-funds: Insufficient money, need {0} {1}, but only have {2} {1}.
+  vault-unavailable: Vault が利用できません。経済機能を使うには Vault または VaultUnlock を導入してください。
+  economy-unavailable: 経済プラグインが見つかりません。経済機能を使うには経済プラグインを 1 つ導入する必要があります。
+  insufficient-funds: 所持金が不足しています。必要額は {0} {1}、現在の所持額は {2} {1} です。
 dominion-provider-handler-text:
-  create-success: Create dominion {0} success.
-  create-failed: 'Create dominion {0} failed, reason: {1}'
-  expand-success: Expand dominion {0} success.
-  expand-failed: 'Expand dominion {0} failed, reason: {1}'
-  contract-success: Contract dominion {0} success.
-  contract-failed: 'Contract dominion {0} failed, reason: {1}'
-  delete-success: Delete dominion {0} success.
-  delete-failed: 'Delete dominion {0} failed, reason: {1}'
-  delete-confirm: Use command '{0}' to confirm delete the dominion {1} and its subs, this operation cannot be undone.
-  list-sub-doms: 'The dominion {0} has subs: {1}'
-  rename-failed: 'Rename dominion {0} failed, reason: {1}'
-  rename-success: Rename dominion {0} to {1} success.
-  same-name: The new name is the same as the old name.
-  give-success: Give dominion {0} to {1} success.
-  give-failed: 'Give dominion {0} to other failed, reason: {1}'
-  give-confirm: Use command '{0}' to confirm give the dominion {1} to {2}, this operation cannot be undone.
-  already-belong: The dominion {0} already belongs to {1}.
-  cannot-give-sub: Dominion {0} is a sub-dominion, cannot give it to others.
-  tp-location-not-in-dominion: The teleportation location is not in the dominion {0}.
-  tp-location-set-success: Set teleportation location for dominion {0} success.
-  tp-location-set-failed: 'Set teleportation location for dominion {0} failed, reason: {1}'
-  set-enter-message-success: Set enter message for dominion {0} success.
-  set-enter-message-failed: 'Set enter message for dominion {0} failed, reason: {1}'
-  set-leave-message-success: Set leave message for dominion {0} success.
-  set-leave-message-failed: 'Set leave message for dominion {0} failed, reason: {1}'
-  set-map-color-success: Set map color for dominion {0} success.
-  set-map-color-failed: 'Set map color for dominion {0} failed, reason: {1}'
-  set-env-flag-success: Set env flag {0} to {1} success.
-  set-env-flag-failed: 'Set env flag {0} to {1} failed, reason: {2}'
-  set-guest-flag-success: Set guest flag {0} to {1} success.
-  set-guest-flag-failed: 'Set guest flag {0} to {1} failed, reason: {2}'
-  set-owner-glow-flag-success: Set owner Glow Flag to {0} success.
-  set-owner-glow-flag-failed: 'Set owner Glow Flag to {0} failed, reason: {1}'
+  create-success: 領地 {0} を作成しました。
+  create-failed: '領地 {0} の作成に失敗しました。理由: {1}'
+  expand-success: 領地 {0} を拡張しました。
+  expand-failed: '領地 {0} の拡張に失敗しました。理由: {1}'
+  contract-success: 領地 {0} を縮小しました。
+  contract-failed: '領地 {0} の縮小に失敗しました。理由: {1}'
+  delete-success: 領地 {0} を削除しました。
+  delete-failed: '領地 {0} の削除に失敗しました。理由: {1}'
+  delete-confirm: 領地 {1} とその子領地を削除するにはコマンド '{0}' を使用して確認してください。この操作は元に戻せません。
+  list-sub-doms: '領地 {0} の子領地: {1}'
+  rename-failed: '領地 {0} の名前変更に失敗しました。理由: {1}'
+  rename-success: 領地 {0} の名前を {1} に変更しました。
+  same-name: 新しい名前が古い名前と同じです。
+  give-success: 領地 {0} を {1} に譲渡しました。
+  give-failed: '領地 {0} の譲渡に失敗しました。理由: {1}'
+  give-confirm: 領地 {1} を {2} に譲渡するにはコマンド '{0}' を使用して確認してください。この操作は元に戻せません。
+  already-belong: 領地 {0} は既に {1} に所属しています。
+  cannot-give-sub: 領地 {0} は子領地のため、他人に譲渡できません。
+  tp-location-not-in-dominion: テレポート地点が領地 {0} 内にありません。
+  tp-location-set-success: 領地 {0} のテレポート地点を設定しました。
+  tp-location-set-failed: '領地 {0} のテレポート地点設定に失敗しました。理由: {1}'
+  set-enter-message-success: 領地 {0} の入場メッセージを設定しました。
+  set-enter-message-failed: '領地 {0} の入場メッセージ設定に失敗しました。理由: {1}'
+  set-leave-message-success: 領地 {0} の退出メッセージを設定しました。
+  set-leave-message-failed: '領地 {0} の退出メッセージ設定に失敗しました。理由: {1}'
+  set-map-color-success: 領地 {0} のマップ色を設定しました。
+  set-map-color-failed: '領地 {0} のマップ色設定に失敗しました。理由: {1}'
+  set-env-flag-success: 環境フラグ {0} を {1} に設定しました。
+  set-env-flag-failed: '環境フラグ {0} を {1} に設定できませんでした。理由: {2}'
+  set-guest-flag-success: ゲストフラグ {0} を {1} に設定しました。
+  set-guest-flag-failed: 'ゲストフラグ {0} を {1} に設定できませんでした。理由: {2}'
+  set-owner-glow-flag-success: 所有者の発光フラグを {0} に設定しました。
+  set-owner-glow-flag-failed: '所有者の発光フラグを {0} に設定できませんでした。理由: {1}'
 member-provider-handler-text:
-  set-flag-success: Successfully set flag {0} for {1} in {2}.
-  owner-only: Only owner can manage admin member.
-  group-already: This member belong to group {0} so you can't manage it separately.
-  set-flag-failed: 'Failed to set flag, reason: {0}'
-  add-member-success: Successfully added {0} to {1}.
-  already-member: '{0} is already a member of {1}.'
-  cant-be-owner: You can't add dominion owner as a member.
-  add-member-failed: 'Failed to add member, reason: {0}'
-  remove-member-success: Successfully removed {0} from {1}.
-  remove-member-failed: 'Failed to remove member, reason: {0}'
+  set-flag-success: '{2} 内の {1} にフラグ {0} を設定しました。'
+  owner-only: 所有者のみが管理者メンバーを管理できます。
+  group-already: このメンバーはグループ {0} に所属しているため、個別には管理できません。
+  set-flag-failed: 'フラグの設定に失敗しました。理由: {0}'
+  add-member-success: '{0} を {1} に追加しました。'
+  already-member: '{0} は既に {1} のメンバーです。'
+  cant-be-owner: 領地の所有者をメンバーとして追加することはできません。
+  add-member-failed: 'メンバーの追加に失敗しました。理由: {0}'
+  remove-member-success: '{1} から {0} を削除しました。'
+  remove-member-failed: 'メンバーの削除に失敗しました。理由: {0}'
 group-provider-handler-text:
-  owner-only: Only the owner can manage admin group.
-  set-flag-success: Set group {0} flag {1} to {2} successfully.
-  set-flag-failed: 'Failed to set group flag, reason: {3}'
-  create-group-success: Group {0} created successfully.
-  create-group-failed: 'Failed to create group, reason: {0}'
-  delete-group-success: Group {0} deleted successfully.
-  delete-group-failed: 'Failed to delete group, reason: {0}'
-  rename-group-success: Group {0} renamed to {1} successfully.
-  rename-group-failed: 'Failed to rename group, reason: {0}'
-  add-member-success: Member {0} added to group {1} successfully.
-  add-member-failed: 'Failed to add member to group, reason: {0}'
-  remove-member-success: Member {0} removed from group {1} successfully.
-  remove-member-failed: 'Failed to remove member from group, reason: {0}'
+  owner-only: 所有者のみが管理者グループを管理できます。
+  set-flag-success: グループ {0} のフラグ {1} を {2} に設定しました。
+  set-flag-failed: 'グループフラグの設定に失敗しました。理由: {3}'
+  create-group-success: グループ {0} を作成しました。
+  create-group-failed: 'グループの作成に失敗しました。理由: {0}'
+  delete-group-success: グループ {0} を削除しました。
+  delete-group-failed: 'グループの削除に失敗しました。理由: {0}'
+  rename-group-success: グループ {0} の名前を {1} に変更しました。
+  rename-group-failed: 'グループ名の変更に失敗しました。理由: {0}'
+  add-member-success: メンバー {0} をグループ {1} に追加しました。
+  add-member-failed: 'グループへのメンバー追加に失敗しました。理由: {0}'
+  remove-member-success: メンバー {0} をグループ {1} から削除しました。
+  remove-member-failed: 'グループからのメンバー削除に失敗しました。理由: {0}'
 select-point-events-handler-text:
-  first-point: First point selected at {0}, {1}, {2}.
-  second-point: Second point selected at {0}, {1}, {2}.
-  not-same-world: The two points are not in the same world.
-  price: The price of the dominion is {0} {1}.
-  owner: 'Owner: {0}'
-  size: 'Size: {0}x{1}x{2}'
-  square: 'Square: {0}'
-  volume: 'Volume: {0}'
-  no-dominion: No dominion found at the location {0}, {1}, {2}.
-  found-dominion: Location {0}, {1}, {2} is in dominion {3}.
+  first-point: 1 点目を {0}, {1}, {2} に選択しました。
+  second-point: 2 点目を {0}, {1}, {2} に選択しました。
+  not-same-world: 2 つの地点は同じワールドにありません。
+  price: 領地の価格は {0} {1} です。
+  owner: '所有者: {0}'
+  size: 'サイズ: {0}x{1}x{2}'
+  square: '面積: {0}'
+  volume: '体積: {0}'
+  no-dominion: 座標 {0}, {1}, {2} に領地は見つかりませんでした。
+  found-dominion: 座標 {0}, {1}, {2} は領地 {3} に含まれています。
 create-dominion-inputter-text:
-  button: CREATE
-  description: Create a new dominion.
-  hint: A new Dominion will be created around you with the input name.
+  button: 作成
+  description: 新しい領地を作成します。
+  hint: 入力した名前で、あなたの周囲に新しい領地が作成されます。
 create-group-inputter-text:
-  button: CREATE
-  hint: Enter new group name you want to create.
+  button: 作成
+  hint: 作成したい新しいグループ名を入力してください。
 rename-dominion-inputter-text:
-  button: RENAME
-  hint: Enter new dominion name.
-  description: Rename this dominion.
+  button: 名前変更
+  hint: 新しい領地名を入力してください。
+  description: この領地の名前を変更します。
 edit-message-inputter-text:
-  enter-button: ENTER MSG
-  enter-description: Message shown when entering dominion.
-  enter-hint: Enter new enter message.
-  leave-button: LEAVE MSG
-  leave-description: Message shown when player leaves dominion.
-  leave-hint: Enter new leave message.
+  enter-button: 入場メッセージ
+  enter-description: 領地に入るときに表示されるメッセージです。
+  enter-hint: 新しい入場メッセージを入力してください。
+  leave-button: 退出メッセージ
+  leave-description: プレイヤーが領地を出るときに表示されるメッセージです。
+  leave-hint: 新しい退出メッセージを入力してください。
 create-template-inputter-text:
-  button: CREATE
-  hint: Enter the name of the new template.
+  button: 作成
+  hint: 新しいテンプレート名を入力してください。
 rename-group-inputter-text:
-  button: RENAME
-  hint: Enter new group name.
-  description: Rename this group.
+  button: 名前変更
+  hint: 新しいグループ名を入力してください。
+  description: このグループの名前を変更します。
 resize-dominion-inputter-text:
-  expand: EXPAND
-  contract: CONTRACT
-  expand-hint: Enter the new size of the {0} expand to {1}.
-  contract-hint: Enter the new size of the {0} contract to {1}.
+  expand: 拡張
+  contract: 縮小
+  expand-hint: '{0} を {1} 方向へ拡張する新しいサイズを入力してください。'
+  contract-hint: '{0} を {1} 方向へ縮小する新しいサイズを入力してください。'
 search-player-inputter-text:
-  button: SEARCH
-  hint: Enter the exact name of the player you want to search.
+  button: 検索
+  hint: 検索したいプレイヤーの正確な名前を入力してください。
 set-map-color-inputter-text:
-  button: COLOR
-  hint: 'Enter the hex color code (e.g., #FF5733) to set the map color.'
-  description: Color of the dominion on the web map.
+  button: 色
+  hint: 'マップ色を設定する 16 進カラーコード（例: #FF5733）を入力してください。'
+  description: Web マップ上での領地の色です。
 rename-template-inputter-text:
-  button: RENAME
-  hint: Enter new template name.
-  description: Rename this template.
+  button: 名前変更
+  hint: 新しいテンプレート名を入力してください。
+  description: このテンプレートの名前を変更します。
 administrator-command-text:
-  reload-cache-button: RELOAD CACHE
-  reload-cache-description: Reload the cache (dont do this frequently).
-  reload-config-button: RELOAD CONFIG
-  reload-config-description: Reload the configuration.
-  reload-description: Reload cache, configuration, or both.
-  export-description: Export data (MCA list or database).
-  import-description: Import database data.
-  update-language-description: Regenerate language files from plugin internal language files.
-  update-language-confirm: This will overwrite your current language files, please confirm by adding 'confirm' at the end of the command.
-  reloading-dominion-cache: Reloading dominion cache...
-  reloaded-dominion-cache: Reload dominion cache success!
-  reloading-member-cache: Reloading member privilege cache...
-  reloaded-member-cache: Reload member privilege cache success!
-  reloading-group-cache: Reloading group cache...
-  reloaded-group-cache: Reload group cache success!
-  reloading-config: Reloading configuration...
-  exporting-mca-list: Exporting MCA list...
-  create-mca-folder-failed: Failed to create mca list folder.
-  writing-mca-list: Writing list of world {0}...
-  create-mca-file-failed: Failed to create mca list file {0}.
-  export-mcalist-failed: 'Failed to export MCA list of world {0}, reason: {1}.'
-  exported-mcalist: Exported MCA list to {0} successfully.
-  import-hint: Import database is only for migration or restore-backup, don't use it to merge two databases.
-  import-info: If current database is not empty, it will throw some errors and may cause data loss or corruption.
-  import-confirm: Please confirm the import operation by adding 'confirm' at the end of the command.
+  reload-cache-button: キャッシュ再読込
+  reload-cache-description: キャッシュを再読み込みします（頻繁には行わないでください）。
+  reload-config-button: 設定再読込
+  reload-config-description: 設定を再読み込みします。
+  reload-description: キャッシュ、設定、またはその両方を再読み込みします。
+  export-description: データ（MCA リストまたはデータベース）をエクスポートします。
+  import-description: データベースのデータをインポートします。
+  update-language-description: プラグイン内部の言語ファイルから言語ファイルを再生成します。
+  update-language-confirm: これにより現在の言語ファイルが上書きされます。コマンドの末尾に 'confirm' を付けて確認してください。
+  reloading-dominion-cache: 領地キャッシュを再読み込み中...
+  reloaded-dominion-cache: 領地キャッシュの再読み込みに成功しました！
+  reloading-member-cache: メンバー権限キャッシュを再読み込み中...
+  reloaded-member-cache: メンバー権限キャッシュの再読み込みに成功しました！
+  reloading-group-cache: グループキャッシュを再読み込み中...
+  reloaded-group-cache: グループキャッシュの再読み込みに成功しました！
+  reloading-config: 設定を再読み込み中...
+  exporting-mca-list: MCA リストをエクスポート中...
+  create-mca-folder-failed: MCA リスト用フォルダーの作成に失敗しました。
+  writing-mca-list: ワールド {0} のリストを書き込み中...
+  create-mca-file-failed: MCA リストファイル {0} の作成に失敗しました。
+  export-mcalist-failed: 'ワールド {0} の MCA リストのエクスポートに失敗しました。理由: {1}。'
+  exported-mcalist: MCA リストを {0} に正常にエクスポートしました。
+  import-hint: データベースのインポートは移行またはバックアップ復元専用です。2 つのデータベースを統合する目的では使用しないでください。
+  import-info: 現在のデータベースが空でない場合、一部エラーが発生し、データ損失や破損を招く可能性があります。
+  import-confirm: インポート操作を確認するには、コマンドの末尾に 'confirm' を追加してください。
 migration-command-text:
-  migrate-success: Migrated residence {0} to dominion successfully.
-  migrate-failed: 'Failed to migrate residence. Reason: {0}'
-  missing-residence: Residence {0} not found.
-  not-your-residence: Residence {0} is not yours.
-  migrate-description: Migrate a specific residence to dominion.
-  migrate-all-description: Migrate all residences to dominions.
+  migrate-success: Residence {0} を領地へ正常に移行しました。
+  migrate-failed: 'Residence の移行に失敗しました。理由: {0}'
+  missing-residence: Residence {0} が見つかりません。
+  not-your-residence: Residence {0} はあなたのものではありません。
+  migrate-description: 特定の Residence を Dominion に移行します。
+  migrate-all-description: すべての Residence を領地へ移行します。
 template-command-text:
-  name-not-valid: Template name cannot contain space
-  template-name-exist: Template {0} already exists
-  create-template-fail: 'Failed to create template, reason: {0}'
-  create-template-success: Successfully created template {0}
-  template-not-exist: Template {0} does not exist
-  delete-template-success: Successfully deleted template {0}
-  delete-template-fail: 'Failed to delete template, reason: {0}'
-  apply-template-success: Successfully applied template {0} to {1}
-  apply-template-fail: 'Failed to apply template, reason: {0}'
-  set-flag-success: Successfully set {0} flag of template {1} to {2}
-  set-flag-fail: 'Failed to set flag, reason: {0}'
-  rename-template-success: Successfully renamed template to {0}
-  rename-template-fail: 'Failed to rename template, reason: {0}'
-  create-template-description: Create a new privilege template.
-  delete-template-description: Delete an existing privilege template.
-  set-template-flag-description: Set a privilege flag in a template.
-  member-apply-template-description: Apply a privilege template to a member.
-  rename-template-description: Rename an existing privilege template.
+  name-not-valid: テンプレート名にスペースは使用できません
+  template-name-exist: テンプレート {0} は既に存在します
+  create-template-fail: 'テンプレートの作成に失敗しました。理由: {0}'
+  create-template-success: テンプレート {0} を作成しました
+  template-not-exist: テンプレート {0} は存在しません
+  delete-template-success: テンプレート {0} を削除しました
+  delete-template-fail: 'テンプレートの削除に失敗しました。理由: {0}'
+  apply-template-success: テンプレート {0} を {1} に適用しました
+  apply-template-fail: 'テンプレートの適用に失敗しました。理由: {0}'
+  set-flag-success: テンプレート {1} のフラグ {0} を {2} に設定しました
+  set-flag-fail: 'フラグの設定に失敗しました。理由: {0}'
+  rename-template-success: テンプレート名を {0} に変更しました
+  rename-template-fail: 'テンプレート名の変更に失敗しました。理由: {0}'
+  create-template-description: 新しい権限テンプレートを作成します。
+  delete-template-description: 既存の権限テンプレートを削除します。
+  set-template-flag-description: テンプレート内の権限フラグを設定します。
+  member-apply-template-description: 権限テンプレートをメンバーに適用します。
+  rename-template-description: 既存の権限テンプレートの名前を変更します。
 group-title-command-text:
-  group-not-belonging: Don't belong to group {0}.
-  using-title-success: Using title {0} successfully.
-  using-title-fail: 'Failed to use title, reason: {0}'
-  use-title-description: Use a group title or disable current title.
+  group-not-belonging: グループ {0} に所属していません。
+  using-title-success: 称号 {0} を使用しました。
+  using-title-fail: '称号の使用に失敗しました。理由: {0}'
+  use-title-description: グループ称号を使用するか、現在の称号を無効にします。
 copy-command-text:
-  copy-env-success: Copied environment flag from {0} to {1} success.
-  copy-guest-success: Copied guest privilege flag from {0} to {1} success.
-  copy-member-success: Copied members from {0} to {1} success.
-  copy-group-success: Copied groups from {0} to {1} success.
-  copy-environment-description: Copy environment flags from one dominion to another.
-  copy-guest-description: Copy guest privilege flags from one dominion to another.
-  copy-member-description: Copy members from one dominion to another.
-  copy-group-description: Copy groups from one dominion to another.
+  copy-env-success: 環境フラグを {0} から {1} へコピーしました。
+  copy-guest-success: ゲスト権限フラグを {0} から {1} へコピーしました。
+  copy-member-success: メンバーを {0} から {1} へコピーしました。
+  copy-group-success: グループを {0} から {1} へコピーしました。
+  copy-environment-description: 環境フラグを 1 つの領地から別の領地へコピーします。
+  copy-guest-description: ゲスト権限フラグを 1 つの領地から別の領地へコピーします。
+  copy-member-description: メンバーを 1 つの領地から別の領地へコピーします。
+  copy-group-description: グループを 1 つの領地から別の領地へコピーします。
 dominion-operate-command-text:
-  resize-description: Resize a dominion with a specific size and direction.
-  easy-expand-description: Expand the dominion size easily based on the player's current location.
-  easy-contract-description: Contract the dominion size easily based on the player's current location.
-  delete-description: Delete a dominion. Use 'force' to confirm deletion.
-  set-message-description: Set a message for a dominion, either for entering or leaving.
-  set-teleport-description: Set the teleport location for a dominion.
-  rename-description: Rename a dominion.
-  set-map-color-description: Set the map color for a dominion.
-  give-description: Give a dominion to a player.
-  tp-description: Teleport to a dominion.
-  switch-ui-description: Switch the UI type for the dominion commands.
+  resize-description: 指定したサイズと方向で領地を拡縮します。
+  easy-expand-description: プレイヤーの現在位置に基づいて簡単に領地を拡張します。
+  easy-contract-description: プレイヤーの現在位置に基づいて簡単に領地を縮小します。
+  delete-description: 領地を削除します。削除を確認するには 'force' を使用してください。
+  set-message-description: 領地の入場または退出メッセージを設定します。
+  set-teleport-description: 領地のテレポート地点を設定します。
+  rename-description: 領地の名前を変更します。
+  set-map-color-description: 領地のマップ色を設定します。
+  give-description: 領地をプレイヤーに譲渡します。
+  tp-description: 領地へテレポートします。
+  switch-ui-description: 領地コマンドの UI タイプを切り替えます。
 dominion-create-command-text:
-  create-description: Create a new dominion using selected points.
-  create-sub-description: Create a sub-dominion within an existing dominion.
-  auto-create-description: Automatically create a dominion around your current position.
-  auto-create-sub-description: Automatically create a sub-dominion within an existing dominion.
+  create-description: 選択した 2 点を使って新しい領地を作成します。
+  create-sub-description: 既存の領地内に子領地を作成します。
+  auto-create-description: 現在位置の周囲に自動で領地を作成します。
+  auto-create-sub-description: 既存の領地内に自動で子領地を作成します。
 dominion-flag-command-text:
-  set-env-description: Set environment flag for a dominion.
-  set-guest-description: Set guest privilege flag for a dominion.
+  set-env-description: 領地の環境フラグを設定します。
+  set-guest-description: 領地のゲスト権限フラグを設定します。
 group-command-text:
-  create-group-description: Create a new group in a dominion.
-  delete-group-description: Delete a group from a dominion.
-  rename-group-description: Rename a group in a dominion.
-  set-group-flag-description: Set privilege flag for a group.
-  add-member-description: Add a member to a group.
-  remove-member-description: Remove a member from a group.
+  create-group-description: 領地内に新しいグループを作成します。
+  delete-group-description: 領地からグループを削除します。
+  rename-group-description: 領地内のグループ名を変更します。
+  set-group-flag-description: グループの権限フラグを設定します。
+  add-member-description: グループにメンバーを追加します。
+  remove-member-description: グループからメンバーを削除します。
 member-command-text:
-  add-member-description: Add a player as member to a dominion.
-  set-member-privilege-description: Set privilege flag for a member in a dominion.
-  remove-member-description: Remove a member from a dominion.
+  add-member-description: プレイヤーを領地のメンバーとして追加します。
+  set-member-privilege-description: 領地内のメンバー権限フラグを設定します。
+  remove-member-description: 領地からメンバーを削除します。
 configuration-text:
-  loading-language: Loading language {0}...
-  load-language-fail: 'Failed to load language {0} reason: {1}, using default en_us.'
-  load-language-success: Successfully loaded language {0}.
-  loading-flag: Loading flag configuration...
-  load-flag-success: Successfully loaded flag configuration.
-  loading-limitations: Loading limitation configuration...
-  saving-default-limitation: Because no limitation file found, saving default limitation file.
-  save-limitation-fail: 'Failed to save limitation file: {0}'
-  loading-limitation: 'Loading limitation file: {0}...'
-  load-limitation-fail: 'Failed to load limitation file: {0} reason: {1}'
-  load-limitations: 'Successfully loaded {0} limitations: {1}.'
-  load-configuration: Successfully loaded configuration.
-  debug-enabled: Debug mode enabled.
-  prepare-database: Preparing database...
-  database-connected: Database connected successfully.
-  multi-server-sqlite: Database with type sqlite is not supported in multi-server mode, disabled multi-server mode.
-  server-id-invalid: Server id must be positive integer (> 0), disabled multi-server mode.
+  loading-language: 言語 {0} を読み込み中...
+  load-language-fail: '言語 {0} の読み込みに失敗しました。理由: {1}。デフォルトの en_us を使用します。'
+  load-language-success: 言語 {0} を正常に読み込みました。
+  loading-flag: フラグ設定を読み込み中...
+  load-flag-success: フラグ設定を正常に読み込みました。
+  loading-limitations: 制限設定を読み込み中...
+  saving-default-limitation: 制限ファイルが見つからないため、デフォルトの制限ファイルを保存します。
+  save-limitation-fail: '制限ファイルの保存に失敗しました: {0}'
+  loading-limitation: '制限ファイルを読み込み中: {0}...'
+  load-limitation-fail: '制限ファイル {0} の読み込みに失敗しました。理由: {1}'
+  load-limitations: '制限設定 {0} 件を正常に読み込みました: {1}。'
+  load-configuration: 設定を正常に読み込みました。
+  debug-enabled: デバッグモードが有効です。
+  prepare-database: データベースを準備中...
+  database-connected: データベース接続に成功しました。
+  multi-server-sqlite: sqlite タイプのデータベースはマルチサーバーモードに対応していないため、マルチサーバーモードを無効にしました。
+  server-id-invalid: サーバー ID は正の整数 (> 0) である必要があります。マルチサーバーモードを無効にしました。
 limitation-text:
-  loading-world-settings: Loading world-settings...
-  loading-world-setting: Loading world-settings of {0}...
-  load-world-setting-failed: 'Failed to world-settings of {0} reason: {1}'
-  load-world-settings-success: 'Successfully loaded {0} world-settings: {1}.'
+  loading-world-settings: world-settings を読み込み中...
+  loading-world-setting: '{0} の world-settings を読み込み中...'
+  load-world-setting-failed: '{0} の world-settings の読み込みに失敗しました。理由: {1}'
+  load-world-settings-success: 'world-settings を {0} 件正常に読み込みました: {1}。'
 database-manager-text:
-  exporting-database-tables: Exporting database tables...
-  export-table-fail: 'Export table failed, reason: {0}'
-  export-world-mapping-fail: 'Export world uid mapping failed, reason: {0}'
-  export-database-success: Export database to {0} successfully.
-  file-not-found: Database table file path {0} not found.
-  importing-database: Importing database...
-  file-corrupted: Some database table file is missing, please re-export the database tables.
-  convert-world-failed: The old world {0}({1}) is unable to find in current save, please make sure the world name is exist in current save.
-  import-database-fail: 'Import database failed, reason: {0}'
-  import-database-success: Import database successfully.
+  exporting-database-tables: データベーステーブルをエクスポート中...
+  export-table-fail: 'テーブルのエクスポートに失敗しました。理由: {0}'
+  export-world-mapping-fail: 'ワールド UID マッピングのエクスポートに失敗しました。理由: {0}'
+  export-database-success: データベースを {0} に正常にエクスポートしました。
+  file-not-found: データベーステーブルファイルのパス {0} が見つかりません。
+  importing-database: データベースをインポート中...
+  file-corrupted: 一部のデータベーステーブルファイルが不足しています。データベーステーブルを再エクスポートしてください。
+  convert-world-failed: 古いワールド {0}({1}) が現在のセーブ内で見つかりません。現在のセーブにそのワールド名が存在することを確認してください。
+  import-database-fail: 'データベースのインポートに失敗しました。理由: {0}'
+  import-database-success: データベースのインポートに成功しました。
 teleport-manager-text:
-  cooling-down: Please wait for {0} seconds before teleporting again.
-  disabled: Teleportation is disabled for your permission group.
-  delay: Will teleport in {0} seconds, don't move...
-  unfinished-cancelled: Cancelled previous unfinished teleportation.
-  cancel-move: Cancelled teleportation due to movement.
+  cooling-down: 次にテレポートするまで {0} 秒お待ちください。
+  disabled: あなたの権限グループではテレポートが無効になっています。
+  delay: '{0} 秒後にテレポートします。動かないでください...'
+  unfinished-cancelled: 以前の未完了テレポートをキャンセルしました。
+  cancel-move: 移動したためテレポートをキャンセルしました。
 command-exception-text:
-  no-permission: You do not have permission {0} to do this.
-  invalid-arguments: Invalid arguments, usage e.g. {0}.
+  no-permission: これを行う権限 {0} がありません。
+  invalid-arguments: '引数が無効です。使用例: {0}。'
 inputter-text:
-  only-player: TUI inputter can only be used by a player.
-  cancel: ' [Send ''C'' to cancel the inputter.]'
-  inputter-cancelled: Inputter cancelled.
+  only-player: TUI 入力はプレイヤーのみ使用できます。
+  cancel: ' [入力をキャンセルするには ''C'' を送信してください。]'
+  inputter-cancelled: 入力をキャンセルしました。
