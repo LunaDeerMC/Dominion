@@ -26,6 +26,8 @@ dominion-manage-tui-text:
   button: MANAGE
   set-tp-button: SET TP
   set-tp-description: Set your current location as tp location.
+  owner-glow-button: 'Owner Glow: {0}'
+  owner-glow-description: Set whether the dominion owner has a glow effect.
 set-size-tui-text:
   title: Resize {0}
   button: RESIZE
@@ -118,6 +120,9 @@ all-dominion-tui-text:
   title: All Dominions
   description: List all dominions.
   button: LIST ALL
+all-dominion-of-player-tui-text:
+  title: All Dominions of {0}
+  button: LIST ALL OF
 template-setting-tui-text:
   title: Template Setting
   button: SETTING
