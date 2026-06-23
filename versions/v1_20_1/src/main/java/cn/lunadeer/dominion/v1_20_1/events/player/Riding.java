@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
 import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
@@ -17,5 +18,17 @@ public class Riding implements Listener {
             return;
         }
         checkPrivilegeFlag(event.getMount().getLocation(), Flags.RIDING, player, event);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void handler(PlayerMoveEvent event) {
+        if (event.isCancelled()) return;
+        Player player = event.getPlayer();
+        if (!player.isInsideVehicle()) {
+            return;
+        }
+        if (!checkPrivilegeFlag(player.getLocation(), Flags.RIDING, player, event)) {
+            player.leaveVehicle();
+        }
     }
 }
