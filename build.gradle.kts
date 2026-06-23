@@ -104,7 +104,8 @@ dependencies {
     implementation(project("versions:v1_21_6"))
     implementation(project("versions:v1_21_8"))
     implementation(project("versions:v1_21_9"))
-    implementation(project("versions:v26"))
+    implementation(project(path = ":versions:v26", configuration = "shadowRuntimeElements"))
+    implementation(project(path = ":versions:v26_2", configuration = "shadowRuntimeElements"))
 }
 
 // Reobfuscate all subproject JARs that have paperweight reobfJar task
@@ -126,7 +127,6 @@ subprojects {
 tasks.shadowJar {
     archiveClassifier.set("")
     archiveVersion.set(project.version.toString())
-    // Ensure all NMS modules are reobfuscated before assembling the final JAR
     dependsOn(reobfAllJars)
 }
 
@@ -147,7 +147,7 @@ hangarPublish {
             register(Platforms.PAPER) {
                 jar.set(tasks.shadowJar.flatMap { it.archiveFile })
                 println("ShadowJar: ${tasks.shadowJar.flatMap { it.archiveFile }}")
-                platformVersions.set(listOf("1.20.1-1.20.6", "1.21.x", "26.1.2"))
+                platformVersions.set(listOf("1.20.1-1.20.6", "1.21.x", "26.1.2", "26.2"))
             }
         }
     }
