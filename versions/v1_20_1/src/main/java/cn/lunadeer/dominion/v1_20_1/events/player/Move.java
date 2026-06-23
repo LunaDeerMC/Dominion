@@ -17,6 +17,10 @@ public class Move implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(PlayerMoveEvent event) {
         if (event.isCancelled()) return;
+        Location movedFrom = event.getFrom(), movedTo = event.getTo();
+        if (movedFrom.getBlockX() == movedTo.getBlockX()
+                && movedFrom.getBlockY() == movedTo.getBlockY()
+                && movedFrom.getBlockZ() == movedTo.getBlockZ()) return;
         Player player = event.getPlayer();
         DominionDTO dom = CacheManager.instance.getPlayerCurrentDominion(player);
         if (!checkPrivilegeFlag(player.getLocation(), Flags.MOVE, player, null)) {
