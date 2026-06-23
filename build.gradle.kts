@@ -26,9 +26,11 @@ libraries += "net.kyori:adventure-text-minimessage:4.22.0"
 
 // release or alpha based on git branch
 var suffixes = getAndIncrementVersion()
+val currentBranch = getCurrentGitBranch()
+val isMainBranch = currentBranch == "master"
 
 group = "cn.lunadeer"
-version = "4.8.5-$suffixes"
+version = if (isMainBranch) "4.8.5-$suffixes" else suffixes
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -182,9 +184,10 @@ fun getAndIncrementVersion(): String {
     }
 
     val currentBranch = getCurrentGitBranch()
-    val versionType = if (currentBranch.startsWith("dev/")) "build" else "release"
+    val isMainBranch = currentBranch == "master"
+    val versionType = if (isMainBranch) "release" else currentBranch.replace("/", "-")
 
-    val currentSuffix = props.getProperty("suffixes", if (versionType == "release") "release" else "${versionType}.24")
+    val currentSuffix = props.getProperty("suffixes", if (isMainBranch) "release" else "${versionType}.1")
 
     // Check if we need to switch version type (branch changed)
     val currentType = currentSuffix.split(".")[0]
@@ -207,8 +210,8 @@ fun getAndIncrementVersion(): String {
         return "release"
     }
 
-    // For build, increment the number
-    if (currentSuffix.startsWith("build.")) {
+    // For non-release, increment the number
+    if (currentSuffix.startsWith("$versionType.")) {
         val parts = currentSuffix.split(".")
         if (parts.size >= 2) {
             val currentNumber = parts[1].toIntOrNull() ?: 1
