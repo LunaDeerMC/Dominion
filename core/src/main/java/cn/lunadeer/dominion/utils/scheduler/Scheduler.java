@@ -1,5 +1,6 @@
 package cn.lunadeer.dominion.utils.scheduler;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -123,7 +124,15 @@ public class Scheduler {
         if (instance.isPaper) {
             return new PaperTask(entity.getScheduler().run(instance.plugin, (plugin) -> task.run(), null));
         } else {
-            return new SpigotTask(instance.plugin.getServer().getScheduler().runTaskAsynchronously(instance.plugin, task));
+            return new SpigotTask(instance.plugin.getServer().getScheduler().runTask(instance.plugin, task));
+        }
+    }
+
+    public static CancellableTask runLocationTask(Runnable task, Location location) {
+        if (instance.isPaper) {
+            return new PaperTask(instance.plugin.getServer().getRegionScheduler().run(instance.plugin, location, (scheduledTask) -> task.run()));
+        } else {
+            return new SpigotTask(instance.plugin.getServer().getScheduler().runTask(instance.plugin, task));
         }
     }
 }
