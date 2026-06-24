@@ -371,9 +371,18 @@ public class Asserts {
      *
      * @param operator the command operator (usually a player)
      * @param dominion the dominion to check for intersections
+     * @param domCuboid the cuboid representing the dominion's size
      * @throws DominionException if the dominion intersects with another dominion or the spawn protection area
      */
-    public static void assertDominionIntersect(@NotNull CommandSender operator, @NotNull DominionDTO dominion, @NotNull CuboidDTO cuboid) throws DominionException {
+    public static void assertDominionIntersect(@NotNull CommandSender operator, @NotNull DominionDTO dominion, @NotNull CuboidDTO domCuboid) throws DominionException {
+        CuboidDTO cuboid = new CuboidDTO(
+                domCuboid.x1() - Configuration.minimumDominionDistance,
+                domCuboid.y1() - Configuration.minimumDominionDistance,
+                domCuboid.z1() - Configuration.minimumDominionDistance,
+                domCuboid.x2() + Configuration.minimumDominionDistance,
+                domCuboid.y2() + Configuration.minimumDominionDistance,
+                domCuboid.z2() + Configuration.minimumDominionDistance
+            );
         List<DominionDTO> dominions = CacheManager.instance.getCache().getDominionCache().getChildrenOf(dominion.getParentDomId());
         for (DominionDTO dom : dominions) {
             if (dom.getId().equals(dominion.getId())) {

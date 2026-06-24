@@ -157,6 +157,9 @@ public class Configuration extends ConfigurationFile {
     @Comments("Prevent player from creating dominion around the spawn point.")
     public static int serverSpawnProtectionRadius = 10;
 
+    @Comments("Minimum distance between two dominions.")
+    public static int minimumDominionDistance = 0;
+
     @Comments("Tool used to select position for creating dominion.")
     public static String selectTool = "ARROW";
 
