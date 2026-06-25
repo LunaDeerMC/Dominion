@@ -11,7 +11,6 @@ import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import cn.lunadeer.dominion.utils.scheduler.CancellableTask;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -168,6 +167,9 @@ public class TeleportManager implements Listener {
      * @param location The target location to which the player will be teleported.
      */
     public static void doTeleportSafely(Player player, Location location) {
+        if (location.getWorld() == null) {
+            return;
+        }
         if (!player.getPassengers().isEmpty()) {
             player.getPassengers().forEach(player::removePassenger);
         }
@@ -177,11 +179,16 @@ public class TeleportManager implements Listener {
         }
         if (!isPaper()) {
             Location loc = findNearestSafeLocation(location);
-            Bukkit.getScheduler().runTask(Dominion.instance, () -> player.teleport(loc, PlayerTeleportEvent.TeleportCause.PLUGIN));
+            player.teleport(loc, PlayerTeleportEvent.TeleportCause.PLUGIN);
         } else {
-            location.getWorld().getChunkAtAsyncUrgently(location).thenAccept((chunk) -> {
-                Location loc = findNearestSafeLocation(location);
-                player.teleportAsync(loc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+            Location targetLocation = location.clone();
+            targetLocation.getWorld().getChunkAtAsyncUrgently(targetLocation).thenAccept((chunk) -> {
+                Scheduler.runLocationTask(() -> {
+                    Location safeLocation = findNearestSafeLocation(targetLocation);
+                    Scheduler.runEntityTask(() ->
+                                    player.teleportAsync(safeLocation, PlayerTeleportEvent.TeleportCause.PLUGIN),
+                            player);
+                }, targetLocation);
             });
         }
     }
