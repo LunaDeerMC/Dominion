@@ -1,5 +1,6 @@
 package cn.lunadeer.dominion.hooks;
 
+import cn.lunadeer.dominion.Dominion;
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.GroupDTO;
 import cn.lunadeer.dominion.api.dtos.MemberDTO;
@@ -10,10 +11,13 @@ import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.misc.Others;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
 
@@ -54,6 +58,15 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
                 return "";
             }
             return dominion.getName();
+        }
+        // %dominion_selected_point_1%: Get the player's first selected point
+        // %dominion_selected_point_2%: Get the player's second selected point
+        // @Returns world,x,y,z, empty if the point has not been selected
+        if (params.equalsIgnoreCase("selected_point_1")) {
+            return getSelectedPoint(bukkitPlayer, 0);
+        }
+        if (params.equalsIgnoreCase("selected_point_2")) {
+            return getSelectedPoint(bukkitPlayer, 1);
         }
         // %dominion_tp_loc_x_<dominion_name>%: Get the x coordinate of the teleport location of a dominion
         // %dominion_tp_loc_y_<dominion_name>%: Get the y coordinate of the teleport location of a dominion
@@ -192,6 +205,24 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
             return String.valueOf(Others.checkEnvironmentFlag(bukkitPlayer.getLocation(), envFlag, null));
         }
         return null; //
+    }
+
+    private static @NotNull String getSelectedPoint(@Nullable Player bukkitPlayer, int index) {
+        if (bukkitPlayer == null) {
+            return "";
+        }
+        Location location = Dominion.pointsSelect
+                .getOrDefault(bukkitPlayer.getUniqueId(), Map.of())
+                .get(index);
+        if (location == null || location.getWorld() == null) {
+            return "";
+        }
+        return "%s,%d,%d,%d".formatted(
+                location.getWorld().getName(),
+                location.getBlockX(),
+                location.getBlockY(),
+                location.getBlockZ()
+        );
     }
 
     private static @Nullable String getGroupName(Player bukkitPlayer, DominionDTO dominion) {
