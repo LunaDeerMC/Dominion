@@ -11,6 +11,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import java.util.Objects;
+
 import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 
 public class Move implements Listener {
@@ -18,14 +20,21 @@ public class Move implements Listener {
     public void handler(PlayerMoveEvent event) {
         if (event.isCancelled()) return;
         Location movedFrom = event.getFrom(), movedTo = event.getTo();
-        if (movedFrom.getBlockX() == movedTo.getBlockX()
+        if (Objects.equals(movedFrom.getWorld(), movedTo.getWorld())
+                && movedFrom.getBlockX() == movedTo.getBlockX()
                 && movedFrom.getBlockY() == movedTo.getBlockY()
                 && movedFrom.getBlockZ() == movedTo.getBlockZ()) return;
         Player player = event.getPlayer();
         DominionDTO dom = CacheManager.instance.getPlayerCurrentDominion(player);
         if (!checkPrivilegeFlag(player.getLocation(), Flags.MOVE, player, null)) {
+            // A denied world-wide MOVE flag does not have a dominion whose border we can
+            // teleport the player outside of. In that case, keep the player at the event's
+            // origin instead. Dominion-specific denial retains the existing border ejection.
+            if (dom == null) {
+                event.setCancelled(true);
+                return;
+            }
             Location to = player.getLocation();
-            assert dom != null;
             int x1 = Math.abs(to.getBlockX() - dom.getCuboid().x1());
             int x2 = Math.abs(to.getBlockX() - dom.getCuboid().x2());
             int z1 = Math.abs(to.getBlockZ() - dom.getCuboid().z1());
