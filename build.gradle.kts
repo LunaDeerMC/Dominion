@@ -112,6 +112,7 @@ dependencies {
     implementation(project(path = ":versions:v1_21_9", configuration = "reobf"))
     // Minecraft 26.x no longer supports Spigot runtime mappings.
     implementation(project(path = ":versions:v26", configuration = "shadowRuntimeElements"))
+    implementation(project(path = ":versions:v26_2", configuration = "shadowRuntimeElements"))
 }
 
 // Reobfuscate all subproject JARs that have paperweight reobfJar task
@@ -154,7 +155,7 @@ hangarPublish {
             register(Platforms.PAPER) {
                 jar.set(tasks.shadowJar.flatMap { it.archiveFile })
                 println("ShadowJar: ${tasks.shadowJar.flatMap { it.archiveFile }}")
-                platformVersions.set(listOf("1.20.1-1.20.6", "1.21.x", "26.1.2"))
+                platformVersions.set(listOf("1.20.1-1.20.6", "1.21.x", "26.1.2-26.2"))
             }
         }
     }

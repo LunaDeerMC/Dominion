@@ -1,4 +1,4 @@
-package cn.lunadeer.dominion.v26.nms;
+package cn.lunadeer.dominion.v26_2.nms;
 
 import cn.lunadeer.dominion.nms.NMSPacketSender;
 import net.minecraft.network.protocol.Packet;
@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.entity.Player;
 
 /**
- * NMS packet sender implementation for Minecraft 26.1.2.
+ * NMS packet sender implementation for Minecraft 26.2.
  */
 public class NMSPacketSenderImpl implements NMSPacketSender {
 

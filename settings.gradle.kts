@@ -13,5 +13,6 @@ include(
     "versions:v1_21_6",
     "versions:v1_21_8",
     "versions:v1_21_9",
-    "versions:v26"
+    "versions:v26",
+    "versions:v26_2"
 )

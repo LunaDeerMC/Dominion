@@ -1,15 +1,15 @@
-package cn.lunadeer.dominion.v26.nms;
+package cn.lunadeer.dominion.v26_2.nms;
 
 import cn.lunadeer.dominion.nms.EntityIdAllocator;
 import cn.lunadeer.dominion.nms.FakeEntity;
 import cn.lunadeer.dominion.nms.FakeEntityFactory;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.server.level.ServerLevel;
 import org.bukkit.Location;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * Fake entity factory implementation for Minecraft 26.1.2.
+ * Fake entity factory implementation for Minecraft 26.2.
  */
 public class FakeEntityFactoryImpl implements FakeEntityFactory {
 
@@ -27,6 +27,6 @@ public class FakeEntityFactoryImpl implements FakeEntityFactory {
 
     @Override
     public int nextEntityId() {
-        return EntityIdAllocator.nextEntityId(Entity.class);
+        return EntityIdAllocator.nextEntityId(ServerLevel.class);
     }
 }

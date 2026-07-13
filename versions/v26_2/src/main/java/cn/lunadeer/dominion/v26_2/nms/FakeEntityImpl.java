@@ -1,4 +1,4 @@
-package cn.lunadeer.dominion.v26.nms;
+package cn.lunadeer.dominion.v26_2.nms;
 
 import cn.lunadeer.dominion.nms.FakeEntity;
 import net.minecraft.network.protocol.Packet;
@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.PositionMoveRotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -23,10 +24,9 @@ import org.joml.Vector3f;
 import java.util.*;
 
 /**
- * Fake entity implementation for Minecraft 26.1.2.
+ * Fake entity implementation for Minecraft 26.2.
  * <p>
- * Based on 1.21.9 implementation — metadata indices and teleport packet format
- * may need adjustment if NMS internals change in MC 26.
+ * Minecraft 26.2 moved built-in entity constants from EntityType to EntityTypes.
  */
 @SuppressWarnings("unchecked")
 public class FakeEntityImpl implements FakeEntity {
@@ -304,8 +304,8 @@ public class FakeEntityImpl implements FakeEntity {
         List<Packet<?>> packets = new ArrayList<>();
 
         EntityType<?> entityType = displayType == DisplayType.BLOCK_DISPLAY
-                ? EntityType.BLOCK_DISPLAY
-                : EntityType.ITEM_DISPLAY;
+                ? EntityTypes.BLOCK_DISPLAY
+                : EntityTypes.ITEM_DISPLAY;
 
         ClientboundAddEntityPacket spawnPacket = new ClientboundAddEntityPacket(
                 entityId, uuid,
