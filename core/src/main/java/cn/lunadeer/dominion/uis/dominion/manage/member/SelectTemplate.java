@@ -2,7 +2,6 @@ package cn.lunadeer.dominion.uis.dominion.manage.member;
 
 import cn.lunadeer.dominion.commands.TemplateCommand;
 import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
-import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
 import cn.lunadeer.dominion.doos.TemplateDOO;
 import cn.lunadeer.dominion.uis.AbstractUI;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
@@ -11,10 +10,6 @@ import cn.lunadeer.dominion.utils.scui.ChestListView;
 import cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager;
 import cn.lunadeer.dominion.utils.scui.configuration.ButtonConfiguration;
 import cn.lunadeer.dominion.utils.scui.configuration.ListViewConfiguration;
-import cn.lunadeer.dominion.utils.stui.ListView;
-import cn.lunadeer.dominion.utils.stui.components.Line;
-import cn.lunadeer.dominion.utils.stui.components.buttons.FunctionalButton;
-import cn.lunadeer.dominion.utils.stui.components.buttons.ListViewButton;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -33,54 +28,6 @@ public class SelectTemplate extends AbstractUI {
         new SelectTemplate().displayByPreference(sender, dominionName, playerName, pageStr);
     }
 
-    // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ TUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-
-    public static class SelectTemplateTuiText extends ConfigurationPart {
-        public String title = "Select Template";
-        public String description = "Select a template to apply to this member.";
-        public String button = "SELECT TEMPLATE";
-        public String back = "BACK";
-        public String apply = "APPLY";
-    }
-
-    public static ListViewButton button(CommandSender sender, String dominionName, String playerName) {
-        return (ListViewButton) new ListViewButton(TextUserInterface.selectTemplateTuiText.button) {
-            @Override
-            public void function(String pageStr) {
-                show(sender, dominionName, playerName, pageStr);
-            }
-        }.needPermission(defaultPermission).setHoverText(TextUserInterface.selectTemplateTuiText.description);
-    }
-
-    @Override
-    protected void showTUI(Player player, String... args) throws Exception {
-        String dominionName = args[0];
-        String playerName = args[1];
-        String pageStr = args[2];
-
-        int page = toIntegrity(pageStr);
-        List<TemplateDOO> templates = TemplateDOO.selectAll(player.getUniqueId());
-
-        ListView view = ListView.create(10, button(player, dominionName, playerName));
-        view.title(TextUserInterface.selectTemplateTuiText.title);
-        Line sub = Line.create()
-                .append(MemberFlags.button(player, dominionName, playerName).setText(TextUserInterface.selectTemplateTuiText.back).build());
-        view.subtitle(sub);
-
-        for (TemplateDOO template : templates) {
-            view.add(Line.create()
-                    .append(new FunctionalButton(TextUserInterface.selectTemplateTuiText.apply) {
-                        @Override
-                        public void function() {
-                            TemplateCommand.memberApplyTemplate(player, dominionName, playerName, template.getName());
-                        }
-                    }.build())
-                    .append(Component.text(template.getName())));
-        }
-        view.showOn(player, page);
-    }
-
-    // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ TUI ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ CUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
     public static class SelectTemplateCui extends ConfigurationPart {

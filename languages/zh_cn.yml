@@ -579,6 +579,6 @@ command-exception-text:
   no-permission: 你没有权限 {0} 执行此操作。
   invalid-arguments: 参数无效，用法示例：{0}。
 inputter-text:
-  only-player: TUI 输入器只能由玩家使用。
+  only-player: 聊天输入只能由玩家使用。
   cancel: ' [发送 ''C'' 以取消输入。]'
   inputter-cancelled: 输入已取消。

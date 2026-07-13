@@ -15,8 +15,6 @@ import cn.lunadeer.dominion.utils.command.Option;
 import cn.lunadeer.dominion.utils.command.SecondaryCommand;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
-import cn.lunadeer.dominion.utils.stui.components.buttons.FunctionalButton;
-import cn.lunadeer.dominion.utils.stui.components.buttons.PermissionButton;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
@@ -94,15 +92,6 @@ public class AdministratorCommand {
         }
     }.needPermission(adminPermission).register();
 
-    public static PermissionButton reloadCacheButton(CommandSender sender) {
-        return new FunctionalButton(Language.administratorCommandText.reloadCacheButton) {
-            @Override
-            public void function() {
-                reloadCache(sender);
-            }
-        }.needPermission(adminPermission);
-    }
-
     public static void reloadCache(CommandSender sender) {
         Notification.info(sender, Language.administratorCommandText.reloadingDominionCache);
         CacheManager.instance.getCache().getDominionCache().load();
@@ -117,15 +106,6 @@ public class AdministratorCommand {
         Notification.info(sender, Language.administratorCommandText.reloadedGroupCache);
 
         MainMenu.show(sender, "1");
-    }
-
-    public static PermissionButton reloadConfigButton(CommandSender sender) {
-        return new FunctionalButton(Language.administratorCommandText.reloadConfigButton) {
-            @Override
-            public void function() {
-                reloadConfig(sender);
-            }
-        }.needPermission(adminPermission);
     }
 
     public static void reloadConfig(CommandSender sender) {

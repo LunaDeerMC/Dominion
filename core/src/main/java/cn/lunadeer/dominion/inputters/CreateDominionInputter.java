@@ -4,8 +4,7 @@ import cn.lunadeer.dominion.commands.DominionCreateCommand;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.uis.dominion.DominionList;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
-import cn.lunadeer.dominion.utils.stui.components.buttons.FunctionalButton;
-import cn.lunadeer.dominion.utils.stui.inputter.InputterRunner;
+import cn.lunadeer.dominion.utils.inputter.InputterRunner;
 import org.bukkit.command.CommandSender;
 
 public class CreateDominionInputter {
@@ -26,12 +25,4 @@ public class CreateDominionInputter {
         };
     }
 
-    public static FunctionalButton createTuiButtonOn(CommandSender sender) {
-        return new FunctionalButton(Language.createDominionInputterText.button) {
-            @Override
-            public void function() {
-                createOn(sender);
-            }
-        };
-    }
 }

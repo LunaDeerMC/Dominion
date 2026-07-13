@@ -1,7 +1,6 @@
 package cn.lunadeer.dominion.configuration;
 
 import cn.lunadeer.dominion.Dominion;
-import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flag;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.utils.MessageDisplay;
@@ -166,15 +165,6 @@ public class Configuration extends ConfigurationFile {
     @Comments("Tool used to show information of clicked dominion.")
     public static String infoTool = "STRING";
 
-    @Comments({
-            "The settings of the player default using UI. (For bedrock player, will always be CUI.)",
-            "If set to CUI or TUI, player can not change their UI type.",
-            "BY_PLAYER: Decide by player themselves.",
-            "CUI: Chest GUI.",
-            "TUI: Text GUI."
-    })
-    public static String defaultUiType = PlayerDTO.UI_TYPE.BY_PLAYER.name();
-
     @Comments("The settings of the plugin message.")
     public static PluginMessage pluginMessage = new PluginMessage();
 
@@ -299,12 +289,6 @@ public class Configuration extends ConfigurationFile {
             pluginMessage.enterLeaveDisplayPlace = "ACTION_BAR";
         }
 
-        try {
-            PlayerDTO.UI_TYPE.valueOf(defaultUiType.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            XLogger.warn("Invalid default UI type: {0}", defaultUiType);
-            defaultUiType = PlayerDTO.UI_TYPE.BY_PLAYER.name();
-        }
     }
 
     @HandleManually

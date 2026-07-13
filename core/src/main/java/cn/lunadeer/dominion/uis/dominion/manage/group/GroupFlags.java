@@ -7,7 +7,6 @@ import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.commands.GroupCommand;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
-import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
 import cn.lunadeer.dominion.inputters.RenameGroupInputter;
 import cn.lunadeer.dominion.misc.CommandArguments;
 import cn.lunadeer.dominion.uis.AbstractUI;
@@ -22,10 +21,6 @@ import cn.lunadeer.dominion.utils.scui.ChestListView;
 import cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager;
 import cn.lunadeer.dominion.utils.scui.configuration.ButtonConfiguration;
 import cn.lunadeer.dominion.utils.scui.configuration.ListViewConfiguration;
-import cn.lunadeer.dominion.utils.stui.ListView;
-import cn.lunadeer.dominion.utils.stui.components.Line;
-import cn.lunadeer.dominion.utils.stui.components.buttons.FunctionalButton;
-import cn.lunadeer.dominion.utils.stui.components.buttons.ListViewButton;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Material;
@@ -57,75 +52,6 @@ public class GroupFlags extends AbstractUI {
         }
     }.needPermission(defaultPermission).register();
 
-    // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ TUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-
-    public static class GroupSettingTuiText extends ConfigurationPart {
-        public String title = "Group {0} Settings";
-        public String description = "Manage the settings of group {0}.";
-        public String button = "SETTING";
-    }
-
-    public static ListViewButton button(CommandSender sender, String dominionName, String groupName) {
-        return (ListViewButton) new ListViewButton(TextUserInterface.groupSettingTuiText.button) {
-            @Override
-            public void function(String page) {
-                show(sender, dominionName, groupName, page);
-            }
-        }.needPermission(defaultPermission).setHoverText(TextUserInterface.groupSettingTuiText.description);
-    }
-
-    @Override
-    protected void showTUI(Player player, String... args) {
-        DominionDTO dominion = toDominionDTO(args[0]);
-        assertDominionAdmin(player, dominion);
-        GroupDTO group = toGroupDTO(dominion, args[1]);
-        int page = toIntegrity(args[2], 1);
-
-        ListView view = ListView.create(10, button(player, dominion.getName(), group.getNamePlain()));
-        view.title(formatString(TextUserInterface.groupSettingTuiText.title, group.getNameColoredBukkit()));
-        view.navigator(
-                Line.create()
-                        .append(MainMenu.button(player).build())
-                        .append(DominionList.button(player).build())
-                        .append(DominionManage.button(player, dominion.getName()).build())
-                        .append(GroupList.button(player, dominion.getName()).build())
-                        .append(TextUserInterface.groupSettingTuiText.button)
-        );
-        view.add(Line.create().append(RenameGroupInputter.createTuiButtonOn(player, dominion.getName(), group.getNamePlain()).build()));
-
-        if (group.getFlagValue(Flags.ADMIN)) {
-            view.add(createOption(player, Flags.ADMIN, true, dominion.getName(), group.getNamePlain(), args[2]));
-        } else {
-            for (PriFlag flag : Flags.getAllPriFlagsEnable()) {
-                view.add(createOption(player, flag, group.getFlagValue(flag), dominion.getName(), group.getNamePlain(), args[2]));
-            }
-        }
-        view.showOn(player, page);
-    }
-
-    private static Line createOption(Player player, PriFlag flag, boolean value, String DominionName, String groupName, String pageStr) {
-        if (value) {
-            return Line.create()
-                    .append(new FunctionalButton("☑") {
-                        @Override
-                        public void function() {
-                            GroupCommand.setGroupFlag(player, DominionName, groupName, flag.getFlagName(), "false", pageStr);
-                        }
-                    }.needPermission(defaultPermission).green().build())
-                    .append(Component.text(flag.getDisplayName()).hoverEvent(Component.text(flag.getDescription())));
-        } else {
-            return Line.create()
-                    .append(new FunctionalButton("☐") {
-                        @Override
-                        public void function() {
-                            GroupCommand.setGroupFlag(player, DominionName, groupName, flag.getFlagName(), "true", pageStr);
-                        }
-                    }.needPermission(defaultPermission).red().build())
-                    .append(Component.text(flag.getDisplayName()).hoverEvent(Component.text(flag.getDescription())));
-        }
-    }
-
-    // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ TUI ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ CUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
     public static class GroupSettingCui extends ConfigurationPart {

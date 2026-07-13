@@ -1,4 +1,4 @@
-package cn.lunadeer.dominion.utils.stui.inputter;
+package cn.lunadeer.dominion.utils.inputter;
 
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.XLogger;
@@ -7,9 +7,9 @@ import org.bukkit.entity.Player;
 
 public abstract class InputterRunner {
 
-    public static String ONLY_PLAYER = "TUI inputter can only be used by a player.";
-    public static String CANCEL = " [Send 'C' to cancel the inputter.]";
-    public static String INPUTTER_CANCELLED = "Inputter cancelled.";
+    public static String ONLY_PLAYER = "Chat input can only be used by a player.";
+    public static String CANCEL = " [Send 'C' to cancel the input.]";
+    public static String INPUTTER_CANCELLED = "Input cancelled.";
 
     private Player sender;
 
@@ -23,14 +23,14 @@ public abstract class InputterRunner {
         Notification.info(sender, hint + CANCEL);
     }
 
-    public void runner(String inputter) {
+    public void runner(String input) {
         Inputter.getInstance().unregister(this);
         try {
-            if (inputter.equalsIgnoreCase("C")) {
+            if (input.equalsIgnoreCase("C")) {
                 Notification.warn(sender, INPUTTER_CANCELLED);
                 cancelRun();
             } else {
-                run(inputter);
+                run(input);
             }
         } catch (Exception e) {
             Notification.error(sender, e.getMessage());
@@ -38,7 +38,7 @@ public abstract class InputterRunner {
         }
     }
 
-    public abstract void run(String inputter);
+    public abstract void run(String input);
 
     public void cancelRun() {}
 

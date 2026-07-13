@@ -5,7 +5,6 @@ import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Language;
-import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
 import cn.lunadeer.dominion.events.dominion.modify.DominionReSizeEvent;
 import cn.lunadeer.dominion.events.dominion.modify.DominionSetMessageEvent;
 import cn.lunadeer.dominion.handler.DominionProviderHandler;
@@ -43,7 +42,10 @@ public class DominionOperateCommand {
         public String setMapColorDescription = "Set the map color for a dominion.";
         public String giveDescription = "Give a dominion to a player.";
         public String tpDescription = "Teleport to a dominion.";
-        public String switchUiDescription = "Switch the UI type for the dominion commands.";
+        public String infoDescription = "Show information about the dominion at your location.";
+        public String ownerName = "This dominion is owned by {0}.";
+        public String infoLWH = "Size: {0} x {1} x {2}";
+        public String infoHeight = "Height: {0} ~ {1}";
     }
 
     public static SecondaryCommand resize = new SecondaryCommand("resize", List.of(
@@ -161,42 +163,8 @@ public class DominionOperateCommand {
         }
     }.needPermission(defaultPermission).register();
 
-    public static SecondaryCommand switchUi = new SecondaryCommand("switch_ui", List.of(
-            new Option(List.of(PlayerDTO.UI_TYPE.TUI.name(), PlayerDTO.UI_TYPE.CUI.name()), "")
-    ),
-            Language.dominionOperateCommandText.switchUiDescription
-    ) {
-        @Override
-        public void executeHandler(CommandSender sender) {
-            try {
-                Player player = toPlayer(sender);
-                PlayerDTO playerDTO = CacheManager.instance.getPlayer(player.getUniqueId());
-                if (playerDTO == null) {
-                    throw new DominionException("Player data not found.");
-                }
-                PlayerDTO.UI_TYPE uiType;
-                String uiTypeStr = getArgumentValue(0);
-                if (uiTypeStr.isEmpty()) {
-                    // Toggle UI type
-                    uiType = playerDTO.getUiPreference() == PlayerDTO.UI_TYPE.TUI ? PlayerDTO.UI_TYPE.CUI : PlayerDTO.UI_TYPE.TUI;
-                } else if (!Arrays.stream(PlayerDTO.UI_TYPE.values()).map(Enum::name).toList().contains(uiTypeStr)) {
-                    throw new DominionException("Invalid UI type: " + uiTypeStr + ". Valid types are: " +
-                            Arrays.stream(PlayerDTO.UI_TYPE.values()).map(Enum::name).toList());
-                } else {
-                    // Set UI type directly
-                    uiType = PlayerDTO.UI_TYPE.valueOf(uiTypeStr);
-                }
-                playerDTO.setUiPreference(uiType);
-                MainMenu.show(sender, "1");
-            } catch (Exception e) {
-                Notification.error(sender, e);
-            }
-        }
-    }.needPermission(defaultPermission).register();
-
-
     public static SecondaryCommand easyInfo = new SecondaryCommand("info", List.of(
-    ), TextUserInterface.sizeInfoTuiText.description) {
+    ), Language.dominionOperateCommandText.infoDescription) {
         @Override
         public void executeHandler(CommandSender sender) {
             if (!(sender instanceof Player player)) {
@@ -217,10 +185,10 @@ public class DominionOperateCommand {
                 return;
             }
             Notification.info(player,"");
-            Notification.info(player, TextUserInterface.sizeInfoTuiText.ownerName, owner.getLastKnownName());
+            Notification.info(player, Language.dominionOperateCommandText.ownerName, owner.getLastKnownName());
             CuboidDTO cuboid = dominion.getCuboid();
-            Notification.info(player, TextUserInterface.sizeInfoTuiText.infoLWH, cuboid.xLength(), cuboid.yLength(), cuboid.zLength());
-            Notification.info(player, TextUserInterface.sizeInfoTuiText.infoHeight, cuboid.y1(), cuboid.y2());
+            Notification.info(player, Language.dominionOperateCommandText.infoLWH, cuboid.xLength(), cuboid.yLength(), cuboid.zLength());
+            Notification.info(player, Language.dominionOperateCommandText.infoHeight, cuboid.y1(), cuboid.y2());
             Notification.info(player, ">--------------------<");
         }
     }.needPermission(defaultPermission).register();

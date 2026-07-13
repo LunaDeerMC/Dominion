@@ -31,8 +31,7 @@ public class V1__LegacySchema extends AbstractJavaMigration {
                 "last_known_name " + text() + " NOT NULL DEFAULT 'unknown', " +
                 "last_join_at " + timestamp() + " NOT NULL DEFAULT '1970-01-01 00:00:00', " +
                 "using_group_title_id INT NOT NULL DEFAULT -1, " +
-                "skin_url " + longText() + " NOT NULL DEFAULT '" + DEFAULT_SKIN_URL + "', " +
-                "ui_preference " + text() + " NOT NULL DEFAULT 'TUI'" +
+                "skin_url " + longText() + " NOT NULL DEFAULT '" + DEFAULT_SKIN_URL + "'" +
                 ")");
 
         execute(connection, "CREATE TABLE IF NOT EXISTS dominion (" +
@@ -90,9 +89,6 @@ public class V1__LegacySchema extends AbstractJavaMigration {
         }
         addColumnIfMissing(connection, "player_name", "using_group_title_id INT NOT NULL DEFAULT -1");
         addColumnIfMissing(connection, "player_name", "skin_url " + longText() + " NOT NULL DEFAULT '" + DEFAULT_SKIN_URL + "'");
-        addColumnIfMissing(connection, "player_name", "ui_preference " + text() + " NOT NULL DEFAULT 'TUI'");
-        execute(connection, "UPDATE player_name SET ui_preference = 'CUI' WHERE uuid LIKE '00000000%' AND (ui_preference IS NULL OR ui_preference = 'TUI')");
-
         if (tableExists(connection, "dominion")) {
             addColumnIfMissing(connection, "dominion", "world_uid " + uuidText() + " NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'");
             if (columnExists(connection, "dominion", "world")) {
@@ -161,14 +157,13 @@ public class V1__LegacySchema extends AbstractJavaMigration {
 
     private void seedRootRows(Connection connection) throws SQLException {
         if (!existsById(connection, "player_name", -1)) {
-            try (PreparedStatement insert = connection.prepareStatement("INSERT INTO player_name (id, uuid, last_known_name, last_join_at, using_group_title_id, skin_url, ui_preference) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+            try (PreparedStatement insert = connection.prepareStatement("INSERT INTO player_name (id, uuid, last_known_name, last_join_at, using_group_title_id, skin_url) VALUES (?, ?, ?, ?, ?, ?)")) {
                 insert.setInt(1, -1);
                 insert.setString(2, "00000000-0000-0000-0000-000000000000");
                 insert.setString(3, "server");
                 insert.setTimestamp(4, Timestamp.valueOf("1970-01-01 00:00:00"));
                 insert.setInt(5, -1);
                 insert.setString(6, DEFAULT_SKIN_URL);
-                insert.setString(7, "TUI");
                 insert.executeUpdate();
             }
         }

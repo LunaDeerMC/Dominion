@@ -5,13 +5,13 @@ main-menu-cui:
     - '##A#B#C##'
     - '##D#E#F##'
     - '#########'
-    - '####S####'
+    - '#########'
   user-layout:
     - '#########'
     - '##A#B#C##'
     - '###D#E###'
     - '#########'
-    - '####S####'
+    - '#########'
   status-disabled-lore:
     - §c✘ §4この機能は現在無効です。
     - §7後で再確認するか、
@@ -90,19 +90,6 @@ main-menu-cui:
       - §8サーバー管理や
       - §8モデレーション目的に最適です。
     material: DIAMOND
-  switch-tui-button:
-    symbol: S
-    name: §e§lTUIに切り替え
-    lore:
-      - §7テキストベースのTUIに切り替えて
-      - §7異なるユーザーインターフェースを体験します。
-      - ''
-      - §e▶ TUIに切り替えるにはクリック
-      - ''
-      - §8テキストベースの体験を好む場合は
-      - §8これを使用してください！
-    material: COMPASS
-all-dominion-cui:
   title: §6✦ §c§lすべてのドミニオン §6✦
   list-configuration:
     item-symbol: i

@@ -5,13 +5,13 @@ main-menu-cui:
     - '##A#B#C##'
     - '##D#E#F##'
     - '#########'
-    - '####S####'
+    - '#########'
   user-layout:
     - '#########'
     - '##A#B#C##'
     - '###D#E###'
     - '#########'
-    - '####S####'
+    - '#########'
   status-disabled-lore:
     - §c✘ §4此功能当前已禁用。
     - §7请稍后再试或联系
@@ -85,18 +85,6 @@ main-menu-cui:
       - §8适用于服务器管理
       - §8和监督目的。
     material: DIAMOND
-  switch-tui-button:
-    symbol: S
-    name: §e§l切换到TUI
-    lore:
-      - §7切换到基于文本的TUI
-      - §7以获得不同的用户界面。
-      - ''
-      - §e▶ 点击切换到TUI
-      - ''
-      - §8如果你更喜欢基于文本的体验，请使用此选项！
-    material: COMPASS
-all-dominion-cui:
   title: §6✦ §c§l所有领地 §6✦
   list-configuration:
     item-symbol: i

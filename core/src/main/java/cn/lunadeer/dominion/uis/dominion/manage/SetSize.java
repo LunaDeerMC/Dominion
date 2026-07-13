@@ -3,7 +3,6 @@ package cn.lunadeer.dominion.uis.dominion.manage;
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
-import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
 import cn.lunadeer.dominion.events.dominion.modify.DominionReSizeEvent;
 import cn.lunadeer.dominion.inputters.ResizeDominionInputter;
 import cn.lunadeer.dominion.uis.AbstractUI;
@@ -16,9 +15,6 @@ import cn.lunadeer.dominion.utils.scui.ChestButton;
 import cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager;
 import cn.lunadeer.dominion.utils.scui.ChestView;
 import cn.lunadeer.dominion.utils.scui.configuration.ButtonConfiguration;
-import cn.lunadeer.dominion.utils.stui.ListView;
-import cn.lunadeer.dominion.utils.stui.components.Line;
-import cn.lunadeer.dominion.utils.stui.components.buttons.ListViewButton;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -36,85 +32,28 @@ public class SetSize extends AbstractUI {
 
     // Direction data structure for better organization
     private static final List<DirectionInfo> DIRECTIONS = Arrays.asList(
-            new DirectionInfo(DominionReSizeEvent.DIRECTION.NORTH, () -> TextUserInterface.setSizeTuiText.north),
-            new DirectionInfo(DominionReSizeEvent.DIRECTION.SOUTH, () -> TextUserInterface.setSizeTuiText.south),
-            new DirectionInfo(DominionReSizeEvent.DIRECTION.WEST, () -> TextUserInterface.setSizeTuiText.west),
-            new DirectionInfo(DominionReSizeEvent.DIRECTION.EAST, () -> TextUserInterface.setSizeTuiText.east),
-            new DirectionInfo(DominionReSizeEvent.DIRECTION.UP, () -> TextUserInterface.setSizeTuiText.up),
-            new DirectionInfo(DominionReSizeEvent.DIRECTION.DOWN, () -> TextUserInterface.setSizeTuiText.down)
+            new DirectionInfo(DominionReSizeEvent.DIRECTION.NORTH, () -> ChestUserInterface.setSizeCui.north),
+            new DirectionInfo(DominionReSizeEvent.DIRECTION.SOUTH, () -> ChestUserInterface.setSizeCui.south),
+            new DirectionInfo(DominionReSizeEvent.DIRECTION.WEST, () -> ChestUserInterface.setSizeCui.west),
+            new DirectionInfo(DominionReSizeEvent.DIRECTION.EAST, () -> ChestUserInterface.setSizeCui.east),
+            new DirectionInfo(DominionReSizeEvent.DIRECTION.UP, () -> ChestUserInterface.setSizeCui.up),
+            new DirectionInfo(DominionReSizeEvent.DIRECTION.DOWN, () -> ChestUserInterface.setSizeCui.down)
     );
 
     public static void show(CommandSender sender, String dominionName) {
         new SetSize().displayByPreference(sender, dominionName);
     }
 
-    // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ TUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-
-    public static class SetSizeTuiText extends ConfigurationPart {
-        public String title = "Resize {0}";
-        public String button = "RESIZE";
-        public String north = "North(z-)";
-        public String south = "South(z+)";
-        public String west = "West(x-)";
-        public String east = "East(x+)";
-        public String up = "Up(y+)";
-        public String down = "Down(y-)";
-    }
-
-    public static ListViewButton button(CommandSender sender, String dominionName) {
-        return (ListViewButton) new ListViewButton(TextUserInterface.setSizeTuiText.button) {
-            @Override
-            public void function(String pageStr) {
-                show(sender, dominionName);
-            }
-        }.needPermission(defaultPermission);
-    }
-
-    @Override
-    protected void showTUI(Player player, String... args) {
-        String dominionName = args[0];
-        DominionDTO dominion = toDominionDTO(dominionName);
-        assertDominionOwner(player, dominion);
-
-        ListView view = createTUIView(player, dominion);
-        addDirectionButtons(view, player, dominion.getName());
-        view.showOn(player, 1);
-    }
-
-    private ListView createTUIView(Player player, DominionDTO dominion) {
-        ListView view = ListView.create(10, button(player, dominion.getName()));
-        view.title(formatString(TextUserInterface.setSizeTuiText.title, dominion.getName()));
-        view.navigator(createNavigationLine(player, dominion.getName()));
-        return view;
-    }
-
-    private Line createNavigationLine(Player player, String dominionName) {
-        return Line.create()
-                .append(MainMenu.button(player).build())
-                .append(DominionList.button(player).build())
-                .append(DominionManage.button(player, dominionName).build())
-                .append(Info.button(player, dominionName).build())
-                .append(TextUserInterface.setSizeTuiText.button);
-    }
-
-    private void addDirectionButtons(ListView view, Player player, String dominionName) {
-        for (DirectionInfo directionInfo : DIRECTIONS) {
-            view.add(createDirectionLine(player, dominionName, directionInfo));
-        }
-    }
-
-    private Line createDirectionLine(Player player, String dominionName, DirectionInfo directionInfo) {
-        return Line.create()
-                .append(directionInfo.getDisplayName())
-                .append(ResizeDominionInputter.createExpandTuiButtonOn(player, dominionName, directionInfo.direction()).build())
-                .append(ResizeDominionInputter.createContractTuiButtonOn(player, dominionName, directionInfo.direction()).build());
-    }
-
-    // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ TUI ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ CUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
     public static class SetSizeCui extends ConfigurationPart {
         public String title = "§6✦ §2§lResize {0} §6✦";
+        public String north = "North";
+        public String south = "South";
+        public String west = "West";
+        public String east = "East";
+        public String up = "Up";
+        public String down = "Down";
         public List<String> layout = List.of(
                 "<##N###U#",
                 "###n###u#",

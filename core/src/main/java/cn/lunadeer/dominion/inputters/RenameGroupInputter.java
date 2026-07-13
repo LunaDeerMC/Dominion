@@ -7,8 +7,7 @@ import cn.lunadeer.dominion.providers.GroupProvider;
 import cn.lunadeer.dominion.uis.dominion.manage.group.GroupFlags;
 import cn.lunadeer.dominion.utils.ColorParser;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
-import cn.lunadeer.dominion.utils.stui.components.buttons.FunctionalButton;
-import cn.lunadeer.dominion.utils.stui.inputter.InputterRunner;
+import cn.lunadeer.dominion.utils.inputter.InputterRunner;
 import org.bukkit.command.CommandSender;
 
 import static cn.lunadeer.dominion.misc.Converts.toDominionDTO;
@@ -34,12 +33,4 @@ public class RenameGroupInputter {
         };
     }
 
-    public static FunctionalButton createTuiButtonOn(CommandSender sender, String dominionName, String oldGroupName) {
-        return new FunctionalButton(Language.renameGroupInputterText.button) {
-            @Override
-            public void function() {
-                createOn(sender, dominionName, oldGroupName);
-            }
-        };
-    }
 }

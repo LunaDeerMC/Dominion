@@ -1,10 +1,6 @@
 package cn.lunadeer.dominion.uis;
 
-import cn.lunadeer.dominion.api.dtos.PlayerDTO;
-import cn.lunadeer.dominion.cache.CacheManager;
-import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.utils.Notification;
-import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -32,8 +28,6 @@ public abstract class AbstractUI {
         public String listAllOfDescription = "List all dominions owned by a player.";
     }
 
-    protected abstract void showTUI(Player player, String... args) throws Exception;
-
     protected abstract void showCUI(Player player, String... args) throws Exception;
 
     protected abstract void showConsole(CommandSender sender, String... args) throws Exception;
@@ -41,33 +35,7 @@ public abstract class AbstractUI {
     protected void displayByPreference(CommandSender sender, String... args) {
         try {
             if (sender instanceof Player player) {
-                PlayerDTO playerDTO = CacheManager.instance.getPlayer(player.getUniqueId());
-                if (playerDTO == null) {
-                    showTUI(player, args);
-                    XLogger.warn("PlayerDTO not found for player: " + player.getName() + ". Showing TUI instead.");
-                    return;
-                }
-                // If UUID starts with "00000000", it is a bedrock player so we show CUI,
-                // otherwise we show TUI.
-                // This is a workaround for bedrock players who cannot use TUI.
-                if (player.getUniqueId().toString().startsWith("00000000")) {
-                    showCUI(player, args);
-                    return;
-                }
-                if (PlayerDTO.UI_TYPE.valueOf(Configuration.defaultUiType).equals(PlayerDTO.UI_TYPE.BY_PLAYER)) {
-                    if (playerDTO.getUiPreference().equals(PlayerDTO.UI_TYPE.CUI)) {
-                        showCUI(player, args);
-                    } else if (playerDTO.getUiPreference().equals(PlayerDTO.UI_TYPE.TUI)) {
-                        showTUI(player, args);
-                    }
-                } else {
-                    PlayerDTO.UI_TYPE type = PlayerDTO.UI_TYPE.valueOf(Configuration.defaultUiType);
-                    if (type.equals(PlayerDTO.UI_TYPE.CUI)) {
-                        showCUI(player, args);
-                    } else if (type.equals(PlayerDTO.UI_TYPE.TUI)) {
-                        showTUI(player, args);
-                    }
-                }
+                showCUI(player, args);
             } else {
                 Notification.info(sender, "--------------------------------------------------");
                 showConsole(sender, args);

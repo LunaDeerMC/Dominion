@@ -3,8 +3,7 @@ package cn.lunadeer.dominion.inputters;
 import cn.lunadeer.dominion.commands.TemplateCommand;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
-import cn.lunadeer.dominion.utils.stui.components.buttons.FunctionalButton;
-import cn.lunadeer.dominion.utils.stui.inputter.InputterRunner;
+import cn.lunadeer.dominion.utils.inputter.InputterRunner;
 import org.bukkit.command.CommandSender;
 
 public class RenameTemplateInputter {
@@ -23,12 +22,4 @@ public class RenameTemplateInputter {
         };
     }
 
-    public static FunctionalButton createTuiButtonOn(CommandSender sender, String oldTemplateName, String pageStr) {
-        return new FunctionalButton(Language.renameTemplateInputterText.button) {
-            @Override
-            public void function() {
-                createOn(sender, oldTemplateName, pageStr);
-            }
-        };
-    }
 }

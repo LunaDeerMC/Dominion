@@ -5,13 +5,13 @@ main-menu-cui:
     - '##A#B#C##'
     - '##D#E#F##'
     - '#########'
-    - '####S####'
+    - '#########'
   user-layout:
     - '#########'
     - '##A#B#C##'
     - '###D#E###'
     - '#########'
-    - '####S####'
+    - '#########'
   status-disabled-lore:
     - §c✘ §4This feature is currently disabled.
     - §7Please check back later or contact
@@ -91,19 +91,6 @@ main-menu-cui:
       - §8Perfect for server management
       - §8and moderation purposes.
     material: DIAMOND
-  switch-tui-button:
-    symbol: S
-    name: §e§lSwitch to TUI
-    lore:
-      - §7Switch to the text-based TUI
-      - §7for a different user interface.
-      - ''
-      - §e▶ Click to switch to TUI
-      - ''
-      - §8Use this if you prefer a
-      - §8text-based experience!
-    material: COMPASS
-all-dominion-cui:
   title: §6✦ §c§lAll Dominions §6✦
   list-configuration:
     item-symbol: i

@@ -4,8 +4,7 @@ import cn.lunadeer.dominion.commands.MemberCommand;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.uis.dominion.manage.member.MemberList;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
-import cn.lunadeer.dominion.utils.stui.components.buttons.FunctionalButton;
-import cn.lunadeer.dominion.utils.stui.inputter.InputterRunner;
+import cn.lunadeer.dominion.utils.inputter.InputterRunner;
 import org.bukkit.command.CommandSender;
 
 public class SearchPlayerInputter {
@@ -24,12 +23,4 @@ public class SearchPlayerInputter {
         };
     }
 
-    public static FunctionalButton createTuiButtonOn(CommandSender sender, String dominionName) {
-        return new FunctionalButton(Language.searchPlayerInputterText.button) {
-            @Override
-            public void function() {
-                createOn(sender, dominionName);
-            }
-        };
-    }
 }

@@ -5,8 +5,7 @@ import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.events.dominion.modify.DominionReSizeEvent;
 import cn.lunadeer.dominion.uis.dominion.manage.SetSize;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
-import cn.lunadeer.dominion.utils.stui.components.buttons.FunctionalButton;
-import cn.lunadeer.dominion.utils.stui.inputter.InputterRunner;
+import cn.lunadeer.dominion.utils.inputter.InputterRunner;
 import org.bukkit.command.CommandSender;
 
 import static cn.lunadeer.dominion.utils.Misc.formatString;
@@ -43,23 +42,7 @@ public class ResizeDominionInputter {
         };
     }
 
-    public static FunctionalButton createExpandTuiButtonOn(CommandSender sender, String dominionName, DominionReSizeEvent.DIRECTION direction) {
-        return new FunctionalButton(Language.resizeDominionInputterText.expand) {
-            @Override
-            public void function() {
-                createExpandOn(sender, dominionName, direction);
-            }
-        };
-    }
 
-    public static FunctionalButton createContractTuiButtonOn(CommandSender sender, String dominionName, DominionReSizeEvent.DIRECTION direction) {
-        return new FunctionalButton(Language.resizeDominionInputterText.contract) {
-            @Override
-            public void function() {
-                createContractOn(sender, dominionName, direction);
-            }
-        };
-    }
 
 
 }

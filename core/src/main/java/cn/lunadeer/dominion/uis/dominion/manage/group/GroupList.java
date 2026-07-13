@@ -7,7 +7,6 @@ import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.commands.GroupCommand;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
-import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
 import cn.lunadeer.dominion.doos.GroupDOO;
 import cn.lunadeer.dominion.inputters.CreateGroupInputter;
 import cn.lunadeer.dominion.misc.CommandArguments;
@@ -23,11 +22,6 @@ import cn.lunadeer.dominion.utils.scui.ChestListView;
 import cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager;
 import cn.lunadeer.dominion.utils.scui.configuration.ButtonConfiguration;
 import cn.lunadeer.dominion.utils.scui.configuration.ListViewConfiguration;
-import cn.lunadeer.dominion.utils.stui.ListView;
-import cn.lunadeer.dominion.utils.stui.components.Line;
-import cn.lunadeer.dominion.utils.stui.components.buttons.Button;
-import cn.lunadeer.dominion.utils.stui.components.buttons.FunctionalButton;
-import cn.lunadeer.dominion.utils.stui.components.buttons.ListViewButton;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Material;
@@ -61,86 +55,6 @@ public class GroupList extends AbstractUI {
         }
     }.needPermission(defaultPermission).register();
 
-    // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ TUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-
-    public static class GroupListTuiText extends ConfigurationPart {
-        public String title = "{0} Group List";
-        public String description = "List of groups of this dominion.";
-        public String button = "GROUPS";
-        public String deleteButton = "DELETE";
-        public String deleteDescription = "Delete this group, all members will be move out of this group.";
-        public String removeMemberDescription = "Remove {0} from group {1} to default group.";
-    }
-
-    public static ListViewButton button(CommandSender sender, String dominionName) {
-        return (ListViewButton) new ListViewButton(TextUserInterface.groupListTuiText.button) {
-            @Override
-            public void function(String page) {
-                show(sender, dominionName, page);
-            }
-        }.needPermission(defaultPermission);
-    }
-
-    @Override
-    protected void showTUI(Player player, String... args) throws Exception {
-        String dominionName = args[0];
-        String pageStr = args[1];
-        DominionDTO dominion = toDominionDTO(dominionName);
-        assertDominionAdmin(player, dominion);
-        int page = toIntegrity(pageStr);
-
-        List<GroupDOO> groups = GroupDOO.selectByDominionId(dominion.getId());
-
-        ListView view = ListView.create(10, button(player, dominionName));
-        view.title(formatString(TextUserInterface.groupListTuiText.title, dominion.getName()));
-        view.navigator(
-                Line.create()
-                        .append(MainMenu.button(player).build())
-                        .append(DominionList.button(player).build())
-                        .append(DominionManage.button(player, dominionName).build())
-                        .append(TextUserInterface.groupListTuiText.button)
-        );
-        view.add(new Line()
-                .append(CreateGroupInputter.createTuiButtonOn(player, dominionName).needPermission(defaultPermission).build())
-        );
-
-        // get data from database directly because cache update may not be in time
-        List<MemberDTO> members = new ArrayList<>(selectByDominionId(dominion.getId()));
-        for (GroupDTO group : groups) {
-            Line line = new Line();
-            Button deleteGroup = new FunctionalButton(TextUserInterface.groupListTuiText.deleteButton) {
-                @Override
-                public void function() {
-                    GroupCommand.deleteGroup(player, dominionName, group.getNamePlain(), pageStr);
-                }
-            }.needPermission(defaultPermission).red().setHoverText(TextUserInterface.groupListTuiText.deleteDescription);
-            Button setting = GroupFlags.button(player, dominionName, group.getNamePlain());
-            Button addMember = SelectMember.button(player, dominionName, group.getNamePlain(), pageStr);
-            line.append(deleteGroup.build()).append(setting.build()).append(group.getNameColoredComponent()).append(addMember.build());
-            view.add(line);
-            for (MemberDTO member : members) {
-                if (!member.getGroupId().equals(group.getId())) {
-                    continue;
-                }
-                PlayerDTO p = toPlayerDTO(member.getPlayerUUID());
-                Button remove = new FunctionalButton("-") {
-                    @Override
-                    public void function() {
-                        GroupCommand.removeMember(player, dominionName, group.getNamePlain(), p.getLastKnownName(), pageStr);
-                    }
-                }.needPermission(defaultPermission).red().setHoverText(TextUserInterface.groupListTuiText.removeMemberDescription);
-                Line playerLine = new Line().setDivider("");
-                playerLine.append(Component.text("        "));
-                playerLine.append(remove.build()).append(" |  " + p.getLastKnownName());
-                view.add(playerLine);
-            }
-            view.add(new Line().append(""));
-        }
-
-        view.showOn(player, page);
-    }
-
-    // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ TUI ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ CUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
     public static class GroupListCui extends ConfigurationPart {

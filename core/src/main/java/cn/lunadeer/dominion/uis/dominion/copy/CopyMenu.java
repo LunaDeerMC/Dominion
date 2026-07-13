@@ -3,7 +3,6 @@ package cn.lunadeer.dominion.uis.dominion.copy;
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
-import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
 import cn.lunadeer.dominion.uis.AbstractUI;
 import cn.lunadeer.dominion.uis.MainMenu;
 import cn.lunadeer.dominion.uis.dominion.DominionList;
@@ -14,9 +13,6 @@ import cn.lunadeer.dominion.utils.scui.ChestButton;
 import cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager;
 import cn.lunadeer.dominion.utils.scui.ChestView;
 import cn.lunadeer.dominion.utils.scui.configuration.ButtonConfiguration;
-import cn.lunadeer.dominion.utils.stui.ListView;
-import cn.lunadeer.dominion.utils.stui.components.Line;
-import cn.lunadeer.dominion.utils.stui.components.buttons.ListViewButton;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -36,55 +32,6 @@ public class CopyMenu extends AbstractUI {
         new CopyMenu().displayByPreference(sender, toDominionName, pageStr);
     }
 
-    // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ TUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-
-    public static class CopyMenuTuiText extends ConfigurationPart {
-        public String button = "COPY";
-        public String description = "Copy Privilege Settings From Other Dominion.";
-        public String title = "Select Copy Type";
-    }
-
-    public static ListViewButton button(CommandSender sender, String toDominionName) {
-        return (ListViewButton) new ListViewButton(TextUserInterface.copyMenuTuiText.button) {
-            @Override
-            public void function(String pageStr) {
-                show(sender, toDominionName, pageStr);
-            }
-        }.needPermission(defaultPermission);
-    }
-
-    @Override
-    protected void showTUI(Player player, String... args) throws Exception {
-        String toDominionName = args[0];
-        DominionDTO dominion = toDominionDTO(toDominionName);
-        assertDominionAdmin(player, dominion);
-        int page = toIntegrity(args[1]);
-
-        ListView view = ListView.create(10, button(player, toDominionName));
-        view.title(formatString(TextUserInterface.copyMenuTuiText.title));
-        view.navigator(
-                Line.create()
-                        .append(MainMenu.button(player).build())
-                        .append(DominionList.button(player).build())
-                        .append(DominionManage.button(player, toDominionName).build())
-                        .append(TextUserInterface.copyMenuTuiText.button)
-        );
-        view.add(Line.create()
-                .append(DominionCopy.button(player, toDominionName, DominionCopy.CopyType.ENVIRONMENT).build())
-                .append(TextUserInterface.dominionCopyTuiText.envDescription));
-        view.add(Line.create()
-                .append(DominionCopy.button(player, toDominionName, DominionCopy.CopyType.GUEST).build())
-                .append(TextUserInterface.dominionCopyTuiText.guestDescription));
-        view.add(Line.create()
-                .append(DominionCopy.button(player, toDominionName, DominionCopy.CopyType.MEMBER).build())
-                .append(TextUserInterface.dominionCopyTuiText.memberDescription));
-        view.add(Line.create()
-                .append(DominionCopy.button(player, toDominionName, DominionCopy.CopyType.GROUP).build())
-                .append(TextUserInterface.dominionCopyTuiText.groupDescription));
-        view.showOn(player, page);
-    }
-
-    // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ TUI ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ CUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
     public static class CopyMenuCui extends ConfigurationPart {

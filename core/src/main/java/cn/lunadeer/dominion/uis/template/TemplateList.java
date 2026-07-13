@@ -2,7 +2,6 @@ package cn.lunadeer.dominion.uis.template;
 
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
-import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
 import cn.lunadeer.dominion.doos.TemplateDOO;
 import cn.lunadeer.dominion.inputters.CreateTemplateInputter;
 import cn.lunadeer.dominion.uis.AbstractUI;
@@ -14,10 +13,6 @@ import cn.lunadeer.dominion.utils.scui.ChestListView;
 import cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager;
 import cn.lunadeer.dominion.utils.scui.configuration.ButtonConfiguration;
 import cn.lunadeer.dominion.utils.scui.configuration.ListViewConfiguration;
-import cn.lunadeer.dominion.utils.stui.ListView;
-import cn.lunadeer.dominion.utils.stui.components.Line;
-import cn.lunadeer.dominion.utils.stui.components.buttons.Button;
-import cn.lunadeer.dominion.utils.stui.components.buttons.ListViewButton;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -35,57 +30,6 @@ public class TemplateList extends AbstractUI {
         new TemplateList().displayByPreference(sender, pageStr);
     }
 
-    // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ TUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-
-    public static class TemplateListTuiText extends ConfigurationPart {
-        public String title = "Template List";
-        public String button = "TEMPLATES";
-        public String description = "Templates can be used to quickly setup privileges of member.";
-        public String deleteButton = "DELETE";
-    }
-
-    public static ListViewButton button(CommandSender sender) {
-        return (ListViewButton) new ListViewButton(TextUserInterface.templateListTuiText.button) {
-            @Override
-            public void function(String pageStr) {
-                TemplateList.show(sender, pageStr);
-            }
-        }.needPermission(defaultPermission);
-    }
-
-    @Override
-    protected void showTUI(Player player, String... args) throws Exception {
-        int page = toIntegrity(args[0], 1);
-        List<TemplateDOO> templates = TemplateDOO.selectAll(player.getUniqueId());
-
-        ListView view = ListView.create(10, button(player));
-        view.title(TextUserInterface.templateListTuiText.title);
-        view.navigator(Line.create()
-                .append(MainMenu.button(player).build())
-                .append(TextUserInterface.templateListTuiText.button));
-
-        view.add(Line.create()
-                .append(CreateTemplateInputter.createTuiButtonOn(player).needPermission(defaultPermission).build()));
-
-        for (TemplateDOO template : templates) {
-            Button setting = TemplateFlags.button(player, template.getName()).green();
-            Button delete = new ListViewButton(TextUserInterface.templateListTuiText.deleteButton) {
-                @Override
-                public void function(String pageStr) {
-                    deleteTemplate(player, template.getName(), pageStr);
-                }
-            }.needPermission(defaultPermission).red();
-            Line line = Line.create()
-                    .append(delete.build())
-                    .append(setting.build())
-                    .append(template.getName());
-            view.add(line);
-        }
-
-        view.showOn(player, page);
-    }
-
-    // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ TUI ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ CUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
     public static class TemplateListCui extends ConfigurationPart {

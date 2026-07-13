@@ -579,6 +579,6 @@ command-exception-text:
   no-permission: これを行う権限 {0} がありません。
   invalid-arguments: '引数が無効です。使用例: {0}。'
 inputter-text:
-  only-player: TUI 入力はプレイヤーのみ使用できます。
+  only-player: チャット入力はプレイヤーのみ使用できます。
   cancel: ' [入力をキャンセルするには ''C'' を送信してください。]'
   inputter-cancelled: 入力をキャンセルしました。

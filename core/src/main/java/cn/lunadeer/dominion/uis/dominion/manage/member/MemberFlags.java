@@ -7,7 +7,6 @@ import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.commands.MemberCommand;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
-import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
 import cn.lunadeer.dominion.misc.CommandArguments;
 import cn.lunadeer.dominion.uis.AbstractUI;
 import cn.lunadeer.dominion.uis.MainMenu;
@@ -21,10 +20,6 @@ import cn.lunadeer.dominion.utils.scui.ChestListView;
 import cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager;
 import cn.lunadeer.dominion.utils.scui.configuration.ButtonConfiguration;
 import cn.lunadeer.dominion.utils.scui.configuration.ListViewConfiguration;
-import cn.lunadeer.dominion.utils.stui.ListView;
-import cn.lunadeer.dominion.utils.stui.components.Line;
-import cn.lunadeer.dominion.utils.stui.components.buttons.FunctionalButton;
-import cn.lunadeer.dominion.utils.stui.components.buttons.ListViewButton;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Material;
@@ -56,77 +51,6 @@ public class MemberFlags extends AbstractUI {
         }
     }.needPermission(defaultPermission).register();
 
-    // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ TUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-
-    public static class MemberSettingTuiText extends ConfigurationPart {
-        public String title = "{0} Member Setting";
-        public String description = "Set member's privilege of dominion.";
-        public String button = "SETTING";
-    }
-
-    public static ListViewButton button(CommandSender sender, String dominionName, String playerName) {
-        return (ListViewButton) new ListViewButton(TextUserInterface.memberSettingTuiText.button) {
-            @Override
-            public void function(String pageStr) {
-                show(sender, dominionName, playerName, pageStr);
-            }
-        }.needPermission(defaultPermission).setHoverText(TextUserInterface.memberSettingTuiText.description);
-    }
-
-    @Override
-    protected void showTUI(Player player, String... args) throws Exception {
-        String dominionName = args[0];
-        String playerName = args[1];
-        String pageStr = args.length > 2 ? args[2] : "1";
-        DominionDTO dominion = toDominionDTO(dominionName);
-        MemberDTO member = toMemberDTO(dominion, playerName);
-        int page = toIntegrity(pageStr);
-        ListView view = ListView.create(10, button(player, dominionName, playerName));
-        view.title(formatString(TextUserInterface.memberSettingTuiText.title, playerName));
-        view.navigator(
-                Line.create()
-                        .append(MainMenu.button(player).build())
-                        .append(DominionList.button(player).build())
-                        .append(DominionManage.button(player, dominionName).build())
-                        .append(MemberList.button(player, dominionName).build())
-                        .append(TextUserInterface.memberSettingTuiText.button)
-        );
-        view.add(Line.create().append(SelectTemplate.button(player, dominionName, playerName).build()));
-        if (member.getFlagValue(Flags.ADMIN)) {
-            view.add(createOption(player, Flags.ADMIN, true, playerName, dominion.getName(), page));
-        } else {
-            for (PriFlag flag : Flags.getAllPriFlagsEnable()) {
-                view.add(createOption(player, flag, member.getFlagValue(flag), playerName, dominion.getName(), page));
-            }
-        }
-        view.showOn(player, page);
-    }
-
-    private static Line createOption(Player player, PriFlag flag, boolean value, String player_name, String dominion_name, int page) {
-        if (value) {
-            return Line.create()
-                    .append(new FunctionalButton("☑") {
-                        @Override
-                        public void function() {
-                            MemberCommand.setMemberPrivilege(player, dominion_name, player_name, flag.getFlagName(), "false", String.valueOf(page));
-                        }
-                    }.needPermission(defaultPermission).green().build())
-                    .append(Component.text(flag.getDisplayName()).hoverEvent(Component.text(flag.getDescription()))
-                    );
-        } else {
-            return Line.create()
-                    .append(new FunctionalButton("☐") {
-                        @Override
-                        public void function() {
-                            MemberCommand.setMemberPrivilege(player, dominion_name, player_name, flag.getFlagName(), "true", String.valueOf(page));
-                        }
-                    }.needPermission(defaultPermission).red().build())
-                    .append(Component.text(flag.getDisplayName()).hoverEvent(Component.text(flag.getDescription()))
-                    );
-        }
-    }
-
-    // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ TUI ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ CUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
     public static class MemberSettingCui extends ConfigurationPart {

@@ -7,9 +7,9 @@ Dominion is a Minecraft territory/anti-grief plugin (1.20.1+). Multi-module Grad
 | Module | Purpose |
 |--------|---------|
 | `api/` | Public API — DTOs (`DominionDTO`, `MemberDTO`, `GroupDTO`), events, flag definitions, provider interfaces. Published to Maven Central. |
-| `core/` | Main plugin — commands, cache, DOOs (persistence), event registration, UIs (CUI/TUI), configuration, custom ORM. |
+| `core/` | Main plugin — commands, cache, DOOs (persistence), event registration, CUI, configuration, custom ORM. |
 | `versions/v1_20_1/` thru `v1_21_9/` | Version-specific event handlers using NMS via paperweight. **5 modules**: `v1_20_1`, `v1_21`, `v1_21_4`, `v1_21_8`, `v1_21_9`. |
-| `languages/` | YAML translations — `en_us.yml`, `zh_cn.yml`, plus `cui/` and `tui/` subdirs per locale. |
+| `languages/` | YAML translations — `en_us.yml`, `zh_cn.yml`, plus the `cui/` subdirectory per locale. |
 | `docs/` | VuePress documentation site. |
 
 ### Data Flow

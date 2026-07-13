@@ -4,8 +4,7 @@ import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.events.dominion.modify.DominionSetMessageEvent;
 import cn.lunadeer.dominion.uis.dominion.DominionManage;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
-import cn.lunadeer.dominion.utils.stui.components.buttons.FunctionalButton;
-import cn.lunadeer.dominion.utils.stui.inputter.InputterRunner;
+import cn.lunadeer.dominion.utils.inputter.InputterRunner;
 import org.bukkit.command.CommandSender;
 
 import static cn.lunadeer.dominion.commands.DominionOperateCommand.setMessage;
@@ -40,21 +39,5 @@ public class EditMessageInputter {
         };
     }
 
-    public static FunctionalButton createLeaveTuiButtonOn(CommandSender sender, String dominionName) {
-        return new FunctionalButton(Language.editMessageInputterText.leaveButton) {
-            @Override
-            public void function() {
-                createLeaveOn(sender, dominionName);
-            }
-        };
-    }
 
-    public static FunctionalButton createEnterTuiButtonOn(CommandSender sender, String dominionName) {
-        return new FunctionalButton(Language.editMessageInputterText.enterButton) {
-            @Override
-            public void function() {
-                createEnterOn(sender, dominionName);
-            }
-        };
-    }
 }

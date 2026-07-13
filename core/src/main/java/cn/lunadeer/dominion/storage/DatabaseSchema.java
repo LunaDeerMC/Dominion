@@ -16,7 +16,6 @@ public final class DatabaseSchema {
     public static final String PLAYER_LAST_JOIN_AT = "last_join_at";
     public static final String PLAYER_USING_GROUP_TITLE_ID = "using_group_title_id";
     public static final String PLAYER_SKIN_URL = "skin_url";
-    public static final String PLAYER_UI_PREFERENCE = "ui_preference";
 
     public static final String DOMINION = "dominion";
     public static final String DOM_ID = "id";

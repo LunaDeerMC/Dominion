@@ -6,7 +6,6 @@ import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.commands.DominionFlagCommand;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
-import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
 import cn.lunadeer.dominion.misc.CommandArguments;
 import cn.lunadeer.dominion.uis.AbstractUI;
 import cn.lunadeer.dominion.uis.MainMenu;
@@ -20,10 +19,6 @@ import cn.lunadeer.dominion.utils.scui.ChestListView;
 import cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager;
 import cn.lunadeer.dominion.utils.scui.configuration.ButtonConfiguration;
 import cn.lunadeer.dominion.utils.scui.configuration.ListViewConfiguration;
-import cn.lunadeer.dominion.utils.stui.ListView;
-import cn.lunadeer.dominion.utils.stui.components.Line;
-import cn.lunadeer.dominion.utils.stui.components.buttons.FunctionalButton;
-import cn.lunadeer.dominion.utils.stui.components.buttons.ListViewButton;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Material;
@@ -55,66 +50,6 @@ public class EnvFlags extends AbstractUI {
         }
     }.needPermission(defaultPermission).register();
 
-    // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ TUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-
-    public static class EnvSettingTuiText extends ConfigurationPart {
-        public String title = "{0} Env Setting";
-        public String button = "ENV SET";
-        public String description = "Set environment of dominion.";
-    }
-
-    public static ListViewButton button(CommandSender sender, String dominionName) {
-        return (ListViewButton) new ListViewButton(TextUserInterface.envSettingTuiText.button) {
-            @Override
-            public void function(String pageStr) {
-                show(sender, dominionName, pageStr);
-            }
-        }.needPermission(defaultPermission);
-    }
-
-    @Override
-    protected void showTUI(Player player, String... args) {
-        String dominionName = args[0];
-        String pageStr = args.length > 1 ? args[1] : "1";
-        DominionDTO dominion = toDominionDTO(dominionName);
-        assertDominionAdmin(player, dominion);
-        int page = toIntegrity(pageStr);
-
-        ListView view = ListView.create(10, button(player, dominionName));
-        view.title(formatString(TextUserInterface.envSettingTuiText.title, dominion.getName()))
-                .navigator(Line.create()
-                        .append(MainMenu.button(player).build())
-                        .append(DominionList.button(player).build())
-                        .append(DominionManage.button(player, dominionName).build())
-                        .append(TextUserInterface.envSettingTuiText.button));
-        for (EnvFlag flag : Flags.getAllEnvFlagsEnable()) {
-            if (dominion.getEnvFlagValue(flag)) {
-                view.add(Line.create()
-                        .append(new FunctionalButton("☑") {
-                            @Override
-                            public void function() {
-                                DominionFlagCommand.setEnv(player, dominionName, flag.getFlagName(), "false", pageStr);
-                            }
-                        }.needPermission(defaultPermission).green().build())
-                        .append(Component.text(flag.getDisplayName()).hoverEvent(Component.text(flag.getDescription())))
-                );
-            } else {
-                view.add(Line.create()
-                        .append(new FunctionalButton("☐") {
-                            @Override
-                            public void function() {
-                                DominionFlagCommand.setEnv(player, dominionName, flag.getFlagName(), "true", pageStr);
-                            }
-                        }.needPermission(defaultPermission).red().build())
-                        .append(Component.text(flag.getDisplayName()).hoverEvent(Component.text(flag.getDescription())))
-                );
-            }
-        }
-        view.showOn(player, page);
-
-    }
-
-    // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ TUI ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ CUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
     public static class EnvSettingCui extends ConfigurationPart {

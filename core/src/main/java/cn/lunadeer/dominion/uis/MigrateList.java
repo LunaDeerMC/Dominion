@@ -5,7 +5,6 @@ import cn.lunadeer.dominion.commands.MigrationCommand;
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
-import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
 import cn.lunadeer.dominion.misc.CommandArguments;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.ResMigration;
@@ -16,9 +15,6 @@ import cn.lunadeer.dominion.utils.scui.ChestListView;
 import cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager;
 import cn.lunadeer.dominion.utils.scui.configuration.ButtonConfiguration;
 import cn.lunadeer.dominion.utils.scui.configuration.ListViewConfiguration;
-import cn.lunadeer.dominion.utils.stui.ListView;
-import cn.lunadeer.dominion.utils.stui.components.Line;
-import cn.lunadeer.dominion.utils.stui.components.buttons.ListViewButton;
 import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -53,86 +49,6 @@ public class MigrateList extends AbstractUI {
         }
     }.needPermission(defaultPermission).register();
 
-    // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ TUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-
-    public static class MigrateListTuiText extends ConfigurationPart {
-        public String title = "Migrate From Residence";
-        public String description = "Migrate residence data to dominion.";
-        public String button = "MIGRATE";
-        public String notEnabled = "Residence migration is not enabled.";
-        public String noData = "No data to migrate.";
-        public String cantMigrate = "Sub-residence will be migrated with the parent.";
-        public String migrateAll = "MIGRATE ALL";
-    }
-
-    public static ListViewButton button(CommandSender sender) {
-        return (ListViewButton) new ListViewButton(TextUserInterface.migrateListTuiText.button) {
-            @Override
-            public void function(String pageStr) {
-                MigrateList.show(sender, pageStr);
-            }
-        }.needPermission(defaultPermission);
-    }
-
-    @Override
-    protected void showTUI(Player player, String... args) throws Exception {
-        if (!Configuration.residenceMigration) {
-            Notification.error(player, TextUserInterface.migrateListTuiText.notEnabled);
-            return;
-        }
-        int page = toIntegrity(args[0], 1);
-        ListView view = ListView.create(10, button(player));
-        view.title(TextUserInterface.migrateListTuiText.title);
-        view.navigator(Line.create()
-                .append(MainMenu.button(player).build())
-                .append(TextUserInterface.migrateListTuiText.button));
-
-        List<ResMigration.ResidenceNode> res_data;
-
-        if (player.hasPermission(adminPermission)) {
-            res_data = CacheManager.instance.getResidenceCache().getResidenceData();   // get all residence data
-            // add migrateAll button
-            view.add(Line.create()
-                    .append(new ListViewButton(TextUserInterface.migrateListTuiText.migrateAll) {
-                        @Override
-                        public void function(String pageStr) {
-                            MigrationCommand.migrateAll(player);
-                        }
-                    }.needPermission(defaultPermission).build())
-            );
-        } else {
-            res_data = CacheManager.instance.getResidenceCache().getResidenceData(player.getUniqueId());   // get player's residence data
-        }
-
-        if (res_data == null) {
-            view.add(Line.create().append(TextUserInterface.migrateListTuiText.noData));
-        } else {
-            view.addLines(BuildTreeLines(player, res_data, 0, page));
-        }
-
-        view.showOn(player, page);
-    }
-
-    public static List<Line> BuildTreeLines(Player player, List<ResMigration.ResidenceNode> dominionTree, Integer depth, int page) {
-        List<Line> lines = new ArrayList<>();
-        StringBuilder prefix = new StringBuilder();
-        prefix.append(" | ".repeat(Math.max(0, depth)));
-        for (ResMigration.ResidenceNode node : dominionTree) {
-            ListViewButton migrate = MigrationCommand.button(player, node.name);
-            Line line = Line.create();
-            if (depth == 0) {
-                line.append(migrate.build());
-            } else {
-                line.append(migrate.setDisabled(TextUserInterface.migrateListTuiText.cantMigrate).build());
-            }
-            line.append(prefix + node.name);
-            lines.add(line);
-            lines.addAll(BuildTreeLines(player, node.children, depth + 1, page));
-        }
-        return lines;
-    }
-
-    // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ TUI ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ CUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
     public static class MigrateListCui extends ConfigurationPart {
@@ -183,7 +99,7 @@ public class MigrateList extends AbstractUI {
     @Override
     protected void showCUI(Player player, String... args) throws Exception {
         if (!Configuration.residenceMigration) {
-            Notification.error(player, TextUserInterface.migrateListTuiText.notEnabled);
+            Notification.error(player, Language.migrationCommandText.notEnabled);
             return;
         }
 
@@ -241,7 +157,7 @@ public class MigrateList extends AbstractUI {
     @Override
     protected void showConsole(CommandSender sender, String... args) throws Exception {
         if (!Configuration.residenceMigration) {
-            Notification.error(sender, TextUserInterface.migrateListTuiText.notEnabled);
+            Notification.error(sender, Language.migrationCommandText.notEnabled);
             return;
         }
 

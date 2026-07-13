@@ -23,7 +23,6 @@ public class PlayerDOO implements PlayerDTO {
     private LocalDateTime lastJoinAt;
     private Integer using_group_title_id;
     private String skinUrl;
-    private String ui_preference;
 
     private static PlayerDOO parse(PlayerRepository.PlayerRow row) {
         if (row == null) return null;
@@ -33,8 +32,7 @@ public class PlayerDOO implements PlayerDTO {
                 row.lastKnownName(),
                 row.lastJoinAt(),
                 row.usingGroupTitleId(),
-                row.skinUrl(),
-                row.uiPreference()
+                row.skinUrl()
         );
     }
 
@@ -62,14 +60,13 @@ public class PlayerDOO implements PlayerDTO {
         return player;
     }
 
-    private PlayerDOO(Integer id, UUID uuid, String lastKnownName, LocalDateTime lastJoinAt, Integer using_group_title_id, String skinUrl, String uiPreference) {
+    private PlayerDOO(Integer id, UUID uuid, String lastKnownName, LocalDateTime lastJoinAt, Integer using_group_title_id, String skinUrl) {
         this.id = id;
         this.uuid = uuid;
         this.lastKnownName = lastKnownName;
         this.lastJoinAt = lastJoinAt;
         this.using_group_title_id = using_group_title_id;
         this.skinUrl = skinUrl;
-        this.ui_preference = uiPreference;
     }
 
     @Override
@@ -129,12 +126,6 @@ public class PlayerDOO implements PlayerDTO {
     }
 
     @Override
-    public void setUiPreference(UI_TYPE uiType) throws SQLException {
-        this.ui_preference = uiType.name();
-        PlayerRepository.updateUiPreference(this.getUuid(), this.ui_preference);
-    }
-
-    @Override
     public Integer getUsingGroupTitleID() {
         return using_group_title_id;
     }
@@ -146,29 +137,6 @@ public class PlayerDOO implements PlayerDTO {
             return new URL("http://textures.minecraft.net/texture/613ba1403f98221fab6f4ae0f9e5298068262258966e8f9e53cdedd97aa45ef1");
         }
         return new URL(skinUrlValue);
-    }
-
-    @Override
-    public @NotNull UI_TYPE getUiPreference() {
-        String uiPreferenceValue = ui_preference;
-        if (uiPreferenceValue == null || uiPreferenceValue.isEmpty()) {
-            return UI_TYPE.TUI; // Default to TUI if not set
-        }
-        try {
-            UI_TYPE type = UI_TYPE.valueOf(uiPreferenceValue);
-            if (type.equals(UI_TYPE.BY_PLAYER)) {
-                setUiPreference(UI_TYPE.CUI); // Convert BY_PLAYER to CUI
-                return getUiPreference(); // Re-fetch after conversion
-            }
-            return type;
-        } catch (Exception e) {
-            try {
-                setUiPreference(UI_TYPE.CUI);
-            } // Convert BY_PLAYER to CUI
-            catch (SQLException ignored) {
-            }
-            return UI_TYPE.CUI; // Fallback to CUI if the value is invalid
-        }
     }
 
     public void setUsingGroupTitleID(Integer usingGroupTitleID) throws SQLException {

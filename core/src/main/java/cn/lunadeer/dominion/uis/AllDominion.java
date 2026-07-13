@@ -4,7 +4,6 @@ import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
-import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
 import cn.lunadeer.dominion.misc.CommandArguments;
 import cn.lunadeer.dominion.uis.dominion.DominionManage;
 import cn.lunadeer.dominion.utils.Notification;
@@ -15,9 +14,6 @@ import cn.lunadeer.dominion.utils.scui.ChestListView;
 import cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager;
 import cn.lunadeer.dominion.utils.scui.configuration.ButtonConfiguration;
 import cn.lunadeer.dominion.utils.scui.configuration.ListViewConfiguration;
-import cn.lunadeer.dominion.utils.stui.ListView;
-import cn.lunadeer.dominion.utils.stui.components.Line;
-import cn.lunadeer.dominion.utils.stui.components.buttons.ListViewButton;
 import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -29,7 +25,6 @@ import java.util.List;
 import static cn.lunadeer.dominion.Dominion.adminPermission;
 import static cn.lunadeer.dominion.managers.TeleportManager.teleportToDominion;
 import static cn.lunadeer.dominion.misc.Converts.toIntegrity;
-import static cn.lunadeer.dominion.uis.dominion.DominionList.BuildTreeLines;
 import static cn.lunadeer.dominion.utils.Misc.pageUtil;
 
 public class AllDominion extends AbstractUI {
@@ -47,37 +42,6 @@ public class AllDominion extends AbstractUI {
         }
     }.needPermission(adminPermission).register();
 
-    // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ TUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-
-    public static class AllDominionTuiText extends ConfigurationPart {
-        public String title = "All Dominions";
-        public String description = "List all dominions.";
-        public String button = "LIST ALL";
-    }
-
-    public static ListViewButton button(CommandSender sender) {
-        return (ListViewButton) new ListViewButton(TextUserInterface.allDominionTuiText.button) {
-            @Override
-            public void function(String pageStr) {
-                show(sender, pageStr);
-            }
-        }.needPermission(adminPermission);
-    }
-
-    @Override
-    protected void showTUI(Player sender, String... args) {
-        int page = toIntegrity(args[0], 1);
-        ListView view = ListView.create(10, button(sender));
-
-        view.title(TextUserInterface.allDominionTuiText.title);
-        view.navigator(Line.create()
-                .append(MainMenu.button(sender).build())
-                .append(TextUserInterface.allDominionTuiText.button));
-        view.addLines(BuildTreeLines(sender, CacheManager.instance.getCache().getDominionCache().getAllDominionNodes(), 0));
-        view.showOn(sender, page);
-    }
-
-    // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ TUI ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ CUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
     public static class AllDominionCui extends ConfigurationPart {

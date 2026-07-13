@@ -6,7 +6,6 @@ import cn.lunadeer.dominion.cache.DominionNode;
 import cn.lunadeer.dominion.commands.DominionOperateCommand;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
-import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
 import cn.lunadeer.dominion.misc.CommandArguments;
 import cn.lunadeer.dominion.uis.AbstractUI;
 import cn.lunadeer.dominion.uis.AllDominion;
@@ -19,11 +18,6 @@ import cn.lunadeer.dominion.utils.scui.ChestListView;
 import cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager;
 import cn.lunadeer.dominion.utils.scui.configuration.ButtonConfiguration;
 import cn.lunadeer.dominion.utils.scui.configuration.ListViewConfiguration;
-import cn.lunadeer.dominion.utils.stui.ListView;
-import cn.lunadeer.dominion.utils.stui.ViewStyles;
-import cn.lunadeer.dominion.utils.stui.components.Line;
-import cn.lunadeer.dominion.utils.stui.components.buttons.FunctionalButton;
-import cn.lunadeer.dominion.utils.stui.components.buttons.ListViewButton;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Material;
@@ -60,101 +54,6 @@ public class DominionList extends AbstractUI {
         }
     }.needPermission(defaultPermission).register();
 
-    // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ TUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-
-    public static class DominionListTuiText extends ConfigurationPart {
-        public String title = "Your Dominions";
-        public String button = "DOMINIONS";
-        public String description = "List all of your dominions.";
-        public String deleteButton = "DELETE";
-        public String adminSection = "Your admin dominions section.";
-        public String serverSection = "Server {0} dominions section.";
-    }
-
-    public static ListViewButton button(CommandSender sender) {
-        return (ListViewButton) new ListViewButton(TextUserInterface.dominionListTuiText.button) {
-            @Override
-            public void function(String pageStr) {
-                show(sender, pageStr);
-            }
-        }.needPermission(defaultPermission);
-    }
-
-    public static List<Line> BuildTreeLines(CommandSender sender, List<DominionNode> dominionTree, Integer depth) {
-        List<Line> lines = new ArrayList<>();
-        StringBuilder prefix = new StringBuilder();
-        prefix.append(" | ".repeat(Math.max(0, depth)));
-        for (DominionNode node : dominionTree) {
-            TextComponent manage = DominionManage.button(sender, node.getDominion().getName()).green().build();
-            TextComponent delete = new FunctionalButton(TextUserInterface.dominionListTuiText.deleteButton) {
-                @Override
-                public void function() {
-                    DominionOperateCommand.delete(sender, node.getDominion().getName(), "");
-                }
-            }.red().build();
-            TextComponent tp = new FunctionalButton("TP") {
-                @Override
-                public void function() {
-                    if (sender instanceof Player player)
-                        teleportToDominion(player, node.getDominion());
-                }
-            }.build();
-            Line line = Line.create().append(delete).append(manage).append(tp).append(prefix + node.getDominion().getName());
-            lines.add(line);
-            lines.addAll(BuildTreeLines(sender, node.getChildren(), depth + 1));
-        }
-        return lines;
-    }
-
-    @Override
-    protected void showTUI(Player player, String... args) throws Exception {
-        int page = toIntegrity(args[0], 1);
-        ListView view = ListView.create(10, button(player));
-
-        view.title(TextUserInterface.dominionListTuiText.title);
-        view.navigator(Line.create()
-                .append(MainMenu.button(player).build())
-                .append(TextUserInterface.dominionListTuiText.button));
-        List<DominionNode> dominionNodes = CacheManager.instance.getCache().getDominionCache().getPlayerDominionNodes(player.getUniqueId());
-        // Show dominions on current server
-        view.addLines(BuildTreeLines(player, dominionNodes, 0));
-        // Show admin dominions on this server
-        List<DominionDTO> admin_dominions = CacheManager.instance.getCache().getDominionCache().getPlayerAdminDominionDTOs(player.getUniqueId());
-        if (!admin_dominions.isEmpty()) {
-            view.add(Line.create().append(""));
-            view.add(Line.create().append(Component.text(TextUserInterface.dominionListTuiText.adminSection, ViewStyles.PRIMARY)));
-            for (DominionDTO dominion : admin_dominions) {
-                TextComponent manage = DominionManage.button(player, dominion.getName()).build();
-                view.add(Line.create().append(manage).append(dominion.getName()));
-            }
-        }
-        // Show dominions on other servers that the player has access to
-        for (var serverCache : CacheManager.instance.getOtherServerCaches().values()) {
-            List<DominionDTO> otherServerDominions = new ArrayList<>();
-            for (DominionDTO dominion : serverCache.getDominionCache().getPlayerOwnDominionDTOs(player.getUniqueId())) {
-                otherServerDominions.add(dominion);
-            }
-            for (DominionDTO dominion : serverCache.getDominionCache().getPlayerAdminDominionDTOs(player.getUniqueId())) {
-                otherServerDominions.add(dominion);
-            }
-            if (!otherServerDominions.isEmpty()) {
-                view.add(Line.create().append(""));
-                view.add(Line.create().append(Component.text(formatString(TextUserInterface.dominionListTuiText.serverSection, serverCache.getServerId()), ViewStyles.PRIMARY)));
-                for (DominionDTO dominion : otherServerDominions) {
-                    TextComponent tp = new FunctionalButton("TP") {
-                        @Override
-                        public void function() {
-                            teleportToDominion(player, dominion);
-                        }
-                    }.build();
-                    view.add(Line.create().append(tp).append(dominion.getName()));
-                }
-            }
-        }
-        view.showOn(player, page);
-    }
-
-    // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ TUI ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ CUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
     public static class DominionListCui extends ConfigurationPart {

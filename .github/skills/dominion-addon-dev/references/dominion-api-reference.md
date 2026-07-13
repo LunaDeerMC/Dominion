@@ -141,8 +141,6 @@ Represents a dominion (land claim region).
 | `updateLastKnownName(String, URL)` | `PlayerDTO` | Update name (throws `SQLException`, `MalformedURLException`) |
 | `getUsingGroupTitleID()` | `Integer` | Active group title ID |
 | `getSkinUrl()` | `URL` | Skin URL (throws `MalformedURLException`) |
-| `getUiPreference()` | `PlayerDTO.UI_TYPE` | UI preference |
-| `setUiPreference(UI_TYPE)` | `void` | Set UI preference (throws `SQLException`) |
 
 ### MemberDTO (Interface)
 

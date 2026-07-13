@@ -1,4 +1,4 @@
-package cn.lunadeer.dominion.utils.stui.inputter;
+package cn.lunadeer.dominion.utils.inputter;
 
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import org.bukkit.entity.Player;
@@ -12,13 +12,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.HashMap;
 import java.util.Map;
 
+/** Routes a player's next chat message to an active form input request. */
 public class Inputter implements Listener {
 
     private static Inputter instance;
 
     public static Inputter getInstance() {
         if (instance == null) {
-            throw new IllegalStateException("Inputter has not been initialized. Please call Inputter.init(plugin) first.");
+            throw new IllegalStateException("Inputter has not been initialized.");
         }
         return instance;
     }
@@ -44,17 +45,12 @@ public class Inputter implements Listener {
         Player sender = event.getPlayer();
         if (!cachedInputters.containsKey(sender)) return;
         event.setCancelled(true);
-        // run synchronously to avoid concurrency issues
-        String messageClone = event.getMessage();
-        Scheduler.runTask(() -> {
-            cachedInputters.get(sender).runner(messageClone);
-        });
+        String message = event.getMessage();
+        Scheduler.runTask(() -> cachedInputters.get(sender).runner(message));
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerLogout(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        cachedInputters.remove(player);
+        cachedInputters.remove(event.getPlayer());
     }
-
 }

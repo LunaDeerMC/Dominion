@@ -259,7 +259,7 @@ Flags.applyNewCustomFlags();  // Must call after registration
 | DTO | Key Methods |
 |-----|------------|
 | `DominionDTO` | `getId()`, `getName()`, `getOwner()`, `getWorld()`, `getCuboid()`, `getTpLocation()`, `getEnvFlagValue(flag)`, `getGuestFlagValue(flag)`, `getGroups()`, `getMembers()`, `getParentDomId()`, `getJoinMessage()`, `getLeaveMessage()` |
-| `PlayerDTO` | `getId()`, `getUuid()`, `getLastKnownName()`, `getSkinUrl()`, `getUiPreference()` |
+| `PlayerDTO` | `getId()`, `getUuid()`, `getLastKnownName()`, `getSkinUrl()` |
 | `MemberDTO` | `getId()`, `getPlayerUUID()`, `getDomID()`, `getGroupId()`, `getFlagValue(flag)`, `getPlayer()` |
 | `GroupDTO` | `getId()`, `getDomID()`, `getNamePlain()`, `getNameRaw()`, `getFlagValue(flag)`, `getMembers()` |
 | `CuboidDTO` | `getPos1()`, `getPos2()`, `x1()..z2()`, `xLength()`, `yLength()`, `zLength()`, `getSquare()`, `getVolume()`, `contain(...)`, `intersectWith(...)` |

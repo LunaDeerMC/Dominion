@@ -5,7 +5,6 @@ import cn.lunadeer.dominion.api.dtos.flag.Flag;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.commands.*;
 import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
-import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
 import cn.lunadeer.dominion.handler.DominionProviderHandler;
 import cn.lunadeer.dominion.handler.GroupProviderHandler;
 import cn.lunadeer.dominion.handler.MemberProviderHandler;
@@ -24,7 +23,7 @@ import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.command.InvalidArgumentException;
 import cn.lunadeer.dominion.utils.command.NoPermissionException;
 import cn.lunadeer.dominion.utils.configuration.*;
-import cn.lunadeer.dominion.utils.stui.inputter.InputterRunner;
+import cn.lunadeer.dominion.utils.inputter.InputterRunner;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -56,14 +55,12 @@ public class Language extends ConfigurationFile {
             // save default language files to the languages folder
             File languagesFolder = new File(Dominion.instance.getDataFolder(), "languages");
             File cuiFolder = new File(languagesFolder, "cui");
-            File tuiFolder = new File(languagesFolder, "tui");
             for (LanguageCode languageCode : LanguageCode.values()) {
                 updateLanguageFiles(plugin, languageCode.name(), false);
             }
             Notification.info(sender != null ? sender : Dominion.instance.getServer().getConsoleSender(), Language.configurationText.loadingLanguage, code);
             ConfigurationManager.load(Language.class, new File(languagesFolder, code + ".yml"));
             ConfigurationManager.load(ChestUserInterface.class, new File(cuiFolder, code + ".yml"));
-            ConfigurationManager.load(TextUserInterface.class, new File(tuiFolder, code + ".yml"));
             Notification.info(sender != null ? sender : Dominion.instance.getServer().getConsoleSender(), Language.configurationText.loadLanguageSuccess, code);
         } catch (Exception e) {
             Notification.error(sender != null ? sender : Dominion.instance.getServer().getConsoleSender(), Language.configurationText.loadLanguageFail, code, e.getMessage());
@@ -79,10 +76,6 @@ public class Language extends ConfigurationFile {
         if (!cuiFolder.exists()) {
             cuiFolder.mkdir();
         }
-        File tuiFolder = new File(languagesFolder, "tui");
-        if (!tuiFolder.exists()) {
-            tuiFolder.mkdir();
-        }
         if (!new File(languagesFolder, code + ".yml").exists()) try {
             Dominion.instance.saveResource("languages/" + code + ".yml", overwrite);
         } catch (Exception e) {
@@ -93,12 +86,6 @@ public class Language extends ConfigurationFile {
             Dominion.instance.saveResource("languages/cui/" + code + ".yml", overwrite);
         } catch (Exception e) {
             XLogger.warn("Failed to save CUI language file for {0}, This language may not in official repo : {1}.", code, e.getMessage());
-            XLogger.warn("See https://dominion.lunadeer.cn/en/notes/doc/owner/config-ref/languages , If you want to help us to add this language.");
-        }
-        if (!new File(tuiFolder, code + ".yml").exists()) try {
-            Dominion.instance.saveResource("languages/tui/" + code + ".yml", overwrite);
-        } catch (Exception e) {
-            XLogger.warn("Failed to save TUI language file for {0}, This language may not in official repo : {1}.", code, e.getMessage());
             XLogger.warn("See https://dominion.lunadeer.cn/en/notes/doc/owner/config-ref/languages , If you want to help us to add this language.");
         }
     }
@@ -163,9 +150,9 @@ public class Language extends ConfigurationFile {
     public static InputterText inputterText = new InputterText();
 
     public static class InputterText extends ConfigurationPart {
-        public String onlyPlayer = "TUI inputter can only be used by a player.";
-        public String cancel = " [Send 'C' to cancel the inputter.]";
-        public String inputterCancelled = "Inputter cancelled.";
+        public String onlyPlayer = "Chat input can only be used by a player.";
+        public String cancel = " [Send 'C' to cancel the input.]";
+        public String inputterCancelled = "Input cancelled.";
     }
 
     @PreProcess

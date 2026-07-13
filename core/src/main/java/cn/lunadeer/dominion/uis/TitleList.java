@@ -7,7 +7,6 @@ import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.commands.GroupTitleCommand;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
-import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
 import cn.lunadeer.dominion.misc.CommandArguments;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.command.SecondaryCommand;
@@ -17,10 +16,6 @@ import cn.lunadeer.dominion.utils.scui.ChestListView;
 import cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager;
 import cn.lunadeer.dominion.utils.scui.configuration.ButtonConfiguration;
 import cn.lunadeer.dominion.utils.scui.configuration.ListViewConfiguration;
-import cn.lunadeer.dominion.utils.stui.ListView;
-import cn.lunadeer.dominion.utils.stui.components.Line;
-import cn.lunadeer.dominion.utils.stui.components.buttons.FunctionalButton;
-import cn.lunadeer.dominion.utils.stui.components.buttons.ListViewButton;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -52,79 +47,6 @@ public class TitleList extends AbstractUI {
         }
     }.needPermission(defaultPermission).register();
 
-    // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ TUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-
-    public static class TitleListTuiText extends ConfigurationPart {
-        public String title = "Group Title List";
-        public String description = "List of group titles you can use.";
-        public String button = "TITLES";
-        public String useButton = "USE";
-        public String disuseButton = "DISUSE";
-        public String fromDominion = "From dominion {0}";
-    }
-
-    public static ListViewButton button(CommandSender sender) {
-        return (ListViewButton) new ListViewButton(TextUserInterface.titleListTuiText.button) {
-            @Override
-            public void function(String pageStr) {
-                TitleList.show(sender, pageStr);
-            }
-        }.needPermission(defaultPermission);
-    }
-
-    @Override
-    protected void showTUI(Player player, String... args) throws Exception {
-        int page = toIntegrity(args[0], 1);
-
-        ListView view = ListView.create(10, button(player));
-
-        view.title(TextUserInterface.titleListTuiText.title);
-        view.navigator(Line.create()
-                .append(MainMenu.button(player).build())
-                .append(TextUserInterface.titleListTuiText.button));
-
-        List<GroupDTO> groups = CacheManager.instance.getPlayerCache().getPlayerGroupTitleList(player.getUniqueId());
-        List<DominionDTO> dominions = CacheManager.instance.getCache().getDominionCache().getPlayerOwnDominionDTOs(player.getUniqueId());
-        for (DominionDTO dominion : dominions) {
-            groups.addAll(dominion.getGroups());
-        }
-        PlayerDTO playerDTO = CacheManager.instance.getPlayerCache().getPlayer(player.getUniqueId());
-        if (playerDTO == null) {
-            return;
-        }
-        Integer usingId = playerDTO.getUsingGroupTitleID();
-        GroupDTO using = CacheManager.instance.getGroup(usingId);
-
-        for (GroupDTO group : groups) {
-            DominionDTO dominion = CacheManager.instance.getDominion(group.getDomID());
-            if (dominion == null) {
-                continue;
-            }
-            Line line = Line.create();
-            line.append(Component.text(group.getId() + ". "));
-            if (using != null && using.getId().equals(group.getId())) {
-                line.append(new FunctionalButton(TextUserInterface.titleListTuiText.disuseButton) {
-                    @Override
-                    public void function() {
-                        GroupTitleCommand.useTitle(player, "-1", args[0]);
-                    }
-                }.needPermission(defaultPermission).red().build());
-            } else {
-                line.append(new FunctionalButton(TextUserInterface.titleListTuiText.useButton) {
-                    @Override
-                    public void function() {
-                        GroupTitleCommand.useTitle(player, group.getId().toString(), args[0]);
-                    }
-                }.needPermission(defaultPermission).green().build());
-            }
-            line.append(group.getNameColoredComponent().hoverEvent(Component.text(formatString(TextUserInterface.titleListTuiText.fromDominion, dominion.getName()))));
-            view.add(line);
-        }
-
-        view.showOn(player, page);
-    }
-
-    // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ TUI ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ CUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
     public static class TitleListCui extends ConfigurationPart {

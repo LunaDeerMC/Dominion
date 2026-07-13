@@ -1,12 +1,9 @@
 package cn.lunadeer.dominion.uis;
 
-import cn.lunadeer.dominion.api.dtos.PlayerDTO;
-import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.commands.AdministratorCommand;
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
-import cn.lunadeer.dominion.configuration.uis.TextUserInterface;
 import cn.lunadeer.dominion.inputters.CreateDominionInputter;
 import cn.lunadeer.dominion.misc.CommandArguments;
 import cn.lunadeer.dominion.uis.dominion.DominionList;
@@ -19,13 +16,6 @@ import cn.lunadeer.dominion.utils.scui.ChestButton;
 import cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager;
 import cn.lunadeer.dominion.utils.scui.ChestView;
 import cn.lunadeer.dominion.utils.scui.configuration.ButtonConfiguration;
-import cn.lunadeer.dominion.utils.stui.ListView;
-import cn.lunadeer.dominion.utils.stui.ViewStyles;
-import cn.lunadeer.dominion.utils.stui.components.Line;
-import cn.lunadeer.dominion.utils.stui.components.buttons.FunctionalButton;
-import cn.lunadeer.dominion.utils.stui.components.buttons.ListViewButton;
-import cn.lunadeer.dominion.utils.stui.components.buttons.PermissionButton;
-import cn.lunadeer.dominion.utils.stui.components.buttons.UrlButton;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -58,101 +48,6 @@ public class MainMenu extends AbstractUI {
         }
     }.needPermission(defaultPermission).register();
 
-    // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ TUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-
-    public static class MenuTuiText extends ConfigurationPart {
-        public String title = "Dominion Menu";
-        public String button = "MENU";
-        public String adminOnlySection = "Only admin can see this section";
-        public String documentButton = "DOCUMENT";
-        public String documentDescription = "Open the documentation external link.";
-        public String commandHelpButton = "COMMAND HELP";
-        public String commandHelpDescription = "Open the command help external link.";
-        public String switchToCuiButton = " SWITCH TO CUI \uD83C\uDD95 ";
-        public String failToSwitchMessage = "Failed to switch to {0}: {1}";
-    }
-
-    public static ListViewButton button(CommandSender sender) {
-        return (ListViewButton) new ListViewButton(TextUserInterface.menuTuiText.button) {
-            @Override
-            public void function(String pageStr) {
-                MainMenu.show(sender, pageStr);
-            }
-        }.needPermission(defaultPermission);
-    }
-
-    @Override
-    protected void showTUI(Player player, String... args) {
-        int page = toIntegrity(args[0], 1);
-
-        Line create = Line.create()
-                .append(CreateDominionInputter.createTuiButtonOn(player).needPermission(defaultPermission).build())
-                .append(Language.createDominionInputterText.description);
-        Line list = Line.create()
-                .append(DominionList.button(player).build())
-                .append(TextUserInterface.dominionListTuiText.description);
-        Line title = Line.create()
-                .append(TitleList.button(player).build())
-                .append(TextUserInterface.titleListTuiText.description);
-        Line template = Line.create()
-                .append(TemplateList.button(player).build())
-                .append(TextUserInterface.templateListTuiText.description);
-        Line help = Line.create()
-                .append(new UrlButton(TextUserInterface.menuTuiText.commandHelpButton, Configuration.externalLinks.commandHelp).build())
-                .append(TextUserInterface.menuTuiText.commandHelpDescription);
-        Line link = Line.create()
-                .append(new UrlButton(TextUserInterface.menuTuiText.documentButton, Configuration.externalLinks.documentation).build())
-                .append(TextUserInterface.menuTuiText.documentDescription);
-        Line migrate = Line.create()
-                .append(MigrateList.button(player).build())
-                .append(TextUserInterface.migrateListTuiText.description);
-        Line all = Line.create()
-                .append(AllDominion.button(player).build())
-                .append(TextUserInterface.allDominionTuiText.description);
-        Line reload_cache = Line.create()
-                .append(AdministratorCommand.reloadCacheButton(player).build())
-                .append(Language.administratorCommandText.reloadCacheDescription);
-        Line reload_config = Line.create()
-                .append(AdministratorCommand.reloadConfigButton(player).build())
-                .append(Language.administratorCommandText.reloadConfigDescription);
-        PermissionButton switchToCui = new FunctionalButton(TextUserInterface.menuTuiText.switchToCuiButton) {
-            @Override
-            public void function() {
-                try {
-                    PlayerDTO p = CacheManager.instance.getPlayer(player.getUniqueId());
-                    if (p == null) {
-                        throw new IllegalStateException("Player data not found in cache.");
-                    }
-                    p.setUiPreference(PlayerDTO.UI_TYPE.CUI);
-                    MainMenu.show(player, "1");
-                } catch (Exception e) {
-                    Notification.error(player, TextUserInterface.menuTuiText.failToSwitchMessage, "CUI", e.getMessage());
-                }
-            }
-        }.needPermission(defaultPermission);
-        ListView view = ListView.create(10, button(player));
-        view.title(TextUserInterface.menuTuiText.title);
-        view.navigator(Line.create().append(TextUserInterface.menuTuiText.button).append(switchToCui.build()));
-        view.add(create);
-        view.add(list);
-        if (Configuration.groupTitle.enable) view.add(title);
-        view.add(template);
-        if (!Configuration.externalLinks.commandHelp.isEmpty()) view.add(help);
-        if (!Configuration.externalLinks.documentation.isEmpty()) view.add(link);
-        if (Configuration.residenceMigration) {
-            view.add(migrate);
-        }
-        if (player.hasPermission(adminPermission)) {
-            view.add(Line.create().append(""));
-            view.add(Line.create().append(Component.text(TextUserInterface.menuTuiText.adminOnlySection, ViewStyles.PRIMARY)));
-            view.add(all);
-            view.add(reload_cache);
-            view.add(reload_config);
-        }
-        view.showOn(player, page);
-    }
-
-    // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ TUI ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ CUI ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
     public static class MainMenuCui extends ConfigurationPart {
@@ -162,14 +57,14 @@ public class MainMenu extends AbstractUI {
                 "##A#B#C##",
                 "##D#E#F##",
                 "#########",
-                "####S####"
+                "#########"
         );
         public List<String> userLayout = List.of(
                 "#########",
                 "##A#B#C##",
                 "###D#E###",
                 "#########",
-                "####S####"
+                "#########"
         );
         public List<String> statusDisabledLore = List.of(
                 "§c✘ §4This feature is currently disabled.",
@@ -252,18 +147,6 @@ public class MainMenu extends AbstractUI {
                 )
         );
 
-        public ButtonConfiguration switchTuiButton = ButtonConfiguration.createMaterial(
-                'S', Material.COMPASS, "§e§lSwitch to TUI",
-                List.of(
-                        "§7Switch to the text-based TUI",
-                        "§7for a different user interface.",
-                        "",
-                        "§e▶ Click to switch to TUI",
-                        "",
-                        "§8Use this if you prefer a",
-                        "§8text-based experience!"
-                )
-        );
     }
 
     @Override
@@ -344,25 +227,6 @@ public class MainMenu extends AbstractUI {
                     }
             );
         }
-
-        view.setButton(ChestUserInterface.mainMenuCui.switchTuiButton.getSymbol(),
-                new ChestButton(ChestUserInterface.mainMenuCui.switchTuiButton) {
-                    @Override
-                    public void onClick(ClickType type) {
-                        try {
-                            PlayerDTO p = CacheManager.instance.getPlayer(player.getUniqueId());
-                            if (p == null) {
-                                throw new IllegalStateException("Player data not found in cache.");
-                            }
-                            p.setUiPreference(PlayerDTO.UI_TYPE.TUI);
-                            view.close();
-                            MainMenu.show(player, "1");
-                        } catch (Exception e) {
-                            Notification.error(player, TextUserInterface.menuTuiText.failToSwitchMessage, "TUI", e.getMessage());
-                        }
-                    }
-                }
-        );
 
         view.open();
     }

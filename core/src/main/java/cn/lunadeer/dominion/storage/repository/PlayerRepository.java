@@ -1,7 +1,5 @@
 package cn.lunadeer.dominion.storage.repository;
 
-import cn.lunadeer.dominion.configuration.Configuration;
-
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -15,7 +13,7 @@ import static cn.lunadeer.dominion.storage.DatabaseSchema.*;
 public class PlayerRepository extends RepositorySupport {
 
     public record PlayerRow(Integer id, UUID uuid, String lastKnownName, LocalDateTime lastJoinAt,
-                            Integer usingGroupTitleId, String skinUrl, String uiPreference) {
+                            Integer usingGroupTitleId, String skinUrl) {
     }
 
     public static List<PlayerRow> all() throws SQLException {
@@ -35,15 +33,10 @@ public class PlayerRepository extends RepositorySupport {
             PlayerRow existing = row(mapper.selectWhere(PLAYER_NAME, PLAYER_UUID, uuid.toString()));
             LocalDateTime now = LocalDateTime.now();
             if (existing == null) {
-                String uiPreference = Configuration.defaultUiType;
-                if (uuid.toString().startsWith("00000000") && PlayerUiType.TUI.name().equals(uiPreference)) {
-                    uiPreference = PlayerUiType.CUI.name();
-                }
                 Map<String, Object> values = new LinkedHashMap<>();
                 values.put(PLAYER_UUID, uuid.toString());
                 values.put(PLAYER_LAST_KNOWN_NAME, name);
                 values.put(PLAYER_LAST_JOIN_AT, Timestamp.valueOf(now));
-                values.put(PLAYER_UI_PREFERENCE, uiPreference);
                 mapper.insert(PLAYER_NAME, values);
                 Integer id = toInteger(values.get(PLAYER_ID));
                 if (id != null) {
@@ -73,14 +66,6 @@ public class PlayerRepository extends RepositorySupport {
         });
     }
 
-    public static void updateUiPreference(UUID uuid, String uiPreference) throws SQLException {
-        sql((session, mapper) -> {
-            Map<String, Object> values = new LinkedHashMap<>();
-            values.put(PLAYER_UI_PREFERENCE, uiPreference);
-            return mapper.updateColumns(PLAYER_NAME, PLAYER_UUID, uuid.toString(), values);
-        });
-    }
-
     public static void updateUsingGroupTitle(Integer id, Integer groupTitleId) throws SQLException {
         sql((session, mapper) -> {
             Map<String, Object> values = new LinkedHashMap<>();
@@ -105,12 +90,8 @@ public class PlayerRepository extends RepositorySupport {
                 string(row, PLAYER_LAST_KNOWN_NAME),
                 toLocalDateTime(value(row, PLAYER_LAST_JOIN_AT)),
                 integer(row, PLAYER_USING_GROUP_TITLE_ID),
-                string(row, PLAYER_SKIN_URL),
-                string(row, PLAYER_UI_PREFERENCE)
+                string(row, PLAYER_SKIN_URL)
         );
     }
 
-    private enum PlayerUiType {
-        CUI, TUI
-    }
 }
