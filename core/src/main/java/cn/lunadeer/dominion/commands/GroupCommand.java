@@ -7,8 +7,6 @@ import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.misc.CommandArguments;
 import cn.lunadeer.dominion.providers.GroupProvider;
-import cn.lunadeer.dominion.uis.dominion.manage.group.GroupFlags;
-import cn.lunadeer.dominion.uis.dominion.manage.group.GroupList;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.command.Argument;
 import cn.lunadeer.dominion.utils.command.SecondaryCommand;
@@ -45,7 +43,6 @@ public class GroupCommand {
         try {
             DominionDTO dominion = toDominionDTO(dominionName);
             GroupProvider.getInstance().createGroup(sender, dominion, groupName);
-            GroupList.show(sender, dominion.getName(), "1");
         } catch (Exception e) {
             Notification.error(sender, e);
         }
@@ -53,21 +50,19 @@ public class GroupCommand {
 
     public static SecondaryCommand deleteGroup = new SecondaryCommand("group_delete", List.of(
             new CommandArguments.RequiredDominionArgument(),
-            new CommandArguments.RequiredGroupArgument(0),
-            new CommandArguments.OptionalPageArgument()
+            new CommandArguments.RequiredGroupArgument(0)
     ), Language.groupCommandText.deleteGroupDescription) {
         @Override
         public void executeHandler(CommandSender sender) {
-            deleteGroup(sender, getArgumentValue(0), getArgumentValue(1), getArgumentValue(2));
+            deleteGroup(sender, getArgumentValue(0), getArgumentValue(1));
         }
     }.needPermission(defaultPermission).register();
 
-    public static void deleteGroup(CommandSender sender, String dominionName, String groupName, String pageStr) {
+    public static void deleteGroup(CommandSender sender, String dominionName, String groupName) {
         try {
             DominionDTO dominion = toDominionDTO(dominionName);
             GroupDTO group = toGroupDTO(dominion, groupName);
             GroupProvider.getInstance().deleteGroup(sender, dominion, group);
-            GroupList.show(sender, dominion.getName(), pageStr);
         } catch (Exception e) {
             Notification.error(sender, e);
         }
@@ -89,7 +84,6 @@ public class GroupCommand {
             DominionDTO dominion = toDominionDTO(dominionName);
             GroupDTO group = toGroupDTO(dominion, oldGroupName);
             GroupProvider.getInstance().renameGroup(sender, dominion, group, newGroupName);
-            GroupFlags.show(sender, dominion.getName(), newGroupName, "1");
         } catch (Exception e) {
             Notification.error(sender, e);
         }
@@ -99,23 +93,21 @@ public class GroupCommand {
             new CommandArguments.RequiredDominionArgument(),
             new CommandArguments.RequiredGroupArgument(0),
             new CommandArguments.PriFlagArgument(),
-            new CommandArguments.BollenOption(),
-            new CommandArguments.OptionalPageArgument()
+            new CommandArguments.BollenOption()
     ), Language.groupCommandText.setGroupFlagDescription) {
         @Override
         public void executeHandler(CommandSender sender) {
-            setGroupFlag(sender, getArgumentValue(0), getArgumentValue(1), getArgumentValue(2), getArgumentValue(3), getArgumentValue(4));
+            setGroupFlag(sender, getArgumentValue(0), getArgumentValue(1), getArgumentValue(2), getArgumentValue(3));
         }
     }.needPermission(defaultPermission).register();
 
-    public static void setGroupFlag(CommandSender sender, String dominionName, String groupName, String flagName, String valueStr, String pageStr) {
+    public static void setGroupFlag(CommandSender sender, String dominionName, String groupName, String flagName, String valueStr) {
         try {
             DominionDTO dominion = toDominionDTO(dominionName);
             GroupDTO group = toGroupDTO(dominion, groupName);
             PriFlag flag = toPriFlag(flagName);
             boolean value = toBoolean(valueStr);
             GroupProvider.getInstance().setGroupFlag(sender, dominion, group, flag, value);
-            GroupFlags.show(sender, dominionName, groupName, pageStr);
         } catch (Exception e) {
             Notification.error(sender, e);
         }
@@ -138,7 +130,6 @@ public class GroupCommand {
             MemberDTO member = toMemberDTO(dominion, playerName);
             GroupDTO group = toGroupDTO(dominion, groupName);
             GroupProvider.getInstance().addMember(sender, dominion, group, member);
-            GroupList.show(sender, dominion.getName(), "1");
         } catch (Exception e) {
             Notification.error(sender, e);
         }
@@ -147,22 +138,20 @@ public class GroupCommand {
     public static SecondaryCommand removeMember = new SecondaryCommand("group_remove_member", List.of(
             new CommandArguments.RequiredDominionArgument(),
             new CommandArguments.RequiredGroupArgument(0),
-            new CommandArguments.RequiredMemberArgument(0),
-            new CommandArguments.OptionalPageArgument()
+            new CommandArguments.RequiredMemberArgument(0)
     ), Language.groupCommandText.removeMemberDescription) {
         @Override
         public void executeHandler(CommandSender sender) {
-            removeMember(sender, getArgumentValue(0), getArgumentValue(1), getArgumentValue(2), getArgumentValue(3));
+            removeMember(sender, getArgumentValue(0), getArgumentValue(1), getArgumentValue(2));
         }
     }.needPermission(defaultPermission).register();
 
-    public static void removeMember(CommandSender sender, String dominionName, String groupName, String playerName, String pageStr) {
+    public static void removeMember(CommandSender sender, String dominionName, String groupName, String playerName) {
         try {
             DominionDTO dominion = toDominionDTO(dominionName);
             GroupDTO group = toGroupDTO(dominion, groupName);
             MemberDTO member = toMemberDTO(dominion, playerName);
             GroupProvider.getInstance().removeMember(sender, dominion, group, member);
-            GroupList.show(sender, dominion.getName(), pageStr);
         } catch (Exception e) {
             Notification.error(sender, e);
         }

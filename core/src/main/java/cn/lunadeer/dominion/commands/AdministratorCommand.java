@@ -1,6 +1,7 @@
 package cn.lunadeer.dominion.commands;
 
 import cn.lunadeer.dominion.Dominion;
+import cn.lunadeer.dominion.api.DominionAPI;
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Configuration;
@@ -8,7 +9,6 @@ import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.events.ExportMcaListEvent;
 import cn.lunadeer.dominion.managers.DatabaseBackupManager;
 import cn.lunadeer.dominion.misc.DominionException;
-import cn.lunadeer.dominion.uis.MainMenu;
 import cn.lunadeer.dominion.utils.McaRecord;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.command.Option;
@@ -105,14 +105,12 @@ public class AdministratorCommand {
         CacheManager.instance.getCache().getGroupCache().load();
         Notification.info(sender, Language.administratorCommandText.reloadedGroupCache);
 
-        MainMenu.show(sender, "1");
     }
 
     public static void reloadConfig(CommandSender sender) {
         try {
             Notification.info(sender, Language.administratorCommandText.reloadingConfig);
-            Configuration.loadConfigurationAndDatabase(sender);
-            MainMenu.show(sender, "1");
+            DominionAPI.getInstance().reloadConfig();
         } catch (Exception e) {
             Notification.error(sender, e);
         }

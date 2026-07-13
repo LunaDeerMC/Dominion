@@ -1,0 +1,353 @@
+# Dominion chest UI layout. Every row must contain exactly nine characters.
+# Symbols select fixed semantic elements; changing symbols never executes commands.
+# Item appearance supports material, amount, custom-model-data, glow, item-flags,
+# and head-source (dynamic, viewer, none, or a UUID). Omit a symbol to hide that action.
+schema-version: 1
+menus:
+  main:
+    layout:
+      - "####I####"
+      - "#M#C#T#L#"
+      - "##A#H####"
+      - "####X####"
+    symbols: { '#': filler, I: info, M: dominions, C: create, T: templates, L: titles, A: all, H: help, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      info: { material: GRASS_BLOCK }
+      dominions: { material: MAP }
+      create: { material: GOLDEN_SHOVEL }
+      templates: { material: WRITABLE_BOOK }
+      titles: { material: NAME_TAG }
+      all: { material: SPYGLASS }
+      help: { material: KNOWLEDGE_BOOK }
+      close: { material: BARRIER }
+  dominion-list:
+    required-elements: [content]
+    layout:
+      - "#########"
+      - "#*******#"
+      - "#*******#"
+      - "#*******#"
+      - "#*******#"
+      - "BAQPSN##X"
+    symbols: { '#': filler, '*': content, B: back, A: primary, Q: search, P: previous, S: status, N: next, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      content: { material: GRASS_BLOCK }
+      remote-content: { material: ENDER_CHEST }
+      back: { material: ARROW }
+      primary: { material: LIME_DYE }
+      search: { material: SPYGLASS }
+      previous: { material: SPECTRAL_ARROW }
+      status: { material: PAPER }
+      next: { material: SPECTRAL_ARROW }
+      close: { material: BARRIER }
+  dashboard:
+    layout:
+      - "####I####"
+      - "#A#P#M#V#"
+      - "###C#O###"
+      - "B#######X"
+    symbols: { '#': filler, I: info, A: area, P: permissions, M: people, V: appearance, C: copy, O: ownership, B: back, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      info: { material: GRASS_BLOCK }
+      area: { material: GOLDEN_SHOVEL }
+      permissions: { material: REDSTONE_TORCH }
+      people: { material: PLAYER_HEAD }
+      appearance: { material: OAK_SIGN }
+      copy: { material: CHEST }
+      ownership: { material: TOTEM_OF_UNDYING }
+      back: { material: ARROW }
+      close: { material: BARRIER }
+  area:
+    layout:
+      - "####I####"
+      - "#S#R#C#D#"
+      - "B###H###X"
+    symbols: { '#': filler, I: info, S: set-teleport, R: resize, C: create-child, D: children, B: back, H: home, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      info: { material: GRASS_BLOCK }
+      set-teleport: { material: COMPASS }
+      resize: { material: PISTON }
+      create-child: { material: OAK_SAPLING }
+      children: { material: OAK_LEAVES }
+      back: { material: ARROW }
+      home: { material: NETHER_STAR }
+      close: { material: BARRIER }
+  permissions:
+    layout:
+      - "####I####"
+      - "##E###G##"
+      - "#########"
+      - "B###H###X"
+    symbols: { '#': filler, I: info, E: environment, G: guest, B: back, H: home, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      info: { material: REDSTONE_TORCH }
+      environment: { material: OAK_SAPLING }
+      guest: { material: IRON_DOOR }
+      back: { material: ARROW }
+      home: { material: NETHER_STAR }
+      close: { material: BARRIER }
+  people:
+    layout:
+      - "####I####"
+      - "##M###G##"
+      - "#########"
+      - "B###H###X"
+    symbols: { '#': filler, I: info, M: members, G: groups, B: back, H: home, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      info: { material: PLAYER_HEAD }
+      members: { material: PLAYER_HEAD }
+      groups: { material: BUNDLE }
+      back: { material: ARROW }
+      home: { material: NETHER_STAR }
+      close: { material: BARRIER }
+  appearance:
+    layout:
+      - "####I####"
+      - "#R#E#L#C#"
+      - "#########"
+      - "B###H###X"
+    symbols: { '#': filler, I: info, R: rename, E: enter-message, L: leave-message, C: map-color, B: back, H: home, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      info: { material: OAK_SIGN }
+      rename: { material: NAME_TAG }
+      enter-message: { material: WRITABLE_BOOK }
+      leave-message: { material: BOOK }
+      map-color: { material: PAINTING }
+      back: { material: ARROW }
+      home: { material: NETHER_STAR }
+      close: { material: BARRIER }
+  ownership:
+    layout:
+      - "####I####"
+      - "##T###D##"
+      - "#########"
+      - "B###H###X"
+    symbols: { '#': filler, I: info, T: transfer, D: delete, B: back, H: home, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      info: { material: TOTEM_OF_UNDYING }
+      transfer: { material: PLAYER_HEAD }
+      delete: { material: LAVA_BUCKET }
+      back: { material: ARROW }
+      home: { material: NETHER_STAR }
+      close: { material: BARRIER }
+  resize:
+    layout:
+      - "####I####"
+      - "#N#S#E#W#"
+      - "##U###D##"
+      - "B###H###X"
+    symbols: { '#': filler, I: info, N: north, S: south, E: east, W: west, U: up, D: down, B: back, H: home, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      info: { material: PISTON }
+      north: { material: COMPASS }
+      south: { material: COMPASS }
+      east: { material: COMPASS }
+      west: { material: COMPASS }
+      up: { material: COMPASS }
+      down: { material: COMPASS }
+      back: { material: ARROW }
+      home: { material: NETHER_STAR }
+      close: { material: BARRIER }
+  flag-list:
+    required-elements: [content]
+    layout:
+      - "#########"
+      - "#*******#"
+      - "#*******#"
+      - "#*******#"
+      - "#*******#"
+      - "B##PSN##X"
+    symbols: { '#': filler, '*': content, B: back, P: previous, S: status, N: next, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      content: { material: LEVER }
+      back: { material: ARROW }
+      previous: { material: SPECTRAL_ARROW }
+      status: { material: PAPER }
+      next: { material: SPECTRAL_ARROW }
+      close: { material: BARRIER }
+  member-list:
+    required-elements: [content]
+    layout:
+      - "#########"
+      - "#*******#"
+      - "#*******#"
+      - "#*******#"
+      - "#*******#"
+      - "BAQPSN##X"
+    symbols: { '#': filler, '*': content, B: back, A: primary, Q: search, P: previous, S: status, N: next, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      content: { material: PLAYER_HEAD }
+      back: { material: ARROW }
+      primary: { material: LIME_DYE }
+      search: { material: SPYGLASS }
+      previous: { material: SPECTRAL_ARROW }
+      status: { material: PAPER }
+      next: { material: SPECTRAL_ARROW }
+      close: { material: BARRIER }
+  member-detail:
+    layout:
+      - "####I####"
+      - "#F#T#G#R#"
+      - "#########"
+      - "B###H###X"
+    symbols: { '#': filler, I: info, F: flags, T: template, G: group, R: remove, B: back, H: home, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      info: { material: PLAYER_HEAD }
+      flags: { material: REDSTONE_TORCH }
+      template: { material: WRITABLE_BOOK }
+      group: { material: BUNDLE }
+      remove: { material: LAVA_BUCKET }
+      back: { material: ARROW }
+      home: { material: NETHER_STAR }
+      close: { material: BARRIER }
+  group-list:
+    required-elements: [content]
+    layout:
+      - "#########"
+      - "#*******#"
+      - "#*******#"
+      - "#*******#"
+      - "#*******#"
+      - "BA#PSN##X"
+    symbols: { '#': filler, '*': content, B: back, A: primary, P: previous, S: status, N: next, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      content: { material: BUNDLE }
+      back: { material: ARROW }
+      primary: { material: LIME_DYE }
+      previous: { material: SPECTRAL_ARROW }
+      status: { material: PAPER }
+      next: { material: SPECTRAL_ARROW }
+      close: { material: BARRIER }
+  group-detail:
+    layout:
+      - "####I####"
+      - "#R#F#A#M#"
+      - "####D####"
+      - "B###H###X"
+    symbols: { '#': filler, I: info, R: rename, F: flags, A: add-member, M: members, D: delete, B: back, H: home, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      info: { material: BUNDLE }
+      rename: { material: NAME_TAG }
+      flags: { material: REDSTONE_TORCH }
+      add-member: { material: LIME_DYE }
+      members: { material: PLAYER_HEAD }
+      delete: { material: LAVA_BUCKET }
+      back: { material: ARROW }
+      home: { material: NETHER_STAR }
+      close: { material: BARRIER }
+  template-list:
+    required-elements: [content]
+    layout:
+      - "#########"
+      - "#*******#"
+      - "#*******#"
+      - "#*******#"
+      - "#*******#"
+      - "BA#PSN##X"
+    symbols: { '#': filler, '*': content, B: back, A: primary, P: previous, S: status, N: next, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      content: { material: WRITABLE_BOOK }
+      back: { material: ARROW }
+      primary: { material: LIME_DYE }
+      previous: { material: SPECTRAL_ARROW }
+      status: { material: PAPER }
+      next: { material: SPECTRAL_ARROW }
+      close: { material: BARRIER }
+  template-detail:
+    layout:
+      - "####I####"
+      - "##R#F#D##"
+      - "#########"
+      - "B###H###X"
+    symbols: { '#': filler, I: info, R: rename, F: flags, D: delete, B: back, H: home, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      info: { material: WRITABLE_BOOK }
+      rename: { material: NAME_TAG }
+      flags: { material: REDSTONE_TORCH }
+      delete: { material: LAVA_BUCKET }
+      back: { material: ARROW }
+      home: { material: NETHER_STAR }
+      close: { material: BARRIER }
+  picker-list:
+    required-elements: [content]
+    layout:
+      - "#########"
+      - "#*******#"
+      - "#*******#"
+      - "#*******#"
+      - "#*******#"
+      - "B#QPSN##X"
+    symbols: { '#': filler, '*': content, B: back, Q: search, P: previous, S: status, N: next, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      content: { material: PLAYER_HEAD }
+      back: { material: ARROW }
+      search: { material: SPYGLASS }
+      previous: { material: SPECTRAL_ARROW }
+      status: { material: PAPER }
+      next: { material: SPECTRAL_ARROW }
+      close: { material: BARRIER }
+  title-list:
+    required-elements: [content]
+    layout:
+      - "#########"
+      - "#*******#"
+      - "#*******#"
+      - "#*******#"
+      - "#*******#"
+      - "BD#PSN##X"
+    symbols: { '#': filler, '*': content, B: back, D: disable, P: previous, S: status, N: next, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      content: { material: NAME_TAG }
+      back: { material: ARROW }
+      disable: { material: BARRIER }
+      previous: { material: SPECTRAL_ARROW }
+      status: { material: PAPER }
+      next: { material: SPECTRAL_ARROW }
+      close: { material: BARRIER }
+  copy-type:
+    layout:
+      - "####I####"
+      - "#E#G#M#R#"
+      - "#########"
+      - "B###H###X"
+    symbols: { '#': filler, I: info, E: environment, G: guest, M: member, R: group, B: back, H: home, X: close }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      info: { material: CHEST }
+      environment: { material: OAK_SAPLING }
+      guest: { material: IRON_DOOR }
+      member: { material: PLAYER_HEAD }
+      group: { material: BUNDLE }
+      back: { material: ARROW }
+      home: { material: NETHER_STAR }
+      close: { material: BARRIER }
+  confirm:
+    required-elements: [confirm, info, cancel]
+    layout:
+      - "#########"
+      - "##Y#I#N##"
+      - "#########"
+    symbols: { '#': filler, Y: confirm, I: info, N: cancel }
+    items:
+      filler: { material: GRAY_STAINED_GLASS_PANE }
+      confirm: { material: LIME_CONCRETE }
+      info: { material: PAPER }
+      cancel: { material: RED_CONCRETE }

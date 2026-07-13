@@ -130,6 +130,11 @@ public class PlayerCache extends Cache {
         }
     }
 
+    public List<PlayerDTO> getPlayers() {
+        ConcurrentHashMap<Integer, PlayerDTO> currentPlayerCache = playerCache;
+        return currentPlayerCache == null ? List.of() : new ArrayList<>(currentPlayerCache.values());
+    }
+
     public String getPlayerName(UUID uuid) {
         ConcurrentHashMap<UUID, String> currentPlayerNameCache = playerNameCache;
         if (currentPlayerNameCache != null && currentPlayerNameCache.containsKey(uuid)) {

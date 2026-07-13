@@ -20,9 +20,9 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static cn.lunadeer.dominion.Dominion.adminPermission;
 import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
@@ -43,8 +43,8 @@ public class TeleportManager implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    public static Map<UUID, Integer> teleportCooldown = new HashMap<>();
-    public static Map<UUID, CancellableTask> teleportDelayTasks = new HashMap<>();
+    public static Map<UUID, Integer> teleportCooldown = new ConcurrentHashMap<>();
+    public static Map<UUID, CancellableTask> teleportDelayTasks = new ConcurrentHashMap<>();
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -95,20 +95,20 @@ public class TeleportManager implements Listener {
      * @param player   The player to be teleported.
      * @param dominion The dominion to which the player will be teleported.
      */
-    public static void teleportToDominion(Player player, DominionDTO dominion) {
+    public static boolean teleportToDominion(Player player, DominionDTO dominion) {
         // check privilege
         if (!Configuration.getPlayerLimitation(player).teleportation.enable &&
                 !(player.hasPermission(adminPermission) && Configuration.adminBypass)) {
             Notification.warn(player, Language.teleportManagerText.disabled);
-            return;
+            return false;
         }
         // if tp flag is disabled, return too
         if (!Flags.TELEPORT.getEnable()) {
             Notification.warn(player, Language.teleportManagerText.disabled);
-            return;
+            return false;
         }
         if (!checkPrivilegeFlag(dominion, Flags.TELEPORT, player, null)) {
-            return;
+            return false;
         }
         boolean needCooldown = Configuration.getPlayerLimitation(player).teleportation.cooldown > 0;
         int delaySec = Configuration.getPlayerLimitation(player).teleportation.delay;
@@ -122,7 +122,7 @@ public class TeleportManager implements Listener {
             if (teleportCooldown.containsKey(player.getUniqueId())) {
                 if (teleportCooldown.get(player.getUniqueId()) > currentTs) {
                     Notification.warn(player, Language.teleportManagerText.coolingDown, teleportCooldown.get(player.getUniqueId()) - currentTs);
-                    return;
+                    return false;
                 }
             }
             teleportCooldown.put(player.getUniqueId(), currentTs + Configuration.getPlayerLimitation(player).teleportation.cooldown);
@@ -144,16 +144,18 @@ public class TeleportManager implements Listener {
                 if (!Configuration.multiServer.enable) return;
                 try {
                     TeleportRepository.upsert(player.getUniqueId(), dominion.getId());
-                    MultiServerManager.instance.connectToServer(player, MultiServerManager.instance.getServerName(dominion.getServerId()));
+                    String serverName = MultiServerManager.instance.getServerName(dominion.getServerId());
+                    Scheduler.runEntityTask(() -> MultiServerManager.instance.connectToServer(player, serverName), player);
                 } catch (Exception e) {
-                    Notification.error(player, e);
+                    Scheduler.runEntityTask(() -> Notification.error(player, e), player);
                 }
             }
         }, delaySec * 20L);
         Scheduler.runTaskLaterAsync(() -> {
             teleportDelayTasks.remove(player.getUniqueId());    // remove task from map for cleanup
         }, delaySec * 20L + 1);
-        teleportDelayTasks.put(player.getUniqueId(), task);
+        if (task != null) teleportDelayTasks.put(player.getUniqueId(), task);
+        return true;
     }
 
     /**

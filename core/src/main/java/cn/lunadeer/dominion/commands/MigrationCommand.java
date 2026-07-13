@@ -11,7 +11,6 @@ import cn.lunadeer.dominion.doos.PlayerDOO;
 import cn.lunadeer.dominion.misc.CommandArguments;
 import cn.lunadeer.dominion.misc.DominionException;
 import cn.lunadeer.dominion.providers.DominionProvider;
-import cn.lunadeer.dominion.uis.MigrateList;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.ResMigration;
 import cn.lunadeer.dominion.utils.XLogger;
@@ -45,12 +44,11 @@ public class MigrationCommand {
      * Secondary command for migration.
      */
     public static SecondaryCommand migrate = new SecondaryCommand("migrate", List.of(
-            new Argument("residence_name", true),
-            new CommandArguments.OptionalPageArgument()
+            new Argument("residence_name", true)
     ), Language.migrationCommandText.migrateDescription) {
         @Override
         public void executeHandler(CommandSender sender) {
-            migrate(sender, getArgumentValue(0), getArgumentValue(1));
+            migrate(sender, getArgumentValue(0));
         }
     }.needPermission(defaultPermission).register();
 
@@ -71,9 +69,8 @@ public class MigrationCommand {
      *
      * @param sender  the command sender
      * @param resName the name of the residence
-     * @param pageStr the page string
      */
-    public static void migrate(CommandSender sender, String resName, String pageStr) {
+    public static void migrate(CommandSender sender, String resName) {
         try {
             if (!Configuration.residenceMigration) {
                 Notification.error(sender, Language.migrationCommandText.notEnabled);
@@ -93,7 +90,6 @@ public class MigrationCommand {
                 }
             }
             doMigrateCreate(sender, resNode, null);
-            MigrateList.show(sender, pageStr);
         } catch (Exception e) {
             Notification.error(sender, Language.migrationCommandText.migrateFailed, e.getMessage());
         }

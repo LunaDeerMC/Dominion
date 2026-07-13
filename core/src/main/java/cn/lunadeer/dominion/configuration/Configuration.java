@@ -308,8 +308,9 @@ public class Configuration extends ConfigurationFile {
         if (files.length == 0) {
             try {
                 XLogger.info(Language.configurationText.savingDefaultLimitation);
-                ConfigurationManager.saveDefault(Limitation.class, new File(folder, "default.yml"));
-                limitations.put("default", new Limitation());
+                Limitation limitation = (Limitation) ConfigurationManager.saveDefault(
+                        Limitation.class, new File(folder, "default.yml"));
+                limitations.put("default", limitation);
             } catch (Exception e) {
                 XLogger.warn(Language.configurationText.saveLimitationFail, e.getMessage());
             }
@@ -327,8 +328,9 @@ public class Configuration extends ConfigurationFile {
         }
         if (!limitations.containsKey("default")) {  // guarantee the default limitation
             try {
-                ConfigurationManager.saveDefault(Limitation.class, new File(folder, "default.yml"));
-                limitations.put("default", new Limitation());
+                Limitation limitation = (Limitation) ConfigurationManager.saveDefault(
+                        Limitation.class, new File(folder, "default.yml"));
+                limitations.put("default", limitation);
             } catch (Exception e) {
                 XLogger.warn(Language.configurationText.saveLimitationFail, e.getMessage());
             }

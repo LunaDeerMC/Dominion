@@ -5,8 +5,7 @@ import cn.lunadeer.dominion.api.dtos.GroupDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flag;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.cache.CacheManager;
-import cn.lunadeer.dominion.doos.TemplateDOO;
-import cn.lunadeer.dominion.utils.XLogger;
+import cn.lunadeer.dominion.providers.TemplateProvider;
 import cn.lunadeer.dominion.utils.command.Argument;
 import cn.lunadeer.dominion.utils.command.Option;
 import org.bukkit.entity.Player;
@@ -88,26 +87,12 @@ public class CommandArguments {
         }
     }
 
-    /**
-     * Represents an optional argument for a page number.
-     * This argument defaults to "1" if not provided.
-     */
-    public static class OptionalPageArgument extends Argument {
-        public OptionalPageArgument() {
-            super("page", "1");
-        }
-    }
-
     public static class RequiredTemplateArgument extends Argument {
         public RequiredTemplateArgument() {
             super("template_name", true, (commandSender, preArguments) -> {
                 if (commandSender instanceof Player player) {
-                    try {
-                        return TemplateDOO.selectAll(player.getUniqueId()).stream().map(TemplateDOO::getName).toList();
-                    } catch (Exception e) {
-                        XLogger.error(e);
-                        return List.of();
-                    }
+                    return TemplateProvider.getInstance().getTemplates(player.getUniqueId()).stream()
+                            .map(cn.lunadeer.dominion.api.dtos.TemplateDTO::getName).toList();
                 } else {
                     return List.of();
                 }

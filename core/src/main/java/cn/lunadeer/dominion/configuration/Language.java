@@ -4,26 +4,22 @@ import cn.lunadeer.dominion.Dominion;
 import cn.lunadeer.dominion.api.dtos.flag.Flag;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.commands.*;
-import cn.lunadeer.dominion.configuration.uis.ChestUserInterface;
 import cn.lunadeer.dominion.handler.DominionProviderHandler;
 import cn.lunadeer.dominion.handler.GroupProviderHandler;
 import cn.lunadeer.dominion.handler.MemberProviderHandler;
 import cn.lunadeer.dominion.handler.SelectPointEventsHandler;
-import cn.lunadeer.dominion.inputters.*;
 import cn.lunadeer.dominion.managers.DatabaseBackupManager;
 import cn.lunadeer.dominion.managers.MultiServerManager;
 import cn.lunadeer.dominion.managers.TeleportManager;
 import cn.lunadeer.dominion.misc.Asserts;
 import cn.lunadeer.dominion.misc.Converts;
 import cn.lunadeer.dominion.misc.Others;
-import cn.lunadeer.dominion.uis.AbstractUI;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.VaultConnect.VaultConnect;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.command.InvalidArgumentException;
 import cn.lunadeer.dominion.utils.command.NoPermissionException;
 import cn.lunadeer.dominion.utils.configuration.*;
-import cn.lunadeer.dominion.utils.inputter.InputterRunner;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -54,13 +50,11 @@ public class Language extends ConfigurationFile {
         try {
             // save default language files to the languages folder
             File languagesFolder = new File(Dominion.instance.getDataFolder(), "languages");
-            File cuiFolder = new File(languagesFolder, "cui");
             for (LanguageCode languageCode : LanguageCode.values()) {
                 updateLanguageFiles(plugin, languageCode.name(), false);
             }
             Notification.info(sender != null ? sender : Dominion.instance.getServer().getConsoleSender(), Language.configurationText.loadingLanguage, code);
             ConfigurationManager.load(Language.class, new File(languagesFolder, code + ".yml"));
-            ConfigurationManager.load(ChestUserInterface.class, new File(cuiFolder, code + ".yml"));
             Notification.info(sender != null ? sender : Dominion.instance.getServer().getConsoleSender(), Language.configurationText.loadLanguageSuccess, code);
         } catch (Exception e) {
             Notification.error(sender != null ? sender : Dominion.instance.getServer().getConsoleSender(), Language.configurationText.loadLanguageFail, code, e.getMessage());
@@ -72,27 +66,15 @@ public class Language extends ConfigurationFile {
         if (!languagesFolder.exists()) {
             languagesFolder.mkdir();
         }
-        File cuiFolder = new File(languagesFolder, "cui");
-        if (!cuiFolder.exists()) {
-            cuiFolder.mkdir();
-        }
         if (!new File(languagesFolder, code + ".yml").exists()) try {
             Dominion.instance.saveResource("languages/" + code + ".yml", overwrite);
         } catch (Exception e) {
             XLogger.warn("Failed to save language file for {0}, This language may not in official repo : {1}.", code, e.getMessage());
             XLogger.warn("See https://dominion.lunadeer.cn/en/notes/doc/owner/config-ref/languages , If you want to help us to add this language.");
         }
-        if (!new File(cuiFolder, code + ".yml").exists()) try {
-            Dominion.instance.saveResource("languages/cui/" + code + ".yml", overwrite);
-        } catch (Exception e) {
-            XLogger.warn("Failed to save CUI language file for {0}, This language may not in official repo : {1}.", code, e.getMessage());
-            XLogger.warn("See https://dominion.lunadeer.cn/en/notes/doc/owner/config-ref/languages , If you want to help us to add this language.");
-        }
     }
 
     public static Dominion.DominionText dominionText = new Dominion.DominionText();
-    public static AbstractUI.ConsoleText consoleText = new AbstractUI.ConsoleText();
-    public static AbstractUI.UiCommandsDescription uiCommandsDescription = new AbstractUI.UiCommandsDescription();
 
     public static MultiServerManager.MultiServerManagerText multiServerManagerText = new MultiServerManager.MultiServerManagerText();
 
@@ -107,18 +89,6 @@ public class Language extends ConfigurationFile {
     public static MemberProviderHandler.MemberProviderHandlerText memberProviderHandlerText = new MemberProviderHandler.MemberProviderHandlerText();
     public static GroupProviderHandler.GroupProviderHandlerText groupProviderHandlerText = new GroupProviderHandler.GroupProviderHandlerText();
     public static SelectPointEventsHandler.SelectPointEventsHandlerText selectPointEventsHandlerText = new SelectPointEventsHandler.SelectPointEventsHandlerText();
-
-    // Inputter
-    public static CreateDominionInputter.CreateDominionInputterText createDominionInputterText = new CreateDominionInputter.CreateDominionInputterText();
-    public static CreateGroupInputter.CreateGroupInputterText createGroupInputterText = new CreateGroupInputter.CreateGroupInputterText();
-    public static RenameDominionInputter.RenameDominionInputterText renameDominionInputterText = new RenameDominionInputter.RenameDominionInputterText();
-    public static EditMessageInputter.EditMessageInputterText editMessageInputterText = new EditMessageInputter.EditMessageInputterText();
-    public static CreateTemplateInputter.CreateTemplateInputterText createTemplateInputterText = new CreateTemplateInputter.CreateTemplateInputterText();
-    public static RenameGroupInputter.RenameGroupInputterText renameGroupInputterText = new RenameGroupInputter.RenameGroupInputterText();
-    public static ResizeDominionInputter.ResizeDominionInputterText resizeDominionInputterText = new ResizeDominionInputter.ResizeDominionInputterText();
-    public static SearchPlayerInputter.SearchPlayerInputterText searchPlayerInputterText = new SearchPlayerInputter.SearchPlayerInputterText();
-    public static SetMapColorInputter.SetMapColorInputterText setMapColorInputterText = new SetMapColorInputter.SetMapColorInputterText();
-    public static RenameTemplateInputter.RenameTemplateInputterText renameTemplateInputterText = new RenameTemplateInputter.RenameTemplateInputterText();
 
     // Commands
     public static AdministratorCommand.AdministratorCommandText administratorCommandText = new AdministratorCommand.AdministratorCommandText();
@@ -147,14 +117,6 @@ public class Language extends ConfigurationFile {
         public String invalidArguments = "Invalid arguments, usage e.g. {0}.";
     }
 
-    public static InputterText inputterText = new InputterText();
-
-    public static class InputterText extends ConfigurationPart {
-        public String onlyPlayer = "Chat input can only be used by a player.";
-        public String cancel = " [Send 'C' to cancel the input.]";
-        public String inputterCancelled = "Input cancelled.";
-    }
-
     @PreProcess
     public void loadFlagsText() {
         for (Flag flag : Flags.getAllFlags()) {
@@ -177,9 +139,6 @@ public class Language extends ConfigurationFile {
         InvalidArgumentException.MSG = commandExceptionText.invalidArguments;
         NoPermissionException.MSG = commandExceptionText.noPermission;
 
-        InputterRunner.ONLY_PLAYER = inputterText.onlyPlayer;
-        InputterRunner.CANCEL = inputterText.cancel;
-        InputterRunner.INPUTTER_CANCELLED = inputterText.inputterCancelled;
     }
 
 }

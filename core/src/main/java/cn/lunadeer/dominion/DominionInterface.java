@@ -10,6 +10,7 @@ import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.misc.Others;
+import cn.lunadeer.dominion.uis.chest.DominionChestUi;
 import cn.lunadeer.dominion.utils.McaRecord;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -169,6 +170,7 @@ public class DominionInterface extends DominionAPI {
     @Override
     public void reloadConfig() throws Exception {
         Configuration.loadConfigurationAndDatabase(Bukkit.getConsoleSender());
+        DominionChestUi.reload();
     }
 
     @Override

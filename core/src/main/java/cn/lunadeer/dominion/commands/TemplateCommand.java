@@ -2,15 +2,12 @@ package cn.lunadeer.dominion.commands;
 
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.MemberDTO;
-import cn.lunadeer.dominion.api.dtos.flag.Flags;
+import cn.lunadeer.dominion.api.dtos.TemplateDTO;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.configuration.Language;
-import cn.lunadeer.dominion.doos.MemberDOO;
-import cn.lunadeer.dominion.doos.TemplateDOO;
 import cn.lunadeer.dominion.misc.CommandArguments;
 import cn.lunadeer.dominion.misc.DominionException;
-import cn.lunadeer.dominion.uis.template.TemplateFlags;
-import cn.lunadeer.dominion.uis.template.TemplateList;
+import cn.lunadeer.dominion.providers.TemplateProvider;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.command.Argument;
 import cn.lunadeer.dominion.utils.command.SecondaryCommand;
@@ -21,8 +18,6 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 import static cn.lunadeer.dominion.Dominion.defaultPermission;
-import static cn.lunadeer.dominion.misc.Asserts.assertDominionAdmin;
-import static cn.lunadeer.dominion.misc.Asserts.assertDominionOwner;
 import static cn.lunadeer.dominion.misc.Converts.*;
 
 
@@ -82,16 +77,7 @@ public class TemplateCommand {
     public static void createTemplate(CommandSender sender, String templateName) {
         try {
             Player player = toPlayer(sender);
-            if (templateName.contains(" ")) {
-                throw new DominionException(Language.templateCommandText.nameNotValid);
-            }
-            List<TemplateDOO> templates = TemplateDOO.selectAll(player.getUniqueId());
-            if (templates.stream().anyMatch(t -> t.getName().equals(templateName))) {
-                throw new DominionException(Language.templateCommandText.templateNameExist, templateName);
-            }
-            TemplateDOO.create(player.getUniqueId(), templateName);
-            Notification.info(sender, Language.templateCommandText.createTemplateSuccess, templateName);
-            TemplateList.show(sender, "1");
+            TemplateProvider.getInstance().createTemplate(player, templateName);
         } catch (Exception e) {
             Notification.error(sender, Language.templateCommandText.createTemplateFail, e.getMessage());
         }
@@ -102,8 +88,7 @@ public class TemplateCommand {
      * This command requires the default permission to execute.
      */
     public static SecondaryCommand deleteTemplate = new SecondaryCommand("template_delete", List.of(
-            new CommandArguments.RequiredTemplateArgument(),
-            new CommandArguments.OptionalPageArgument()
+            new CommandArguments.RequiredTemplateArgument()
     ), Language.templateCommandText.deleteTemplateDescription) {
         /**
          * Executes the delete template command.
@@ -112,7 +97,7 @@ public class TemplateCommand {
          */
         @Override
         public void executeHandler(CommandSender sender) {
-            deleteTemplate(sender, getArgumentValue(0), getArgumentValue(1));
+            deleteTemplate(sender, getArgumentValue(0));
         }
     }.needPermission(defaultPermission).register();
 
@@ -121,18 +106,15 @@ public class TemplateCommand {
      *
      * @param sender       The command sender.
      * @param templateName The name of the template to be deleted.
-     * @param pageStr      The page number to display after deletion.
      */
-    public static void deleteTemplate(CommandSender sender, String templateName, String pageStr) {
+    public static void deleteTemplate(CommandSender sender, String templateName) {
         try {
             Player player = toPlayer(sender);
-            TemplateDOO template = TemplateDOO.select(player.getUniqueId(), templateName);
+            TemplateDTO template = TemplateProvider.getInstance().getTemplate(player.getUniqueId(), templateName);
             if (template == null) {
                 throw new DominionException(Language.templateCommandText.templateNotExist, templateName);
             }
-            TemplateDOO.delete(player.getUniqueId(), templateName);
-            Notification.info(sender, Language.templateCommandText.deleteTemplateSuccess, templateName);
-            TemplateList.show(sender, pageStr);
+            TemplateProvider.getInstance().deleteTemplate(player, template);
         } catch (Exception e) {
             Notification.error(sender, Language.templateCommandText.deleteTemplateFail, e.getMessage());
         }
@@ -141,27 +123,24 @@ public class TemplateCommand {
     public static SecondaryCommand setTemplateFlag = new SecondaryCommand("template_set_flag", List.of(
             new CommandArguments.RequiredTemplateArgument(),
             new CommandArguments.PriFlagArgument(),
-            new CommandArguments.BollenOption(),
-            new CommandArguments.OptionalPageArgument()
+            new CommandArguments.BollenOption()
     ), Language.templateCommandText.setTemplateFlagDescription) {
         @Override
         public void executeHandler(CommandSender sender) {
-            setTemplateFlag(sender, getArgumentValue(0), getArgumentValue(1), getArgumentValue(2), getArgumentValue(3));
+            setTemplateFlag(sender, getArgumentValue(0), getArgumentValue(1), getArgumentValue(2));
         }
     }.needPermission(defaultPermission).register();
 
-    public static void setTemplateFlag(CommandSender sender, String templateName, String flagName, String valueStr, String pageStr) {
+    public static void setTemplateFlag(CommandSender sender, String templateName, String flagName, String valueStr) {
         try {
             Player player = toPlayer(sender);
             boolean value = toBoolean(valueStr);
             PriFlag flag = toPriFlag(flagName);
-            TemplateDOO template = TemplateDOO.select(player.getUniqueId(), templateName);
+            TemplateDTO template = TemplateProvider.getInstance().getTemplate(player.getUniqueId(), templateName);
             if (template == null) {
                 throw new DominionException(Language.templateCommandText.templateNotExist, templateName);
             }
-            template.setFlagValue(flag, value);
-            Notification.info(sender, Language.templateCommandText.setFlagSuccess, flagName, templateName, valueStr);
-            TemplateFlags.show(sender, templateName, pageStr);
+            TemplateProvider.getInstance().setTemplateFlag(player, template, flag, value);
         } catch (Exception e) {
             Notification.error(sender, Language.templateCommandText.setFlagFail, e.getMessage());
         }
@@ -181,19 +160,13 @@ public class TemplateCommand {
     public static void memberApplyTemplate(CommandSender sender, String dominionName, String playerName, String templateName) {
         try {
             Player player = toPlayer(sender);
-            TemplateDOO template = TemplateDOO.select(player.getUniqueId(), templateName);
+            TemplateDTO template = TemplateProvider.getInstance().getTemplate(player.getUniqueId(), templateName);
             if (template == null) {
                 throw new DominionException(Language.templateCommandText.templateNotExist, templateName);
             }
             DominionDTO dominion = toDominionDTO(dominionName);
-            if (template.getFlagValue(Flags.ADMIN)) {
-                assertDominionOwner(player, dominion);  // only owner can apply admin template
-            } else {
-                assertDominionAdmin(player, dominion);
-            }
             MemberDTO member = toMemberDTO(dominion, playerName);
-            ((MemberDOO) member).applyTemplate(template);
-            Notification.info(sender, Language.templateCommandText.applyTemplateSuccess, templateName, playerName);
+            TemplateProvider.getInstance().applyTemplate(player, dominion, member, template);
         } catch (Exception e) {
             Notification.error(sender, Language.templateCommandText.applyTemplateFail, e.getMessage());
         }
@@ -201,28 +174,22 @@ public class TemplateCommand {
 
     public static SecondaryCommand renameTemplate = new SecondaryCommand("template_rename", List.of(
             new CommandArguments.RequiredTemplateArgument(),
-            new Argument("new_name", true),
-            new CommandArguments.OptionalPageArgument()
+            new Argument("new_name", true)
     ), Language.templateCommandText.renameTemplateDescription) {
         @Override
         public void executeHandler(CommandSender sender) {
-            renameTemplate(sender, getArgumentValue(0), getArgumentValue(1), getArgumentValue(2));
+            renameTemplate(sender, getArgumentValue(0), getArgumentValue(1));
         }
     }.needPermission(defaultPermission).register();
 
-    public static void renameTemplate(CommandSender sender, String templateName, String newTemplateName, String pageStr) {
+    public static void renameTemplate(CommandSender sender, String templateName, String newTemplateName) {
         try {
             Player player = toPlayer(sender);
-            TemplateDOO template = TemplateDOO.select(player.getUniqueId(), templateName);
+            TemplateDTO template = TemplateProvider.getInstance().getTemplate(player.getUniqueId(), templateName);
             if (template == null) {
                 throw new DominionException(Language.templateCommandText.templateNotExist, templateName);
             }
-            if (newTemplateName.contains(" ")) {
-                throw new DominionException(Language.templateCommandText.nameNotValid);
-            }
-            template.setName(newTemplateName);
-            Notification.info(sender, Language.templateCommandText.renameTemplateSuccess, newTemplateName);
-            TemplateList.show(sender, pageStr);
+            TemplateProvider.getInstance().renameTemplate(player, template, newTemplateName);
         } catch (Exception e) {
             Notification.error(sender, Language.templateCommandText.renameTemplateFail, e.getMessage());
         }

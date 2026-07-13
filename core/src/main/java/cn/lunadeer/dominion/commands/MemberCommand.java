@@ -9,8 +9,6 @@ import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.doos.PlayerDOO;
 import cn.lunadeer.dominion.misc.CommandArguments;
 import cn.lunadeer.dominion.providers.MemberProvider;
-import cn.lunadeer.dominion.uis.dominion.manage.member.MemberFlags;
-import cn.lunadeer.dominion.uis.dominion.manage.member.MemberList;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.command.Argument;
 import cn.lunadeer.dominion.utils.command.SecondaryCommand;
@@ -68,7 +66,6 @@ public class MemberCommand {
             // New implementation END
             DominionDTO dominion = toDominionDTO(dominionName);
             MemberProvider.getInstance().addMember(sender, dominion, player);
-            MemberList.show(sender, dominionName, "1");
         } catch (Exception e) {
             Notification.error(sender, e);
         }
@@ -81,8 +78,7 @@ public class MemberCommand {
             new CommandArguments.RequiredDominionArgument(),
             new CommandArguments.RequiredMemberArgument(0),
             new CommandArguments.PriFlagArgument(),
-            new CommandArguments.BollenOption(),
-            new CommandArguments.OptionalPageArgument()
+            new CommandArguments.BollenOption()
     ), Language.memberCommandText.setMemberPrivilegeDescription) {
         @Override
         public void executeHandler(CommandSender sender) {
@@ -91,8 +87,7 @@ public class MemberCommand {
                     getArgumentValue(0),
                     getArgumentValue(1),
                     getArgumentValue(2),
-                    getArgumentValue(3),
-                    getArgumentValue(4)
+                    getArgumentValue(3)
             );
         }
     }.needPermission(defaultPermission).register();
@@ -105,16 +100,14 @@ public class MemberCommand {
      * @param playerName   the name of the player
      * @param flagName     the name of the privilege flag
      * @param valueStr     the value of the privilege flag
-     * @param pageStr      the page number for the member setting display
      */
-    public static void setMemberPrivilege(CommandSender sender, String dominionName, String playerName, String flagName, String valueStr, String pageStr) {
+    public static void setMemberPrivilege(CommandSender sender, String dominionName, String playerName, String flagName, String valueStr) {
         try {
             PriFlag flag = toPriFlag(flagName);
             boolean value = toBoolean(valueStr);
             DominionDTO dominion = toDominionDTO(dominionName);
             MemberDTO member = toMemberDTO(dominion, playerName);
             MemberProvider.getInstance().setMemberFlag(sender, dominion, member, flag, value);
-            MemberFlags.show(sender, dominionName, playerName, pageStr);
         } catch (Exception e) {
             Notification.error(sender, e);
         }
@@ -125,12 +118,11 @@ public class MemberCommand {
      */
     public static SecondaryCommand removeMember = new SecondaryCommand("member_remove", List.of(
             new CommandArguments.RequiredDominionArgument(),
-            new CommandArguments.RequiredMemberArgument(0),
-            new CommandArguments.OptionalPageArgument()
+            new CommandArguments.RequiredMemberArgument(0)
     ), Language.memberCommandText.removeMemberDescription) {
         @Override
         public void executeHandler(CommandSender sender) {
-            removeMember(sender, getArgumentValue(0), getArgumentValue(1), getArgumentValue(2));
+            removeMember(sender, getArgumentValue(0), getArgumentValue(1));
         }
     }.needPermission(defaultPermission).register();
 
@@ -140,14 +132,12 @@ public class MemberCommand {
      * @param sender       the command sender
      * @param dominionName the name of the dominion
      * @param playerName   the name of the player to be removed
-     * @param pageStr      the page number for the member list display
      */
-    public static void removeMember(CommandSender sender, String dominionName, String playerName, String pageStr) {
+    public static void removeMember(CommandSender sender, String dominionName, String playerName) {
         try {
             DominionDTO dominion = toDominionDTO(dominionName);
             MemberDTO member = toMemberDTO(dominion, playerName);
             MemberProvider.getInstance().removeMember(sender, dominion, member);
-            MemberList.show(sender, dominionName, pageStr);
         } catch (Exception e) {
             Notification.error(sender, e);
         }

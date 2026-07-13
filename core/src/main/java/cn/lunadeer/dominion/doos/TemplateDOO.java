@@ -1,5 +1,6 @@
 package cn.lunadeer.dominion.doos;
 
+import cn.lunadeer.dominion.api.dtos.TemplateDTO;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.storage.repository.TemplateRepository;
 
@@ -8,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class TemplateDOO {
+public class TemplateDOO implements TemplateDTO {
 
     private Integer id;
     private UUID creator;
@@ -62,6 +63,11 @@ public class TemplateDOO {
     public Boolean getFlagValue(PriFlag flag) {
         if (!flags.containsKey(flag)) return flag.getDefaultValue();
         return flags.get(flag);
+    }
+
+    @Override
+    public Map<PriFlag, Boolean> getFlagsValue() {
+        return Map.copyOf(flags);
     }
 
     public TemplateDOO setFlagValue(PriFlag flag, Boolean value) throws SQLException {

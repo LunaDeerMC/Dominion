@@ -1,15 +1,9 @@
 package cn.lunadeer.dominion.commands;
 
-import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.GroupDTO;
-import cn.lunadeer.dominion.api.dtos.MemberDTO;
-import cn.lunadeer.dominion.api.dtos.PlayerDTO;
-import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Language;
-import cn.lunadeer.dominion.doos.PlayerDOO;
 import cn.lunadeer.dominion.misc.CommandArguments;
-import cn.lunadeer.dominion.misc.DominionException;
-import cn.lunadeer.dominion.uis.TitleList;
+import cn.lunadeer.dominion.providers.PlayerProvider;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.command.SecondaryCommand;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
@@ -17,9 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.Objects;
-
-import static cn.lunadeer.dominion.misc.Asserts.assertDominionOwner;
 import static cn.lunadeer.dominion.misc.Converts.*;
 
 public class GroupTitleCommand {
@@ -32,12 +23,11 @@ public class GroupTitleCommand {
     }
 
     public static SecondaryCommand useTitle = new SecondaryCommand("title_use", List.of(
-            new CommandArguments.PlayerTitleIdArgument(),
-            new CommandArguments.OptionalPageArgument()
+            new CommandArguments.PlayerTitleIdArgument()
     ), Language.groupTitleCommandText.useTitleDescription) {
         @Override
         public void executeHandler(CommandSender sender) {
-            useTitle(sender, getArgumentValue(0), getArgumentValue(1));
+            useTitle(sender, getArgumentValue(0));
         }
     }.needPermission("dominion.default").register();
 
@@ -48,35 +38,17 @@ public class GroupTitleCommand {
      *
      * @param sender          The command sender.
      * @param groupTitleIdStr The ID of the group title as a string. -1 for disuse current title.
-     * @param pageStr         The page number as a string.
      */
-    public static void useTitle(CommandSender sender, String groupTitleIdStr, String pageStr) {
+    public static void useTitle(CommandSender sender, String groupTitleIdStr) {
         try {
             Player player = toPlayer(sender);
             int titleId = toIntegrity(groupTitleIdStr);
             if (titleId == -1) {
-                ((PlayerDOO) toPlayerDTO(player.getUniqueId())).setUsingGroupTitleID(-1);
-                TitleList.show(sender, pageStr);
+                PlayerProvider.getInstance().setGroupTitle(player, null);
                 return;
             }
-            PlayerDTO playerDto = toPlayerDTO(player.getUniqueId());
             GroupDTO group = toGroupDTO(titleId);
-            DominionDTO dominion = toDominionDTO(group.getDomID());
-            try {
-                assertDominionOwner(player, dominion);
-            } catch (Exception e) {
-                MemberDTO member = CacheManager.instance.getMember(dominion, player);
-                if (member == null) {
-                    throw new DominionException(Language.groupTitleCommandText.groupNotBelonging, group.getNamePlain());
-                }
-                if (!Objects.equals(member.getGroupId(), group.getId())) {
-                    throw new DominionException(Language.groupTitleCommandText.groupNotBelonging, group.getNamePlain());
-                }
-            }
-            ((PlayerDOO) playerDto).setUsingGroupTitleID(group.getId());
-
-            Notification.info(sender, Language.groupTitleCommandText.usingTitleSuccess, group.getNamePlain());
-            TitleList.show(sender, pageStr);
+            PlayerProvider.getInstance().setGroupTitle(player, group);
         } catch (Exception e) {
             Notification.error(sender, Language.groupTitleCommandText.usingTitleFail, e.getMessage());
         }

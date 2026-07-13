@@ -1,0 +1,719 @@
+# 领地插件箱子界面的简体中文语言文件。
+# {dominion}、{player}、{page} 和 {total} 等命名占位符会在界面渲染时被替换。
+schema-version: 1
+input:
+  cancel-hint: <gray>[输入 <white>取消</white> 返回。]
+  cancel-keywords:
+    - 取消
+  cancelled: 输入已取消。
+  timeout: 输入已超时。
+  create-dominion: 请输入新的领地名称。
+  rename-dominion: 请输入新的领地名称。
+  enter-message: 请输入新的进入提示消息。
+  leave-message: 请输入新的离开提示消息。
+  map-color: 请输入 0xRRGGBB 格式的颜色值。
+  resize: 请输入正数；若要向该方向收缩，请在数字前添加 '-'。
+  create-group: 请输入新的权限组名称。
+  rename-group: 请输入新的权限组名称。
+  create-template: 请输入新的权限模板名称。
+  rename-template: 请输入新的权限模板名称。
+  search: 请输入名称的一部分或完整名称。
+errors:
+  unavailable: 该页面已不可用，或你已没有权限查看。
+  invalid-color: 颜色格式无效，请使用 0xRRGGBB。
+  non-zero-integer: 请输入非零整数。
+  auto-create-disabled: 自动创建功能已禁用，请使用命令选点流程。
+titles:
+  all-dominions: 所有领地
+  my-dominions: 我的领地
+  children: 子领地 · {dominion}
+  copy-source: 选择复制来源
+  environment-flags: 环境设置 · {dominion}
+  guest-flags: 访客权限 · {dominion}
+  member-flags: 成员权限
+  group-flags: 权限组权限
+  template-flags: 模板权限 · {template}
+  flags: 权限
+  select-template: 选择权限模板
+  assign-group: 分配权限组
+  remove-group-member: 移除权限组成员
+  add-group-member: 添加权限组成员
+  transfer-player: 转让给玩家
+  add-member: 添加成员
+labels:
+  none: 无
+  unknown: 未知
+  administrator: 管理员
+  member: 成员
+  player: 玩家
+  known-player: 已记录玩家
+  group: 权限组
+  template: 权限模板
+  copy-types:
+    environment: 环境设置
+    guest: 访客权限
+    member: 成员
+    group: 权限组及成员关系
+confirm:
+  delete-dominion: 删除 {dominion}
+  remove-member: 移除 {player}
+  delete-group: 删除权限组 {group}
+  delete-template: 删除权限模板 {template}
+  transfer: 将 {dominion} 转让给 {player}
+  copy: 将 {source} 的{type}复制到 {target}
+common:
+  enabled: <green>已启用
+  disabled: <red>已禁用
+  page: <gray>第 <white>{page}</white>/<white>{pages}</white> 页 · 共 {total} 项
+menus:
+  main:
+    title: <dark_green>领地管理
+    items:
+      filler:
+        name: ' '
+        lore: []
+      info:
+        name: <green>领地管理
+        lore:
+          - <gray>通过图形界面管理领地，无需使用命令导航。
+      dominions:
+        name: <green>我的领地
+        lore:
+          - <gray>查看你拥有或管理的领地。
+      create:
+        name: <green>创建领地
+        lore:
+          - <gray>以你当前所在位置为中心创建。
+      templates:
+        name: <aqua>权限模板
+        lore:
+          - <gray>管理可重复使用的成员权限配置。
+      titles:
+        name: <yellow>权限组称号
+        lore:
+          - <gray>从你所在的权限组中选择称号。
+      all:
+        name: <gold>所有领地
+        lore:
+          - <gray>仅管理员可用的全局领地浏览器。
+      help:
+        name: <white>帮助
+        lore:
+          - <gray>将文档链接发送到聊天栏。
+      close:
+        name: <red>关闭
+        lore: []
+  dominion-list:
+    title: <dark_green>{title}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      content:
+        name: <green>{dominion}
+        lore:
+          - '<gray>所有者：<white>{owner}'
+          - '<gray>世界：<white>{world}'
+          - '<gray>服务器：<white>{server}'
+          - ''
+          - <yellow>点击查看详情。
+      back:
+        name: <yellow>返回
+        lore: []
+      primary:
+        name: <green>创建
+        lore:
+          - <gray>在此创建一个新领地。
+      search:
+        name: <aqua>搜索
+        lore: []
+      previous:
+        name: <yellow>上一页
+        lore: []
+      status:
+        name: <white>第 {page}/{pages} 页
+        lore:
+          - <gray>共 {total} 项
+      next:
+        name: <yellow>下一页
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+      local-content:
+        name: <green>{dominion}
+        lore:
+          - '<gray>所有者：<white>{owner}'
+          - '<gray>世界：<white>{world}'
+          - ''
+          - <yellow>左键点击打开或选择。
+          - <aqua>右键点击传送。
+      remote-content:
+        name: <aqua>{dominion}
+        lore:
+          - '<gray>所有者：<white>{owner}'
+          - '<gray>世界：<white>{world}'
+          - '<gray>服务器：<white>{server}'
+          - ''
+          - <aqua>右键点击传送。
+  dashboard:
+    title: <dark_green>{dominion}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      info:
+        name: <green>{dominion}
+        lore:
+          - '<gray>所有者：<white>{owner}'
+          - '<gray>世界：<white>{world}'
+          - '<gray>大小：<white>{size}'
+      teleport:
+        name: <aqua>传送
+        lore:
+          - <gray>传送到该领地。
+      area:
+        name: <green>区域与传送
+        lore:
+          - <gray>管理边界、传送点和子领地。
+      permissions:
+        name: <red>权限设置
+        lore:
+          - <gray>管理环境设置和访客权限。
+      people:
+        name: <yellow>成员与权限组
+        lore:
+          - <gray>管理个人和权限组的访问权限。
+      appearance:
+        name: <light_purple>外观与消息
+        lore:
+          - <gray>管理名称、提示消息和地图颜色。
+      copy:
+        name: <gold>复制数据
+        lore:
+          - <gray>从其他领地复制选定的设置。
+      ownership:
+        name: <dark_red>所有权
+        lore:
+          - <gray>转让或删除该领地。
+      back:
+        name: <yellow>返回
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  area:
+    title: <dark_green>区域 · {dominion}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      info:
+        name: <green>{dominion}
+        lore:
+          - '<gray>坐标范围：<white>{bounds}'
+      teleport:
+        name: <aqua>传送
+        lore: []
+      set-teleport:
+        name: <aqua>设置传送点
+        lore:
+          - <gray>使用你当前所在的位置。
+      resize:
+        name: <yellow>调整边界
+        lore:
+          - <gray>扩展或收缩各方向的边界。
+      create-child:
+        name: <green>创建子领地
+        lore:
+          - <gray>以你当前所在位置为中心创建。
+      children:
+        name: <green>子领地
+        lore: []
+      back:
+        name: <yellow>返回
+        lore: []
+      home:
+        name: <white>主菜单
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  permissions:
+    title: <dark_green>权限设置 · {dominion}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      info:
+        name: <red>权限分类
+        lore: []
+      environment:
+        name: <green>环境设置
+        lore:
+          - <gray>管理该领地内的世界行为。
+      guest:
+        name: <yellow>访客权限
+        lore:
+          - <gray>未分配身份的玩家可执行的操作。
+      back:
+        name: <yellow>返回
+        lore: []
+      home:
+        name: <white>主菜单
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  people:
+    title: <dark_green>成员管理 · {dominion}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      info:
+        name: <yellow>成员与权限组
+        lore: []
+      members:
+        name: <green>成员
+        lore:
+          - <gray>管理个人权限和权限模板。
+      groups:
+        name: <aqua>权限组
+        lore:
+          - <gray>管理共享权限及成员关系。
+      back:
+        name: <yellow>返回
+        lore: []
+      home:
+        name: <white>主菜单
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  appearance:
+    title: <dark_green>外观设置 · {dominion}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      info:
+        name: <light_purple>外观与消息
+        lore: []
+      rename:
+        name: <yellow>重命名
+        lore: []
+      enter-message:
+        name: <green>进入提示
+        lore:
+          - <gray>{join-message}
+      leave-message:
+        name: <red>离开提示
+        lore:
+          - <gray>{leave-message}
+      map-color:
+        name: <aqua>地图颜色
+        lore:
+          - <gray>{color}
+      back:
+        name: <yellow>返回
+        lore: []
+      home:
+        name: <white>主菜单
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  ownership:
+    title: <dark_red>所有权 · {dominion}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      info:
+        name: '<gold>所有者：{owner}'
+        lore: []
+      transfer:
+        name: <yellow>转让
+        lore:
+          - <gray>将该领地及其子领地转让给其他玩家。
+      delete:
+        name: <red>删除
+        lore:
+          - <dark_red>此操作无法撤销。
+      back:
+        name: <yellow>返回
+        lore: []
+      home:
+        name: <white>主菜单
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  resize:
+    title: <dark_green>调整边界 · {dominion}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      info:
+        name: <yellow>选择边界方向
+        lore:
+          - <gray>输入正数进行扩展，输入负数进行收缩。
+      north:
+        name: <white>北侧
+        lore: []
+      south:
+        name: <white>南侧
+        lore: []
+      east:
+        name: <white>东侧
+        lore: []
+      west:
+        name: <white>西侧
+        lore: []
+      up:
+        name: <white>上方
+        lore: []
+      down:
+        name: <white>下方
+        lore: []
+      back:
+        name: <yellow>返回
+        lore: []
+      home:
+        name: <white>主菜单
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  flag-list:
+    title: <dark_green>{title}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      content:
+        name: <white>{flag}
+        lore:
+          - '<gray>状态：{state}'
+          - <gray>{description}
+          - ''
+          - <yellow>点击切换。
+      back:
+        name: <yellow>返回
+        lore: []
+      previous:
+        name: <yellow>上一页
+        lore: []
+      status:
+        name: <white>第 {page}/{pages} 页
+        lore:
+          - <gray>共 {total} 项
+      next:
+        name: <yellow>下一页
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  member-list:
+    title: <dark_green>成员 · {dominion}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      content:
+        name: <green>{player}
+        lore:
+          - '<gray>权限组：<white>{group}'
+          - '<gray>身份：<white>{role}'
+          - ''
+          - <yellow>点击管理。
+      back:
+        name: <yellow>返回
+        lore: []
+      primary:
+        name: <green>添加成员
+        lore: []
+      search:
+        name: <aqua>搜索
+        lore: []
+      previous:
+        name: <yellow>上一页
+        lore: []
+      status:
+        name: <white>第 {page}/{pages} 页
+        lore:
+          - <gray>共 {total} 项
+      next:
+        name: <yellow>下一页
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  member-detail:
+    title: <dark_green>{player} · {dominion}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      info:
+        name: <green>{player}
+        lore:
+          - '<gray>权限组：<white>{group}'
+          - '<gray>身份：<white>{role}'
+      flags:
+        name: <red>权限
+        lore: []
+      template:
+        name: <aqua>应用权限模板
+        lore: []
+      group:
+        name: <yellow>分配权限组
+        lore: []
+      remove:
+        name: <red>移除成员
+        lore:
+          - <dark_red>这将移除该成员的所有直接权限。
+      back:
+        name: <yellow>返回
+        lore: []
+      home:
+        name: <white>主菜单
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  group-list:
+    title: <dark_green>权限组 · {dominion}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      content:
+        name: <aqua>{group}
+        lore:
+          - <gray>{members} 名成员
+          - ''
+          - <yellow>点击管理。
+      back:
+        name: <yellow>返回
+        lore: []
+      primary:
+        name: <green>创建权限组
+        lore: []
+      previous:
+        name: <yellow>上一页
+        lore: []
+      status:
+        name: <white>第 {page}/{pages} 页
+        lore:
+          - <gray>共 {total} 项
+      next:
+        name: <yellow>下一页
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  group-detail:
+    title: <dark_green>{group} · {dominion}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      info:
+        name: <aqua>{group}
+        lore:
+          - <gray>{members} 名成员
+      rename:
+        name: <yellow>重命名
+        lore: []
+      flags:
+        name: <red>权限
+        lore: []
+      add-member:
+        name: <green>添加成员
+        lore: []
+      members:
+        name: <yellow>权限组成员
+        lore:
+          - <gray>点击成员即可将其移出该权限组。
+      delete:
+        name: <red>删除权限组
+        lore: []
+      back:
+        name: <yellow>返回
+        lore: []
+      home:
+        name: <white>主菜单
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  template-list:
+    title: <dark_green>权限模板
+    items:
+      filler:
+        name: ' '
+        lore: []
+      content:
+        name: <aqua>{template}
+        lore:
+          - <yellow>点击管理。
+      back:
+        name: <yellow>返回
+        lore: []
+      primary:
+        name: <green>创建权限模板
+        lore: []
+      previous:
+        name: <yellow>上一页
+        lore: []
+      status:
+        name: <white>第 {page}/{pages} 页
+        lore:
+          - <gray>共 {total} 项
+      next:
+        name: <yellow>下一页
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  template-detail:
+    title: <dark_green>权限模板 · {template}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      info:
+        name: <aqua>{template}
+        lore: []
+      rename:
+        name: <yellow>重命名
+        lore: []
+      flags:
+        name: <red>权限
+        lore: []
+      delete:
+        name: <red>删除权限模板
+        lore: []
+      back:
+        name: <yellow>返回
+        lore: []
+      home:
+        name: <white>主菜单
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  picker-list:
+    title: <dark_green>{title}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      content:
+        name: <green>{name}
+        lore:
+          - <gray>{description}
+          - ''
+          - <yellow>点击选择。
+      back:
+        name: <yellow>返回
+        lore: []
+      search:
+        name: <aqua>搜索玩家
+        lore: []
+      previous:
+        name: <yellow>上一页
+        lore: []
+      status:
+        name: <white>第 {page}/{pages} 页
+        lore:
+          - <gray>共 {total} 项
+      next:
+        name: <yellow>下一页
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  title-list:
+    title: <dark_green>权限组称号
+    items:
+      filler:
+        name: ' '
+        lore: []
+      content:
+        name: <yellow>{group}
+        lore:
+          - '<gray>领地：<white>{dominion}'
+          - ''
+          - <yellow>点击使用该称号。
+      back:
+        name: <yellow>返回
+        lore: []
+      disable:
+        name: <red>停用当前称号
+        lore: []
+      previous:
+        name: <yellow>上一页
+        lore: []
+      status:
+        name: <white>第 {page}/{pages} 页
+        lore:
+          - <gray>共 {total} 项
+      next:
+        name: <yellow>下一页
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  copy-type:
+    title: <dark_green>复制到 {target}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      info:
+        name: <gold>从 {source} 复制到 {target}
+        lore:
+          - <gray>目标中已有的额外数据不会被删除。
+      environment:
+        name: <green>环境设置
+        lore: []
+      guest:
+        name: <yellow>访客权限
+        lore: []
+      member:
+        name: <aqua>成员
+        lore: []
+      group:
+        name: <light_purple>权限组及成员关系
+        lore:
+          - <gray>将先复制成员数据。
+      back:
+        name: <yellow>返回
+        lore: []
+      home:
+        name: <white>主菜单
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  confirm:
+    title: <dark_red>确认操作
+    items:
+      filler:
+        name: ' '
+        lore: []
+      confirm:
+        name: <green>确认
+        lore:
+          - <gray>继续执行此操作。
+      info:
+        name: <yellow>{summary}
+        lore:
+          - <red>确认前请仔细核对操作目标。
+      cancel:
+        name: <red>取消
+        lore: []

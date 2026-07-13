@@ -9,7 +9,7 @@ import cn.lunadeer.dominion.managers.MultiServerManager;
 import cn.lunadeer.dominion.managers.TeleportManager;
 import cn.lunadeer.dominion.misc.InitCommands;
 import cn.lunadeer.dominion.misc.Others;
-import cn.lunadeer.dominion.uis.MainMenu;
+import cn.lunadeer.dominion.uis.chest.DominionChestUi;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.VaultConnect.VaultConnect;
 import cn.lunadeer.dominion.utils.XLogger;
@@ -21,10 +21,9 @@ import cn.lunadeer.dominion.utils.command.CommandManager;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import cn.lunadeer.dominion.storage.DatabaseManager;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
-import cn.lunadeer.dominion.utils.scui.ChestUserInterfaceManager;
-import cn.lunadeer.dominion.utils.inputter.Inputter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -74,15 +73,24 @@ public final class Dominion extends JavaPlugin {
         new MultiServerManager(this);
         new TeleportManager(this);
         new CacheManager();
-        new Inputter(this);
-        new ChestUserInterfaceManager(this);
         new DominionInterface();
         new HooksManager(this);
 
         new EventsRegister(this);
+        try {
+            DominionChestUi.initialize(this);
+        } catch (Exception e) {
+            XLogger.error(e);
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
         new InitCommands();
         CommandManager commandManager = new CommandManager(this, "dominion", (sender) -> {
-            MainMenu.show(sender, "1");
+            if (sender instanceof Player player) {
+                DominionChestUi.openMain(player);
+            } else {
+                CommandManager.getInstance().helpCommand.run(sender, new String[]{"help", "1"});
+            }
         });
 
         bStatsMetrics metrics = new bStatsMetrics(this, 21445);

@@ -40,6 +40,10 @@ public class EventsRegister {
         new DominionProviderHandler(plugin);
         new MemberProviderHandler(plugin);
         new GroupProviderHandler(plugin);
+        new TemplateProviderHandler();
+        new PlayerProviderHandler();
+        new TeleportProviderHandler();
+        new CopyProviderHandler();
         new SelectPointEventsHandler(plugin);
         new FlyCheckHandler(plugin);
         new FlagRegisterHandler(plugin);

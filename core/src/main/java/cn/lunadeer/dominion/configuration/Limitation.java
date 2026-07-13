@@ -74,7 +74,9 @@ public class Limitation extends ConfigurationFile {
     public boolean doNotCountSubs = false;
 
     @HandleManually // See comments at loadWorldLimitationSettings() method
-    public Map<String, WorldLimitationSetting> worldLimitations = new HashMap<>();
+    public Map<String, WorldLimitationSetting> worldLimitations = new HashMap<>(Map.of(
+            "default", new WorldLimitationSetting()
+    ));
     @HandleManually
     private final String worldLimitationsKey = "world-limitations";
 
@@ -257,6 +259,8 @@ public class Limitation extends ConfigurationFile {
     }
 
     public @NotNull Limitation.WorldLimitationSetting getWorldSettings(@Nullable String worldName) {
-        return worldLimitations.getOrDefault(worldName, worldLimitations.get("default"));
+        WorldLimitationSetting defaultSettings = worldLimitations.computeIfAbsent(
+                "default", ignored -> new WorldLimitationSetting());
+        return worldName == null ? defaultSettings : worldLimitations.getOrDefault(worldName, defaultSettings);
     }
 }

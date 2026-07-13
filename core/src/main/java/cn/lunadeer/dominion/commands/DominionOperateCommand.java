@@ -7,12 +7,10 @@ import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.events.dominion.modify.DominionReSizeEvent;
 import cn.lunadeer.dominion.events.dominion.modify.DominionSetMessageEvent;
-import cn.lunadeer.dominion.handler.DominionProviderHandler;
-import cn.lunadeer.dominion.managers.TeleportManager;
 import cn.lunadeer.dominion.misc.CommandArguments;
 import cn.lunadeer.dominion.misc.DominionException;
 import cn.lunadeer.dominion.providers.DominionProvider;
-import cn.lunadeer.dominion.uis.MainMenu;
+import cn.lunadeer.dominion.providers.TeleportProvider;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.command.Argument;
 import cn.lunadeer.dominion.utils.command.Option;
@@ -141,7 +139,7 @@ public class DominionOperateCommand {
                 DominionDTO dominion = toDominionDTO(getArgumentValue(0));
                 PlayerDTO player = toPlayerDTO(getArgumentValue(1));
                 boolean force = getArgumentValue(2).equals("force");
-                DominionProviderHandler.getInstance().transferDominion(sender, dominion, player, force);
+                DominionProvider.getInstance().transferDominion(sender, dominion, player, force);
             } catch (Exception e) {
                 Notification.error(sender, e);
             }
@@ -156,7 +154,7 @@ public class DominionOperateCommand {
             try {
                 Player player = toPlayer(sender);
                 DominionDTO dominion = toDominionDTO(getArgumentValue(0));
-                TeleportManager.teleportToDominion(player, dominion);
+                TeleportProvider.getInstance().teleport(player, dominion);
             } catch (Exception e) {
                 Notification.error(sender, e);
             }
@@ -208,7 +206,7 @@ public class DominionOperateCommand {
             DominionReSizeEvent.TYPE type = toResizeType(operation);
             int size = toIntegrity(sizeStr);
             DominionReSizeEvent.DIRECTION dir = faceStr.isEmpty() ? toDirection(toPlayer(sender)) : toDirection(faceStr);
-            DominionProviderHandler.getInstance().resizeDominion(
+            DominionProvider.getInstance().resizeDominion(
                     sender,
                     dominion,
                     type,
@@ -238,7 +236,7 @@ public class DominionOperateCommand {
             DominionReSizeEvent.TYPE type = toResizeType(operation);
             int size = toIntegrity(sizeStr);
             DominionReSizeEvent.DIRECTION dir = faceStr.isEmpty() ? toDirection(player) : toDirection(faceStr);
-            DominionProviderHandler.getInstance().resizeDominion(
+            DominionProvider.getInstance().resizeDominion(
                     sender,
                     dominion,
                     type,
@@ -284,7 +282,7 @@ public class DominionOperateCommand {
         try {
             DominionDTO dominion = toDominionDTO(dominionName);
             boolean force = forceStr.equals("force");
-            DominionProviderHandler.getInstance().deleteDominion(sender, dominion, false, force);
+            DominionProvider.getInstance().deleteDominion(sender, dominion, false, force);
         } catch (Exception e) {
             Notification.error(sender, e);
         }
@@ -300,7 +298,7 @@ public class DominionOperateCommand {
     public static void rename(CommandSender sender, String dominionName, String newName) {
         try {
             DominionDTO dominion = toDominionDTO(dominionName);
-            DominionProviderHandler.getInstance().renameDominion(sender, dominion, newName);
+            DominionProvider.getInstance().renameDominion(sender, dominion, newName);
         } catch (Exception e) {
             Notification.error(sender, e);
         }
