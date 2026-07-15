@@ -1,0 +1,297 @@
+# English reference text for Dominion's chest UI.
+# Named placeholders such as {dominion}, {player}, {page} and {total} are replaced at render time.
+schema-version: 1
+input:
+  cancel-hint: "<gray>[Type <white>cancel</white> to return.]"
+  cancel-keywords: ["cancel"]
+  cancelled: "Input cancelled."
+  timeout: "Input timed out."
+  create-dominion: "Enter the new dominion name."
+  rename-dominion: "Enter the new dominion name."
+  enter-message: "Enter the new join message."
+  leave-message: "Enter the new leave message."
+  map-color: "Enter a color in 0xRRGGBB format."
+  resize: "Enter a positive number. Prefix it with '-' to contract in this direction."
+  create-group: "Enter the new group name."
+  rename-group: "Enter the new group name."
+  create-template: "Enter the new template name."
+  rename-template: "Enter the new template name."
+  search: "Enter part or all of a name."
+errors:
+  unavailable: "That page is no longer available or you no longer have permission to view it."
+  invalid-color: "Invalid color. Use 0xRRGGBB."
+  non-zero-integer: "Enter a non-zero integer."
+  auto-create-disabled: "Automatic creation is disabled. Use the point-selection command workflow."
+titles:
+  all-dominions: "All Dominions"
+  my-dominions: "My Dominions"
+  children: "Sub-dominions · {dominion}"
+  copy-source: "Select Copy Source"
+  environment-flags: "Environment · {dominion}"
+  guest-flags: "Guests · {dominion}"
+  member-flags: "Member Privileges"
+  group-flags: "Group Privileges"
+  template-flags: "Template Privileges · {template}"
+  flags: "Privileges"
+  select-template: "Select Template"
+  assign-group: "Assign Group"
+  remove-group-member: "Remove Group Member"
+  add-group-member: "Add Group Member"
+  transfer-player: "Transfer to Player"
+  add-member: "Add Member"
+labels:
+  none: "None"
+  unknown: "Unknown"
+  administrator: "Administrator"
+  member: "Member"
+  player: "Player"
+  known-player: "Recorded player"
+  group: "Group"
+  template: "Privilege template"
+  copy-types:
+    environment: "environment flags"
+    guest: "guest privileges"
+    member: "members"
+    group: "groups and memberships"
+confirm:
+  delete-dominion: "Delete {dominion}"
+  remove-member: "Remove {player}"
+  delete-group: "Delete group {group}"
+  delete-template: "Delete template {template}"
+  transfer: "Transfer {dominion} to {player}"
+  copy: "Copy {type} from {source} to {target}"
+common:
+  enabled: "<green>Enabled"
+  disabled: "<red>Disabled"
+  page: "<gray>Page <white>{page}</white>/<white>{pages}</white> · {total} entries"
+menus:
+  main:
+    title: "<dark_green>Dominion"
+    items:
+      filler: { name: " " , lore: [] }
+      info: { name: "<green>Dominion", lore: ["<gray>Manage territories without command-driven navigation."] }
+      dominions: { name: "<green>My Dominions", lore: ["<gray>View territories you own or administer."] }
+      create: { name: "<green>Create Dominion", lore: ["<gray>Create around your current position."] }
+      templates: { name: "<aqua>Privilege Templates", lore: ["<gray>Manage reusable member privileges."] }
+      titles: { name: "<yellow>Group Titles", lore: ["<gray>Select a title from your groups."] }
+      all: { name: "<gold>All Dominions", lore: ["<gray>Administrator-only global browser."] }
+      help: { name: "<white>Help", lore: ["<gray>Send the documentation link to chat."] }
+      close: { name: "<red>Close", lore: [] }
+  dominion-list:
+    title: "<dark_green>{title}"
+    items:
+      filler: { name: " ", lore: [] }
+      content: { name: "<green>{dominion}", lore: ["<gray>Owner: <white>{owner}", "<gray>World: <white>{world}"] }
+      local-content: { name: "<green>{dominion}", lore: ["<gray>Owner: <white>{owner}", "<gray>World: <white>{world}", "", "<yellow>Left-click to open or select.", "<aqua>Right-click to teleport."] }
+      remote-content: { name: "<aqua>{dominion}", lore: ["<gray>Owner: <white>{owner}", "<gray>World: <white>{world}", "<gray>Server: <white>{server}", "", "<aqua>Right-click to teleport."] }
+      back: { name: "<yellow>Back", lore: [] }
+      primary: { name: "<green>Create", lore: ["<gray>Create a new dominion here."] }
+      search: { name: "<aqua>Search", lore: [] }
+      previous: { name: "<yellow>Previous Page", lore: [] }
+      status: { name: "<white>Page {page}/{pages}", lore: ["<gray>{total} entries"] }
+      next: { name: "<yellow>Next Page", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  dashboard:
+    title: "<dark_green>{dominion}"
+    items:
+      filler: { name: " ", lore: [] }
+      info: { name: "<green>{dominion}", lore: ["<gray>Owner: <white>{owner}", "<gray>World: <white>{world}", "<gray>Size: <white>{size}"] }
+      teleport: { name: "<aqua>Teleport", lore: ["<gray>Travel to this dominion."] }
+      area: { name: "<green>Area & Travel", lore: ["<gray>Boundary, teleport point and sub-dominions."] }
+      permissions: { name: "<red>Permissions", lore: ["<gray>Environment and guest flags."] }
+      people: { name: "<yellow>Members & Groups", lore: ["<gray>Manage individual and group access."] }
+      appearance: { name: "<light_purple>Appearance & Messages", lore: ["<gray>Name, messages and map color."] }
+      copy: { name: "<gold>Copy Data", lore: ["<gray>Copy selected settings from another dominion."] }
+      ownership: { name: "<dark_red>Ownership", lore: ["<gray>Transfer or delete this dominion."] }
+      back: { name: "<yellow>Back", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  area:
+    title: "<dark_green>Area · {dominion}"
+    items:
+      filler: { name: " ", lore: [] }
+      info: { name: "<green>{dominion}", lore: ["<gray>Coordinates: <white>{bounds}"] }
+      teleport: { name: "<aqua>Teleport", lore: [] }
+      set-teleport: { name: "<aqua>Set Teleport Point", lore: ["<gray>Use your current location."] }
+      resize: { name: "<yellow>Resize", lore: ["<gray>Expand or contract each face."] }
+      create-child: { name: "<green>Create Sub-dominion", lore: ["<gray>Create around your current position."] }
+      children: { name: "<green>Sub-dominions", lore: [] }
+      back: { name: "<yellow>Back", lore: [] }
+      home: { name: "<white>Main Menu", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  permissions:
+    title: "<dark_green>Permissions · {dominion}"
+    items:
+      filler: { name: " ", lore: [] }
+      info: { name: "<red>Permission Categories", lore: [] }
+      environment: { name: "<green>Environment", lore: ["<gray>World behavior inside this dominion."] }
+      guest: { name: "<yellow>Guest Privileges", lore: ["<gray>Actions available to unassigned players."] }
+      back: { name: "<yellow>Back", lore: [] }
+      home: { name: "<white>Main Menu", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  people:
+    title: "<dark_green>People · {dominion}"
+    items:
+      filler: { name: " ", lore: [] }
+      info: { name: "<yellow>Members & Groups", lore: [] }
+      members: { name: "<green>Members", lore: ["<gray>Individual access and templates."] }
+      groups: { name: "<aqua>Groups", lore: ["<gray>Shared privileges and membership."] }
+      back: { name: "<yellow>Back", lore: [] }
+      home: { name: "<white>Main Menu", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  appearance:
+    title: "<dark_green>Appearance · {dominion}"
+    items:
+      filler: { name: " ", lore: [] }
+      info: { name: "<light_purple>Appearance & Messages", lore: [] }
+      rename: { name: "<yellow>Rename", lore: [] }
+      enter-message: { name: "<green>Join Message", lore: ["<gray>{join-message}"] }
+      leave-message: { name: "<red>Leave Message", lore: ["<gray>{leave-message}"] }
+      map-color: { name: "<aqua>Map Color", lore: ["<gray>{color}"] }
+      back: { name: "<yellow>Back", lore: [] }
+      home: { name: "<white>Main Menu", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  ownership:
+    title: "<dark_red>Ownership · {dominion}"
+    items:
+      filler: { name: " ", lore: [] }
+      info: { name: "<gold>Owner: {owner}", lore: [] }
+      transfer: { name: "<yellow>Transfer", lore: ["<gray>Give this dominion and its children to another player."] }
+      delete: { name: "<red>Delete", lore: ["<dark_red>This cannot be undone."] }
+      back: { name: "<yellow>Back", lore: [] }
+      home: { name: "<white>Main Menu", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  resize:
+    title: "<dark_green>Resize · {dominion}"
+    items:
+      filler: { name: " ", lore: [] }
+      info: { name: "<yellow>Choose a Face", lore: ["<gray>Enter a positive number to expand or a negative number to contract."] }
+      north: { name: "<white>North", lore: [] }
+      south: { name: "<white>South", lore: [] }
+      east: { name: "<white>East", lore: [] }
+      west: { name: "<white>West", lore: [] }
+      up: { name: "<white>Up", lore: [] }
+      down: { name: "<white>Down", lore: [] }
+      back: { name: "<yellow>Back", lore: [] }
+      home: { name: "<white>Main Menu", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  flag-list:
+    title: "<dark_green>{title}"
+    items:
+      filler: { name: " ", lore: [] }
+      content: { name: "<white>{flag}", lore: ["<gray>Status: {state}", "<gray>{description}", "", "<yellow>Click to toggle."] }
+      back: { name: "<yellow>Back", lore: [] }
+      previous: { name: "<yellow>Previous Page", lore: [] }
+      status: { name: "<white>Page {page}/{pages}", lore: ["<gray>{total} entries"] }
+      next: { name: "<yellow>Next Page", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  member-list:
+    title: "<dark_green>Members · {dominion}"
+    items:
+      filler: { name: " ", lore: [] }
+      content: { name: "<green>{player}", lore: ["<gray>Group: <white>{group}", "<gray>Role: <white>{role}", "", "<yellow>Click to manage."] }
+      back: { name: "<yellow>Back", lore: [] }
+      primary: { name: "<green>Add Member", lore: [] }
+      search: { name: "<aqua>Search", lore: [] }
+      previous: { name: "<yellow>Previous Page", lore: [] }
+      status: { name: "<white>Page {page}/{pages}", lore: ["<gray>{total} entries"] }
+      next: { name: "<yellow>Next Page", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  member-detail:
+    title: "<dark_green>{player} · {dominion}"
+    items:
+      filler: { name: " ", lore: [] }
+      info: { name: "<green>{player}", lore: ["<gray>Group: <white>{group}", "<gray>Role: <white>{role}"] }
+      flags: { name: "<red>Privileges", lore: [] }
+      template: { name: "<aqua>Apply Template", lore: [] }
+      group: { name: "<yellow>Assign Group", lore: [] }
+      remove: { name: "<red>Remove Member", lore: ["<dark_red>This removes all direct privileges."] }
+      back: { name: "<yellow>Back", lore: [] }
+      home: { name: "<white>Main Menu", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  group-list:
+    title: "<dark_green>Groups · {dominion}"
+    items:
+      filler: { name: " ", lore: [] }
+      content: { name: "<aqua>{group}", lore: ["<gray>{members} members", "", "<yellow>Click to manage."] }
+      back: { name: "<yellow>Back", lore: [] }
+      primary: { name: "<green>Create Group", lore: [] }
+      previous: { name: "<yellow>Previous Page", lore: [] }
+      status: { name: "<white>Page {page}/{pages}", lore: ["<gray>{total} entries"] }
+      next: { name: "<yellow>Next Page", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  group-detail:
+    title: "<dark_green>{group} · {dominion}"
+    items:
+      filler: { name: " ", lore: [] }
+      info: { name: "<aqua>{group}", lore: ["<gray>{members} members"] }
+      rename: { name: "<yellow>Rename", lore: [] }
+      flags: { name: "<red>Privileges", lore: [] }
+      add-member: { name: "<green>Add Member", lore: [] }
+      members: { name: "<yellow>Group Members", lore: ["<gray>Click a member there to remove them from the group."] }
+      delete: { name: "<red>Delete Group", lore: [] }
+      back: { name: "<yellow>Back", lore: [] }
+      home: { name: "<white>Main Menu", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  template-list:
+    title: "<dark_green>Privilege Templates"
+    items:
+      filler: { name: " ", lore: [] }
+      content: { name: "<aqua>{template}", lore: ["<yellow>Click to manage."] }
+      back: { name: "<yellow>Back", lore: [] }
+      primary: { name: "<green>Create Template", lore: [] }
+      previous: { name: "<yellow>Previous Page", lore: [] }
+      status: { name: "<white>Page {page}/{pages}", lore: ["<gray>{total} entries"] }
+      next: { name: "<yellow>Next Page", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  template-detail:
+    title: "<dark_green>Template · {template}"
+    items:
+      filler: { name: " ", lore: [] }
+      info: { name: "<aqua>{template}", lore: [] }
+      rename: { name: "<yellow>Rename", lore: [] }
+      flags: { name: "<red>Privileges", lore: [] }
+      delete: { name: "<red>Delete Template", lore: [] }
+      back: { name: "<yellow>Back", lore: [] }
+      home: { name: "<white>Main Menu", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  picker-list:
+    title: "<dark_green>{title}"
+    items:
+      filler: { name: " ", lore: [] }
+      content: { name: "<green>{name}", lore: ["<gray>{description}", "", "<yellow>Click to select."] }
+      back: { name: "<yellow>Back", lore: [] }
+      search: { name: "<aqua>Search Players", lore: [] }
+      previous: { name: "<yellow>Previous Page", lore: [] }
+      status: { name: "<white>Page {page}/{pages}", lore: ["<gray>{total} entries"] }
+      next: { name: "<yellow>Next Page", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  title-list:
+    title: "<dark_green>Group Titles"
+    items:
+      filler: { name: " ", lore: [] }
+      content: { name: "<yellow>{group}", lore: ["<gray>Dominion: <white>{dominion}", "", "<yellow>Click to use this title."] }
+      back: { name: "<yellow>Back", lore: [] }
+      disable: { name: "<red>Disable Current Title", lore: [] }
+      previous: { name: "<yellow>Previous Page", lore: [] }
+      status: { name: "<white>Page {page}/{pages}", lore: ["<gray>{total} entries"] }
+      next: { name: "<yellow>Next Page", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  copy-type:
+    title: "<dark_green>Copy to {target}"
+    items:
+      filler: { name: " ", lore: [] }
+      info: { name: "<gold>From {source} to {target}", lore: ["<gray>Existing extra target data will not be removed."] }
+      environment: { name: "<green>Environment Flags", lore: [] }
+      guest: { name: "<yellow>Guest Privileges", lore: [] }
+      member: { name: "<aqua>Members", lore: [] }
+      group: { name: "<light_purple>Groups & Memberships", lore: ["<gray>Members are copied first."] }
+      back: { name: "<yellow>Back", lore: [] }
+      home: { name: "<white>Main Menu", lore: [] }
+      close: { name: "<red>Close", lore: [] }
+  confirm:
+    title: "<dark_red>Confirm Action"
+    items:
+      filler: { name: " ", lore: [] }
+      confirm: { name: "<green>Confirm", lore: ["<gray>Proceed with this operation."] }
+      info: { name: "<yellow>{summary}", lore: ["<red>Review the target before confirming."] }
+      cancel: { name: "<red>Cancel", lore: [] }
