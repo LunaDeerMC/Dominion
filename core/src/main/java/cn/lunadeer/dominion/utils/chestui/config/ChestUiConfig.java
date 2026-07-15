@@ -1,5 +1,6 @@
 package cn.lunadeer.dominion.utils.chestui.config;
 
+import cn.lunadeer.dominion.configuration.Language.LanguageCode;
 import cn.lunadeer.dominion.utils.XLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -29,9 +30,12 @@ public final class ChestUiConfig {
         backupLegacyDirectory();
         File root = new File(plugin.getDataFolder(), "languages/chest-ui");
         File layoutFile = new File(root, "layout.yml");
-        File englishFile = new File(root, "texts/en_us.yml");
+        
         saveResourceIfMissing(LAYOUT_RESOURCE, layoutFile);
-        saveResourceIfMissing(ENGLISH_RESOURCE, englishFile);
+        for (LanguageCode code : LanguageCode.values()) {
+            File textFile = new File(root, "texts/" + code.name() + ".yml");
+            saveResourceIfMissing("languages/chest-ui/texts/" + code.name() + ".yml", textFile);
+        }
 
         YamlConfiguration defaultLayout = loadResource(LAYOUT_RESOURCE);
         LoadResult layoutResult = loadUserOrDefault(layoutFile, defaultLayout);
