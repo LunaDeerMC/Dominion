@@ -194,7 +194,7 @@ public class DominionDOO implements DominionDTO {
 
     @Override
     public @NotNull PlayerDTO getOwnerDTO() {
-        return Objects.requireNonNull(CacheManager.instance.getPlayer(getOwner()));
+        return Objects.requireNonNullElse(CacheManager.instance.getPlayer(getOwner()), PlayerDTO.UNKNOWN);
     }
 
     @Override
