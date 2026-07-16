@@ -30,13 +30,16 @@ public class WorldWide {
     private static final Map<String, WorldConfig> worlds = new HashMap<>();
 
     public static boolean isWorldWideEnabled(World world) {
+        if (!worlds.containsKey(world.getName())) {
+            return worlds.get("default").enabled;
+        }
         return worlds.containsKey(world.getName()) && worlds.get(world.getName()).enabled;
     }
 
     public static @Nullable Map<EnvFlag, Boolean> getEnvironmentFlagValue(World world) {
         if (!worlds.containsKey(world.getName())) {
             // If the world is not loaded, return null
-            return null;
+            return worlds.get("default").environmentFlags;
         }
         return worlds.get(world.getName()).environmentFlags;
     }
@@ -44,7 +47,7 @@ public class WorldWide {
     public static boolean getEnvFlagValue(World world, @NotNull EnvFlag flag) {
         if (!worlds.containsKey(world.getName())) {
             // If the world is not loaded, return the default value of the flag
-            return flag.getDefaultValue();
+            return worlds.get("default").environmentFlags.getOrDefault(flag, flag.getDefaultValue());
         }
         return worlds.get(world.getName()).environmentFlags.getOrDefault(flag, flag.getDefaultValue());
     }
@@ -52,7 +55,7 @@ public class WorldWide {
     public static @Nullable Map<PriFlag, Boolean> getGuestPrivilegeFlagValue(World world) {
         if (!worlds.containsKey(world.getName())) {
             // If the world is not loaded, return null
-            return null;
+            return worlds.get("default").guestPrivilegeFlags;
         }
         return worlds.get(world.getName()).guestPrivilegeFlags;
     }
@@ -60,41 +63,56 @@ public class WorldWide {
     public static boolean getGuestFlagValue(World world, @NotNull PriFlag flag) {
         if (!worlds.containsKey(world.getName())) {
             // If the world is not loaded, return the default value of the flag
-            return flag.getDefaultValue();
+            return worlds.get("default").guestPrivilegeFlags.getOrDefault(flag, flag.getDefaultValue());
         }
         return worlds.get(world.getName()).guestPrivilegeFlags.getOrDefault(flag, flag.getDefaultValue());
     }
 
-    protected static void loadWorld(File worldWideRootPath, String worldName) throws IOException {
-        if (!worlds.containsKey(worldName)) {
-            worlds.put(worldName, new WorldConfig());
+    protected static void loadWorld(File file) throws IOException {
+        String worldName = file.getName().replace(".yml", "");
+
+        WorldConfig world = new WorldConfig();
+        if (worlds.containsKey(worldName)) world = worlds.get(worldName);
+
+        if (!file.exists()) return;    // if no file exisit skip loading and keep default
+
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        world.enabled = config.getBoolean("enabled", false);
+
+        for (Flag flag : Flags.getAllFlags()) {
+            if (flag.getFlagName().equals(Flags.ADMIN.getFlagName())) continue; // not handle admin flag for world-wide config
+            
+            if (flag instanceof PriFlag priFlag) {
+                world.guestPrivilegeFlags.put(priFlag, config.getBoolean(flag.getConfigurationNameKey(), flag.getDefaultValue()));
+            } else if (flag instanceof EnvFlag envFlag) {
+                world.environmentFlags.put(envFlag, config.getBoolean(flag.getConfigurationNameKey(), flag.getDefaultValue()));
+            }
         }
+
+        worlds.put(worldName, world);
+    }
+
+    protected static void saveWorld(File worldWideRootPath, String worldName) throws IOException {
+        WorldConfig world = new WorldConfig();
+        if (worlds.containsKey(worldName)) world = worlds.get(worldName);
 
         File worldWideFile = new File(worldWideRootPath, worldName + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(worldWideFile);
 
-        // enable configuration
         if (config.get("enabled") == null) {
-            config.set("enabled", false);
             config.setInlineComments("enabled", List.of("Enable or disable world-wide dominion for this world"));
         }
-        worlds.get(worldName).enabled = config.getBoolean("enabled", false);
+        config.set("enabled", world.enabled);
 
-        // flags configuration
         for (Flag flag : Flags.getAllFlags()) {
             if (flag.getFlagName().equals(Flags.ADMIN.getFlagName())) continue;
+
             if (config.get(flag.getConfigurationNameKey()) == null) {
-                config.set(flag.getConfigurationNameKey(), flag.getDefaultValue());
+                config.setInlineComments(flag.getConfigurationNameKey(), List.of(flag.getDisplayName() + " - " + flag.getDescription()));
             }
-            config.setInlineComments(flag.getConfigurationNameKey(),
-                    List.of(flag.getDisplayName() + " - " + flag.getDescription())
-            );
-            if (flag instanceof PriFlag priFlag) {
-                worlds.get(worldName).guestPrivilegeFlags.put(priFlag, config.getBoolean(flag.getConfigurationNameKey(), flag.getDefaultValue()));
-            } else if (flag instanceof EnvFlag envFlag) {
-                worlds.get(worldName).environmentFlags.put(envFlag, config.getBoolean(flag.getConfigurationNameKey(), flag.getDefaultValue()));
-            }
+            config.set(flag.getConfigurationNameKey(), flag.getDefaultValue());
         }
+
         config.save(worldWideFile);
     }
 
@@ -106,13 +124,22 @@ public class WorldWide {
                 throw new RuntimeException("Failed to create world-wide dominion directory: " + rootPath.getAbsolutePath());
             }
         }
-        WorldLoadHandler.getInstance().addRunner((world -> {
+        File[] files = rootPath.listFiles();
+        if (files == null) return;
+        
+        for (File file : files) {
             try {
-                loadWorld(rootPath, world.getName());
+                loadWorld(file);
             } catch (IOException e) {
                 XLogger.error(e);
             }
-        }));
+        }
+        
+        // ensure to have a default world-wide setting to fallback
+        if (worlds.size() <= 0 || !worlds.containsKey("default")) {
+            worlds.put("default", new WorldConfig());
+            saveWorld(rootPath, "default");
+        }
     }
 
 }
