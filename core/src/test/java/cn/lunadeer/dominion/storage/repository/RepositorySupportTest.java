@@ -55,4 +55,41 @@ class RepositorySupportTest {
         LocalDateTime result = RepositorySupport.toLocalDateTime(0L);
         assertNotNull(result);
     }
+
+    @Test
+    void toLocalDateTime_handlesUtilDate() {
+        java.util.Date date = new java.util.Date(1716192000000L);
+        LocalDateTime result = RepositorySupport.toLocalDateTime(date);
+        assertNotNull(result);
+        // Timestamp converts millis to local date-time; just verify it doesn't throw
+    }
+
+    @Test
+    void toLocalDateTime_handlesSqlDate() {
+        java.sql.Date date = java.sql.Date.valueOf("2026-05-20");
+        LocalDateTime result = RepositorySupport.toLocalDateTime(date);
+        assertNotNull(result);
+    }
+
+    @Test
+    void toLocalDateTime_handlesNumericString() {
+        LocalDateTime result = RepositorySupport.toLocalDateTime("1716192000000");
+        assertNotNull(result);
+        // Timestamp converts millis to local date-time; just verify it doesn't throw
+    }
+
+    @Test
+    void toLocalDateTime_handlesNumericStringZero() {
+        LocalDateTime result = RepositorySupport.toLocalDateTime("0");
+        assertNotNull(result);
+        // Timestamp(0).toLocalDateTime() depends on timezone; just verify it doesn't throw
+    }
+
+    @Test
+    void toLocalDateTime_handlesFloatValue() {
+        // Some drivers may return Double for epoch millis
+        assertDoesNotThrow(() -> RepositorySupport.toLocalDateTime(1716192000000.0));
+        LocalDateTime result = RepositorySupport.toLocalDateTime(1716192000000.0);
+        assertNotNull(result);
+    }
 }

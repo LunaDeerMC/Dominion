@@ -13,6 +13,7 @@ import org.apache.ibatis.session.SqlSession;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.*;
 
 abstract class RepositorySupport {
@@ -54,11 +55,22 @@ abstract class RepositorySupport {
         if (value instanceof LocalDateTime localDateTime) {
             return localDateTime;
         }
+        if (value instanceof Date date) {
+            return new Timestamp(date.getTime()).toLocalDateTime();
+        }
         if (value instanceof Number number) {
             return new Timestamp(number.longValue()).toLocalDateTime();
         }
         if (value != null) {
-            return Timestamp.valueOf(value.toString()).toLocalDateTime();
+            String text = value.toString();
+            // SQLite JDBC may return numeric timestamps as strings
+            try {
+                long epoch = Long.parseLong(text);
+                return new Timestamp(epoch).toLocalDateTime();
+            } catch (NumberFormatException ignored) {
+                // Not a numeric string, try standard timestamp format
+            }
+            return Timestamp.valueOf(text).toLocalDateTime();
         }
         return LocalDateTime.of(1970, 1, 1, 0, 0);
     }
