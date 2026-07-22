@@ -118,3 +118,31 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publishPluginPublicationToHangar -PBuildFull=false
+
+  release-keyanchor:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Download Artifacts"
+        uses: actions/download-artifact@v4
+        with:
+          name: release-artifacts
+          path: staging
+      - name: "Find Lite JAR"
+        id: find_jar
+        run: |
+          LITE_JAR=$(ls staging/Dominion-*-lite.jar | head -1)
+          echo "LITE_JAR=$LITE_JAR" >> $GITHUB_OUTPUT
+          echo "Found lite JAR: $LITE_JAR"
+      - name: "Upload to KeyAnchor"
+        env:
+          KEYANCHOR_CI_TOKEN: ${{ secrets.KA_TOKEN }}
+        run: |
+          curl --fail-with-body \
+            -H "Authorization: Bearer ${KEYANCHOR_CI_TOKEN}" \
+            -H "Idempotency-Key: ${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" \
+            -F "version=${{ needs.build.outputs.TAG }}" \
+            -F "commit_hash=${{ github.sha }}" \
+            -F "changelog=See https://github.com/ColdeZhang/Dominion/releases/tag/${{ needs.build.outputs.TAG }}" \
+            -F "artifact=@${{ steps.find_jar.outputs.LITE_JAR }}" \
+            "https://keyanchor.lunadeer.cn/api/v1/ci/products/dominion-protect/builds"
