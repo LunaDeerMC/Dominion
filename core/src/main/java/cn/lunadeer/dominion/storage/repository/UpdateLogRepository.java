@@ -68,7 +68,7 @@ public class UpdateLogRepository extends RepositorySupport {
     public static List<Long> selectFullyConsumedLogs(int producerServerId, int maxAgeMinutes) throws SQLException {
         return sql((session, mapper) -> {
             List<Map<String, Object>> rows = mapper.selectFullyConsumedLogs(
-                    CACHE_UPDATE_LOG, CACHE_UPDATE_ACK, SERVER_INFO, producerServerId, maxAgeMinutes);
+                    CACHE_UPDATE_LOG, CACHE_UPDATE_ACK, SERVER_INFO, producerServerId, maxAgeMinutes, databaseType());
             List<Long> ids = new ArrayList<>();
             for (Map<String, Object> row : rows) {
                 ids.add(toLong(row.get(CUL_ID)));

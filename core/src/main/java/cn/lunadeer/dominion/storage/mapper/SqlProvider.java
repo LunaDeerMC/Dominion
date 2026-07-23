@@ -117,12 +117,16 @@ public class SqlProvider {
         String ackTable = (String) params.get("ackTable");
         String serverInfoTable = (String) params.get("serverInfoTable");
         int maxAgeMinutes = (int) params.get("maxAgeMinutes");
+        DatabaseType databaseType = (DatabaseType) params.get("databaseType");
+        String intervalLiteral = databaseType.isMySqlFamily()
+                ? "INTERVAL " + maxAgeMinutes + " MINUTE"
+                : "INTERVAL '" + maxAgeMinutes + " MINUTE'";
         return "SELECT l." + CUL_ID + " FROM " + identifier(logTable) + " l " +
                 "WHERE l." + CUL_SERVER_ID + " = #{producerServerId} " +
                 "AND (SELECT COUNT(*) FROM " + identifier(serverInfoTable) + ") = " +
                 "    (SELECT COUNT(*) FROM " + identifier(ackTable) + " a " +
                 "     WHERE a." + CUA_LOG_ID + " = l." + CUL_ID + ") " +
-                "OR l." + CUL_CREATED_AT + " < NOW() - INTERVAL '" + maxAgeMinutes + " MINUTE'";
+                "OR l." + CUL_CREATED_AT + " < NOW() - " + intervalLiteral;
     }
 
     @SuppressWarnings("unchecked")

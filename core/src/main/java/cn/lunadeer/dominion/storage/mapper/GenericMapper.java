@@ -44,7 +44,8 @@ public interface GenericMapper {
                                                       @Param("ackTable") String ackTable,
                                                       @Param("serverInfoTable") String serverInfoTable,
                                                       @Param("producerServerId") Integer producerServerId,
-                                                      @Param("maxAgeMinutes") Integer maxAgeMinutes);
+                                                      @Param("maxAgeMinutes") Integer maxAgeMinutes,
+                                                      @Param("databaseType") DatabaseType databaseType);
 
     @DeleteProvider(type = SqlProvider.class, method = "deleteLogsAndAcks")
     int deleteLogsAndAcks(@Param("logTable") String logTable,
