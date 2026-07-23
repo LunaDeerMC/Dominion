@@ -10,6 +10,7 @@ import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.providers.DominionProvider;
 import cn.lunadeer.dominion.providers.TemplateProvider;
 import cn.lunadeer.dominion.utils.Notification;
+import cn.lunadeer.dominion.managers.MultiServerManager;
 import cn.lunadeer.dominion.utils.chestui.ChestUiManager;
 import cn.lunadeer.dominion.utils.chestui.MenuNavigator;
 import cn.lunadeer.dominion.utils.chestui.MenuRoute;
@@ -109,13 +110,24 @@ abstract class AbstractBuiltinMenu {
                 .values().stream().toList();
     }
 
-    protected Map<String, Object> dominionValues(DominionDTO dominion) {
+    protected Map<String, Object> dominionValues(DominionDTO dominion, boolean remote) {
         CuboidDTO cuboid = dominion.getCuboid();
         World world = dominion.getWorld();
+        String worldDisplay = world == null ? dominion.getWorldUid().toString() : world.getName();
+        String serverDisplay;
+        if (remote) {
+            try {
+                serverDisplay = MultiServerManager.instance.getServerName(dominion.getServerId());
+            } catch (Exception e) {
+                serverDisplay = String.valueOf(dominion.getServerId());
+            }
+        } else {
+            serverDisplay = String.valueOf(dominion.getServerId());
+        }
         return Map.ofEntries(Map.entry("dominion", dominion.getName()),
                 Map.entry("owner", dominion.getOwnerDTO().getLastKnownName()),
-                Map.entry("world", world == null ? dominion.getWorldUid().toString() : world.getName()),
-                Map.entry("server", dominion.getServerId()),
+                Map.entry("world", remote ? "" : worldDisplay),
+                Map.entry("server", serverDisplay),
                 Map.entry("size", cuboid.xLength() + " × " + cuboid.yLength() + " × " + cuboid.zLength()),
                 Map.entry("bounds", cuboid.x1() + "," + cuboid.y1() + "," + cuboid.z1() + " → "
                         + cuboid.x2() + "," + cuboid.y2() + "," + cuboid.z2()),

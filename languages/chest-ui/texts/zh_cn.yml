@@ -152,7 +152,6 @@ menus:
         name: <aqua>{dominion}
         lore:
           - '<gray>所有者：<white>{owner}'
-          - '<gray>世界：<white>{world}'
           - '<gray>服务器：<white>{server}'
           - ''
           - <aqua>右键点击传送。

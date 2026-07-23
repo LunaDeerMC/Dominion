@@ -83,7 +83,7 @@ menus:
       filler: { name: " ", lore: [] }
       content: { name: "<green>{dominion}", lore: ["<gray>Owner: <white>{owner}", "<gray>World: <white>{world}"] }
       local-content: { name: "<green>{dominion}", lore: ["<gray>Owner: <white>{owner}", "<gray>World: <white>{world}", "", "<yellow>Left-click to open or select.", "<aqua>Right-click to teleport."] }
-      remote-content: { name: "<aqua>{dominion}", lore: ["<gray>Owner: <white>{owner}", "<gray>World: <white>{world}", "<gray>Server: <white>{server}", "", "<aqua>Right-click to teleport."] }
+      remote-content: { name: "<aqua>{dominion}", lore: ["<gray>Owner: <white>{owner}", "<gray>Server: <white>{server}", "", "<aqua>Right-click to teleport."] }
       back: { name: "<yellow>Back", lore: [] }
       primary: { name: "<green>Create", lore: ["<gray>Create a new dominion here."] }
       search: { name: "<aqua>Search", lore: [] }

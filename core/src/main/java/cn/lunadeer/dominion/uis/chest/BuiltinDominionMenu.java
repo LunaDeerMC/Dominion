@@ -60,7 +60,7 @@ final class BuiltinDominionMenu extends AbstractBuiltinMenu {
             boolean remote = isRemoteDominion(dominion);
             String textElement = remote ? "remote-content" : "local-content";
             ItemAppearance appearance = remote ? view.appearance("remote-content") : null;
-            view.itemAt(slot, "content", textElement, dominionValues(dominion), null, appearance, click -> {
+            view.itemAt(slot, "content", textElement, dominionValues(dominion, remote), null, appearance, click -> {
                 if (click.isRightClick()) {
                     teleport(player, dominion);
                 } else if (isLeftClick(click) && !remote) {
@@ -83,7 +83,7 @@ final class BuiltinDominionMenu extends AbstractBuiltinMenu {
 
     MenuView dashboard(Player player, MenuSession session) {
         DominionDTO dominion = currentDominion(player, session);
-        Map<String, Object> values = dominionValues(dominion);
+        Map<String, Object> values = dominionValues(dominion, false);
         MenuViewBuilder view = new MenuViewBuilder(player, session, config, "dashboard", values);
         view.item("info", values, null, null);
         view.item("area", values, null, click -> nav.push(player, route(MenuId.AREA, dominion)));
@@ -98,7 +98,7 @@ final class BuiltinDominionMenu extends AbstractBuiltinMenu {
 
     MenuView area(Player player, MenuSession session) {
         DominionDTO dominion = currentDominion(player, session);
-        Map<String, Object> values = dominionValues(dominion);
+        Map<String, Object> values = dominionValues(dominion, false);
         MenuViewBuilder view = new MenuViewBuilder(player, session, config, "area", values);
         view.item("info", values, null, null);
         view.item("set-teleport", values, null, click -> ui.submit(player,
@@ -113,7 +113,7 @@ final class BuiltinDominionMenu extends AbstractBuiltinMenu {
 
     MenuView appearance(Player player, MenuSession session) {
         DominionDTO dominion = currentDominion(player, session);
-        Map<String, Object> values = dominionValues(dominion);
+        Map<String, Object> values = dominionValues(dominion, false);
         MenuViewBuilder view = new MenuViewBuilder(player, session, config, "appearance", values);
         view.item("info", values, null, null);
         view.item("rename", values, null, click -> ui.requestInput(player, config.text("input.rename-dominion"),
@@ -140,7 +140,7 @@ final class BuiltinDominionMenu extends AbstractBuiltinMenu {
 
     MenuView ownership(Player player, MenuSession session) {
         DominionDTO dominion = currentDominion(player, session);
-        Map<String, Object> values = dominionValues(dominion);
+        Map<String, Object> values = dominionValues(dominion, false);
         MenuViewBuilder view = new MenuViewBuilder(player, session, config, "ownership", values);
         view.item("info", values, null, null);
         view.item("transfer", values, null, click -> nav.push(player, route(MenuId.TRANSFER_PICKER, dominion)));
@@ -154,7 +154,7 @@ final class BuiltinDominionMenu extends AbstractBuiltinMenu {
 
     MenuView resize(Player player, MenuSession session) {
         DominionDTO dominion = currentDominion(player, session);
-        Map<String, Object> values = dominionValues(dominion);
+        Map<String, Object> values = dominionValues(dominion, false);
         MenuViewBuilder view = new MenuViewBuilder(player, session, config, "resize", values);
         view.item("info", values, null, null);
         Map<String, DominionReSizeEvent.DIRECTION> directions = Map.of(

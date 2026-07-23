@@ -35,7 +35,7 @@ final class BuiltinPermissionMenu extends AbstractBuiltinMenu {
 
     MenuView permissions(Player player, MenuSession session) {
         DominionDTO dominion = currentDominion(player, session);
-        Map<String, Object> values = dominionValues(dominion);
+        Map<String, Object> values = dominionValues(dominion, false);
         MenuViewBuilder view = new MenuViewBuilder(player, session, config, "permissions", values);
         view.item("info", values, null, null);
         view.item("environment", values, null, click -> nav.push(player, route(MenuId.ENV_FLAGS, dominion)));
@@ -46,7 +46,7 @@ final class BuiltinPermissionMenu extends AbstractBuiltinMenu {
 
     MenuView people(Player player, MenuSession session) {
         DominionDTO dominion = currentDominion(player, session);
-        Map<String, Object> values = dominionValues(dominion);
+        Map<String, Object> values = dominionValues(dominion, false);
         MenuViewBuilder view = new MenuViewBuilder(player, session, config, "people", values);
         view.item("info", values, null, null);
         view.item("members", values, null, click -> nav.push(player, route(MenuId.MEMBER_LIST, dominion)));
@@ -86,7 +86,7 @@ final class BuiltinPermissionMenu extends AbstractBuiltinMenu {
                 .sorted(Comparator.comparing(
                         member -> member.getPlayer().getLastKnownName(), String.CASE_INSENSITIVE_ORDER))
                 .toList();
-        MenuViewBuilder view = new MenuViewBuilder(player, session, config, "member-list", dominionValues(dominion));
+        MenuViewBuilder view = new MenuViewBuilder(player, session, config, "member-list", dominionValues(dominion, false));
         renderPage(view, route, members, (slot, member) -> view.itemAt(slot, "content", "content",
                 memberValues(dominion, member), member.getPlayerUUID(), click -> nav.push(player,
                         route(MenuId.MEMBER_DETAIL, dominion).with("member", member.getId()))));
@@ -122,7 +122,7 @@ final class BuiltinPermissionMenu extends AbstractBuiltinMenu {
         List<GroupDTO> groups = dominion.getGroups().stream()
                 .sorted(Comparator.comparing(GroupDTO::getNamePlain, String.CASE_INSENSITIVE_ORDER))
                 .toList();
-        MenuViewBuilder view = new MenuViewBuilder(player, session, config, "group-list", dominionValues(dominion));
+        MenuViewBuilder view = new MenuViewBuilder(player, session, config, "group-list", dominionValues(dominion, false));
         renderPage(view, route, groups, (slot, group) -> renderGroup(player, view, dominion, slot, group));
         view.item("primary", Map.of(), null, click -> ui.requestInput(player, config.text("input.create-group"),
                 name -> ui.submit(player, GroupProvider.getInstance().createGroup(player, dominion, name),

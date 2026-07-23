@@ -26,7 +26,7 @@ public class MultiServerManager {
 
     public static MultiServerManager instance;
     private final JavaPlugin plugin;
-    private final Map<Integer, String> cachedDerverMap = new HashMap<>();
+    private final Map<Integer, String> cachedServerMap = new HashMap<>();
 
     public MultiServerManager(JavaPlugin plugin) {
         instance = this;
@@ -42,7 +42,7 @@ public class MultiServerManager {
                     ServerRepository.updateServerName(Configuration.multiServer.serverId, Configuration.multiServer.serverName);
                 }
             }
-            cachedDerverMap.put(Configuration.multiServer.serverId, Configuration.multiServer.serverName);
+            cachedServerMap.put(Configuration.multiServer.serverId, Configuration.multiServer.serverName);
         } catch (Exception e) {
             XLogger.error(e);
         }
@@ -57,20 +57,20 @@ public class MultiServerManager {
     }
 
     public String getServerName(int serverId) throws Exception {
-        if (cachedDerverMap.containsKey(serverId)) {
-            return cachedDerverMap.get(serverId);
+        if (cachedServerMap.containsKey(serverId)) {
+            return cachedServerMap.get(serverId);
         }
         String name = ServerRepository.getServerName(serverId);
         if (name == null) {
             throw new Exception(formatString(Language.multiServerManagerText.getNameByIdError, serverId));
         }
-        cachedDerverMap.put(serverId, name);
-        return cachedDerverMap.get(serverId);
+        cachedServerMap.put(serverId, name);
+        return cachedServerMap.get(serverId);
     }
 
     public Integer getServerId(@NotNull String serverName) throws Exception {
-        if (cachedDerverMap.containsValue(serverName)) {
-            return cachedDerverMap.entrySet().stream()
+        if (cachedServerMap.containsValue(serverName)) {
+            return cachedServerMap.entrySet().stream()
                     .filter(entry -> entry.getValue().equals(serverName))
                     .map(Map.Entry::getKey)
                     .findFirst()
@@ -80,7 +80,7 @@ public class MultiServerManager {
         if (id == null) {
             throw new Exception(formatString(Language.multiServerManagerText.getIdByNameError, serverName));
         }
-        cachedDerverMap.put(id, serverName);
+        cachedServerMap.put(id, serverName);
         return id;
     }
 }
