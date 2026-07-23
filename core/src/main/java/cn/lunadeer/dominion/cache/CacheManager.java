@@ -17,6 +17,7 @@ import cn.lunadeer.dominion.events.PlayerMoveInDominionEvent;
 import cn.lunadeer.dominion.events.PlayerMoveOutDominionEvent;
 import cn.lunadeer.dominion.handler.CacheEventHandler;
 import cn.lunadeer.dominion.misc.DominionException;
+import cn.lunadeer.dominion.storage.repository.ServerRepository;
 import cn.lunadeer.dominion.utils.AutoTimer;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.XLogger;
@@ -67,6 +68,37 @@ public class CacheManager {
         this.thisServerCache.getGroupCache().load();
 
         Bukkit.getPluginManager().registerEvents(new CacheEventHandler(), Dominion.instance);
+
+        // Load caches for other servers and start cross-server sync
+        if (Configuration.multiServer.enable) {
+            loadOtherServerCaches();
+            new CacheSyncManager();
+            CacheSyncManager.instance.startPolling();
+        }
+    }
+
+    /**
+     * Initialize caches for all other servers known in the database.
+     * Must be called AFTER this server's DominionCache is loaded (Member/Group loading
+     * depends on dominion lookups via CacheManager.getDominion()).
+     */
+    private void loadOtherServerCaches() {
+        try {
+            List<Integer> serverIds = ServerRepository.getAllServerIds();
+            for (Integer serverId : serverIds) {
+                if (serverId.equals(Configuration.multiServer.serverId)) continue;
+                addServerCache(serverId);
+                ServerCache serverCache = otherServerCaches.get(serverId);
+                if (serverCache != null) {
+                    serverCache.getDominionCache().load();
+                    serverCache.getMemberCache().load();
+                    serverCache.getGroupCache().load();
+                }
+            }
+        } catch (Exception e) {
+            XLogger.error("Failed to load other server caches");
+            XLogger.error(e);
+        }
     }
 
     // ******************************************************************************************************************

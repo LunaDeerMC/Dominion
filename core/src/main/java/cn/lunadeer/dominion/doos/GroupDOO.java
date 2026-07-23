@@ -6,6 +6,7 @@ import cn.lunadeer.dominion.api.dtos.MemberDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
+import cn.lunadeer.dominion.cache.CacheSyncManager;
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.storage.repository.GroupRepository;
 import cn.lunadeer.dominion.utils.ColorParser;
@@ -83,6 +84,9 @@ public class GroupDOO implements GroupDTO {
         this.name_color = name;
         this.name_raw = ColorParser.getPlainText(name);
         GroupRepository.updateName(id, name_raw, name_color);
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyGroup(getId());
+        }
         return this;
     }
 
@@ -90,6 +94,9 @@ public class GroupDOO implements GroupDTO {
     public @NotNull GroupDOO setFlagValue(@NotNull PriFlag flag, @NotNull Boolean value) throws SQLException {
         flags.put(flag, value);
         GroupRepository.updateFlag(id, flag, value);
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyGroup(getId());
+        }
         return this;
     }
 
@@ -114,12 +121,18 @@ public class GroupDOO implements GroupDTO {
             throw new SQLException("Failed to insert dominion.");
         }
         CacheManager.instance.getCache().getGroupCache().load(inserted.getId());
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyGroup(inserted.getId());
+        }
         return inserted;
     }
 
     public static void deleteById(Integer id) throws SQLException {
         GroupRepository.deleteById(id);
         CacheManager.instance.getCache().getGroupCache().delete(id);
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyGroupDelete(id);
+        }
         List<MemberDOO> players = MemberDOO.selectByGroupId(id);
         for (MemberDOO player : players) {
             player.setGroupId(-1);

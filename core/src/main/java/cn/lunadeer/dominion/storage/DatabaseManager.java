@@ -2,6 +2,7 @@ package cn.lunadeer.dominion.storage;
 
 import cn.lunadeer.dominion.storage.mapper.GenericMapper;
 import cn.lunadeer.dominion.storage.migration.V1__LegacySchema;
+import cn.lunadeer.dominion.storage.migration.V2__CacheSyncSchema;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -85,7 +86,7 @@ public class DatabaseManager {
                 .dataSource(dataSource)
                 .baselineOnMigrate(true)
                 .baselineVersion("0")
-                .javaMigrations(new V1__LegacySchema(type))
+                .javaMigrations(new V1__LegacySchema(type), new V2__CacheSyncSchema(type))
                 .load()
                 .migrate();
         FlagReconciler.SyncResult result = new FlagReconciler(dataSource(), type).reconcile();

@@ -2,13 +2,22 @@ package cn.lunadeer.dominion.storage.mapper;
 
 import cn.lunadeer.dominion.storage.DatabaseType;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
+import static cn.lunadeer.dominion.storage.DatabaseSchema.CUA_LOG_ID;
+import static cn.lunadeer.dominion.storage.DatabaseSchema.CUA_SERVER_ID;
+import static cn.lunadeer.dominion.storage.DatabaseSchema.CUL_CREATED_AT;
+import static cn.lunadeer.dominion.storage.DatabaseSchema.CUL_ID;
+import static cn.lunadeer.dominion.storage.DatabaseSchema.CUL_SERVER_ID;
 import static cn.lunadeer.dominion.storage.DatabaseSchema.DOM_ID;
 import static cn.lunadeer.dominion.storage.DatabaseSchema.DOM_SERVER_ID;
 import static cn.lunadeer.dominion.storage.DatabaseSchema.DOMINION;
+import static cn.lunadeer.dominion.storage.DatabaseSchema.SERVER_ID;
+import static cn.lunadeer.dominion.storage.DatabaseSchema.SERVER_INFO;
 import static cn.lunadeer.dominion.storage.DatabaseSchema.TP_CACHE;
 import static cn.lunadeer.dominion.storage.DatabaseSchema.TP_DOM_ID;
 import static cn.lunadeer.dominion.storage.DatabaseSchema.TP_UUID;
@@ -89,6 +98,56 @@ public class SqlProvider {
     @SuppressWarnings("unchecked")
     public String deleteWhereAll(Map<String, Object> params) {
         return "DELETE FROM " + tableName(params) + " WHERE " + whereAll((Map<String, Object>) params.get("values"));
+    }
+
+    public String selectUnconsumedLogs(Map<String, Object> params) {
+        String logTable = (String) params.get("logTable");
+        String ackTable = (String) params.get("ackTable");
+        return "SELECT l.* FROM " + identifier(logTable) + " l " +
+                "WHERE l." + CUL_ID + " NOT IN (" +
+                "  SELECT a." + CUA_LOG_ID + " FROM " + identifier(ackTable) + " a " +
+                "  WHERE a." + CUA_SERVER_ID + " = #{serverId}" +
+                ") " +
+                "AND l." + CUL_SERVER_ID + " != #{serverId} " +
+                "ORDER BY l." + CUL_CREATED_AT + " ASC";
+    }
+
+    public String selectFullyConsumedLogs(Map<String, Object> params) {
+        String logTable = (String) params.get("logTable");
+        String ackTable = (String) params.get("ackTable");
+        String serverInfoTable = (String) params.get("serverInfoTable");
+        int maxAgeMinutes = (int) params.get("maxAgeMinutes");
+        return "SELECT l." + CUL_ID + " FROM " + identifier(logTable) + " l " +
+                "WHERE l." + CUL_SERVER_ID + " = #{producerServerId} " +
+                "AND (SELECT COUNT(*) FROM " + identifier(serverInfoTable) + ") = " +
+                "    (SELECT COUNT(*) FROM " + identifier(ackTable) + " a " +
+                "     WHERE a." + CUA_LOG_ID + " = l." + CUL_ID + ") " +
+                "OR l." + CUL_CREATED_AT + " < NOW() - INTERVAL '" + maxAgeMinutes + " MINUTE'";
+    }
+
+    @SuppressWarnings("unchecked")
+    public String deleteLogsAndAcks(Map<String, Object> params) {
+        String ackTable = (String) params.get("ackTable");
+        Collection<Long> ids = (Collection<Long>) params.get("ids");
+        if (ids == null || ids.isEmpty()) {
+            return "SELECT 1 WHERE 1=0";
+        }
+        String idList = ids.stream().map(String::valueOf).collect(Collectors.joining(","));
+        return "DELETE FROM " + identifier(ackTable) + " WHERE " + CUA_LOG_ID + " IN (" + idList + ")";
+    }
+
+    @SuppressWarnings("unchecked")
+    public String deleteWhereIn(Map<String, Object> params) {
+        String tableName = (String) params.get("table");
+        String columnName = (String) params.get("column");
+        Collection<?> values = (Collection<?>) params.get("values");
+        if (values == null || values.isEmpty()) {
+            return "SELECT 1 WHERE 1=0";
+        }
+        String valueList = values.stream()
+                .map(v -> v instanceof String ? "'" + v + "'" : String.valueOf(v))
+                .collect(Collectors.joining(","));
+        return "DELETE FROM " + identifier(tableName) + " WHERE " + identifier(columnName) + " IN (" + valueList + ")";
     }
 
     public String upsertTeleport(Map<String, Object> params) {

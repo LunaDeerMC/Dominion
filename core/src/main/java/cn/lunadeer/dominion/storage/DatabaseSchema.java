@@ -60,6 +60,19 @@ public final class DatabaseSchema {
     public static final String TP_UUID = "uuid";
     public static final String TP_DOM_ID = "dom_id";
 
+    public static final String CACHE_UPDATE_LOG = "cache_update_log";
+    public static final String CUL_ID = "id";
+    public static final String CUL_ENTITY_TYPE = "entity_type";
+    public static final String CUL_TARGET_ID = "target_id";
+    public static final String CUL_SERVER_ID = "server_id";
+    public static final String CUL_ACTION = "action";
+    public static final String CUL_CREATED_AT = "created_at";
+
+    public static final String CACHE_UPDATE_ACK = "cache_update_ack";
+    public static final String CUA_LOG_ID = "log_id";
+    public static final String CUA_SERVER_ID = "server_id";
+    public static final String CUA_CONSUMED_AT = "consumed_at";
+
     public static final Set<String> TABLES = Set.of(
             PLAYER_NAME,
             DOMINION,
@@ -67,7 +80,9 @@ public final class DatabaseSchema {
             GROUP,
             TEMPLATE,
             SERVER_INFO,
-            TP_CACHE
+            TP_CACHE,
+            CACHE_UPDATE_LOG,
+            CACHE_UPDATE_ACK
     );
 
     public static String identifier(String identifier) {

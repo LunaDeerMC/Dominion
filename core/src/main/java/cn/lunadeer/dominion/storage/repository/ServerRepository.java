@@ -1,7 +1,9 @@
 package cn.lunadeer.dominion.storage.repository;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static cn.lunadeer.dominion.storage.DatabaseSchema.*;
@@ -24,6 +26,20 @@ public class ServerRepository extends RepositorySupport {
             values.put(SERVER_ID, id);
             values.put(SERVER_NAME, name);
             return mapper.insertIgnore(SERVER_INFO, values, databaseType(), SERVER_ID);
+        });
+    }
+
+    public static List<Integer> getAllServerIds() throws SQLException {
+        return sql((session, mapper) -> {
+            List<Map<String, Object>> rows = mapper.selectAll(SERVER_INFO);
+            List<Integer> ids = new ArrayList<>();
+            for (Map<String, Object> row : rows) {
+                Integer serverId = toInteger(row.get(SERVER_ID));
+                if (serverId != null) {
+                    ids.add(serverId);
+                }
+            }
+            return ids;
         });
     }
 

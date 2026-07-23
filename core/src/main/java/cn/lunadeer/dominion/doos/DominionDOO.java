@@ -6,6 +6,7 @@ import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
+import cn.lunadeer.dominion.cache.CacheSyncManager;
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.storage.repository.DominionRepository;
 import org.bukkit.Color;
@@ -91,12 +92,18 @@ public class DominionDOO implements DominionDTO {
             throw new SQLException("Failed to insert dominion.");
         }
         CacheManager.instance.getCache().getDominionCache().load(inserted.getId());
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyDominion(inserted.getId());
+        }
         return inserted;
     }
 
     public static void deleteById(Integer dominion) throws SQLException {
         DominionRepository.deleteById(dominion);
         CacheManager.instance.getCache().getDominionCache().delete(dominion);
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyDominionDelete(dominion);
+        }
     }
 
     // full constructor
@@ -202,6 +209,9 @@ public class DominionDOO implements DominionDTO {
         this.owner = owner;
         DominionRepository.updateOwner(id, owner);
         CacheManager.instance.getCache().getDominionCache().load();
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyDominion(getId());
+        }
         return this;
     }
 
@@ -221,6 +231,9 @@ public class DominionDOO implements DominionDTO {
         this.name = name;
         DominionRepository.updateName(id, name);
         CacheManager.instance.getCache().getDominionCache().dominionNameUpdate(oldName, name, getId());
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyDominion(getId());
+        }
         return this;
     }
 
@@ -249,6 +262,9 @@ public class DominionDOO implements DominionDTO {
         DominionRepository.updateCuboid(id, this.cuboid.x1(), this.cuboid.y1(), this.cuboid.z1(),
                 this.cuboid.x2(), this.cuboid.y2(), this.cuboid.z2());
         CacheManager.instance.getCache().getDominionCache().load(getId());
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyDominion(getId());
+        }
         return this;
     }
 
@@ -266,6 +282,9 @@ public class DominionDOO implements DominionDTO {
     public @NotNull DominionDOO setJoinMessage(String joinMessage) throws SQLException {
         this.joinMessage = joinMessage;
         DominionRepository.updateJoinMessage(id, joinMessage);
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyDominion(getId());
+        }
         return this;
     }
 
@@ -278,6 +297,9 @@ public class DominionDOO implements DominionDTO {
     public @NotNull DominionDOO setLeaveMessage(String leaveMessage) throws SQLException {
         this.leaveMessage = leaveMessage;
         DominionRepository.updateLeaveMessage(id, leaveMessage);
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyDominion(getId());
+        }
         return this;
     }
 
@@ -320,6 +342,9 @@ public class DominionDOO implements DominionDTO {
     public @NotNull DominionDOO setEnvFlagValue(@NotNull EnvFlag flag, @NotNull Boolean value) throws SQLException {
         envFlags.put(flag, value);
         DominionRepository.updateEnvFlag(id, flag, value);
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyDominion(getId());
+        }
         return this;
     }
 
@@ -327,6 +352,9 @@ public class DominionDOO implements DominionDTO {
     public @NotNull DominionDOO setGuestFlagValue(@NotNull PriFlag flag, @NotNull Boolean value) throws SQLException {
         preFlags.put(flag, value);
         DominionRepository.updateGuestFlag(id, flag, value);
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyDominion(getId());
+        }
         return this;
     }
 
@@ -360,12 +388,18 @@ public class DominionDOO implements DominionDTO {
     public @NotNull DominionDOO setTpLocation(Location loc) throws SQLException {
         this.tp_location = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ() + ":" + loc.getYaw() + ":" + loc.getPitch();
         DominionRepository.updateTpLocation(id, this.tp_location);
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyDominion(getId());
+        }
         return this;
     }
 
     public @NotNull DominionDOO setColor(@NotNull Color color) throws SQLException {
         this.color = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
         DominionRepository.updateColor(id, this.color);
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyDominion(getId());
+        }
         return this;
     }
 

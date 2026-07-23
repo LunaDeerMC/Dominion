@@ -6,6 +6,7 @@ import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
+import cn.lunadeer.dominion.cache.CacheSyncManager;
 import cn.lunadeer.dominion.storage.repository.MemberRepository;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,6 +29,9 @@ public class MemberDOO implements MemberDTO {
     public static MemberDOO insert(MemberDOO player) throws SQLException {
         MemberDOO inserted = parse(MemberRepository.insert(player.playerUUID, player.domID, player.flags));
         CacheManager.instance.getCache().getMemberCache().load(inserted.getId());
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyMember(inserted.getId());
+        }
         return inserted;
     }
 
@@ -46,6 +50,9 @@ public class MemberDOO implements MemberDTO {
     public static void deleteById(Integer id) throws SQLException {
         MemberRepository.deleteById(id);
         CacheManager.instance.getCache().getMemberCache().delete(id);
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyMemberDelete(id);
+        }
     }
 
     public static List<MemberDOO> selectByGroupId(Integer groupId) throws SQLException {
@@ -88,6 +95,9 @@ public class MemberDOO implements MemberDTO {
     public MemberDOO setFlagValue(@NotNull PriFlag flag, @NotNull Boolean value) throws SQLException {
         flags.put(flag, value);
         MemberRepository.updateFlag(id, flag, value);
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyMember(getId());
+        }
         return this;
     }
 
@@ -99,6 +109,9 @@ public class MemberDOO implements MemberDTO {
     public MemberDOO setGroupId(Integer groupId) throws SQLException {
         this.groupId = groupId;
         MemberRepository.updateGroupId(id, groupId);
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyMember(getId());
+        }
         return this;
     }
 
@@ -107,6 +120,9 @@ public class MemberDOO implements MemberDTO {
             this.flags.put(flag, template.getFlagValue(flag));
         }
         MemberRepository.updateFlags(id, flags);
+        if (CacheSyncManager.instance != null) {
+            CacheSyncManager.instance.notifyMember(getId());
+        }
     }
 
     /**

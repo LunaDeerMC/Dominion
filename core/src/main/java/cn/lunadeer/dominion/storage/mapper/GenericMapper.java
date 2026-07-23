@@ -34,6 +34,28 @@ public interface GenericMapper {
     @SelectProvider(type = SqlProvider.class, method = "selectDominionsByServer")
     List<Map<String, Object>> selectDominionsByServer(@Param("serverId") Integer serverId);
 
+    @SelectProvider(type = SqlProvider.class, method = "selectUnconsumedLogs")
+    List<Map<String, Object>> selectUnconsumedLogs(@Param("logTable") String logTable,
+                                                   @Param("ackTable") String ackTable,
+                                                   @Param("serverId") Integer serverId);
+
+    @SelectProvider(type = SqlProvider.class, method = "selectFullyConsumedLogs")
+    List<Map<String, Object>> selectFullyConsumedLogs(@Param("logTable") String logTable,
+                                                      @Param("ackTable") String ackTable,
+                                                      @Param("serverInfoTable") String serverInfoTable,
+                                                      @Param("producerServerId") Integer producerServerId,
+                                                      @Param("maxAgeMinutes") Integer maxAgeMinutes);
+
+    @DeleteProvider(type = SqlProvider.class, method = "deleteLogsAndAcks")
+    int deleteLogsAndAcks(@Param("logTable") String logTable,
+                          @Param("ackTable") String ackTable,
+                          @Param("ids") java.util.Set<Long> ids);
+
+    @DeleteProvider(type = SqlProvider.class, method = "deleteWhereIn")
+    int deleteWhereIn(@Param("table") String table,
+                      @Param("column") String column,
+                      @Param("values") java.util.Set<?> values);
+
     @SelectProvider(type = SqlProvider.class, method = "selectValue")
     Object selectValue(@Param("table") String table,
                        @Param("selectColumn") String selectColumn,
