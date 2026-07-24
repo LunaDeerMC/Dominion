@@ -47,6 +47,7 @@ labels:
   member: 成员
   player: 玩家
   known-player: 已记录玩家
+  inside-dominion: 当前位于此领地内
   group: 权限组
   template: 权限模板
   copy-types:
@@ -615,6 +616,13 @@ menus:
         name: <green>{name}
         lore:
           - <gray>{description}
+          - ''
+          - <yellow>点击选择。
+      content-inside:
+        name: <green>{name}
+        lore:
+          - <gray>{description}
+          - <aqua>📍 位于此领地内
           - ''
           - <yellow>点击选择。
       back:

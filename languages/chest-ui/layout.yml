@@ -297,6 +297,7 @@ menus:
     items:
       filler: { material: GRAY_STAINED_GLASS_PANE }
       content: { material: PLAYER_HEAD }
+      content-inside: { material: PLAYER_HEAD, glow: true }
       back: { material: ARROW }
       search: { material: SPYGLASS }
       previous: { material: SPECTRAL_ARROW }

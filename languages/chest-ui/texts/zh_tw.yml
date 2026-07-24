@@ -46,6 +46,7 @@ labels:
   member: "Member"
   player: "Player"
   known-player: "Recorded player"
+  inside-dominion: "Currently in this dominion"
   group: "Group"
   template: "Privilege template"
   copy-types:
@@ -259,6 +260,7 @@ menus:
     items:
       filler: { name: " ", lore: [] }
       content: { name: "<green>{name}", lore: ["<gray>{description}", "", "<yellow>Click to select."] }
+      content-inside: { name: "<green>{name}", lore: ["<gray>{description}", "<aqua>📍 Inside this dominion", "", "<yellow>Click to select."] }
       back: { name: "<yellow>Back", lore: [] }
       search: { name: "<aqua>Search Players", lore: [] }
       previous: { name: "<yellow>Previous Page", lore: [] }

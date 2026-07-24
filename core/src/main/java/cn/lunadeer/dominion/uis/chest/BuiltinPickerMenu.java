@@ -5,6 +5,7 @@ import cn.lunadeer.dominion.api.dtos.GroupDTO;
 import cn.lunadeer.dominion.api.dtos.MemberDTO;
 import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.api.dtos.TemplateDTO;
+import cn.lunadeer.dominion.misc.Others;
 import cn.lunadeer.dominion.providers.DominionProvider;
 import cn.lunadeer.dominion.providers.GroupProvider;
 import cn.lunadeer.dominion.providers.MemberProvider;
@@ -17,6 +18,7 @@ import cn.lunadeer.dominion.utils.chestui.MenuSession;
 import cn.lunadeer.dominion.utils.chestui.MenuView;
 import cn.lunadeer.dominion.utils.chestui.MenuViewBuilder;
 import cn.lunadeer.dominion.utils.chestui.config.ChestUiConfig;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -57,12 +59,16 @@ final class BuiltinPickerMenu extends AbstractBuiltinMenu {
 
         entries = entries.stream()
                 .filter(entry -> matches(route.filter(), entry.name()))
-                .sorted(Comparator.comparing(PickerEntry::name, String.CASE_INSENSITIVE_ORDER))
+                .sorted(Comparator.comparing(PickerEntry::insideDominion).reversed()
+                        .thenComparing(PickerEntry::name, String.CASE_INSENSITIVE_ORDER))
                 .toList();
         MenuViewBuilder view = new MenuViewBuilder(player, session, config, "picker-list", Map.of("title", title));
-        renderPage(view, route, entries, (slot, entry) -> view.itemAt(slot, "content", "content",
-                Map.of("name", entry.name(), "description", entry.description()), entry.head(),
-                click -> entry.action().run()));
+        renderPage(view, route, entries, (slot, entry) -> {
+            String textKey = entry.insideDominion() ? "content-inside" : "content";
+            view.itemAt(slot, "content", textKey,
+                    Map.of("name", entry.name(), "description", entry.description()), entry.head(),
+                    click -> entry.action().run());
+        });
         if (id(route) == MenuId.PLAYER_PICKER
                 || id(route) == MenuId.TRANSFER_PICKER
                 || id(route) == MenuId.GROUP_MEMBER_PICKER) {
@@ -74,7 +80,7 @@ final class BuiltinPickerMenu extends AbstractBuiltinMenu {
 
     private void addTemplates(Player player, MenuRoute route, DominionDTO dominion, List<PickerEntry> entries) {
         for (TemplateDTO template : TemplateProvider.getInstance().getTemplates(player.getUniqueId())) {
-            entries.add(new PickerEntry(template.getName(), config.text("labels.template"), null, () -> {
+            entries.add(new PickerEntry(template.getName(), config.text("labels.template"), null, false, () -> {
                 MemberDTO member = requireMember(dominion, route.integer("member"));
                 ui.submit(player, TemplateProvider.getInstance().applyTemplate(player, dominion, member, template),
                         ignored -> nav.back(player));
@@ -85,7 +91,7 @@ final class BuiltinPickerMenu extends AbstractBuiltinMenu {
     private void addGroups(Player player, MenuRoute route, DominionDTO dominion, List<PickerEntry> entries) {
         MemberDTO member = requireMember(dominion, route.integer("member"));
         for (GroupDTO group : dominion.getGroups()) {
-            entries.add(new PickerEntry(group.getNamePlain(), config.text("labels.group"), null,
+            entries.add(new PickerEntry(group.getNamePlain(), config.text("labels.group"), null, false,
                     () -> ui.submit(player,
                             GroupProvider.getInstance().addMember(player, dominion, group, member),
                             ignored -> nav.back(player))));
@@ -105,6 +111,7 @@ final class BuiltinPickerMenu extends AbstractBuiltinMenu {
                     member.getPlayer().getLastKnownName(),
                     config.text("labels.player"),
                     member.getPlayerUUID(),
+                    false,
                     () -> ui.submit(player,
                             remove
                                     ? GroupProvider.getInstance().removeMember(player, dominion, group, member)
@@ -125,10 +132,21 @@ final class BuiltinPickerMenu extends AbstractBuiltinMenu {
                     || (transfer && candidate.getUuid().equals(dominion.getOwner()))) {
                 continue;
             }
+            boolean insideDominion = false;
+            if (dominion != null) {
+                Player online = Bukkit.getPlayer(candidate.getUuid());
+                if (online != null && online.isOnline()) {
+                    insideDominion = Others.isInDominion(dominion, online.getLocation());
+                }
+            }
+            String description = insideDominion
+                    ? config.text("labels.inside-dominion")
+                    : config.text("labels.known-player");
             entries.add(new PickerEntry(
                     candidate.getLastKnownName(),
-                    config.text("labels.known-player"),
+                    description,
                     candidate.getUuid(),
+                    insideDominion,
                     () -> selectKnownPlayer(player, dominion, candidate, transfer)));
         }
     }
@@ -147,6 +165,7 @@ final class BuiltinPickerMenu extends AbstractBuiltinMenu {
         }
     }
 
-    private record PickerEntry(String name, String description, UUID head, Runnable action) {
+    private record PickerEntry(String name, String description, UUID head, boolean insideDominion,
+                               Runnable action) {
     }
 }
