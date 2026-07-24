@@ -123,6 +123,10 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: "Download Artifacts"
         uses: actions/download-artifact@v4
         with:
@@ -134,6 +138,17 @@ jobs:
           LITE_JAR=$(ls staging/Dominion-*-lite.jar | head -1)
           echo "LITE_JAR=$LITE_JAR" >> $GITHUB_OUTPUT
           echo "Found lite JAR: $LITE_JAR"
+      - name: "Generate Changelog"
+        run: |
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [ -z "$PREVIOUS_TAG" ]; then
+            git log --oneline --no-merges HEAD > changelog.txt
+          else
+            echo "Changes since ${PREVIOUS_TAG}:" > changelog.txt
+            git log --oneline --no-merges "${PREVIOUS_TAG}..HEAD" >> changelog.txt
+          fi
+          echo "--- Generated changelog ---"
+          cat changelog.txt
       - name: "Upload to KeyAnchor"
         env:
           KEYANCHOR_CI_TOKEN: ${{ secrets.KA_TOKEN }}
@@ -143,6 +158,6 @@ jobs:
             -H "Idempotency-Key: ${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" \
             -F "version=${{ needs.build.outputs.TAG }}" \
             -F "commit_hash=${{ github.sha }}" \
-            -F "changelog=See https://github.com/ColdeZhang/Dominion/releases/tag/${{ needs.build.outputs.TAG }}" \
+            -F "changelog=<changelog.txt" \
             -F "artifact=@${{ steps.find_jar.outputs.LITE_JAR }}" \
-            "https://keyanchor.lunadeer.cn/api/v1/ci/products/dominion-protect/builds"
+            "https://keyanchor.lunadeer.cn/api/v1/ci/products/dominion-prime/builds"
