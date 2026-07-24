@@ -195,16 +195,18 @@ public class Configuration extends ConfigurationFile {
 
         @Comments({
                 "Particle type used for border crossing effect (when player crosses dominion border).",
-                "Must be a valid Bukkit Particle name, e.g. END_ROD, CLOUD, SNOWFLAKE, BUBBLE, DRIPPING_WATER, etc."
+                "Must be a valid Bukkit Particle name, e.g. END_ROD, CLOUD, SNOWFLAKE, BUBBLE, DRIPPING_WATER, etc.",
+                "Use DUST for colored particles matching the dominion's color."
         })
         public String crossingParticleType = "END_ROD";
 
         @Comments({
-            "Particle count used for border crossing effect (when player crosses dominion border).",
-            "Higher values may increase bandwidth pressure.",
-            "Recommended not to exceed 60."
+            "Number of particles per unit block of edge length for the crossing effect.",
+            "The 12 cuboid edges are each rendered as one bulk spawnParticle call.",
+            "Example: a 20×20×10 dominion has total edge length ~200 blocks, at density 4 → ~800 particles total.",
+            "Default 4. Recommended range: 1 - 8."
         })
-        public int crossingParticleCount = 30;
+        public double boundaryParticlesPerEdgeBlock = 4.0;
     }
 
     @Comments("Weather the player can migrate residence data to dominion.")
