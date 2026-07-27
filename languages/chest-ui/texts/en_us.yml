@@ -40,6 +40,8 @@ titles:
   add-group-member: "Add Group Member"
   transfer-player: "Transfer to Player"
   add-member: "Add Member"
+  admin-player-dominions: "Player Dominion Lookup"
+  player-dominions: "{player}'s Dominions"
 labels:
   none: "None"
   unknown: "Unknown"
@@ -47,6 +49,7 @@ labels:
   member: "Member"
   player: "Player"
   known-player: "Recorded player"
+  online: "🟢 Online"
   inside-dominion: "Currently in this dominion"
   group: "Group"
   template: "Privilege template"
@@ -97,6 +100,10 @@ menus:
         name: "<gold>All Dominions"
         lore:
           - "<gray>Administrator-only global browser."
+      player-dominions:
+        name: "<aqua>Player Dominion Lookup"
+        lore:
+          - "<gray>View all dominions of a specific player."
       help:
         name: "<white>Help"
         lore:
@@ -630,6 +637,12 @@ menus:
         lore:
           - "<gray>{description}"
           - "<aqua>📍 Inside this dominion"
+          - ""
+          - "<yellow>Click to select."
+      content-online:
+        name: "<green>{name}"
+        lore:
+          - "<gray>{description}"
           - ""
           - "<yellow>Click to select."
       back:

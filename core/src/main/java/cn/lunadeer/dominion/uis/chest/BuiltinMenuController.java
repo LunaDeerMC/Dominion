@@ -31,7 +31,8 @@ final class BuiltinMenuController implements MenuController {
             case TITLE_LIST -> rootMenus.titleList(player, session);
             case CONFIRM -> rootMenus.confirm(player, session);
 
-            case DOMINION_LIST, ALL_DOMINIONS, CHILD_LIST, COPY_SOURCE ->
+            case DOMINION_LIST, ALL_DOMINIONS, CHILD_LIST, COPY_SOURCE,
+                    PLAYER_DOMINIONS ->
                     dominionMenus.dominionList(player, session);
             case DASHBOARD -> dominionMenus.dashboard(player, session);
             case AREA -> dominionMenus.area(player, session);
@@ -49,7 +50,8 @@ final class BuiltinMenuController implements MenuController {
             case GROUP_LIST -> permissionMenus.groupList(player, session);
             case GROUP_DETAIL -> permissionMenus.groupDetail(player, session);
 
-            case GROUP_MEMBER_PICKER, PLAYER_PICKER, TRANSFER_PICKER, TEMPLATE_PICKER ->
+            case GROUP_MEMBER_PICKER, PLAYER_PICKER, TRANSFER_PICKER, TEMPLATE_PICKER,
+                    ADMIN_PLAYER_DOMINIONS ->
                     pickerMenus.picker(player, session);
 
             case TEMPLATE_LIST -> templateMenus.templateList(player, session);

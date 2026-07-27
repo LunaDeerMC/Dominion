@@ -28,7 +28,7 @@ menus:
     layout:
       - "####I####"
       - "#M#C#T#L#"
-      - "##A#H####"
+      - "##A#H#P##"
       - "####X####"
     symbols:
       '#': filler
@@ -38,6 +38,7 @@ menus:
       T: templates
       L: titles
       A: all
+      P: player-dominions
       H: help
       X: close
     items:
@@ -55,6 +56,8 @@ menus:
         material: NAME_TAG
       all:
         material: SPYGLASS
+      player-dominions:
+        material: PLAYER_HEAD
       help:
         material: KNOWLEDGE_BOOK
       close:
@@ -611,6 +614,9 @@ menus:
       content:
         material: PLAYER_HEAD
       content-inside:
+        material: PLAYER_HEAD
+        glow: true
+      content-online:
         material: PLAYER_HEAD
         glow: true
       back:

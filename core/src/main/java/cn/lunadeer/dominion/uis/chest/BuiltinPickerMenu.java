@@ -51,6 +51,20 @@ final class BuiltinPickerMenu extends AbstractBuiltinMenu {
             boolean remove = "remove".equals(route.string("mode"));
             title = config.text(remove ? "titles.remove-group-member" : "titles.add-group-member");
             addGroupMembers(player, route, dominion, entries, remove);
+        } else if (id(route) == MenuId.ADMIN_PLAYER_DOMINIONS) {
+            title = config.text("titles.admin-player-dominions");
+            addKnownPlayers(player, null, entries, false);
+            // Replace actions: navigate to dominion list filtered by selected player
+            for (int i = 0; i < entries.size(); i++) {
+                PickerEntry original = entries.get(i);
+                entries.set(i, new PickerEntry(original.name(), original.description(),
+                        original.head(), original.insideDominion(), original.online(),
+                        () -> {
+                            nav.push(player, MenuRoute.of(MenuId.PLAYER_DOMINIONS)
+                                    .with("player", original.head().toString())
+                                    .with("playerName", original.name()));
+                        }));
+            }
         } else {
             boolean transfer = id(route) == MenuId.TRANSFER_PICKER;
             title = config.text(transfer ? "titles.transfer-player" : "titles.add-member");
@@ -59,19 +73,28 @@ final class BuiltinPickerMenu extends AbstractBuiltinMenu {
 
         entries = entries.stream()
                 .filter(entry -> matches(route.filter(), entry.name()))
-                .sorted(Comparator.comparing(PickerEntry::insideDominion).reversed()
+                .sorted(Comparator.comparing(PickerEntry::online).reversed()
+                        .thenComparing(PickerEntry::insideDominion).reversed()
                         .thenComparing(PickerEntry::name, String.CASE_INSENSITIVE_ORDER))
                 .toList();
         MenuViewBuilder view = new MenuViewBuilder(player, session, config, "picker-list", Map.of("title", title));
         renderPage(view, route, entries, (slot, entry) -> {
-            String textKey = entry.insideDominion() ? "content-inside" : "content";
+            String textKey;
+            if (entry.online()) {
+                textKey = "content-online";
+            } else if (entry.insideDominion()) {
+                textKey = "content-inside";
+            } else {
+                textKey = "content";
+            }
             view.itemAt(slot, "content", textKey,
                     Map.of("name", entry.name(), "description", entry.description()), entry.head(),
                     click -> entry.action().run());
         });
         if (id(route) == MenuId.PLAYER_PICKER
                 || id(route) == MenuId.TRANSFER_PICKER
-                || id(route) == MenuId.GROUP_MEMBER_PICKER) {
+                || id(route) == MenuId.GROUP_MEMBER_PICKER
+                || id(route) == MenuId.ADMIN_PLAYER_DOMINIONS) {
             view.item("search", Map.of(), null, click -> search(player));
         }
         listNavigation(player, view, route, entries.size());
@@ -80,7 +103,7 @@ final class BuiltinPickerMenu extends AbstractBuiltinMenu {
 
     private void addTemplates(Player player, MenuRoute route, DominionDTO dominion, List<PickerEntry> entries) {
         for (TemplateDTO template : TemplateProvider.getInstance().getTemplates(player.getUniqueId())) {
-            entries.add(new PickerEntry(template.getName(), config.text("labels.template"), null, false, () -> {
+            entries.add(new PickerEntry(template.getName(), config.text("labels.template"), null, false, false, () -> {
                 MemberDTO member = requireMember(dominion, route.integer("member"));
                 ui.submit(player, TemplateProvider.getInstance().applyTemplate(player, dominion, member, template),
                         ignored -> nav.back(player));
@@ -91,7 +114,7 @@ final class BuiltinPickerMenu extends AbstractBuiltinMenu {
     private void addGroups(Player player, MenuRoute route, DominionDTO dominion, List<PickerEntry> entries) {
         MemberDTO member = requireMember(dominion, route.integer("member"));
         for (GroupDTO group : dominion.getGroups()) {
-            entries.add(new PickerEntry(group.getNamePlain(), config.text("labels.group"), null, false,
+            entries.add(new PickerEntry(group.getNamePlain(), config.text("labels.group"), null, false, false,
                     () -> ui.submit(player,
                             GroupProvider.getInstance().addMember(player, dominion, group, member),
                             ignored -> nav.back(player))));
@@ -111,6 +134,7 @@ final class BuiltinPickerMenu extends AbstractBuiltinMenu {
                     member.getPlayer().getLastKnownName(),
                     config.text("labels.player"),
                     member.getPlayerUUID(),
+                    false,
                     false,
                     () -> ui.submit(player,
                             remove
@@ -132,21 +156,26 @@ final class BuiltinPickerMenu extends AbstractBuiltinMenu {
                     || (transfer && candidate.getUuid().equals(dominion.getOwner()))) {
                 continue;
             }
+            Player online = Bukkit.getPlayer(candidate.getUuid());
+            boolean isOnline = online != null && online.isOnline();
             boolean insideDominion = false;
-            if (dominion != null) {
-                Player online = Bukkit.getPlayer(candidate.getUuid());
-                if (online != null && online.isOnline()) {
-                    insideDominion = Others.isInDominion(dominion, online.getLocation());
-                }
+            if (dominion != null && isOnline) {
+                insideDominion = Others.isInDominion(dominion, online.getLocation());
             }
-            String description = insideDominion
-                    ? config.text("labels.inside-dominion")
-                    : config.text("labels.known-player");
+            String description;
+            if (isOnline) {
+                description = config.text("labels.online");
+            } else if (insideDominion) {
+                description = config.text("labels.inside-dominion");
+            } else {
+                description = config.text("labels.known-player");
+            }
             entries.add(new PickerEntry(
                     candidate.getLastKnownName(),
                     description,
                     candidate.getUuid(),
                     insideDominion,
+                    isOnline,
                     () -> selectKnownPlayer(player, dominion, candidate, transfer)));
         }
     }
@@ -166,6 +195,6 @@ final class BuiltinPickerMenu extends AbstractBuiltinMenu {
     }
 
     private record PickerEntry(String name, String description, UUID head, boolean insideDominion,
-                               Runnable action) {
+                               boolean online, Runnable action) {
     }
 }

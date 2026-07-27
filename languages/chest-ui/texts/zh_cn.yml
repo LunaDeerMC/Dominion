@@ -40,6 +40,8 @@ titles:
   add-group-member: 添加权限组成员
   transfer-player: 转让给玩家
   add-member: 添加成员
+  admin-player-dominions: 玩家领地查询
+  player-dominions: '{player} 的领地'
 labels:
   none: 无
   unknown: 未知
@@ -47,6 +49,7 @@ labels:
   member: 成员
   player: 玩家
   known-player: 已记录玩家
+  online: 🟢 在线
   inside-dominion: 当前位于此领地内
   group: 权限组
   template: 权限模板
@@ -97,6 +100,10 @@ menus:
         name: <gold>所有领地
         lore:
           - <gray>仅管理员可用的全局领地浏览器。
+      player-dominions:
+        name: <aqua>玩家领地查询
+        lore:
+          - <gray>查看某个玩家的所有领地。
       help:
         name: <white>帮助
         lore:
@@ -632,6 +639,12 @@ menus:
         lore:
           - <gray>{description}
           - <aqua>📍 位于此领地内
+          - ''
+          - <yellow>点击选择。
+      content-online:
+        name: <green>{name}
+        lore:
+          - <gray>{description}
           - ''
           - <yellow>点击选择。
       back:

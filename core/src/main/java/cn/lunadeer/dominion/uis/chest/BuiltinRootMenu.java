@@ -34,6 +34,7 @@ final class BuiltinRootMenu extends AbstractBuiltinMenu {
         view.item("titles", Map.of(), null, click -> nav.push(player, MenuRoute.of(MenuId.TITLE_LIST)));
         if (player.hasPermission(adminPermission)) {
             view.item("all", Map.of(), null, click -> nav.push(player, MenuRoute.of(MenuId.ALL_DOMINIONS)));
+            view.item("player-dominions", Map.of(), null, click -> nav.push(player, MenuRoute.of(MenuId.ADMIN_PLAYER_DOMINIONS)));
         }
         view.item("help", Map.of(), null, click -> {
             Notification.info(player, Configuration.externalLinks.documentation);

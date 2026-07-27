@@ -25,6 +25,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** Renders territory discovery, dashboard, area, appearance, ownership, and copy menus. */
 final class BuiltinDominionMenu extends AbstractBuiltinMenu {
@@ -47,6 +51,14 @@ final class BuiltinDominionMenu extends AbstractBuiltinMenu {
             int target = route.integer("dom");
             dominions = managedDominions(player).stream().filter(dominion -> dominion.getId() != target).toList();
             title = config.text("titles.copy-source");
+        } else if (id(route) == MenuId.PLAYER_DOMINIONS) {
+            UUID targetUuid = UUID.fromString(route.string("player"));
+            dominions = Stream.concat(
+                            api.getPlayerOwnDominionDTOs(targetUuid).stream(),
+                            api.getPlayerAdminDominionDTOs(targetUuid).stream())
+                    .collect(Collectors.toMap(DominionDTO::getId, Function.identity(), (a, b) -> a))
+                    .values().stream().toList();
+            title = configured("titles.player-dominions", Map.of("player", route.string("playerName")));
         } else {
             dominions = managedDominions(player);
             title = config.text("titles.my-dominions");

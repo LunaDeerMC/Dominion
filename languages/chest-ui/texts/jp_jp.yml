@@ -40,6 +40,8 @@ titles:
   add-group-member: "グループメンバーを追加"
   transfer-player: "譲渡先プレイヤー"
   add-member: "メンバーを追加"
+  admin-player-dominions: "プレイヤーの領地を検索"
+  player-dominions: "{player} の領地"
 labels:
   none: "なし"
   unknown: "不明"
@@ -47,6 +49,7 @@ labels:
   member: "メンバー"
   player: "プレイヤー"
   known-player: "登録済みプレイヤー"
+  online: "🟢 オンライン"
   inside-dominion: "現在この領地内にいます"
   group: "グループ"
   template: "権限テンプレート"
@@ -97,6 +100,10 @@ menus:
         name: "<gold>すべての領地"
         lore:
           - "<gray>管理者専用の領地一覧です。"
+      player-dominions:
+        name: "<aqua>プレイヤーの領地を検索"
+        lore:
+          - "<gray>特定のプレイヤーのすべての領地を表示します。"
       help:
         name: "<white>ヘルプ"
         lore:
@@ -631,6 +638,12 @@ menus:
         lore:
           - "<gray>{description}"
           - "<aqua>📍 この領地内にいます"
+          - ""
+          - "<yellow>クリックして選択します。"
+      content-online:
+        name: "<green>{name}"
+        lore:
+          - "<gray>{description}"
           - ""
           - "<yellow>クリックして選択します。"
       back:
