@@ -58,8 +58,18 @@ final class BuiltinDominionMenu extends AbstractBuiltinMenu {
         MenuViewBuilder view = new MenuViewBuilder(player, session, config, "dominion-list", Map.of("title", title));
         renderPage(view, route, dominions, (slot, dominion) -> {
             boolean remote = isRemoteDominion(dominion);
-            String textElement = remote ? "remote-content" : "local-content";
-            ItemAppearance appearance = remote ? view.appearance("remote-content") : null;
+            String textElement;
+            ItemAppearance appearance;
+            if (remote) {
+                textElement = "remote-content";
+                appearance = view.appearance("remote-content");
+            } else if (!dominion.getOwner().equals(player.getUniqueId())) {
+                textElement = "admin-content";
+                appearance = view.appearance("admin-content");
+            } else {
+                textElement = "local-content";
+                appearance = null;
+            }
             view.itemAt(slot, "content", textElement, dominionValues(dominion, remote), null, appearance, click -> {
                 if (click.isRightClick()) {
                     teleport(player, dominion);

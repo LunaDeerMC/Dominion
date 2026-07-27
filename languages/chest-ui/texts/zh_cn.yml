@@ -156,6 +156,15 @@ menus:
           - '<gray>服务器：<white>{server}'
           - ''
           - <aqua>右键点击传送。
+      admin-content:
+        name: <green>{dominion}
+        lore:
+          - '<gray>所有者：<white>{owner}'
+          - '<gray>世界：<white>{world}'
+          - '<gray>你拥有此领地的管理权限。'
+          - ''
+          - <yellow>左键点击打开或选择。
+          - <aqua>右键点击传送。
   dashboard:
     title: <dark_green>{dominion}
     items:
