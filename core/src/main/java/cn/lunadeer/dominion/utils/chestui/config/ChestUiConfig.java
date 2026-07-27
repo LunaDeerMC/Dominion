@@ -1,6 +1,7 @@
 package cn.lunadeer.dominion.utils.chestui.config;
 
 import cn.lunadeer.dominion.configuration.Language.LanguageCode;
+import cn.lunadeer.dominion.utils.chestui.ItemModelSupport;
 import cn.lunadeer.dominion.utils.XLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -61,6 +62,9 @@ public final class ChestUiConfig {
                 XLogger.warn("Invalid chest UI menu {0}, using built-in defaults: {1}", id, e.getMessage());
                 loaded.put(id, MenuDefinition.read(defaults.getConfigurationSection(id)));
             }
+        }
+        if (loaded.values().stream().anyMatch(MenuDefinition::hasItemModel)) {
+            ItemModelSupport.warnIfUnsupported();
         }
         snapshot = new Snapshot(Map.copyOf(loaded), userText);
     }

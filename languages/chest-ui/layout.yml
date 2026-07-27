@@ -9,6 +9,8 @@
 #     material: STONE               # Bukkit Material enum (default: STONE)
 #     amount: 1                     # stack size 1-64 (default: 1)
 #     custom-model-data: 10001      # resource-pack model data (default: unset)
+#     item-model: dominion:menu_button # direct item model (1.21.4+, default: unset)
+#                                      # Can be combined with custom-model-data for an old-version fallback.
 #     glow: false                   # fake enchantment shimmer (default: false)
 #     item-flags:                   # Bukkit ItemFlag list (default: [])
 #       - HIDE_ENCHANTS

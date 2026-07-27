@@ -17,14 +17,35 @@ class MenuDefinitionTest {
                   layout: [\"A**      \", \"         \"]
                   symbols: { A: back, '*': content }
                   items:
-                    content: { material: PLAYER_HEAD, amount: 2, glow: true, item-flags: [HIDE_ATTRIBUTES], head-source: viewer }
+                    content: { material: PLAYER_HEAD, amount: 2, custom-model-data: 10001, item-model: dominion:content, glow: true, item-flags: [HIDE_ATTRIBUTES], head-source: viewer }
                 """);
         MenuDefinition menu = MenuDefinition.read(yaml.getConfigurationSection("menu"));
         assertEquals(2, menu.rows());
         assertEquals(0, menu.firstSlot("back"));
         assertEquals(java.util.List.of(1, 2), menu.slots("content"));
         assertEquals(2, menu.appearance("content").amount());
+        assertEquals(10001, menu.appearance("content").customModelData());
+        assertEquals("dominion:content", menu.appearance("content").itemModel());
         assertEquals("viewer", menu.appearance("content").headSource());
+    }
+
+    @Test
+    void ignoresBlankAndInvalidItemModels() throws Exception {
+        MenuDefinition blank = read("""
+                layout: [\"A        \"]
+                symbols: { A: content }
+                items:
+                  content: { item-model: '   ' }
+                """);
+        assertNull(blank.appearance("content").itemModel());
+
+        MenuDefinition invalid = read("""
+                layout: [\"A        \"]
+                symbols: { A: content }
+                items:
+                  content: { item-model: 'not a namespace key' }
+                """);
+        assertNull(invalid.appearance("content").itemModel());
     }
 
     @Test

@@ -38,6 +38,10 @@ public final class MenuDefinition {
                 appearances.getOrDefault("default", new ItemAppearance(org.bukkit.Material.STONE, 1, null, false, false)));
     }
 
+    boolean hasItemModel() {
+        return appearances.values().stream().anyMatch(appearance -> appearance.itemModel() != null);
+    }
+
     static MenuDefinition read(ConfigurationSection section) {
         if (section == null) throw new IllegalArgumentException("missing menu section");
         List<String> layout = section.getStringList("layout");

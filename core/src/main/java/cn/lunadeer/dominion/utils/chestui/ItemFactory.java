@@ -34,6 +34,7 @@ final class ItemFactory {
         }
         meta.lore(renderedLore);
         if (appearance.customModelData() != null) meta.setCustomModelData(appearance.customModelData());
+        ItemModelSupport.apply(meta, appearance.itemModel());
         if (appearance.glow()) {
             meta.addEnchant(Enchantment.DURABILITY, 1, true);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
