@@ -78,8 +78,8 @@ public class NMSManager {
     }
 
     /**
-     * Dialog support is deliberately optional. The first backend is restricted
-     * to the exact Minecraft 26.1.2 protocol.
+     * Dialog support is deliberately optional and is loaded only for versions
+     * whose version module provides a dialog backend.
      */
     public Optional<NMSDialogFactory> getDialogFactory() {
         return Optional.ofNullable(dialogFactory);
@@ -142,13 +142,14 @@ public class NMSManager {
     }
 
     private void loadOptionalDialogBackend() {
-        if (XVersionManager.VERSION != XVersionManager.ImplementationVersion.v26
-                || !"26.1.2".equals(Bukkit.getMinecraftVersion())) {
+        XVersionManager.ImplementationVersion version = XVersionManager.VERSION;
+        if (version == null
+                || version.compareWith(XVersionManager.ImplementationVersion.v1_21_8) < 0) {
             XLogger.debug("Dialog NMS backend is not enabled for Minecraft {0}.", Bukkit.getMinecraftVersion());
             return;
         }
 
-        String nmsPackage = "cn.lunadeer.dominion.v26.nms.";
+        String nmsPackage = "cn.lunadeer.dominion." + version.name() + ".nms.";
         try {
             Class<?> factoryClass = Class.forName(nmsPackage + "NMSDialogFactoryImpl");
             Class<?> bridgeClass = Class.forName(nmsPackage + "NMSDialogCallbackBridgeImpl");
@@ -157,15 +158,16 @@ public class NMSManager {
             if (!dialogFactory.isSupported()) {
                 dialogFactory = null;
                 dialogCallbackBridge = null;
-                XLogger.warn("Minecraft 26.1.2 Dialog backend reported itself unavailable; Chest UI will be used.");
+                XLogger.warn("Minecraft {0} Dialog backend reported itself unavailable; Chest UI will be used.",
+                        Bukkit.getMinecraftVersion());
                 return;
             }
-            XLogger.info("Loaded experimental Dominion Dialog NMS backend for Minecraft 26.1.2.");
+            XLogger.info("Loaded Dominion Dialog NMS backend for Minecraft {0}.", Bukkit.getMinecraftVersion());
         } catch (Throwable throwable) {
             dialogFactory = null;
             dialogCallbackBridge = null;
-            XLogger.warn("Unable to load Minecraft 26.1.2 Dialog backend; Chest UI will be used: {0}",
-                    throwable.getMessage());
+            XLogger.warn("Unable to load Minecraft {0} Dialog backend; Chest UI will be used: {1}",
+                    Bukkit.getMinecraftVersion(), throwable.getMessage());
         }
     }
 }

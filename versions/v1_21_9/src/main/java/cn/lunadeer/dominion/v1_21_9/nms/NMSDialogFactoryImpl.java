@@ -1,4 +1,4 @@
-package cn.lunadeer.dominion.v26.nms;
+package cn.lunadeer.dominion.v1_21_9.nms;
 
 import cn.lunadeer.dominion.nms.NMSDialogFactory;
 import cn.lunadeer.dominion.utils.dialogui.DialogCallbackRegistry;
@@ -22,7 +22,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.protocol.common.ClientboundClearDialogPacket;
 import net.minecraft.network.protocol.common.ClientboundShowDialogPacket;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.dialog.ActionButton;
 import net.minecraft.server.dialog.CommonButtonData;
 import net.minecraft.server.dialog.CommonDialogData;
@@ -47,33 +47,33 @@ import net.minecraft.server.dialog.input.NumberRangeInput;
 import net.minecraft.server.dialog.input.SingleOptionInput;
 import net.minecraft.server.dialog.input.TextInput;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStackTemplate;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 /**
- * Minecraft 26.1.2 implementation of the version-independent dialog model.
+ * Minecraft 1.21.9 implementation of the version-independent dialog model.
  */
 public final class NMSDialogFactoryImpl implements NMSDialogFactory {
     private final EncoderRegistry encoders = new EncoderRegistry();
 
     @Override
     public boolean isSupported() {
-        return Bukkit.getMinecraftVersion().startsWith("26.1")
-                || Bukkit.getMinecraftVersion().startsWith("26.2");
+        String version = Bukkit.getMinecraftVersion();
+        return version.startsWith("1.21.9")
+                || version.startsWith("1.21.10")
+                || version.startsWith("1.21.11");
     }
 
     @Override
     public DialogEncodingResult validate(DialogSpec dialog) {
-        if (!isSupported()) return DialogEncodingResult.unsupported("Dialog backend requires Minecraft 26.1.x or 26.2.x");
+        if (!isSupported()) return DialogEncodingResult.unsupported("Dialog backend requires Minecraft 1.21.9+");
         return validateModel(dialog);
     }
 
@@ -198,7 +198,7 @@ public final class NMSDialogFactoryImpl implements NMSDialogFactory {
 
         private <T> void require(Map<DialogKey, T> map, DialogKey key, String element) {
             if (!map.containsKey(key)) {
-                throw new IllegalArgumentException("Minecraft 26.1.2 does not support " + element + " kind " + key);
+                throw new IllegalArgumentException("Minecraft 1.21.9 does not support " + element + " kind " + key);
             }
         }
 
@@ -308,14 +308,10 @@ public final class NMSDialogFactoryImpl implements NMSDialogFactory {
 
         private Action callback(DialogSpec.CallbackAction callback, EncodeContext context) {
             String token = DialogCallbackRegistry.INSTANCE.register(
-                    context.player().getUniqueId(),
-                    context.session(),
-                    callback.callback(),
-                    callback.options()
-            );
+                    context.player().getUniqueId(), context.session(), callback.callback(), callback.options());
             CompoundTag additions = new CompoundTag();
             additions.putString(DialogCallbackRegistry.TOKEN_KEY, token);
-            return new CustomAll(Identifier.parse(DialogCallbackRegistry.CALLBACK_ACTION_ID), Optional.of(additions));
+            return new CustomAll(ResourceLocation.parse(DialogCallbackRegistry.CALLBACK_ACTION_ID), Optional.of(additions));
         }
 
         private Action customClick(DialogSpec.CustomClickAction action) {
@@ -324,10 +320,8 @@ public final class NMSDialogFactoryImpl implements NMSDialogFactory {
         }
 
         private Action commandTemplate(DialogSpec.CommandTemplateAction action) {
-            ParsedTemplate parsed = ParsedTemplate.CODEC
-                    .parse(JsonOps.INSTANCE, new JsonPrimitive(action.template()))
-                    .result()
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid command template"));
+            ParsedTemplate parsed = ParsedTemplate.CODEC.parse(JsonOps.INSTANCE, new JsonPrimitive(action.template()))
+                    .result().orElseThrow(() -> new IllegalArgumentException("Invalid command template"));
             return new CommandTemplate(parsed);
         }
 
@@ -362,21 +356,14 @@ public final class NMSDialogFactoryImpl implements NMSDialogFactory {
 
     private static ItemBody itemBody(DialogSpec.ItemBody body) {
         return new ItemBody(
-                ItemStackTemplate.fromNonEmptyStack(CraftItemStack.asNMSCopy(body.item())),
+                CraftItemStack.asNMSCopy(body.item()),
                 Optional.ofNullable(body.description()).map(NMSDialogFactoryImpl::plainMessage),
-                body.showDecorations(),
-                body.showTooltip(),
-                body.width(),
-                body.height()
-        );
+                body.showDecorations(), body.showTooltip(), body.width(), body.height());
     }
 
     private static TextInput textInput(DialogSpec.TextInput input) {
         Optional<TextInput.MultilineOptions> multiline = Optional.ofNullable(input.multiline())
-                .map(value -> new TextInput.MultilineOptions(
-                        Optional.ofNullable(value.maxLines()),
-                        Optional.ofNullable(value.height())
-                ));
+                .map(value -> new TextInput.MultilineOptions(Optional.ofNullable(value.maxLines()), Optional.ofNullable(value.height())));
         return new TextInput(input.width(), component(input.label()), input.labelVisible(),
                 input.initial(), input.maxLength(), multiline);
     }
@@ -386,26 +373,15 @@ public final class NMSDialogFactoryImpl implements NMSDialogFactory {
     }
 
     private static NumberRangeInput numberRangeInput(DialogSpec.NumberRangeInput input) {
-        return new NumberRangeInput(
-                input.width(),
-                component(input.label()),
-                input.labelFormat(),
-                new NumberRangeInput.RangeInfo(
-                        input.start(),
-                        input.end(),
-                        Optional.ofNullable(input.initial()),
-                        Optional.ofNullable(input.step())
-                )
-        );
+        return new NumberRangeInput(input.width(), component(input.label()), input.labelFormat(),
+                new NumberRangeInput.RangeInfo(input.start(), input.end(),
+                        Optional.ofNullable(input.initial()), Optional.ofNullable(input.step())));
     }
 
     private static SingleOptionInput singleOptionInput(DialogSpec.SingleOptionInput input) {
         List<SingleOptionInput.Entry> entries = input.options().stream()
-                .map(value -> new SingleOptionInput.Entry(
-                        value.id(),
-                        Optional.ofNullable(value.display()).map(NMSDialogFactoryImpl::component),
-                        value.initial()
-                ))
+                .map(value -> new SingleOptionInput.Entry(value.id(),
+                        Optional.ofNullable(value.display()).map(NMSDialogFactoryImpl::component), value.initial()))
                 .toList();
         return new SingleOptionInput(input.width(), entries, component(input.label()), input.labelVisible());
     }
@@ -414,8 +390,8 @@ public final class NMSDialogFactoryImpl implements NMSDialogFactory {
         return CraftChatMessage.fromJSON(GsonComponentSerializer.gson().serialize(component));
     }
 
-    private static Identifier identifier(DialogKey key) {
-        return Identifier.fromNamespaceAndPath(key.namespace(), key.value());
+    private static ResourceLocation identifier(DialogKey key) {
+        return ResourceLocation.fromNamespaceAndPath(key.namespace(), key.value());
     }
 
     private static CompoundTag compound(DialogPayload payload) {
@@ -433,9 +409,7 @@ public final class NMSDialogFactoryImpl implements NMSDialogFactory {
         if (value instanceof DialogPayload.ListValue list) {
             ListTag result = new ListTag();
             for (DialogPayload.Value entry : list.values()) {
-                if (!result.add(value(entry))) {
-                    throw new IllegalArgumentException("NBT list payload values must have one common type");
-                }
+                if (!result.add(value(entry))) throw new IllegalArgumentException("NBT list payload values must have one common type");
             }
             return result;
         }
@@ -443,22 +417,11 @@ public final class NMSDialogFactoryImpl implements NMSDialogFactory {
     }
 
     @FunctionalInterface
-    private interface BodyEncoder {
-        DialogBody encode(DialogSpec.Body body, EncodeContext context);
-    }
-
+    private interface BodyEncoder { DialogBody encode(DialogSpec.Body body, EncodeContext context); }
     @FunctionalInterface
-    private interface InputEncoder {
-        InputControl encode(DialogSpec.Input input, EncodeContext context);
-    }
-
+    private interface InputEncoder { InputControl encode(DialogSpec.Input input, EncodeContext context); }
     @FunctionalInterface
-    private interface TypeEncoder {
-        Dialog encode(DialogSpec spec, DialogSpec.Type type, EncodeContext context);
-    }
-
+    private interface TypeEncoder { Dialog encode(DialogSpec spec, DialogSpec.Type type, EncodeContext context); }
     @FunctionalInterface
-    private interface ActionEncoder {
-        Action encode(DialogSpec.Action action, EncodeContext context);
-    }
+    private interface ActionEncoder { Action encode(DialogSpec.Action action, EncodeContext context); }
 }
