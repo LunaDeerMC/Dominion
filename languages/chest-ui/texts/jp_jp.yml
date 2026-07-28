@@ -114,6 +114,10 @@ menus:
         name: "<white>ヘルプ"
         lore:
           - "<gray>ドキュメントへのリンクをチャットに送信します。"
+      ui:
+        name: "<aqua>Dialog UI を使用"
+        lore:
+          - "<gray>Minecraft のネイティブダイアログに切り替えます。"
       close:
         name: "<red>閉じる"
         lore: []

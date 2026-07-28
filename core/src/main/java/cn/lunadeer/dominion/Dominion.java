@@ -9,7 +9,7 @@ import cn.lunadeer.dominion.managers.MultiServerManager;
 import cn.lunadeer.dominion.managers.TeleportManager;
 import cn.lunadeer.dominion.misc.InitCommands;
 import cn.lunadeer.dominion.misc.Others;
-import cn.lunadeer.dominion.uis.chest.DominionChestUi;
+import cn.lunadeer.dominion.uis.DominionUi;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.VaultConnect.VaultConnect;
 import cn.lunadeer.dominion.utils.XLogger;
@@ -78,7 +78,7 @@ public final class Dominion extends JavaPlugin {
 
         new EventsRegister(this);
         try {
-            DominionChestUi.initialize(this);
+            DominionUi.initialize(this);
         } catch (Exception e) {
             XLogger.error(e);
             Bukkit.getPluginManager().disablePlugin(this);
@@ -87,7 +87,7 @@ public final class Dominion extends JavaPlugin {
         new InitCommands();
         CommandManager commandManager = new CommandManager(this, "dominion", (sender) -> {
             if (sender instanceof Player player) {
-                DominionChestUi.openMain(player);
+                DominionUi.openMain(player);
             } else {
                 CommandManager.getInstance().helpCommand.run(sender, new String[]{"help", "1"});
             }
@@ -108,6 +108,10 @@ public final class Dominion extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
         HoloManager.instance().removeAll(); // Clean up hologram display entities
+        try {
+            NMSManager.instance().shutdown();
+        } catch (IllegalStateException ignored) {
+        }
         if (DatabaseManager.instance != null)
             DatabaseManager.instance.close();
         Scheduler.cancelAll();

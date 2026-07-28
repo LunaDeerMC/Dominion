@@ -33,6 +33,7 @@ dependencies {
     testImplementation("org.mybatis:mybatis:3.5.16")
     testImplementation("com.zaxxer:HikariCP:6.2.1")
     testImplementation("org.xerial:sqlite-jdbc:3.46.1.3")
+    testImplementation("org.flywaydb:flyway-core:11.8.2")
 
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")

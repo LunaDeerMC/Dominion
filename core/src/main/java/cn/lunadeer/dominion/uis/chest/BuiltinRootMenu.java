@@ -4,6 +4,7 @@ import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.GroupDTO;
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.providers.PlayerProvider;
+import cn.lunadeer.dominion.uis.DominionUi;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.chestui.ChestUiManager;
 import cn.lunadeer.dominion.utils.chestui.MenuNavigator;
@@ -40,6 +41,10 @@ final class BuiltinRootMenu extends AbstractBuiltinMenu {
             Notification.info(player, Configuration.externalLinks.documentation);
             ui.close(player);
         });
+        if (DominionUi.isDialogAvailable(player)) {
+            view.item("ui", Map.of(), null,
+                    click -> cn.lunadeer.dominion.handler.UiPreferenceHandler.select(player, "dialog"));
+        }
         view.item("close", Map.of(), null, click -> ui.close(player));
         return view.build();
     }

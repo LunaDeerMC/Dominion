@@ -3,6 +3,10 @@ package cn.lunadeer.dominion.nms;
 import cn.lunadeer.dominion.Dominion;
 import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.XVersionManager;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+import java.util.Optional;
 
 import static cn.lunadeer.dominion.utils.Misc.listClassOfPackage;
 
@@ -29,6 +33,8 @@ public class NMSManager {
 
     private FakeEntityFactory fakeEntityFactory;
     private NMSPacketSender packetSender;
+    private NMSDialogFactory dialogFactory;
+    private NMSDialogCallbackBridge dialogCallbackBridge;
 
     private NMSManager() {
     }
@@ -71,6 +77,30 @@ public class NMSManager {
         return packetSender;
     }
 
+    /**
+     * Dialog support is deliberately optional. The first backend is restricted
+     * to the exact Minecraft 26.1.2 protocol.
+     */
+    public Optional<NMSDialogFactory> getDialogFactory() {
+        return Optional.ofNullable(dialogFactory);
+    }
+
+    public Optional<NMSDialogCallbackBridge> getDialogCallbackBridge() {
+        return Optional.ofNullable(dialogCallbackBridge);
+    }
+
+    public boolean isDialogAvailable(Player player) {
+        return dialogFactory != null
+                && dialogCallbackBridge != null
+                && dialogFactory.isSupported()
+                && dialogCallbackBridge.isInstalled(player);
+    }
+
+    public void shutdown() {
+        if (dialogCallbackBridge != null) dialogCallbackBridge.shutdown();
+        cn.lunadeer.dominion.utils.dialogui.DialogCallbackRegistry.INSTANCE.clear();
+    }
+
     private void loadImplementations() {
         XVersionManager.ImplementationVersion version = XVersionManager.VERSION;
         if (version == null) {
@@ -108,5 +138,34 @@ public class NMSManager {
         }
 
         XLogger.info("NMS implementations loaded for version: {0}", version.name());
+        loadOptionalDialogBackend();
+    }
+
+    private void loadOptionalDialogBackend() {
+        if (XVersionManager.VERSION != XVersionManager.ImplementationVersion.v26
+                || !"26.1.2".equals(Bukkit.getMinecraftVersion())) {
+            XLogger.debug("Dialog NMS backend is not enabled for Minecraft {0}.", Bukkit.getMinecraftVersion());
+            return;
+        }
+
+        String nmsPackage = "cn.lunadeer.dominion.v26.nms.";
+        try {
+            Class<?> factoryClass = Class.forName(nmsPackage + "NMSDialogFactoryImpl");
+            Class<?> bridgeClass = Class.forName(nmsPackage + "NMSDialogCallbackBridgeImpl");
+            dialogFactory = (NMSDialogFactory) factoryClass.getDeclaredConstructor().newInstance();
+            dialogCallbackBridge = (NMSDialogCallbackBridge) bridgeClass.getDeclaredConstructor().newInstance();
+            if (!dialogFactory.isSupported()) {
+                dialogFactory = null;
+                dialogCallbackBridge = null;
+                XLogger.warn("Minecraft 26.1.2 Dialog backend reported itself unavailable; Chest UI will be used.");
+                return;
+            }
+            XLogger.info("Loaded experimental Dominion Dialog NMS backend for Minecraft 26.1.2.");
+        } catch (Throwable throwable) {
+            dialogFactory = null;
+            dialogCallbackBridge = null;
+            XLogger.warn("Unable to load Minecraft 26.1.2 Dialog backend; Chest UI will be used: {0}",
+                    throwable.getMessage());
+        }
     }
 }

@@ -9,8 +9,8 @@ import cn.lunadeer.dominion.api.dtos.TemplateDTO;
 import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.providers.DominionProvider;
 import cn.lunadeer.dominion.providers.TemplateProvider;
+import cn.lunadeer.dominion.handler.UiDataHandler;
 import cn.lunadeer.dominion.utils.Notification;
-import cn.lunadeer.dominion.managers.MultiServerManager;
 import cn.lunadeer.dominion.utils.chestui.ChestUiManager;
 import cn.lunadeer.dominion.utils.chestui.MenuNavigator;
 import cn.lunadeer.dominion.utils.chestui.MenuRoute;
@@ -114,16 +114,9 @@ abstract class AbstractBuiltinMenu {
         CuboidDTO cuboid = dominion.getCuboid();
         World world = dominion.getWorld();
         String worldDisplay = world == null ? dominion.getWorldUid().toString() : world.getName();
-        String serverDisplay;
-        if (remote) {
-            try {
-                serverDisplay = MultiServerManager.instance.getServerName(dominion.getServerId());
-            } catch (Exception e) {
-                serverDisplay = String.valueOf(dominion.getServerId());
-            }
-        } else {
-            serverDisplay = String.valueOf(dominion.getServerId());
-        }
+        String serverDisplay = remote
+                ? UiDataHandler.serverName(dominion.getServerId())
+                : String.valueOf(dominion.getServerId());
         return Map.ofEntries(Map.entry("dominion", dominion.getName()),
                 Map.entry("owner", dominion.getOwnerDTO().getLastKnownName()),
                 Map.entry("world", remote ? "" : worldDisplay),

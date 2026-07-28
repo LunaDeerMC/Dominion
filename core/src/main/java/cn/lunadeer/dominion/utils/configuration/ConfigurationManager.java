@@ -92,7 +92,7 @@ public class ConfigurationManager {
             if (field.isAnnotationPresent(HandleManually.class)) {
                 continue;
             }
-            String newKey = camelToKebab(field.getName());
+            String newKey = configurationKey(field);
             if (prefix != null && !prefix.isEmpty()) {
                 newKey = prefix + "." + newKey;
             }
@@ -141,7 +141,7 @@ public class ConfigurationManager {
             if (field.isAnnotationPresent(HandleManually.class)) {
                 continue;
             }
-            String key = camelToKebab(field.getName());
+            String key = configurationKey(field);
             if (prefix != null && !prefix.isEmpty()) {
                 key = prefix + "." + key;
             }
@@ -176,6 +176,17 @@ public class ConfigurationManager {
      */
     private static String camelToKebab(String camel) {
         return camel.replaceAll("([a-z])([A-Z]+)", "$1-$2").toLowerCase();
+    }
+
+    private static String configurationKey(Field field) {
+        if (field.isAnnotationPresent(ConfigurationKey.class)) {
+            String value = field.getAnnotation(ConfigurationKey.class).value();
+            if (value == null || value.isBlank() || value.contains(".")) {
+                throw new IllegalArgumentException("Invalid configuration key override on " + field.getName());
+            }
+            return value;
+        }
+        return camelToKebab(field.getName());
     }
 
     private static class PrePostProcessInorder {
