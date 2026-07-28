@@ -40,6 +40,11 @@ public final class Dominion extends JavaPlugin {
     }
 
     @Override
+    public void onLoad() {
+        HooksManager.onLoad(this);
+    }
+
+    @Override
     public void onEnable() {
         // Plugin startup logic
         instance = this;

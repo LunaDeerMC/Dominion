@@ -401,16 +401,16 @@ public class Asserts {
         if (bypassLimit(associatedPlayer)) {
             return;
         }
-        int spawnProtection = Configuration.serverSpawnProtectionRadius;
-        if (spawnProtection <= 0) {
-            return;
-        }
         World world = dominion.getWorld();
         if (world == null) {
             return;
         }
         if (HooksManager.isConflictWithWorldGuard(cuboid, world)) {
             throw new DominionException(Language.assertsText.intersectWithDom, dominion.getName(), "WorldGuard");
+        }
+        int spawnProtection = Configuration.serverSpawnProtectionRadius;
+        if (spawnProtection <= 0) {
+            return;
         }
         if (world.getEnvironment() == World.Environment.NORMAL) {
             // only check spawn protection in overworld

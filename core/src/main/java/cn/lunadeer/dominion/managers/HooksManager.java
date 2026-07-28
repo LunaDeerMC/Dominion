@@ -11,6 +11,19 @@ import org.jetbrains.annotations.NotNull;
 
 public class HooksManager {
 
+    /**
+     * Initializes hooks that must run while plugins are still in their load phase.
+     *
+     * @param plugin the Dominion plugin instance
+     */
+    public static void onLoad(@NotNull JavaPlugin plugin) {
+        // isPluginEnabled() is always false during onLoad(). softdepend guarantees
+        // WorldGuard is loaded before Dominion when it is installed.
+        if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
+            WorldGuardHook.registerFlag(plugin.getLogger());
+        }
+    }
+
     public HooksManager(JavaPlugin plugin) {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderAPIHook(plugin);
