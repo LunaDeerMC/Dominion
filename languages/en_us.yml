@@ -137,6 +137,9 @@ flags:
   pressure:
     display-name: Pressure Plate (Player)
     description: Whether player can trigger pressure plate.
+  red_stone_powder:
+    display-name: Redstone Dust
+    description: Whether redstone dust can be interacted with.
   repeater:
     display-name: Repeater
     description: Whether can change (interact with) repeater.
@@ -248,6 +251,180 @@ flags:
   villager_killing:
     display-name: Villager Killing
     description: Whether can do harm to villager.
+  animal_breed:
+    display-name: Animal Breeding
+    description: Whether animal breeding can create offspring.
+  animal_spawner:
+    display-name: Animal Spawner
+    description: Whether animals can spawn from monster spawners.
+  animal_spawn_egg:
+    display-name: Animal Spawn Egg
+    description: Whether animals can be created with spawn eggs.
+  villager_breed:
+    display-name: Villager Breeding
+    description: Whether villager breeding can create children.
+  villager_spawner:
+    display-name: Villager Spawner
+    description: Whether villagers can spawn from monster spawners.
+  villager_spawn_egg:
+    display-name: Villager Spawn Egg
+    description: Whether villagers can be created with spawn eggs.
+  monster_spawner:
+    display-name: Monster Spawner
+    description: Whether monsters can spawn from monster spawners.
+  monster_spawn_egg:
+    display-name: Monster Spawn Egg
+    description: Whether monsters can be created with spawn eggs.
+  ender_man_spawn:
+    display-name: Enderman Spawn
+    description: Whether endermen can spawn.
+  ender_man_teleport:
+    display-name: Enderman Teleport
+    description: Whether endermen can teleport.
+  tnt_damage_entity:
+    display-name: TNT Entity Damage
+    description: Whether TNT explosions can damage entities and hanging objects.
+  wither_explode:
+    display-name: Wither Spawn Explosion
+    description: Whether a spawning wither can destroy blocks.
+  wither_break_block:
+    display-name: Wither Block Breaking
+    description: Whether a harmed wither can break blocks.
+  creeper_damage_entity:
+    display-name: Creeper Decoration Damage
+    description: Whether creeper explosions can damage armor stands and hanging objects.
+  wither_skull_explode:
+    display-name: Wither Skull Block Damage
+    description: Whether wither skull explosions can destroy blocks.
+  wither_skull_damage_entity:
+    display-name: Wither Skull Decoration Damage
+    description: Whether wither skull explosions can damage armor stands and hanging objects.
+  ender_crystal_explode:
+    display-name: End Crystal Block Damage
+    description: Whether end crystal explosions can destroy blocks.
+  ender_crystal_damage_entity:
+    display-name: End Crystal Decoration Damage
+    description: Whether end crystal explosions can damage armor stands and hanging objects.
+  fireball_explode:
+    display-name: Fireball Block Damage
+    description: Whether fireball explosions can destroy blocks.
+  fireball_damage_entity:
+    display-name: Fireball Decoration Damage
+    description: Whether fireball explosions can damage armor stands and hanging objects.
+  block_explode:
+    display-name: Bed and Anchor Block Damage
+    description: Whether bed and respawn-anchor explosions can destroy blocks.
+  mob_trample:
+    display-name: Mob Trample Farmland
+    description: Whether non-player entities can trample farmland.
+  place_liquid:
+    display-name: Place Liquid
+    description: Whether water and lava can be placed.
+  place_entity:
+    display-name: Place Decorative Entity
+    description: Whether armor stands and item frames can be placed.
+  break_liquid:
+    display-name: Collect Liquid
+    description: Whether water and lava can be collected.
+  break_entity:
+    display-name: Break Decorative Entity
+    description: Whether armor stands and item frames can be broken.
+  armor_stand_interactive:
+    display-name: Armor Stand Interaction
+    description: Whether equipment on armor stands can be changed.
+  item_frame_content:
+    display-name: Item Frame Content
+    description: Whether items can be inserted into or removed from item frames.
+  fertilizer:
+    display-name: Fertilizer
+    description: Whether bone meal and other fertilizer can be used.
+  plant_tree:
+    display-name: Plant Tree
+    description: Whether saplings and similar tree plants can be planted.
+  trident:
+    display-name: Throw Trident
+    description: Whether tridents can be thrown.
+  fireball:
+    display-name: Launch Fireball
+    description: Whether players can launch fireballs.
+  wind_charge:
+    display-name: Use Wind Charge
+    description: Whether players can launch wind charges.
+flag-groups:
+  environment:
+    creature-spawning:
+      display-name: Creature Spawning
+      description: Animal, villager and monster spawning.
+    creature-behavior:
+      display-name: Creature Behavior
+      description: Movement, damage and special creature behavior.
+    explosions:
+      display-name: Explosions
+      description: Explosion block damage and entity damage by source.
+    fire:
+      display-name: Fire and Burning
+      description: Fire spread and heat damage.
+    natural-changes:
+      display-name: Natural Changes
+      description: Fluids, gravity, weather and natural block changes.
+    mechanisms:
+      display-name: Mechanisms
+      description: External redstone and pressure-trigger behavior.
+    entity-protection:
+      display-name: Entity Protection
+      description: Protect decorative entities from projectiles and explosions.
+    general:
+      display-name: General
+      description: General dominion presentation behavior.
+  privilege:
+    administration:
+      display-name: Administration
+      description: Dominion administration privileges.
+    movement:
+      display-name: Movement
+      description: Movement and travel inside a dominion.
+    building:
+      display-name: Building
+      description: Place and remove blocks, liquids and decorative entities.
+    item-management:
+      display-name: Item Management
+      description: Pick up and drop items.
+    access:
+      display-name: Access
+      description: Doors and simple access controls.
+    redstone:
+      display-name: Redstone
+      description: Interact with redstone components.
+    storage:
+      display-name: Storage
+      description: Containers and stored display items.
+    workstations:
+      display-name: Workstations
+      description: Crafting and utility workstations.
+    decoration:
+      display-name: Decoration
+      description: Decorative blocks and entities.
+    rest:
+      display-name: Rest and Respawn
+      description: Beds and respawn anchors.
+    vehicles:
+      display-name: Vehicles
+      description: Ride, create and destroy vehicles.
+    farming:
+      display-name: Farming
+      description: Crops, trees and beekeeping.
+    animal-care:
+      display-name: Animal Care
+      description: Feed and handle animals.
+    food-and-trade:
+      display-name: Food and Trade
+      description: Food, honey and villager trading.
+    projectiles:
+      display-name: Projectiles
+      description: Launch and use projectiles.
+    combat:
+      display-name: Combat
+      description: Combat, raids and entity damage.
 dominion-text:
   loading-config: Loading Configurations...
   plugin-enabled: Plugin Enabled!

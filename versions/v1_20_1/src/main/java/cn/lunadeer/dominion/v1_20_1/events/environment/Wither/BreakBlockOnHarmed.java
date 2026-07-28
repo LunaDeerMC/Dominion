@@ -15,6 +15,6 @@ public class BreakBlockOnHarmed implements Listener {
         if (event.getEntity().getType() != org.bukkit.entity.EntityType.WITHER) {
             return;
         }
-        checkEnvironmentFlag(event.getBlock().getLocation(), Flags.WITHER_SPAWN, event);
+        checkEnvironmentFlag(event.getBlock().getLocation(), Flags.WITHER_BREAK_BLOCK, event);
     }
 }

@@ -18,6 +18,6 @@ public class ByMob implements Listener {
         if (block.getType() != FARMLAND) {
             return;
         }
-        checkEnvironmentFlag(block.getLocation(), Flags.TRAMPLE, event);
+        checkEnvironmentFlag(block.getLocation(), Flags.MOB_TRAMPLE, event);
     }
 }

@@ -30,6 +30,6 @@ public class ItemFrameBroken implements Listener {
                 return;
             }
         }
-        checkPrivilegeFlag(entity.getLocation(), Flags.BREAK_BLOCK, player, event);
+        checkPrivilegeFlag(entity.getLocation(), Flags.BREAK_ENTITY, player, event);
     }
 }

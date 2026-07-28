@@ -9,6 +9,7 @@ import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Configuration;
+import cn.lunadeer.dominion.configuration.FlagApplyCoordinator;
 import cn.lunadeer.dominion.misc.Others;
 import cn.lunadeer.dominion.uis.chest.DominionChestUi;
 import cn.lunadeer.dominion.utils.McaRecord;
@@ -20,13 +21,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import static cn.lunadeer.dominion.commands.AdministratorCommand.exportMCA;
 
 public class DominionInterface extends DominionAPI {
+    private final FlagApplyCoordinator flagApplyCoordinator;
 
     public DominionInterface() {
         instance = this;
+        flagApplyCoordinator = new FlagApplyCoordinator();
     }
 
     @Override
@@ -171,6 +175,11 @@ public class DominionInterface extends DominionAPI {
     public void reloadConfig() throws Exception {
         Configuration.loadConfigurationAndDatabase(Bukkit.getConsoleSender());
         DominionChestUi.reload();
+    }
+
+    @Override
+    public CompletableFuture<Void> applyFlagChanges() {
+        return flagApplyCoordinator.requestApply();
     }
 
     @Override

@@ -25,6 +25,6 @@ public class WindChargeLaunch implements Listener {
         if (projectile.getType() != EntityType.WIND_CHARGE) {
             return;
         }
-        checkPrivilegeFlag(projectile.getLocation(), Flags.SHOOT, player, event);
+        checkPrivilegeFlag(projectile.getLocation(), Flags.WIND_CHARGE, player, event);
     }
 }

@@ -342,6 +342,39 @@ menus:
         material: NETHER_STAR
       close:
         material: BARRIER
+  flag-group-list:
+    required-elements:
+      - content
+    layout:
+      - "#########"
+      - "#*******#"
+      - "#*******#"
+      - "#*******#"
+      - "#*******#"
+      - "B##PSN##X"
+    symbols:
+      '#': filler
+      '*': content
+      B: back
+      P: previous
+      S: status
+      N: next
+      X: close
+    items:
+      filler:
+        material: GRAY_STAINED_GLASS_PANE
+      content:
+        material: BUNDLE
+      back:
+        material: ARROW
+      previous:
+        material: SPECTRAL_ARROW
+      status:
+        material: PAPER
+      next:
+        material: SPECTRAL_ARROW
+      close:
+        material: BARRIER
   flag-list:
     required-elements:
       - content

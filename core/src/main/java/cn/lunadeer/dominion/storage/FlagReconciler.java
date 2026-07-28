@@ -2,6 +2,8 @@ package cn.lunadeer.dominion.storage;
 
 import cn.lunadeer.dominion.api.dtos.flag.Flag;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
+import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
+import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -33,12 +35,42 @@ final class FlagReconciler {
     private SyncResult reconcile(Connection connection) throws SQLException {
         int changed = 0;
         changed += reconcileSplitBurnFlag(connection);
+        changed += reconcileSplitFlags(connection);
         changed += reconcileFlags(connection, "dominion", Flags.getAllEnvFlags());
         changed += reconcileFlags(connection, "dominion", Flags.getAllPriFlags());
         changed += reconcileFlags(connection, "dominion_member", Flags.getAllPriFlags());
         changed += reconcileFlags(connection, "dominion_group", Flags.getAllPriFlags());
         changed += reconcileFlags(connection, "privilege_template", Flags.getAllPriFlags());
         return new SyncResult(changed);
+    }
+
+    private int reconcileSplitFlags(Connection connection) throws SQLException {
+        int changed = 0;
+        for (Flag flag : Flags.getAllFlags()) {
+            Flag source = Flags.getLegacySource(flag);
+            if (source == null) continue;
+            if (flag instanceof EnvFlag) {
+                changed += reconcileSplitFlagColumn(connection, "dominion", source, flag);
+            } else if (flag instanceof PriFlag) {
+                changed += reconcileSplitFlagColumn(connection, "dominion", source, flag);
+                changed += reconcileSplitFlagColumn(connection, "dominion_member", source, flag);
+                changed += reconcileSplitFlagColumn(connection, "dominion_group", source, flag);
+                changed += reconcileSplitFlagColumn(connection, "privilege_template", source, flag);
+            }
+        }
+        return changed;
+    }
+
+    private int reconcileSplitFlagColumn(Connection connection, String tableName, Flag source, Flag target)
+            throws SQLException {
+        if (columnExists(connection, tableName, target.getFlagName())) return 0;
+        addFlagColumn(connection, tableName, target);
+        if (Flags.preserveAllowedSpawnEggValue(target)) {
+            setFlagColumn(connection, tableName, target.getFlagName(), true);
+        } else if (columnExists(connection, tableName, source.getFlagName())) {
+            copyFlagColumn(connection, tableName, source.getFlagName(), target.getFlagName());
+        }
+        return 1;
     }
 
     private int reconcileSplitBurnFlag(Connection connection) throws SQLException {
@@ -90,6 +122,14 @@ final class FlagReconciler {
     private void copyFlagColumn(Connection connection, String tableName, String sourceColumn, String targetColumn) throws SQLException {
         try (var statement = connection.createStatement()) {
             statement.executeUpdate("UPDATE " + tableName + " SET " + targetColumn + " = " + sourceColumn);
+        }
+    }
+
+    private void setFlagColumn(Connection connection, String tableName, String targetColumn, boolean value)
+            throws SQLException {
+        try (var statement = connection.createStatement()) {
+            statement.executeUpdate("UPDATE " + tableName + " SET " + targetColumn + " = "
+                    + booleanLiteral(value));
         }
     }
 

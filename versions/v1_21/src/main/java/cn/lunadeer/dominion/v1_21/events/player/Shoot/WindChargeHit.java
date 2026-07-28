@@ -25,7 +25,7 @@ public class WindChargeHit implements Listener {
         if (projectile.getType() != EntityType.WIND_CHARGE) {
             return;
         }
-        if (!checkPrivilegeFlag(projectile.getLocation(), Flags.SHOOT, player, event)) {
+        if (!checkPrivilegeFlag(projectile.getLocation(), Flags.WIND_CHARGE, player, event)) {
             projectile.remove();
         }
     }

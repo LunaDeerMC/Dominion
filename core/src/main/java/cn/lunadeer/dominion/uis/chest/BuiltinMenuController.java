@@ -44,6 +44,8 @@ final class BuiltinMenuController implements MenuController {
             case PERMISSIONS -> permissionMenus.permissions(player, session);
             case PEOPLE -> permissionMenus.people(player, session);
             case ENV_FLAGS, GUEST_FLAGS, MEMBER_FLAGS, GROUP_FLAGS, TEMPLATE_FLAGS ->
+                    permissionMenus.flagGroupList(player, session);
+            case FLAG_LIST ->
                     permissionMenus.flagList(player, session);
             case MEMBER_LIST -> permissionMenus.memberList(player, session);
             case MEMBER_DETAIL -> permissionMenus.memberDetail(player, session);

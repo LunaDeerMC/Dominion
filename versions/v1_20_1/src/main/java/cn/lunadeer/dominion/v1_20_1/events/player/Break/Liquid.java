@@ -14,6 +14,6 @@ public class Liquid implements Listener {
     public void handler(PlayerBucketFillEvent event) {
         if (event.isCancelled()) return;
         Player player = event.getPlayer();
-        checkPrivilegeFlag(event.getBlockClicked().getLocation(), Flags.BREAK_BLOCK, player, event);
+        checkPrivilegeFlag(event.getBlockClicked().getLocation(), Flags.BREAK_LIQUID, player, event);
     }
 }

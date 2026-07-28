@@ -18,6 +18,6 @@ public class ExplodeBySpawn implements Listener {
         if (entity.getType() != EntityType.WITHER) {
             return;
         }
-        event.blockList().removeIf(block -> !checkEnvironmentFlag(block.getLocation(), Flags.WITHER_SPAWN, null));
+        event.blockList().removeIf(block -> !checkEnvironmentFlag(block.getLocation(), Flags.WITHER_EXPLODE, null));
     }
 }

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 public class WorldWide {
+    private static final int FLAG_SCHEMA_VERSION = 2;
 
     private static class WorldConfig {
         private boolean enabled = false;
@@ -78,10 +79,21 @@ public class WorldWide {
 
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         world.enabled = config.getBoolean("enabled", false);
+        int schemaVersion = config.getInt("flag-schema-version", 1);
+        boolean changed = false;
 
         for (Flag flag : Flags.getAllFlags()) {
             if (flag.getFlagName().equals(Flags.ADMIN.getFlagName())) continue; // not handle admin flag for world-wide config
-            
+
+            if (!config.contains(flag.getConfigurationNameKey())) {
+                Flag source = schemaVersion < FLAG_SCHEMA_VERSION ? Flags.getLegacySource(flag) : null;
+                boolean value = source == null
+                        ? flag.getDefaultValue()
+                        : config.getBoolean(source.getConfigurationNameKey(), source.getDefaultValue());
+                if (schemaVersion < FLAG_SCHEMA_VERSION && Flags.preserveAllowedSpawnEggValue(flag)) value = true;
+                config.set(flag.getConfigurationNameKey(), value);
+                changed = true;
+            }
             if (flag instanceof PriFlag priFlag) {
                 world.guestPrivilegeFlags.put(priFlag, config.getBoolean(flag.getConfigurationNameKey(), flag.getDefaultValue()));
             } else if (flag instanceof EnvFlag envFlag) {
@@ -89,6 +101,11 @@ public class WorldWide {
             }
         }
 
+        if (schemaVersion < FLAG_SCHEMA_VERSION) {
+            config.set("flag-schema-version", FLAG_SCHEMA_VERSION);
+            changed = true;
+        }
+        if (changed) config.save(file);
         worlds.put(worldName, world);
     }
 
@@ -103,6 +120,7 @@ public class WorldWide {
             config.setInlineComments("enabled", List.of("Enable or disable world-wide dominion for this world"));
         }
         config.set("enabled", world.enabled);
+        config.set("flag-schema-version", FLAG_SCHEMA_VERSION);
 
         for (Flag flag : Flags.getAllFlags()) {
             if (flag.getFlagName().equals(Flags.ADMIN.getFlagName())) continue;

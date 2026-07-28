@@ -137,6 +137,9 @@ flags:
   pressure:
     display-name: 压力板（玩家）
     description: 玩家是否可以触发压力板。
+  red_stone_powder:
+    display-name: 红石粉
+    description: 是否可以与红石粉交互。
   repeater:
     display-name: 中继器
     description: 是否可以更改（交互）中继器。
@@ -248,6 +251,180 @@ flags:
   villager_killing:
     display-name: 击杀村民
     description: 是否可以伤害村民。
+  animal_breed:
+    display-name: 动物繁殖
+    description: 是否允许动物繁殖产生幼崽。
+  animal_spawner:
+    display-name: 动物刷怪笼生成
+    description: 是否允许刷怪笼生成动物。
+  animal_spawn_egg:
+    display-name: 动物刷怪蛋生成
+    description: 是否允许使用刷怪蛋生成动物。
+  villager_breed:
+    display-name: 村民繁殖
+    description: 是否允许村民繁殖产生幼年村民。
+  villager_spawner:
+    display-name: 村民刷怪笼生成
+    description: 是否允许刷怪笼生成村民。
+  villager_spawn_egg:
+    display-name: 村民刷怪蛋生成
+    description: 是否允许使用刷怪蛋生成村民。
+  monster_spawner:
+    display-name: 怪物刷怪笼生成
+    description: 是否允许刷怪笼生成怪物。
+  monster_spawn_egg:
+    display-name: 怪物刷怪蛋生成
+    description: 是否允许使用刷怪蛋生成怪物。
+  ender_man_spawn:
+    display-name: 末影人生成
+    description: 是否允许末影人生成。
+  ender_man_teleport:
+    display-name: 末影人传送
+    description: 是否允许末影人传送。
+  tnt_damage_entity:
+    display-name: TNT 伤害实体
+    description: 是否允许 TNT 爆炸伤害实体和悬挂物。
+  wither_explode:
+    display-name: 凋灵生成爆炸
+    description: 是否允许凋灵生成时的爆炸破坏方块。
+  wither_break_block:
+    display-name: 凋灵破坏方块
+    description: 是否允许受伤的凋灵破坏方块。
+  creeper_damage_entity:
+    display-name: 苦力怕伤害装饰实体
+    description: 是否允许苦力怕爆炸伤害盔甲架和悬挂物。
+  wither_skull_explode:
+    display-name: 凋灵之首破坏方块
+    description: 是否允许凋灵之首爆炸破坏方块。
+  wither_skull_damage_entity:
+    display-name: 凋灵之首伤害装饰实体
+    description: 是否允许凋灵之首爆炸伤害盔甲架和悬挂物。
+  ender_crystal_explode:
+    display-name: 末影水晶破坏方块
+    description: 是否允许末影水晶爆炸破坏方块。
+  ender_crystal_damage_entity:
+    display-name: 末影水晶伤害装饰实体
+    description: 是否允许末影水晶爆炸伤害盔甲架和悬挂物。
+  fireball_explode:
+    display-name: 火球破坏方块
+    description: 是否允许火球爆炸破坏方块。
+  fireball_damage_entity:
+    display-name: 火球伤害装饰实体
+    description: 是否允许火球爆炸伤害盔甲架和悬挂物。
+  block_explode:
+    display-name: 床与重生锚爆炸
+    description: 是否允许床和重生锚爆炸破坏方块。
+  mob_trample:
+    display-name: 生物踩踏耕地
+    description: 是否允许非玩家实体踩踏耕地。
+  place_liquid:
+    display-name: 放置液体
+    description: 是否可以放置水和岩浆。
+  place_entity:
+    display-name: 放置装饰实体
+    description: 是否可以放置盔甲架和物品展示框。
+  break_liquid:
+    display-name: 收集液体
+    description: 是否可以收集水和岩浆。
+  break_entity:
+    display-name: 破坏装饰实体
+    description: 是否可以破坏盔甲架和物品展示框。
+  armor_stand_interactive:
+    display-name: 盔甲架交互
+    description: 是否可以更改盔甲架上的装备。
+  item_frame_content:
+    display-name: 展示框内容
+    description: 是否可以放入或取出物品展示框中的物品。
+  fertilizer:
+    display-name: 催熟
+    description: 是否可以使用骨粉等肥料。
+  plant_tree:
+    display-name: 种树
+    description: 是否可以种植树苗等树木植物。
+  trident:
+    display-name: 投掷三叉戟
+    description: 是否可以投掷三叉戟。
+  fireball:
+    display-name: 发射火球
+    description: 是否可以发射火球。
+  wind_charge:
+    display-name: 使用风弹
+    description: 是否可以发射风弹。
+flag-groups:
+  environment:
+    creature-spawning:
+      display-name: 生物生成
+      description: 动物、村民和怪物的生成。
+    creature-behavior:
+      display-name: 生物行为
+      description: 生物移动、伤害及特殊行为。
+    explosions:
+      display-name: 爆炸
+      description: 按来源控制爆炸的方块破坏和实体伤害。
+    fire:
+      display-name: 火焰与燃烧
+      description: 火焰蔓延及高温伤害。
+    natural-changes:
+      display-name: 自然变化
+      description: 液体、重力、天气及自然方块变化。
+    mechanisms:
+      display-name: 机械装置
+      description: 外部红石及压力触发行为。
+    entity-protection:
+      display-name: 实体保护
+      description: 保护装饰实体免受投射物和爆炸破坏。
+    general:
+      display-name: 常规
+      description: 领地的常规显示行为。
+  privilege:
+    administration:
+      display-name: 管理
+      description: 领地管理权限。
+    movement:
+      display-name: 移动
+      description: 在领地内移动和旅行。
+    building:
+      display-name: 建造
+      description: 放置和移除方块、液体及装饰实体。
+    item-management:
+      display-name: 物品管理
+      description: 拾取和丢弃物品。
+    access:
+      display-name: 通行
+      description: 门及简单通行控制。
+    redstone:
+      display-name: 红石
+      description: 与红石元件交互。
+    storage:
+      display-name: 存储
+      description: 容器及展示物品的存取。
+    workstations:
+      display-name: 工作站
+      description: 合成及实用工作站。
+    decoration:
+      display-name: 装饰
+      description: 装饰方块和实体。
+    rest:
+      display-name: 休息与重生
+      description: 床和重生锚。
+    vehicles:
+      display-name: 载具
+      description: 骑乘、生成和破坏载具。
+    farming:
+      display-name: 种植
+      description: 作物、树木及养蜂。
+    animal-care:
+      display-name: 动物照料
+      description: 喂养及管理动物。
+    food-and-trade:
+      display-name: 食物与交易
+      description: 食物、蜂蜜及村民交易。
+    projectiles:
+      display-name: 投射物
+      description: 发射和使用投射物。
+    combat:
+      display-name: 战斗
+      description: 战斗、袭击及实体伤害。
 dominion-text:
   loading-config: 正在加载配置...
   plugin-enabled: 插件已启用！

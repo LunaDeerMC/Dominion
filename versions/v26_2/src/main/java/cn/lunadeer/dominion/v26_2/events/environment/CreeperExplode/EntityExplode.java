@@ -2,7 +2,8 @@ package cn.lunadeer.dominion.v26_2.events.environment.CreeperExplode;
 
 import cn.lunadeer.dominion.events.LowestVersion;
 import cn.lunadeer.dominion.utils.XVersionManager;
-import cn.lunadeer.dominion.api.dtos.flag.Flags;
+import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
+import cn.lunadeer.dominion.api.dtos.flag.FlagClassifiers;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,9 +18,8 @@ public class EntityExplode implements Listener {
     public void handle(EntityExplodeEvent event) {
         if (event.isCancelled()) return;
         Entity entity = event.getEntity();
-        if (entity.getType() != org.bukkit.entity.EntityType.SULFUR_CUBE) {
-            return;
-        }
-        event.blockList().removeIf(block -> !checkEnvironmentFlag(block.getLocation(), Flags.CREEPER_EXPLODE, null));
+        EnvFlag flag = FlagClassifiers.explosionBlock(entity.getType());
+        if (flag == null) return;
+        event.blockList().removeIf(block -> !checkEnvironmentFlag(block.getLocation(), flag, null));
     }
 }

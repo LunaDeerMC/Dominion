@@ -1,6 +1,6 @@
 package cn.lunadeer.dominion.v1_20_1.events.environment;
 
-import cn.lunadeer.dominion.api.dtos.flag.Flags;
+import cn.lunadeer.dominion.api.dtos.flag.FlagClassifiers;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Bat;
 import org.bukkit.entity.Entity;
@@ -15,11 +15,10 @@ public class AnimalSpawn implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(CreatureSpawnEvent event) {
         if (event.isCancelled()) return;
-        if (event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.SPAWNER_EGG)) return;
         Entity entity = event.getEntity();
         if (!(entity instanceof Animals) && !(entity instanceof Bat)) {
             return;
         }
-        checkEnvironmentFlag(entity.getLocation(), Flags.ANIMAL_SPAWN, event);
+        checkEnvironmentFlag(entity.getLocation(), FlagClassifiers.animalSpawn(event.getSpawnReason()), event);
     }
 }

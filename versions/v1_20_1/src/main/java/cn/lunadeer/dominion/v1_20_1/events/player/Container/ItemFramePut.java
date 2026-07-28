@@ -22,6 +22,6 @@ public class ItemFramePut implements Listener {
         if (itemFrame.getItem().getType() != Material.AIR) {
             return;
         }
-        checkPrivilegeFlag(itemFrame.getLocation(), Flags.CONTAINER, event.getPlayer(), event);
+        checkPrivilegeFlag(itemFrame.getLocation(), Flags.ITEM_FRAME_CONTENT, event.getPlayer(), event);
     }
 }

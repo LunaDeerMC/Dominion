@@ -76,7 +76,7 @@ class MenuDefinitionTest {
                 assertTrue(text.contains("menus." + id + ".items." + element + ".name"), id + ":" + element);
             }
         }
-        for (String id : java.util.List.of("dominion-list", "flag-list", "member-list", "group-list",
+        for (String id : java.util.List.of("dominion-list", "flag-group-list", "flag-list", "member-list", "group-list",
                 "template-list", "picker-list", "title-list")) {
             MenuDefinition menu = MenuDefinition.read(menus.getConfigurationSection(id));
             assertEquals(45, menu.firstSlot("back"), id);

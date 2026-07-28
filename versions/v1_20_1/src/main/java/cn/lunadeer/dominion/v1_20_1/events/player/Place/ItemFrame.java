@@ -19,6 +19,6 @@ public class ItemFrame implements Listener {
         if (player == null) {
             return;
         }
-        checkPrivilegeFlag(entity.getLocation(), Flags.PLACE, player, event);
+        checkPrivilegeFlag(entity.getLocation(), Flags.PLACE_ENTITY, player, event);
     }
 }

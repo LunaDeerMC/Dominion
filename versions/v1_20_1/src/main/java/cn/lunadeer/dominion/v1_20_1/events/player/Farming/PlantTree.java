@@ -16,7 +16,6 @@ public class PlantTree implements Listener {
         if (event.isCancelled()) return;
         if (!Tag.SAPLINGS.isTagged(event.getBlock().getType())) return;
         Player player = event.getPlayer();
-        checkPrivilegeFlag(event.getBlock().getLocation(), Flags.SOWING, player, event);
+        checkPrivilegeFlag(event.getBlock().getLocation(), Flags.PLANT_TREE, player, event);
     }
 }
-

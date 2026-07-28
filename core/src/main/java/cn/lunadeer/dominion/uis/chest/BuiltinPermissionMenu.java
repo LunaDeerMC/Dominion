@@ -6,12 +6,15 @@ import cn.lunadeer.dominion.api.dtos.MemberDTO;
 import cn.lunadeer.dominion.api.dtos.TemplateDTO;
 import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
 import cn.lunadeer.dominion.api.dtos.flag.Flag;
+import cn.lunadeer.dominion.api.dtos.flag.FlagGroup;
+import cn.lunadeer.dominion.api.dtos.flag.FlagGroups;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.providers.DominionProvider;
 import cn.lunadeer.dominion.providers.GroupProvider;
 import cn.lunadeer.dominion.providers.MemberProvider;
 import cn.lunadeer.dominion.providers.TemplateProvider;
+import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.chestui.ChestUiManager;
 import cn.lunadeer.dominion.utils.chestui.MenuNavigator;
 import cn.lunadeer.dominion.utils.chestui.MenuRoute;
@@ -21,11 +24,15 @@ import cn.lunadeer.dominion.utils.chestui.MenuViewBuilder;
 import cn.lunadeer.dominion.utils.chestui.TextRenderer;
 import cn.lunadeer.dominion.utils.chestui.config.ChestUiConfig;
 import cn.lunadeer.dominion.utils.chestui.config.ItemAppearance;
+import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 /** Renders permission flags and the member/group management menus. */
 final class BuiltinPermissionMenu extends AbstractBuiltinMenu {
@@ -57,13 +64,14 @@ final class BuiltinPermissionMenu extends AbstractBuiltinMenu {
 
     MenuView flagList(Player player, MenuSession session) {
         MenuRoute route = session.current();
-        DominionDTO dominion = id(route) == MenuId.TEMPLATE_FLAGS
+        MenuId context = flagContext(route);
+        DominionDTO dominion = context == MenuId.TEMPLATE_FLAGS
                 ? null : requireDominion(player, route.integer("dom"));
-        TemplateDTO template = id(route) == MenuId.TEMPLATE_FLAGS
+        TemplateDTO template = context == MenuId.TEMPLATE_FLAGS
                 ? requireTemplate(player, route.integer("template")) : null;
-        List<? extends Flag> flags = id(route) == MenuId.ENV_FLAGS
-                ? Flags.getAllEnvFlagsEnable() : Flags.getAllPriFlagsEnable();
-        String title = switch (id(route)) {
+        FlagGroup<?> group = requireFlagGroup(route, context);
+        List<? extends Flag> flags = group.getFlags().stream().filter(Flag::getEnable).toList();
+        String baseTitle = switch (context) {
             case ENV_FLAGS -> configured("titles.environment-flags", Map.of("dominion", dominion.getName()));
             case GUEST_FLAGS -> configured("titles.guest-flags", Map.of("dominion", dominion.getName()));
             case MEMBER_FLAGS -> config.text("titles.member-flags");
@@ -71,10 +79,41 @@ final class BuiltinPermissionMenu extends AbstractBuiltinMenu {
             case TEMPLATE_FLAGS -> configured("titles.template-flags", Map.of("template", template.getName()));
             default -> config.text("titles.flags");
         };
+        String title = configured("titles.flag-group", Map.of("title", baseTitle, "group", group.getDisplayName()));
         MenuViewBuilder view = new MenuViewBuilder(player, session, config, "flag-list", Map.of("title", title));
         renderPage(view, route, flags, (slot, flag) -> renderFlag(
                 player, view, route, dominion, template, slot, flag));
         listNavigation(player, view, route, flags.size());
+        return view.build();
+    }
+
+    MenuView flagGroupList(Player player, MenuSession session) {
+        MenuRoute route = session.current();
+        MenuId context = id(route);
+        DominionDTO dominion = context == MenuId.TEMPLATE_FLAGS
+                ? null : requireDominion(player, route.integer("dom"));
+        TemplateDTO template = context == MenuId.TEMPLATE_FLAGS
+                ? requireTemplate(player, route.integer("template")) : null;
+        List<FlagGroup<?>> groups = new ArrayList<>(context == MenuId.ENV_FLAGS
+                ? FlagGroups.getEnvFlagGroups() : FlagGroups.getPriFlagGroups());
+        FlagGroup<?> ungrouped = context == MenuId.ENV_FLAGS
+                ? FlagGroups.getUngroupedEnvFlags() : FlagGroups.getUngroupedPriFlags();
+        if (ungrouped.getFlags().stream().anyMatch(Flag::getEnable)) groups.add(ungrouped);
+        groups = groups.stream()
+                .filter(group -> group.getFlags().stream().anyMatch(Flag::getEnable))
+                .toList();
+        String title = switch (context) {
+            case ENV_FLAGS -> configured("titles.environment-flags", Map.of("dominion", dominion.getName()));
+            case GUEST_FLAGS -> configured("titles.guest-flags", Map.of("dominion", dominion.getName()));
+            case MEMBER_FLAGS -> config.text("titles.member-flags");
+            case GROUP_FLAGS -> config.text("titles.group-flags");
+            case TEMPLATE_FLAGS -> configured("titles.template-flags", Map.of("template", template.getName()));
+            default -> config.text("titles.flags");
+        };
+        MenuViewBuilder view = new MenuViewBuilder(player, session, config, "flag-group-list", Map.of("title", title));
+        renderPage(view, route, groups, (slot, group) ->
+                renderFlagGroup(player, view, route, context, dominion, template, slot, group));
+        listNavigation(player, view, route, groups.size());
         return view.build();
     }
 
@@ -175,6 +214,37 @@ final class BuiltinPermissionMenu extends AbstractBuiltinMenu {
                 click -> toggleFlag(player, route, dominion, template, flag, !state));
     }
 
+    private void renderFlagGroup(Player player, MenuViewBuilder view, MenuRoute route, MenuId context,
+                                 DominionDTO dominion, TemplateDTO template, int slot, FlagGroup<?> group) {
+        List<? extends Flag> flags = group.getFlags().stream().filter(Flag::getEnable).toList();
+        long enabled = flags.stream().filter(flag -> flagState(context, route, dominion, template, flag)).count();
+        FlagGroupActions.State state = FlagGroupActions.state(
+                flags,
+                flag -> flagState(context, route, dominion, template, flag)
+        );
+        String stateKey = switch (state) {
+            case ALL_ENABLED -> "common.all-enabled";
+            case ALL_DISABLED -> "common.all-disabled";
+            case MIXED -> "common.mixed";
+        };
+        Map<String, Object> values = Map.of(
+                "group", group.getId().equals("ungrouped") ? config.text("labels.ungrouped") : group.getDisplayName(),
+                "description", group.getId().equals("ungrouped")
+                        ? config.text("labels.ungrouped-description") : group.getDescription(),
+                "enabled", enabled,
+                "total", flags.size(),
+                "state", TextRenderer.formatted(config.text(stateKey)));
+        view.itemAt(slot, "content", "content", values, null,
+                new ItemAppearance(group.getMaterial(), 1, null, enabled == flags.size(), false),
+                click -> {
+                    if (isShiftClick(click)) {
+                        toggleFlagGroup(player, route, context, dominion, template, flags);
+                    } else {
+                        nav.push(player, groupRoute(route, context, group.getId()));
+                    }
+                });
+    }
+
     private void renderGroup(Player player, MenuViewBuilder view, DominionDTO dominion, int slot, GroupDTO group) {
         int count;
         try {
@@ -201,7 +271,7 @@ final class BuiltinPermissionMenu extends AbstractBuiltinMenu {
 
     private void toggleFlag(Player player, MenuRoute route, DominionDTO dominion, TemplateDTO template,
                             Flag flag, boolean value) {
-        switch (id(route)) {
+        switch (flagContext(route)) {
             case ENV_FLAGS -> ui.submit(player, DominionProvider.getInstance()
                     .setDominionEnvFlag(player, dominion, (EnvFlag) flag, value), ignored -> {});
             case GUEST_FLAGS -> ui.submit(player, DominionProvider.getInstance()
@@ -217,7 +287,12 @@ final class BuiltinPermissionMenu extends AbstractBuiltinMenu {
     }
 
     private boolean flagState(MenuRoute route, DominionDTO dominion, TemplateDTO template, Flag flag) {
-        return switch (id(route)) {
+        return flagState(flagContext(route), route, dominion, template, flag);
+    }
+
+    private boolean flagState(MenuId context, MenuRoute route, DominionDTO dominion,
+                              TemplateDTO template, Flag flag) {
+        return switch (context) {
             case ENV_FLAGS -> dominion.getEnvFlagValue((EnvFlag) flag);
             case GUEST_FLAGS -> dominion.getGuestFlagValue((PriFlag) flag);
             case MEMBER_FLAGS -> requireMember(dominion, route.integer("member")).getFlagValue((PriFlag) flag);
@@ -225,5 +300,66 @@ final class BuiltinPermissionMenu extends AbstractBuiltinMenu {
             case TEMPLATE_FLAGS -> template.getFlagValue((PriFlag) flag);
             default -> false;
         };
+    }
+
+    private void toggleFlagGroup(Player player, MenuRoute route, MenuId context, DominionDTO dominion,
+                                 TemplateDTO template, List<? extends Flag> flags) {
+        boolean target = FlagGroupActions.bulkTarget(
+                flags,
+                flag -> flagState(context, route, dominion, template, flag)
+        );
+        ui.submit(player, FlagGroupActions.applySequentially(
+                flags,
+                flag -> flagState(context, route, dominion, template, flag) != target,
+                command -> Scheduler.runEntityTask(command, player),
+                flag -> setFlag(player, route, context, dominion, template, flag, target)
+        ), result -> {
+            result.failures().forEach(throwable -> Notification.error(player, throwable));
+        });
+    }
+
+    private CompletableFuture<?> setFlag(Player player, MenuRoute route, MenuId context, DominionDTO dominion,
+                                         TemplateDTO template, Flag flag, boolean value) {
+        return switch (context) {
+            case ENV_FLAGS -> DominionProvider.getInstance()
+                    .setDominionEnvFlag(player, dominion, (EnvFlag) flag, value);
+            case GUEST_FLAGS -> DominionProvider.getInstance()
+                    .setDominionGuestFlag(player, dominion, (PriFlag) flag, value);
+            case MEMBER_FLAGS -> MemberProvider.getInstance().setMemberFlag(player, dominion,
+                    requireMember(dominion, route.integer("member")), (PriFlag) flag, value);
+            case GROUP_FLAGS -> GroupProvider.getInstance().setGroupFlag(player, dominion,
+                    requireGroup(dominion, route.integer("group")), (PriFlag) flag, value);
+            case TEMPLATE_FLAGS -> TemplateProvider.getInstance()
+                    .setTemplateFlag(player, template, (PriFlag) flag, value);
+            default -> CompletableFuture.completedFuture(null);
+        };
+    }
+
+    private FlagGroup<?> requireFlagGroup(MenuRoute route, MenuId context) {
+        String groupId = route.string("flag-group");
+        FlagGroup<?> group;
+        if (context == MenuId.ENV_FLAGS) {
+            group = groupId.equals("ungrouped")
+                    ? FlagGroups.getUngroupedEnvFlags() : FlagGroups.getEnvFlagGroup(groupId);
+        } else {
+            group = groupId.equals("ungrouped")
+                    ? FlagGroups.getUngroupedPriFlags() : FlagGroups.getPriFlagGroup(groupId);
+        }
+        if (group == null) throw new IllegalStateException("Flag group no longer exists: " + groupId);
+        return group;
+    }
+
+    private MenuRoute groupRoute(MenuRoute source, MenuId context, String groupId) {
+        return new MenuRoute(MenuId.FLAG_LIST.name(), source.parameters(), 1, "")
+                .with("context", context.name())
+                .with("flag-group", groupId);
+    }
+
+    private MenuId flagContext(MenuRoute route) {
+        return id(route) == MenuId.FLAG_LIST ? MenuId.valueOf(route.string("context")) : id(route);
+    }
+
+    private static boolean isShiftClick(ClickType click) {
+        return click == ClickType.SHIFT_LEFT || click == ClickType.SHIFT_RIGHT;
     }
 }

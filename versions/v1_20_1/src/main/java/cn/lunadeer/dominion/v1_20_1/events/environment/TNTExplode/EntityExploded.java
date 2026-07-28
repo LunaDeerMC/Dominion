@@ -22,6 +22,6 @@ public class EntityExploded implements Listener {
         if (harmer.getType() != EntityType.MINECART_TNT && harmer.getType() != EntityType.PRIMED_TNT) {
             return;
         }
-        checkEnvironmentFlag(entity.getLocation(), Flags.TNT_EXPLODE, event);
+        checkEnvironmentFlag(entity.getLocation(), Flags.TNT_DAMAGE_ENTITY, event);
     }
 }

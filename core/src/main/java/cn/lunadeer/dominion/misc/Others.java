@@ -18,7 +18,6 @@ import cn.lunadeer.dominion.utils.XLogger;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
@@ -277,15 +276,6 @@ public class Others {
         if (dominion == null) return false;
         if (!Objects.equals(dominion.getWorldUid(), world)) return false;
         return dominion.getCuboid().contain(x, y, z);
-    }
-
-    public static boolean isExplodeEntity(@NotNull Entity entity) {
-        return entity.getType() == EntityType.CREEPER
-                || entity.getType() == EntityType.WITHER_SKULL
-                || entity.getType() == EntityType.FIREBALL
-                || entity.getType() == EntityType.ENDER_CRYSTAL
-                || entity.getType() == EntityType.SMALL_FIREBALL
-                || entity.getType() == EntityType.DRAGON_FIREBALL;
     }
 
     public static Location[] sortLocations(@NotNull Location location1, @NotNull Location location2) {

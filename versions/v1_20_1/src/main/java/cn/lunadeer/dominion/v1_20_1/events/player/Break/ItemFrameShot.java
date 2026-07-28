@@ -25,6 +25,6 @@ public class ItemFrameShot implements Listener {
         if (!(hit instanceof Hanging)) {
             return;
         }
-        checkPrivilegeFlag(hit.getLocation(), Flags.BREAK_BLOCK, player, event);
+        checkPrivilegeFlag(hit.getLocation(), Flags.BREAK_ENTITY, player, event);
     }
 }

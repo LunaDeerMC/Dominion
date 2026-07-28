@@ -1,6 +1,7 @@
 package cn.lunadeer.dominion.v1_20_1.events.environment.CreeperExplode;
 
-import cn.lunadeer.dominion.api.dtos.flag.Flags;
+import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
+import cn.lunadeer.dominion.api.dtos.flag.FlagClassifiers;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -9,7 +10,6 @@ import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 
 import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
-import static cn.lunadeer.dominion.misc.Others.isExplodeEntity;
 
 public class ItemFrameExploded implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
@@ -20,9 +20,8 @@ public class ItemFrameExploded implements Listener {
             return;
         }
         Entity remover = event.getRemover();
-        if (!isExplodeEntity(remover)) {
-            return;
-        }
-        checkEnvironmentFlag(entity.getLocation(), Flags.CREEPER_EXPLODE, event);
+        EnvFlag flag = FlagClassifiers.explosionEntity(remover.getType());
+        if (flag == null) return;
+        checkEnvironmentFlag(entity.getLocation(), flag, event);
     }
 }

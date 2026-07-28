@@ -15,6 +15,6 @@ public class Fertilizer implements Listener {
         if (event.isCancelled()) return;
         Player player = event.getPlayer();
         if (player == null) return;
-        checkPrivilegeFlag(event.getBlock().getLocation(), Flags.SOWING, player, event);
+        checkPrivilegeFlag(event.getBlock().getLocation(), Flags.FERTILIZER, player, event);
     }
 }

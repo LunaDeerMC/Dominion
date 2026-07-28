@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.configuration;
 
 import cn.lunadeer.dominion.Dominion;
-import cn.lunadeer.dominion.api.dtos.flag.Flag;
-import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.utils.MessageDisplay;
 import cn.lunadeer.dominion.utils.Notification;
 import cn.lunadeer.dominion.utils.XLogger;
@@ -11,7 +9,6 @@ import cn.lunadeer.dominion.storage.DatabaseManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +28,6 @@ import static cn.lunadeer.dominion.configuration.Language.loadLanguageFiles;
         "If you want to control player's privilege, please refer to the limitations configuration.",
 })
 public class Configuration extends ConfigurationFile {
-
     public static class ConfigurationText extends ConfigurationPart {
         public String loadingLanguage = "Loading language {0}...";
         public String loadLanguageFail = "Failed to load language {0} reason: {1}, using default en_us.";
@@ -58,32 +54,7 @@ public class Configuration extends ConfigurationFile {
 
     @HandleManually
     public static void loadFlagConfiguration() throws IOException {
-        XLogger.info(Language.configurationText.loadingFlag);
-        File yamlFile = new File(Dominion.instance.getDataFolder(), "flags.yml");
-        if (!yamlFile.exists()) {
-            boolean re = yamlFile.createNewFile();
-        }
-        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(yamlFile);
-        for (Flag flag : Flags.getAllFlags()) {
-            if (yaml.contains(flag.getConfigurationDefaultKey())) {
-                flag.setDefaultValue(yaml.getBoolean(flag.getConfigurationDefaultKey()));
-            } else {
-                yaml.set(flag.getConfigurationDefaultKey(), flag.getDefaultValue());
-            }
-            if (yaml.contains(flag.getConfigurationEnableKey())) {
-                flag.setEnable(yaml.getBoolean(flag.getConfigurationEnableKey()));
-            } else {
-                yaml.set(flag.getConfigurationEnableKey(), flag.getEnable());
-            }
-            if (yaml.contains(flag.getConfigurationMaterialKey())) {
-                flag.setMaterial(yaml.getString(flag.getConfigurationMaterialKey()));
-            } else {
-                yaml.set(flag.getConfigurationMaterialKey(), flag.getMaterial().name());
-            }
-            yaml.setInlineComments(flag.getConfigurationNameKey(), Collections.singletonList(flag.getDisplayName() + "-" + flag.getDescription()));
-        }
-        yaml.save(yamlFile);
-        XLogger.info(Language.configurationText.loadFlagSuccess);
+        FlagConfiguration.load();
     }
 
     @Comments("Do not modify this value.")

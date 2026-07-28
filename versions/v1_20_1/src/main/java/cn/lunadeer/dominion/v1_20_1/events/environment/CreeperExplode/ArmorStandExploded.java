@@ -1,6 +1,7 @@
 package cn.lunadeer.dominion.v1_20_1.events.environment.CreeperExplode;
 
-import cn.lunadeer.dominion.api.dtos.flag.Flags;
+import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
+import cn.lunadeer.dominion.api.dtos.flag.FlagClassifiers;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -9,7 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
-import static cn.lunadeer.dominion.misc.Others.isExplodeEntity;
 
 public class ArmorStandExploded implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
@@ -19,9 +19,8 @@ public class ArmorStandExploded implements Listener {
         if (entity.getType() != EntityType.ARMOR_STAND) {
             return;
         }
-        if (!isExplodeEntity(event.getDamager())) {
-            return;
-        }
-        checkEnvironmentFlag(entity.getLocation(), Flags.CREEPER_EXPLODE, event);
+        EnvFlag flag = FlagClassifiers.explosionEntity(event.getDamager().getType());
+        if (flag == null) return;
+        checkEnvironmentFlag(entity.getLocation(), flag, event);
     }
 }

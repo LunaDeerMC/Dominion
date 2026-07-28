@@ -12,6 +12,6 @@ public class BedAnchorExplode implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handle(BlockExplodeEvent event) {
         if (event.isCancelled()) return;
-        event.blockList().removeIf(blockState -> !checkEnvironmentFlag(blockState.getLocation(), Flags.CREEPER_EXPLODE, null));
+        event.blockList().removeIf(blockState -> !checkEnvironmentFlag(blockState.getLocation(), Flags.BLOCK_EXPLODE, null));
     }
 }

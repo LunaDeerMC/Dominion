@@ -137,6 +137,9 @@ flags:
   pressure:
     display-name: 壓力板（玩家）
     description: 玩家是否可以觸發壓力板。
+  red_stone_powder:
+    display-name: 紅石粉
+    description: 是否可以與紅石粉互動。
   repeater:
     display-name: 中繼器
     description: 是否可以更改（互動）中繼器。
@@ -248,6 +251,180 @@ flags:
   villager_killing:
     display-name: 擊殺村民
     description: 是否可以傷害村民。
+  animal_breed:
+    display-name: 動物繁殖
+    description: 是否允許動物繁殖產生幼崽。
+  animal_spawner:
+    display-name: 動物生怪磚生成
+    description: 是否允許生怪磚生成動物。
+  animal_spawn_egg:
+    display-name: 動物生怪蛋生成
+    description: 是否允許使用生怪蛋生成動物。
+  villager_breed:
+    display-name: 村民繁殖
+    description: 是否允許村民繁殖產生幼年村民。
+  villager_spawner:
+    display-name: 村民生怪磚生成
+    description: 是否允許生怪磚生成村民。
+  villager_spawn_egg:
+    display-name: 村民生怪蛋生成
+    description: 是否允許使用生怪蛋生成村民。
+  monster_spawner:
+    display-name: 怪物生怪磚生成
+    description: 是否允許生怪磚生成怪物。
+  monster_spawn_egg:
+    display-name: 怪物生怪蛋生成
+    description: 是否允許使用生怪蛋生成怪物。
+  ender_man_spawn:
+    display-name: 終界使者生成
+    description: 是否允許終界使者生成。
+  ender_man_teleport:
+    display-name: 終界使者傳送
+    description: 是否允許終界使者傳送。
+  tnt_damage_entity:
+    display-name: TNT 傷害實體
+    description: 是否允許 TNT 爆炸傷害實體和懸掛物。
+  wither_explode:
+    display-name: 凋零怪生成爆炸
+    description: 是否允許凋零怪生成時的爆炸破壞方塊。
+  wither_break_block:
+    display-name: 凋零怪破壞方塊
+    description: 是否允許受傷的凋零怪破壞方塊。
+  creeper_damage_entity:
+    display-name: 苦力怕傷害裝飾實體
+    description: 是否允許苦力怕爆炸傷害盔甲座和懸掛物。
+  wither_skull_explode:
+    display-name: 凋零怪骷髏破壞方塊
+    description: 是否允許凋零怪骷髏爆炸破壞方塊。
+  wither_skull_damage_entity:
+    display-name: 凋零怪骷髏傷害裝飾實體
+    description: 是否允許凋零怪骷髏爆炸傷害盔甲座和懸掛物。
+  ender_crystal_explode:
+    display-name: 終界水晶破壞方塊
+    description: 是否允許終界水晶爆炸破壞方塊。
+  ender_crystal_damage_entity:
+    display-name: 終界水晶傷害裝飾實體
+    description: 是否允許終界水晶爆炸傷害盔甲座和懸掛物。
+  fireball_explode:
+    display-name: 火球破壞方塊
+    description: 是否允許火球爆炸破壞方塊。
+  fireball_damage_entity:
+    display-name: 火球傷害裝飾實體
+    description: 是否允許火球爆炸傷害盔甲座和懸掛物。
+  block_explode:
+    display-name: 床與重生錨爆炸
+    description: 是否允許床和重生錨爆炸破壞方塊。
+  mob_trample:
+    display-name: 生物踩踏耕地
+    description: 是否允許非玩家實體踩踏耕地。
+  place_liquid:
+    display-name: 放置液體
+    description: 是否可以放置水和熔岩。
+  place_entity:
+    display-name: 放置裝飾實體
+    description: 是否可以放置盔甲座和物品展示框。
+  break_liquid:
+    display-name: 收集液體
+    description: 是否可以收集水和熔岩。
+  break_entity:
+    display-name: 破壞裝飾實體
+    description: 是否可以破壞盔甲座和物品展示框。
+  armor_stand_interactive:
+    display-name: 盔甲座互動
+    description: 是否可以更改盔甲座上的裝備。
+  item_frame_content:
+    display-name: 展示框內容
+    description: 是否可以放入或取出物品展示框中的物品。
+  fertilizer:
+    display-name: 催熟
+    description: 是否可以使用骨粉等肥料。
+  plant_tree:
+    display-name: 種樹
+    description: 是否可以種植樹苗等樹木植物。
+  trident:
+    display-name: 投擲三叉戟
+    description: 是否可以投擲三叉戟。
+  fireball:
+    display-name: 發射火球
+    description: 是否可以發射火球。
+  wind_charge:
+    display-name: 使用風彈
+    description: 是否可以發射風彈。
+flag-groups:
+  environment:
+    creature-spawning:
+      display-name: 生物生成
+      description: 動物、村民和怪物的生成。
+    creature-behavior:
+      display-name: 生物行為
+      description: 生物移動、傷害及特殊行為。
+    explosions:
+      display-name: 爆炸
+      description: 按來源控制爆炸的方塊破壞和實體傷害。
+    fire:
+      display-name: 火焰與燃燒
+      description: 火焰蔓延及高溫傷害。
+    natural-changes:
+      display-name: 自然變化
+      description: 液體、重力、天氣及自然方塊變化。
+    mechanisms:
+      display-name: 機械裝置
+      description: 外部紅石及壓力觸發行為。
+    entity-protection:
+      display-name: 實體保護
+      description: 保護裝飾實體免受投射物和爆炸破壞。
+    general:
+      display-name: 一般
+      description: 領地的一般顯示行為。
+  privilege:
+    administration:
+      display-name: 管理
+      description: 領地管理權限。
+    movement:
+      display-name: 移動
+      description: 在領地內移動和旅行。
+    building:
+      display-name: 建造
+      description: 放置和移除方塊、液體及裝飾實體。
+    item-management:
+      display-name: 物品管理
+      description: 撿取和丟棄物品。
+    access:
+      display-name: 通行
+      description: 門及簡單通行控制。
+    redstone:
+      display-name: 紅石
+      description: 與紅石元件互動。
+    storage:
+      display-name: 儲存
+      description: 容器及展示物品的存取。
+    workstations:
+      display-name: 工作站
+      description: 合成及實用工作站。
+    decoration:
+      display-name: 裝飾
+      description: 裝飾方塊和實體。
+    rest:
+      display-name: 休息與重生
+      description: 床和重生錨。
+    vehicles:
+      display-name: 載具
+      description: 騎乘、生成和破壞載具。
+    farming:
+      display-name: 種植
+      description: 作物、樹木及養蜂。
+    animal-care:
+      display-name: 動物照料
+      description: 餵養及管理動物。
+    food-and-trade:
+      display-name: 食物與交易
+      description: 食物、蜂蜜及村民交易。
+    projectiles:
+      display-name: 投射物
+      description: 發射和使用投射物。
+    combat:
+      display-name: 戰鬥
+      description: 戰鬥、突襲及實體傷害。
 dominion-text:
   loading-config: 正在載入配置...
   plugin-enabled: 外掛已啟用！

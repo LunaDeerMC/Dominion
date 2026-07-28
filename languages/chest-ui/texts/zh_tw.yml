@@ -34,6 +34,7 @@ titles:
   group-flags: 权限组权限
   template-flags: 模板权限 · {template}
   flags: 权限
+  flag-group: '{title} · {group}'
   select-template: 选择权限模板
   assign-group: 分配权限组
   remove-group-member: 移除权限组成员
@@ -53,6 +54,8 @@ labels:
   inside-dominion: 当前位于此领地内
   group: 权限组
   template: 权限模板
+  ungrouped: 未分组
+  ungrouped-description: 未被加入任何配置分组的权限。
   copy-types:
     environment: 环境设置
     guest: 访客权限
@@ -68,6 +71,9 @@ confirm:
 common:
   enabled: <green>已启用
   disabled: <red>已禁用
+  all-enabled: <green>全部启用
+  all-disabled: <red>全部禁用
+  mixed: <yellow>部分启用
   page: <gray>第 <white>{page}</white>/<white>{pages}</white> 页 · 共 {total} 项
 menus:
   main:
@@ -402,6 +408,37 @@ menus:
         lore: []
       close:
         name: <red>关闭
+        lore: []
+  flag-group-list:
+    title: <dark_green>{title}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      content:
+        name: <white>{group}
+        lore:
+          - '<gray>狀態：{state}'
+          - '<gray>已啟用：<white>{enabled}</white>/<white>{total}'
+          - <gray>{description}
+          - ''
+          - <yellow>點擊查看具體權限。
+          - <aqua>Shift 點擊批次切換整組。
+      back:
+        name: <yellow>返回
+        lore: []
+      previous:
+        name: <yellow>上一頁
+        lore: []
+      status:
+        name: <white>第 {page}/{pages} 頁
+        lore:
+          - <gray>共 {total} 項
+      next:
+        name: <yellow>下一頁
+        lore: []
+      close:
+        name: <red>關閉
         lore: []
   flag-list:
     title: <dark_green>{title}

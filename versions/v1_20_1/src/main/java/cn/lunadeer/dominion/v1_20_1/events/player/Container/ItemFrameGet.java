@@ -26,6 +26,6 @@ public class ItemFrameGet implements Listener {
         if (!(event.getDamager() instanceof Player bukkitPlayer)) {
             return;
         }
-        checkPrivilegeFlag(itemFrame.getLocation(), Flags.CONTAINER, bukkitPlayer, event);
+        checkPrivilegeFlag(itemFrame.getLocation(), Flags.ITEM_FRAME_CONTENT, bukkitPlayer, event);
     }
 }

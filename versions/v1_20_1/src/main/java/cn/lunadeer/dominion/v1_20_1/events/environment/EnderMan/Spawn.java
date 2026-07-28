@@ -19,6 +19,6 @@ public class Spawn implements Listener {
         if (entity.getType() != EntityType.ENDERMAN) {
             return;
         }
-        checkEnvironmentFlag(entity.getLocation(), Flags.ENDER_MAN, event);
+        checkEnvironmentFlag(entity.getLocation(), Flags.ENDER_MAN_SPAWN, event);
     }
 }

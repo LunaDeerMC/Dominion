@@ -18,9 +18,9 @@ public class Escape implements Listener {
         if (entity.getType() != EntityType.ENDERMAN) {
             return;
         }
-        checkEnvironmentFlag(entity.getLocation(), Flags.ENDER_MAN, event);
+        checkEnvironmentFlag(entity.getLocation(), Flags.ENDER_MAN_TELEPORT, event);
         if (event.getTo() != null) {
-            checkEnvironmentFlag(event.getTo(), Flags.ENDER_MAN, event);
+            checkEnvironmentFlag(event.getTo(), Flags.ENDER_MAN_TELEPORT, event);
         }
     }
 }

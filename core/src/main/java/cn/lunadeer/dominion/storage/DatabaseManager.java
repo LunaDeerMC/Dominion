@@ -89,6 +89,10 @@ public class DatabaseManager {
                 .javaMigrations(new V1__LegacySchema(type), new V2__CacheSyncSchema(type))
                 .load()
                 .migrate();
+        reconcileFlags();
+    }
+
+    public void reconcileFlags() {
         FlagReconciler.SyncResult result = new FlagReconciler(dataSource(), type).reconcile();
         if (result.changedEntries() > 0) {
             plugin.getLogger().info("Reconciled " + result.changedEntries() + " flag columns/values.");
