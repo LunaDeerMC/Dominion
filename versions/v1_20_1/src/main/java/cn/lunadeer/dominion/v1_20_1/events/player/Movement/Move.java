@@ -1,0 +1,56 @@
+package cn.lunadeer.dominion.v1_20_1.events.player.Movement;
+
+import cn.lunadeer.dominion.api.dtos.DominionDTO;
+import cn.lunadeer.dominion.api.dtos.flag.Flags;
+import cn.lunadeer.dominion.cache.CacheManager;
+import cn.lunadeer.dominion.managers.TeleportManager;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
+
+import java.util.Objects;
+
+import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
+
+public class Move implements Listener {
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void handler(PlayerMoveEvent event) {
+        if (event.isCancelled()) return;
+        Location movedFrom = event.getFrom(), movedTo = event.getTo();
+        if (Objects.equals(movedFrom.getWorld(), movedTo.getWorld())
+                && movedFrom.getBlockX() == movedTo.getBlockX()
+                && movedFrom.getBlockY() == movedTo.getBlockY()
+                && movedFrom.getBlockZ() == movedTo.getBlockZ()) return;
+        Player player = event.getPlayer();
+        DominionDTO dom = CacheManager.instance.getPlayerCurrentDominion(player);
+        if (!checkPrivilegeFlag(player.getLocation(), Flags.MOVE, player, null)) {
+            // A denied world-wide MOVE flag does not have a dominion whose border we can
+            // teleport the player outside of. In that case, keep the player at the event's
+            // origin instead. Dominion-specific denial retains the existing border ejection.
+            if (dom == null) {
+                event.setCancelled(true);
+                return;
+            }
+            Location to = player.getLocation();
+            int x1 = Math.abs(to.getBlockX() - dom.getCuboid().x1());
+            int x2 = Math.abs(to.getBlockX() - dom.getCuboid().x2());
+            int z1 = Math.abs(to.getBlockZ() - dom.getCuboid().z1());
+            int z2 = Math.abs(to.getBlockZ() - dom.getCuboid().z2());
+            // find min distance
+            int min = Math.min(Math.min(x1, x2), Math.min(z1, z2));
+            if (min == x1) {
+                to.setX(dom.getCuboid().x1() - 2);
+            } else if (min == x2) {
+                to.setX(dom.getCuboid().x2() + 2);
+            } else if (min == z1) {
+                to.setZ(dom.getCuboid().z1() - 2);
+            } else {
+                to.setZ(dom.getCuboid().z2() + 2);
+            }
+            TeleportManager.doTeleportSafely(player, to);
+        }
+    }
+}
