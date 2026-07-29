@@ -7,25 +7,26 @@ import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class VersionFlagMappingTest {
 
     @Test
-    void splitListenersReferenceTheirDedicatedFlagsOrClassifiers() throws Exception {
+    void splitListenersReferenceTheirDedicatedFlags() throws Exception {
         Map<String, String> expected = new LinkedHashMap<>();
-        expected.put("environment/AnimalSpawn.java", "FlagClassifiers.animalSpawn");
-        expected.put("environment/VillagerSpawn.java", "FlagClassifiers.villagerSpawn");
-        expected.put("environment/MonsterSpawn.java", "FlagClassifiers.monsterSpawn");
+        expected.put("environment/AnimalSpawn.java", "Flags.ANIMAL_SPAWN");
+        expected.put("environment/VillagerSpawn.java", "Flags.VILLAGER_SPAWN");
+        expected.put("environment/MonsterSpawn.java", "Flags.MONSTER_SPAWN");
         expected.put("environment/EnderMan/Escape.java", "Flags.ENDER_MAN_TELEPORT");
         expected.put("environment/EnderMan/Spawn.java", "Flags.ENDER_MAN_SPAWN");
         expected.put("environment/Wither/ExplodeBySpawn.java", "Flags.WITHER_EXPLODE");
         expected.put("environment/Wither/BreakBlockOnHarmed.java", "Flags.WITHER_BREAK_BLOCK");
         expected.put("environment/Trample/ByMob.java", "Flags.MOB_TRAMPLE");
         expected.put("environment/CreeperExplode/BedAnchorExplode.java", "Flags.BLOCK_EXPLODE");
-        expected.put("environment/CreeperExplode/EntityExplode.java", "FlagClassifiers.explosionBlock");
-        expected.put("environment/CreeperExplode/ArmorStandExploded.java", "FlagClassifiers.explosionEntity");
-        expected.put("environment/CreeperExplode/ItemFrameExploded.java", "FlagClassifiers.explosionEntity");
+        expected.put("environment/CreeperExplode/EntityExplode.java", "Flags.CREEPER_EXPLODE");
+        expected.put("environment/CreeperExplode/ArmorStandExploded.java", "Flags.CREEPER_DAMAGE_ENTITY");
+        expected.put("environment/CreeperExplode/ItemFrameExploded.java", "Flags.CREEPER_DAMAGE_ENTITY");
         expected.put("environment/TNTExplode/EntityExploded.java", "Flags.TNT_DAMAGE_ENTITY");
         expected.put("environment/TNTExplode/HangingExploded.java", "Flags.TNT_DAMAGE_ENTITY");
         expected.put("player/Place/Liquid.java", "Flags.PLACE_LIQUID");
@@ -71,6 +72,26 @@ class VersionFlagMappingTest {
             assertTrue(source.contains("Flags.TNT_DAMAGE_ENTITY"), file);
             assertTrue(source.contains("EntityType.TNT_MINECART"), file);
             assertTrue(source.contains("EntityType.TNT"), file);
+        }
+    }
+
+    @Test
+    void sulfurCubeExplosionHandlingIsConfinedToV26_2Listeners() throws Exception {
+        Path baseRoot = Path.of("../versions/v1_20_1/src/main/java/cn/lunadeer/dominion/v1_20_1/events/environment/CreeperExplode");
+        Path modernRoot = Path.of("../versions/v26_2/src/main/java/cn/lunadeer/dominion/v26_2/events/environment/CreeperExplode");
+        Map<String, String> modernFlags = Map.of(
+                "EntityExplode.java", "Flags.CREEPER_EXPLODE",
+                "ArmorStandExploded.java", "Flags.CREEPER_DAMAGE_ENTITY",
+                "ItemFrameExploded.java", "Flags.CREEPER_DAMAGE_ENTITY"
+        );
+
+        for (Map.Entry<String, String> entry : modernFlags.entrySet()) {
+            String baseSource = Files.readString(baseRoot.resolve(entry.getKey()));
+            String modernSource = Files.readString(modernRoot.resolve(entry.getKey()));
+            assertFalse(baseSource.contains("SulfurCube"), entry.getKey());
+            assertFalse(baseSource.contains(".name()"), entry.getKey());
+            assertTrue(modernSource.contains("instanceof SulfurCube"), entry.getKey());
+            assertTrue(modernSource.contains(entry.getValue()), entry.getKey());
         }
     }
 }

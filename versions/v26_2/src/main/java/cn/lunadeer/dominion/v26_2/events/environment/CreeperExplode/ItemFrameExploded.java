@@ -8,17 +8,19 @@ import org.bukkit.entity.SulfurCube;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.hanging.HangingBreakEvent;
 
 import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 
 @LowestVersion(XVersionManager.ImplementationVersion.v26_2)
-public class EntityExplode implements Listener {
+public class ItemFrameExploded implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
-    public void handle(EntityExplodeEvent event) {
+    public void handle(HangingBreakByEntityEvent event) {
         if (event.isCancelled()) return;
+        if (event.getCause() != HangingBreakEvent.RemoveCause.EXPLOSION) return;
+        if (!(event.getRemover() instanceof SulfurCube)) return;
         Entity entity = event.getEntity();
-        if (!(entity instanceof SulfurCube)) return;
-        event.blockList().removeIf(block -> !checkEnvironmentFlag(block.getLocation(), Flags.CREEPER_EXPLODE, null));
+        checkEnvironmentFlag(entity.getLocation(), Flags.CREEPER_DAMAGE_ENTITY, event);
     }
 }

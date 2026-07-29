@@ -1,6 +1,7 @@
 package cn.lunadeer.dominion.v1_20_1.events.environment;
 
-import cn.lunadeer.dominion.api.dtos.flag.FlagClassifiers;
+import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
+import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import org.bukkit.entity.Enemy;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
@@ -18,6 +19,11 @@ public class MonsterSpawn implements Listener {
         if (!(entity instanceof Enemy)) {
             return;
         }
-        checkEnvironmentFlag(entity.getLocation(), FlagClassifiers.monsterSpawn(event.getSpawnReason()), event);
+        EnvFlag flag = switch (event.getSpawnReason()) {
+            case SPAWNER -> Flags.MONSTER_SPAWNER;
+            case SPAWNER_EGG -> Flags.MONSTER_SPAWN_EGG;
+            default -> Flags.MONSTER_SPAWN;
+        };
+        checkEnvironmentFlag(entity.getLocation(), flag, event);
     }
 }

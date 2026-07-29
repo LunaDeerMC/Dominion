@@ -1,6 +1,7 @@
 package cn.lunadeer.dominion.v1_20_1.events.environment;
 
-import cn.lunadeer.dominion.api.dtos.flag.FlagClassifiers;
+import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
+import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -18,6 +19,12 @@ public class VillagerSpawn implements Listener {
         if (entity.getType() != EntityType.VILLAGER) {
             return;
         }
-        checkEnvironmentFlag(entity.getLocation(), FlagClassifiers.villagerSpawn(event.getSpawnReason()), event);
+        EnvFlag flag = switch (event.getSpawnReason()) {
+            case BREEDING -> Flags.VILLAGER_BREED;
+            case SPAWNER -> Flags.VILLAGER_SPAWNER;
+            case SPAWNER_EGG -> Flags.VILLAGER_SPAWN_EGG;
+            default -> Flags.VILLAGER_SPAWN;
+        };
+        checkEnvironmentFlag(entity.getLocation(), flag, event);
     }
 }
