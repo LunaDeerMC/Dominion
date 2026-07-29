@@ -17,6 +17,14 @@ dependencies {
     compileOnly(project(":core"))
     compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
     paperweight.paperDevBundle("26.1.2.build.+")
+    testImplementation(project(":core"))
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
+    testImplementation("org.mockito:mockito-core:5.18.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 // MC 26 dev bundle ships Mojang-mapped — no reobfuscation needed

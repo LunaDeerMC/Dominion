@@ -33,7 +33,6 @@ dependencies {
     testImplementation("org.mybatis:mybatis:3.5.16")
     testImplementation("com.zaxxer:HikariCP:6.2.1")
     testImplementation("org.xerial:sqlite-jdbc:3.46.1.3")
-    testImplementation("com.sk89q.worldguard:worldguard-bukkit:7.0.9-SNAPSHOT")
 
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")

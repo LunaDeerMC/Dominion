@@ -31,7 +31,7 @@ menus:
       - "####I####"
       - "#M#C#T#L#"
       - "##A#H#P##"
-      - "####X####"
+      - "###U#X###"
     symbols:
       '#': filler
       I: info
@@ -42,6 +42,7 @@ menus:
       A: all
       P: player-dominions
       H: help
+      U: ui
       X: close
     items:
       filler:
@@ -62,6 +63,8 @@ menus:
         material: PLAYER_HEAD
       help:
         material: KNOWLEDGE_BOOK
+      ui:
+        material: ENDER_EYE
       close:
         material: BARRIER
   dominion-list:

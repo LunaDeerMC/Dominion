@@ -1,5 +1,6 @@
 package cn.lunadeer.dominion.storage.repository;
 
+import cn.lunadeer.dominion.utils.UiMode;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -72,6 +73,25 @@ public class PlayerRepository extends RepositorySupport {
             values.put(PLAYER_USING_GROUP_TITLE_ID, groupTitleId);
             return mapper.updateColumns(PLAYER_NAME, PLAYER_ID, id, values);
         });
+    }
+
+    public static UiMode selectUiPreference(UUID uuid) throws SQLException {
+        return sql((session, mapper) -> {
+            List<Map<String, Object>> rows = mapper.selectWhere(PLAYER_NAME, PLAYER_UUID, uuid.toString());
+            if (rows == null || rows.isEmpty()) return UiMode.DEFAULT;
+            return UiMode.parse(string(rows.get(0), PLAYER_UI_PREFERENCE), UiMode.DEFAULT);
+        });
+    }
+
+    public static void updateUiPreference(UUID uuid, UiMode preference) throws SQLException {
+        if (preference == null) preference = UiMode.DEFAULT;
+        UiMode finalPreference = preference;
+        sql((session, mapper) -> mapper.updateColumns(
+                PLAYER_NAME,
+                PLAYER_UUID,
+                uuid.toString(),
+                Map.of(PLAYER_UI_PREFERENCE, finalPreference.name())
+        ));
     }
 
     private static PlayerRow row(List<Map<String, Object>> rows) {

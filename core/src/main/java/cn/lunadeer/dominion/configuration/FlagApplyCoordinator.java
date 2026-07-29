@@ -5,7 +5,7 @@ import cn.lunadeer.dominion.api.dtos.flag.FlagGroups;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.storage.DatabaseManager;
-import cn.lunadeer.dominion.uis.chest.DominionChestUi;
+import cn.lunadeer.dominion.uis.DominionUi;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import org.bukkit.Bukkit;
 
@@ -70,7 +70,7 @@ public final class FlagApplyCoordinator {
             CompletableFuture<Void> uiReload = new CompletableFuture<>();
             Scheduler.runTask(() -> {
                 try {
-                    DominionChestUi.reload();
+                    DominionUi.reload();
                     uiReload.complete(null);
                 } catch (Throwable throwable) {
                     uiReload.completeExceptionally(throwable);

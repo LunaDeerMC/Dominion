@@ -114,6 +114,10 @@ menus:
         name: <white>帮助
         lore:
           - <gray>将文档链接发送到聊天栏。
+      ui:
+        name: <aqua>使用 Dialog UI
+        lore:
+          - <gray>切換到 Minecraft 原生對話框介面。
       close:
         name: <red>关闭
         lore: []

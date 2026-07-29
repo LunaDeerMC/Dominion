@@ -1,0 +1,866 @@
+# Dominion ネイティブ Dialog UI の日本語テキストです。
+# {dominion}、{player}、{page}、{total} などの名前付きプレースホルダーは、表示時に置き換えられます。
+schema-version: 2
+dialog:
+  close: "閉じる"
+  submit: "送信"
+  cancel: "キャンセル"
+  use-chest: "チェスト UI を使用"
+  input-title: "値を入力"
+  waiting-title: "お待ちください"
+  waiting-message: "Dominion がリクエストを処理しています…"
+  continue-in-background: "閉じる · バックグラウンドで続行"
+input:
+  cancel-hint: "<gray>[<white>cancel</white> と入力すると戻ります。]"
+  cancel-keywords:
+    - "cancel"
+  cancelled: "入力をキャンセルしました。"
+  timeout: "入力がタイムアウトしました。"
+  create-dominion: "新しい領地名を入力してください。"
+  rename-dominion: "新しい領地名を入力してください。"
+  enter-message: "新しい参加メッセージを入力してください。"
+  leave-message: "新しい退出メッセージを入力してください。"
+  map-color: "0xRRGGBB 形式で色を入力してください。"
+  resize: "正の数を入力してください。この方向へ縮小する場合は、先頭に「-」を付けてください。"
+  create-group: "新しいグループ名を入力してください。"
+  rename-group: "新しいグループ名を入力してください。"
+  create-template: "新しいテンプレート名を入力してください。"
+  rename-template: "新しいテンプレート名を入力してください。"
+  search: "名前の一部または全体を入力してください。"
+  select-title: "使用するグループ称号"
+  resize-direction: "方向"
+  resize-mode: "操作"
+  resize-amount: "ブロック数"
+  copy-type: "コピーするデータ"
+errors:
+  unavailable: "このページは利用できなくなったか、閲覧権限がありません。"
+  invalid-color: "無効な色です。0xRRGGBB 形式を使用してください。"
+  non-zero-integer: "0以外の整数を入力してください。"
+  positive-integer: "正の整数を入力してください。"
+  auto-create-disabled: "自動作成は無効です。ポイント選択コマンドのワークフローを使用してください。"
+titles:
+  all-dominions: "すべての領地"
+  my-dominions: "自分の領地"
+  children: "子領地 · {dominion}"
+  copy-source: "コピー元を選択"
+  environment-flags: "環境設定 · {dominion}"
+  guest-flags: "ゲスト権限 · {dominion}"
+  member-flags: "メンバー権限"
+  group-flags: "グループ権限"
+  template-flags: "権限テンプレート · {template}"
+  flags: "権限"
+  flag-group: "{title} · {group}"
+  select-template: "テンプレートを選択"
+  assign-group: "グループを割り当て"
+  remove-group-member: "グループメンバーを削除"
+  add-group-member: "グループメンバーを追加"
+  transfer-player: "譲渡先プレイヤー"
+  add-member: "メンバーを追加"
+  admin-player-dominions: "プレイヤーの領地を検索"
+  player-dominions: "{player} の領地"
+labels:
+  none: "なし"
+  unknown: "不明"
+  manage: "管理"
+  edit: "編集"
+  select: "選択"
+  teleport: "テレポート"
+  enable-all: "すべて有効"
+  disable-all: "すべて無効"
+  administrator: "管理者"
+  member: "メンバー"
+  player: "プレイヤー"
+  known-player: "登録済みプレイヤー"
+  online: "🟢 オンライン"
+  inside-dominion: "現在この領地内にいます"
+  group: "グループ"
+  template: "権限テンプレート"
+  ungrouped: "未分類"
+  ungrouped-description: "設定されたグループに属していないフラグです。"
+  title-option: "{group} · {dominion}"
+  manage-dominion: "管理 · {dominion}"
+  teleport-dominion: "テレポート · {dominion}"
+  select-dominion: "選択 · {dominion}"
+  edit-flag-group: "編集 · {group}"
+  enable-flag-group: "すべて有効 · {group}"
+  disable-flag-group: "すべて無効 · {group}"
+  assign-to-group: "グループを割り当て"
+  remove-from-group: "解除 · {group}"
+  directions:
+    north: "北"
+    south: "南"
+    east: "東"
+    west: "西"
+    up: "上"
+    down: "下"
+  resize-modes:
+    expand: "拡張"
+    contract: "縮小"
+  copy-types:
+    environment: "環境設定"
+    guest: "ゲスト権限"
+    member: "メンバー"
+    group: "グループとメンバー"
+confirm:
+  delete-dominion: "{dominion} を削除"
+  remove-member: "{player} を削除"
+  delete-group: "グループ {group} を削除"
+  delete-template: "テンプレート {template} を削除"
+  transfer: "{dominion} を {player} に譲渡"
+  copy: "{source} の {type} を {target} にコピー"
+common:
+  enabled: "<green>有効"
+  disabled: "<red>無効"
+  all-enabled: "<green>すべて有効"
+  all-disabled: "<red>すべて無効"
+  mixed: "<yellow>混在"
+  page: "<gray>ページ <white>{page}</white>/<white>{pages}</white> · 全{total}件"
+descriptions:
+  title-list: "<gray>現在使用できるグループから称号を1つ選択します。"
+  dominion-entry: "<gray>所有者: <white>{owner}</white>\n<gray>ワールド: <white>{world}</white>\n<gray>サーバー: <white>{server}</white>\n<gray>サイズ: <white>{size}</white>"
+  local-dominion-entry: "<gray>所有者: <white>{owner}</white>\n<gray>ワールド: <white>{world}</white>\n<gray>サイズ: <white>{size}</white>"
+  remote-dominion-entry: "<gray>所有者: <white>{owner}</white>\n<gray>サーバー: <white>{server}</white>\n<gray>サイズ: <white>{size}</white>"
+  flag-group: "<gray>{description}\n<gray>有効: <white>{enabled}/{total}</white>"
+  member-entry: "<gray>役割: <white>{role}</white>\n<gray>グループ: <white>{group}</white>"
+  group-entry: "<gray><white>{members}</white> 人のメンバー"
+  open-template: "<gray>この権限テンプレートを開いて編集します。"
+  assign-to-group: "<gray>{player} のグループを選択します。"
+  remove-from-group: "<gray>{player} を {group} から外します。"
+buttons:
+  back:
+    name: "<yellow>戻る"
+    lore: []
+  home:
+    name: "<aqua>ホーム"
+    lore: []
+  close:
+    name: "<red>閉じる"
+    lore: []
+  search:
+    name: "<aqua>検索"
+    lore: ["<gray>上の名前フィルターを適用します。"]
+  clear:
+    name: "<gray>絞り込みを解除"
+    lore: ["<gray>すべての項目を再表示します。"]
+  refresh:
+    name: "<aqua>更新"
+    lore: ["<gray>現在の一覧を再読み込みします。"]
+  previous:
+    name: "<yellow>前へ"
+    lore: []
+  next:
+    name: "<yellow>次へ"
+    lore: []
+  save:
+    name: "<green>変更を保存"
+    lore: []
+  apply:
+    name: "<green>適用"
+    lore: []
+  primary:
+    name: "<green>作成"
+    lore: []
+menus:
+  main:
+    title: "<dark_green>領地"
+    items:
+      filler:
+        name: " "
+        lore: []
+      info:
+        name: "<green>領地"
+        lore:
+          - "<gray>コマンドを使わずに領地を管理します。"
+      dominions:
+        name: "<green>自分の領地"
+        lore:
+          - "<gray>所有または管理している領地を表示します。"
+      create:
+        name: "<green>領地を作成"
+        lore:
+          - "<gray>現在地を中心に領地を作成します。"
+      templates:
+        name: "<aqua>権限テンプレート"
+        lore:
+          - "<gray>再利用可能なメンバー権限を管理します。"
+      titles:
+        name: "<yellow>グループ称号"
+        lore:
+          - "<gray>所属グループの称号を選択します。"
+      all:
+        name: "<gold>すべての領地"
+        lore:
+          - "<gray>管理者専用の領地一覧です。"
+      player-dominions:
+        name: "<aqua>プレイヤーの領地を検索"
+        lore:
+          - "<gray>特定のプレイヤーのすべての領地を表示します。"
+      help:
+        name: "<white>ヘルプ"
+        lore:
+          - "<gray>ドキュメントへのリンクをチャットに送信します。"
+      ui:
+        name: "<aqua>チェスト UI を使用"
+        lore:
+          - "<gray>インベントリ形式の画面に切り替えます。"
+      close:
+        name: "<red>閉じる"
+        lore: []
+  dominion-list:
+    title: "<dark_green>{title}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      content:
+        name: "<green>{dominion}"
+        lore:
+          - "<gray>所有者: <white>{owner}"
+          - "<gray>ワールド: <white>{world}"
+      local-content:
+        name: "<green>{dominion}"
+        lore:
+          - "<gray>所有者: <white>{owner}"
+          - "<gray>ワールド: <white>{world}"
+          - "<gray>管理とテレポートの各ボタンを使用します。"
+      remote-content:
+        name: "<aqua>{dominion}"
+        lore:
+          - "<gray>所有者: <white>{owner}"
+          - "<gray>サーバー: <white>{server}"
+          - "<gray>テレポートボタンを使用します。"
+      admin-content:
+        name: "<green>{dominion}"
+        lore:
+          - "<gray>所有者: <white>{owner}"
+          - "<gray>ワールド: <white>{world}"
+          - "<gray>この領地の管理権限を"
+          - "<gray>所有しています。"
+          - "<gray>管理とテレポートの各ボタンを使用します。"
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      primary:
+        name: "<green>作成"
+        lore:
+          - "<gray>ここに新しい領地を作成します。"
+      search:
+        name: "<aqua>検索"
+        lore: []
+      previous:
+        name: "<yellow>前のページ"
+        lore: []
+      status:
+        name: "<white>ページ {page}/{pages}"
+        lore:
+          - "<gray>全{total}件"
+      next:
+        name: "<yellow>次のページ"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  dashboard:
+    title: "<dark_green>{dominion}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      info:
+        name: "<green>{dominion}"
+        lore:
+          - "<gray>所有者: <white>{owner}"
+          - "<gray>ワールド: <white>{world}"
+          - "<gray>サイズ: <white>{size}"
+      teleport:
+        name: "<aqua>テレポート"
+        lore:
+          - "<gray>この領地へテレポートします。"
+      area:
+        name: "<green>領域・移動"
+        lore:
+          - "<gray>境界、テレポート地点、子領地を管理します。"
+      permissions:
+        name: "<red>権限"
+        lore:
+          - "<gray>環境設定とゲスト権限を管理します。"
+      people:
+        name: "<yellow>メンバー・グループ"
+        lore:
+          - "<gray>個別およびグループの権限を管理します。"
+      appearance:
+        name: "<light_purple>外観・メッセージ"
+        lore:
+          - "<gray>名前、メッセージ、マップカラーを設定します。"
+      copy:
+        name: "<gold>データをコピー"
+        lore:
+          - "<gray>他の領地から設定をコピーします。"
+      ownership:
+        name: "<dark_red>所有権"
+        lore:
+          - "<gray>この領地を譲渡または削除します。"
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  area:
+    title: "<dark_green>領域 · {dominion}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      info:
+        name: "<green>{dominion}"
+        lore:
+          - "<gray>座標: <white>{bounds}"
+      teleport:
+        name: "<aqua>テレポート"
+        lore: []
+      set-teleport:
+        name: "<aqua>テレポート地点を設定"
+        lore:
+          - "<gray>現在地を設定します。"
+      resize:
+        name: "<yellow>サイズ変更"
+        lore:
+          - "<gray>各方向へ拡張または縮小します。"
+      create-child:
+        name: "<green>子領地を作成"
+        lore:
+          - "<gray>現在地を中心に子領地を作成します。"
+      children:
+        name: "<green>子領地"
+        lore: []
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      home:
+        name: "<white>メインメニュー"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  permissions:
+    title: "<dark_green>権限 · {dominion}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      info:
+        name: "<red>権限カテゴリ"
+        lore: []
+      environment:
+        name: "<green>環境"
+        lore:
+          - "<gray>この領地内のワールド動作を設定します。"
+      guest:
+        name: "<yellow>ゲスト権限"
+        lore:
+          - "<gray>未所属プレイヤーの権限を設定します。"
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      home:
+        name: "<white>メインメニュー"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  people:
+    title: "<dark_green>メンバー · {dominion}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      info:
+        name: "<yellow>メンバー・グループ"
+        lore: []
+      members:
+        name: "<green>メンバー"
+        lore:
+          - "<gray>個別権限とテンプレートを管理します。"
+      groups:
+        name: "<aqua>グループ"
+        lore:
+          - "<gray>共有権限とメンバーを管理します。"
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      home:
+        name: "<white>メインメニュー"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  appearance:
+    title: "<dark_green>外観 · {dominion}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      info:
+        name: "<light_purple>外観・メッセージ"
+        lore: []
+      rename:
+        name: "<yellow>名前を変更"
+        lore: []
+      enter-message:
+        name: "<green>参加メッセージ"
+        lore:
+          - "<gray>{join-message}"
+      leave-message:
+        name: "<red>退出メッセージ"
+        lore:
+          - "<gray>{leave-message}"
+      map-color:
+        name: "<aqua>マップカラー"
+        lore:
+          - "<gray>{color}"
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      home:
+        name: "<white>メインメニュー"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  ownership:
+    title: "<dark_red>所有権 · {dominion}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      info:
+        name: "<gold>所有者: {owner}"
+        lore: []
+      transfer:
+        name: "<yellow>譲渡"
+        lore:
+          - "<gray>この領地とすべての子領地を他のプレイヤーへ譲渡します。"
+      delete:
+        name: "<red>削除"
+        lore:
+          - "<dark_red>この操作は元に戻せません。"
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      home:
+        name: "<white>メインメニュー"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+
+  resize:
+    title: "<dark_green>サイズ変更 · {dominion}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      info:
+        name: "<yellow>面を選択"
+        lore:
+          - "<gray>拡張するには正の数、縮小するには負の数を入力してください。"
+      north:
+        name: "<white>北"
+        lore: []
+      south:
+        name: "<white>南"
+        lore: []
+      east:
+        name: "<white>東"
+        lore: []
+      west:
+        name: "<white>西"
+        lore: []
+      up:
+        name: "<white>上"
+        lore: []
+      down:
+        name: "<white>下"
+        lore: []
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      home:
+        name: "<white>メインメニュー"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  flag-group-list:
+    title: "<dark_green>{title}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      content:
+        name: "<white>{group}"
+        lore:
+          - "<gray>状態: {state}"
+          - "<gray>有効: <white>{enabled}</white>/<white>{total}"
+          - "<gray>{description}"
+          - "<gray>編集と一括切替の各ボタンを使用します。"
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      previous:
+        name: "<yellow>前のページ"
+        lore: []
+      status:
+        name: "<white>{page}/{pages} ページ"
+        lore:
+          - "<gray>{total} 件"
+      next:
+        name: "<yellow>次のページ"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  flag-list:
+    title: "<dark_green>{title}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      content:
+        name: "<white>{flag}"
+        lore:
+          - "<gray>状態: {state}"
+          - "<gray>{description}"
+          - ""
+          - "<yellow>クリックして切り替えます。"
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      previous:
+        name: "<yellow>前のページ"
+        lore: []
+      status:
+        name: "<white>ページ {page}/{pages}"
+        lore:
+          - "<gray>全{total}件"
+      next:
+        name: "<yellow>次のページ"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  member-list:
+    title: "<dark_green>メンバー · {dominion}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      content:
+        name: "<green>{player}"
+        lore:
+          - "<gray>グループ: <white>{group}"
+          - "<gray>役割: <white>{role}"
+          - ""
+          - "<yellow>クリックして管理します。"
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      primary:
+        name: "<green>メンバーを追加"
+        lore: []
+      search:
+        name: "<aqua>検索"
+        lore: []
+      previous:
+        name: "<yellow>前のページ"
+        lore: []
+      status:
+        name: "<white>ページ {page}/{pages}"
+        lore:
+          - "<gray>全{total}件"
+      next:
+        name: "<yellow>次のページ"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  member-detail:
+    title: "<dark_green>{player} · {dominion}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      info:
+        name: "<green>{player}"
+        lore:
+          - "<gray>グループ: <white>{group}"
+          - "<gray>役割: <white>{role}"
+      flags:
+        name: "<red>権限"
+        lore: []
+      template:
+        name: "<aqua>テンプレートを適用"
+        lore: []
+      group:
+        name: "<yellow>グループを割り当て"
+        lore: []
+      remove:
+        name: "<red>メンバーを削除"
+        lore:
+          - "<dark_red>すべての個別権限が削除されます。"
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      home:
+        name: "<white>メインメニュー"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  group-list:
+    title: "<dark_green>グループ · {dominion}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      content:
+        name: "<aqua>{group}"
+        lore:
+          - "<gray>{members}人のメンバー"
+          - ""
+          - "<yellow>クリックして管理します。"
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      primary:
+        name: "<green>グループを作成"
+        lore: []
+      previous:
+        name: "<yellow>前のページ"
+        lore: []
+      status:
+        name: "<white>ページ {page}/{pages}"
+        lore:
+          - "<gray>全{total}件"
+      next:
+        name: "<yellow>次のページ"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  group-detail:
+    title: "<dark_green>{group} · {dominion}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      info:
+        name: "<aqua>{group}"
+        lore:
+          - "<gray>{members}人のメンバー"
+      rename:
+        name: "<yellow>名前を変更"
+        lore: []
+      flags:
+        name: "<red>権限"
+        lore: []
+      add-member:
+        name: "<green>メンバーを追加"
+        lore: []
+      members:
+        name: "<yellow>グループメンバー"
+        lore:
+          - "<gray>クリックすると、そのメンバーをグループから削除します。"
+      delete:
+        name: "<red>グループを削除"
+        lore: []
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      home:
+        name: "<white>メインメニュー"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  template-list:
+    title: "<dark_green>権限テンプレート"
+    items:
+      filler:
+        name: " "
+        lore: []
+      content:
+        name: "<aqua>{template}"
+        lore:
+          - "<yellow>クリックして管理します。"
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      primary:
+        name: "<green>テンプレートを作成"
+        lore: []
+      previous:
+        name: "<yellow>前のページ"
+        lore: []
+      status:
+        name: "<white>ページ {page}/{pages}"
+        lore:
+          - "<gray>全{total}件"
+      next:
+        name: "<yellow>次のページ"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  template-detail:
+    title: "<dark_green>テンプレート · {template}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      info:
+        name: "<aqua>{template}"
+        lore: []
+      rename:
+        name: "<yellow>名前を変更"
+        lore: []
+      flags:
+        name: "<red>権限"
+        lore: []
+      delete:
+        name: "<red>テンプレートを削除"
+        lore: []
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      home:
+        name: "<white>メインメニュー"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  picker-list:
+    title: "<dark_green>{title}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      content:
+        name: "<green>{name}"
+        lore:
+          - "<gray>{description}"
+          - ""
+          - "<yellow>クリックして選択します。"
+      content-inside:
+        name: "<green>{name}"
+        lore:
+          - "<gray>{description}"
+          - "<aqua>📍 この領地内にいます"
+          - ""
+          - "<yellow>クリックして選択します。"
+      content-online:
+        name: "<green>{name}"
+        lore:
+          - "<gray>{description}"
+          - ""
+          - "<yellow>クリックして選択します。"
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      search:
+        name: "<aqua>プレイヤーを検索"
+        lore: []
+      previous:
+        name: "<yellow>前のページ"
+        lore: []
+      status:
+        name: "<white>ページ {page}/{pages}"
+        lore:
+          - "<gray>全{total}件"
+      next:
+        name: "<yellow>次のページ"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  title-list:
+    title: "<dark_green>グループ称号"
+    items:
+      filler:
+        name: " "
+        lore: []
+      content:
+        name: "<yellow>{group}"
+        lore:
+          - "<gray>領地: <white>{dominion}"
+          - ""
+          - "<yellow>クリックしてこの称号を使用します。"
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      disable:
+        name: "<red>現在の称号を無効化"
+        lore: []
+      previous:
+        name: "<yellow>前のページ"
+        lore: []
+      status:
+        name: "<white>ページ {page}/{pages}"
+        lore:
+          - "<gray>全{total}件"
+      next:
+        name: "<yellow>次のページ"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  copy-type:
+    title: "<dark_green>{target} にコピー"
+    items:
+      filler:
+        name: " "
+        lore: []
+      info:
+        name: "<gold>{source} → {target}"
+        lore:
+          - "<gray>コピー先の既存データは削除されません。"
+      environment:
+        name: "<green>環境設定"
+        lore: []
+      guest:
+        name: "<yellow>ゲスト権限"
+        lore: []
+      member:
+        name: "<aqua>メンバー"
+        lore: []
+      group:
+        name: "<light_purple>グループ・メンバー"
+        lore:
+          - "<gray>メンバーが先にコピーされます。"
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      home:
+        name: "<white>メインメニュー"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  confirm:
+    title: "<dark_red>操作の確認"
+    items:
+      filler:
+        name: " "
+        lore: []
+      confirm:
+        name: "<green>確認"
+        lore:
+          - "<gray>この操作を実行します。"
+      info:
+        name: "<yellow>{summary}"
+        lore:
+          - "<red>実行前に対象を確認してください。"
+      cancel:
+        name: "<red>キャンセル"
+        lore: []

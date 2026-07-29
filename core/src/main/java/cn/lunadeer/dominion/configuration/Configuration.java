@@ -58,7 +58,7 @@ public class Configuration extends ConfigurationFile {
     }
 
     @Comments("Do not modify this value.")
-    public static int version = 3;  // <<<<<< When you change the configuration, you should increment this value.
+    public static int version = 4;  // <<<<<< When you change the configuration, you should increment this value.
 
     @Comments("The settings of the database.")
     public static Database database = new Database();
@@ -114,6 +114,15 @@ public class Configuration extends ConfigurationFile {
 
     @Comments("Language of the plugin, see others in the plugins/Dominion/languages folder.")
     public static String language = "en_us";
+
+    @Comments("The settings of Dominion's graphical user interface.")
+    public static Ui ui = new Ui();
+
+    public static class Ui extends ConfigurationPart {
+        @ConfigurationKey("default")
+        @Comments("Default UI for players without an override. Supported values: CHEST, DIALOG")
+        public String defaultUi = "CHEST";
+    }
 
     @Comments("Radius of the auto create dominion. -1 to disable.")
     public static int autoCreateRadius = 10;
@@ -260,6 +269,13 @@ public class Configuration extends ConfigurationFile {
         } catch (IllegalArgumentException e) {
             XLogger.warn("Invalid enter leave display place: {0}", pluginMessage.enterLeaveDisplayPlace);
             pluginMessage.enterLeaveDisplayPlace = "ACTION_BAR";
+        }
+
+        if (!ui.defaultUi.equalsIgnoreCase("CHEST") && !ui.defaultUi.equalsIgnoreCase("DIALOG")) {
+            XLogger.warn("Invalid ui.default value: {0}; using CHEST.", ui.defaultUi);
+            ui.defaultUi = "CHEST";
+        } else {
+            ui.defaultUi = ui.defaultUi.toUpperCase(Locale.ROOT);
         }
 
     }

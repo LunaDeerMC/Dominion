@@ -114,6 +114,10 @@ menus:
         name: "<white>Help"
         lore:
           - "<gray>Send the documentation link to chat."
+      ui:
+        name: "<aqua>Use Dialog UI"
+        lore:
+          - "<gray>Switch to Minecraft's native dialog interface."
       close:
         name: "<red>Close"
         lore: []

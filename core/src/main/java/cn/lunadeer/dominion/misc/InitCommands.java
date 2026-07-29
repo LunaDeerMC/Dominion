@@ -17,6 +17,7 @@ public class InitCommands {
         new MigrationCommand();
         new TemplateCommand();
         new CopyCommand();
+        new UiCommand();
         // cn.lunadeer.dominion.utils.holograme (only for debug)
         if (Configuration.debug) new HoloCommand();
     }
