@@ -92,6 +92,24 @@ flags:
   admin:
     display-name: Administrator
     description: Member with this flag can manage normal members and groups.
+  resize:
+    display-name: Resize Dominion
+    description: Member with this flag can resize dominion.
+  rename:
+    display-name: Rename Dominion
+    description: Member with this flag can rename dominion.
+  create_sub:
+    display-name: Create Sub-Dominion
+    description: Member with this flag can create sub-dominion.
+  delete_sub:
+    display-name: Delete Sub-Dominion
+    description: Member with this flag can delete sub-dominion.
+  resize_sub:
+    display-name: Resize Sub-Dominion
+    description: Member with this flag can resize sub-dominion.
+  rename_sub:
+    display-name: Rename Sub-Dominion
+    description: Member with this flag can rename sub-dominion.
   move:
     display-name: Player Move
     description: Whether player can move in dominion.

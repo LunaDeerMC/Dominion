@@ -92,6 +92,24 @@ flags:
   admin:
     display-name: 管理者
     description: このフラグを持つメンバーは通常メンバーとグループを管理できます。
+  resize:
+    display-name: 領地サイズ変更
+    description: このフラグを持つメンバーは領地のサイズを変更できます。
+  rename:
+    display-name: 領地名変更
+    description: このフラグを持つメンバーは領地の名前を変更できます。
+  create_sub:
+    display-name: サブ領地作成
+    description: このフラグを持つメンバーはサブ領地を作成できます。
+  delete_sub:
+    display-name: サブ領地削除
+    description: このフラグを持つメンバーはサブ領地を削除できます。
+  resize_sub:
+    display-name: サブ領地サイズ変更
+    description: このフラグを持つメンバーはサブ領地のサイズを変更できます。
+  rename_sub:
+    display-name: サブ領地名変更
+    description: このフラグを持つメンバーはサブ領地の名前を変更できます。
   move:
     display-name: プレイヤー移動
     description: プレイヤーが領地内で移動できるかどうか。

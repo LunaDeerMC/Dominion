@@ -4,6 +4,7 @@ import cn.lunadeer.dominion.api.dtos.CuboidDTO;
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.GroupDTO;
 import cn.lunadeer.dominion.api.dtos.MemberDTO;
+import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Configuration;
@@ -26,6 +27,9 @@ import java.util.UUID;
 
 import static cn.lunadeer.dominion.misc.Converts.toWorld;
 import static cn.lunadeer.dominion.misc.Others.bypassLimit;
+import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
+import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlagSilence;
+import static cn.lunadeer.dominion.utils.Misc.formatString;
 
 /**
  * Asserts class.
@@ -58,6 +62,7 @@ public class Asserts {
 
         public String notOwner = "Only {0}'s owner can perform this command/operation.";
         public String notAdmin = "Only {0}'s admin can perform this command/operation.";
+        public String noPermission = "You do not have {0} permission to perform this command/operation.";
 
         public String intersectWithDom = "Dominion {0} intersects with dominion {1}.";
         public String intersectWithSpawn = "Dominion {0} intersects with the spawn protection area.";
@@ -473,15 +478,100 @@ public class Asserts {
         }
     }
 
+    /**
+     * Asserts that the given group belongs to the specified dominion.
+     *
+     * @param group    the group to check
+     * @param dominion the dominion to check against
+     * @throws DominionException if the group does not belong to the specified dominion
+     */
     public static void assertGroupBelongDominion(@NotNull GroupDTO group, @NotNull DominionDTO dominion) throws DominionException {
         if (!group.getDomID().equals(dominion.getId())) {
             throw new DominionException(Language.assertsText.groupNotBelongDominion, group.getNamePlain(), dominion.getName());
         }
     }
 
+    /**
+     * Asserts that the given member belongs to the specified dominion.
+     *
+     * @param member   the member to check
+     * @param dominion the dominion to check against
+     * @throws DominionException if the member does not belong to the specified dominion
+     */
     public static void assertMemberBelongDominion(@NotNull MemberDTO member, @NotNull DominionDTO dominion) throws DominionException {
         if (!member.getDomID().equals(dominion.getId())) {
             throw new DominionException(Language.assertsText.groupNotBelongDominion, member.getPlayer().getLastKnownName(), dominion.getName());
+        }
+    }
+
+    /**
+     * Asserts that the given command sender has the specified sub-dominion privilege flag
+     * in the parent dominion.
+     * <p>
+     * If the sender is a player, delegates to {@link #assertSubDominion(Player, DominionDTO, PriFlag)}.
+     * If the sender is not a player (e.g., console), the check is skipped.
+     *
+     * @param operator the command sender (usually a player)
+     * @param parent   the parent dominion
+     * @param flag     the privilege flag to check (must be one of CREATE_SUB, RESIZE_SUB, DELETE_SUB, RENAME_SUB)
+     * @throws DominionException if the flag is invalid or the sender lacks the required privilege
+     */
+    public static void assertSubDominionManageFlag(@NotNull CommandSender operator, @NotNull DominionDTO parent, @NotNull PriFlag flag) throws DominionException {
+        if (operator instanceof Player associatedPlayer) {
+            assertSubDominionManageFlag(associatedPlayer, parent, flag);
+        }
+    }
+
+    /**
+     * Asserts that the given player has the specified sub-dominion privilege flag
+     * in the parent dominion.
+     * <p>
+     * The flag must be one of {@link Flags#CREATE_SUB}, {@link Flags#RESIZE_SUB},
+     * {@link Flags#DELETE_SUB}, or {@link Flags#RENAME_SUB}.
+     * Server operators (bypass limit) and the dominion owner always pass this check.
+     *
+     * @param associatedPlayer the player to check
+     * @param parent           the parent dominion
+     * @param flag             the privilege flag to check (must be one of CREATE_SUB, RESIZE_SUB, DELETE_SUB, RENAME_SUB)
+     * @throws DominionException if the flag is invalid or the player lacks the required privilege
+     */
+    public static void assertSubDominionManageFlag(@NotNull Player associatedPlayer, @NotNull DominionDTO parent, @NotNull PriFlag flag) throws DominionException {
+        if (flag != Flags.CREATE_SUB && flag != Flags.RESIZE_SUB && flag != Flags.DELETE_SUB && flag != Flags.RENAME_SUB) {
+            throw new DominionException("Invalid flag for sub-dominion assertion.");
+        }
+        if (bypassLimit(associatedPlayer)) {
+            return;
+        }
+        boolean isOwner = parent.getOwner().equals(associatedPlayer.getUniqueId());
+        boolean hasPrivilege = checkPrivilegeFlagSilence(parent, flag, associatedPlayer, null);
+        if (!isOwner && !hasPrivilege) {
+            String errorMessage = !hasPrivilege ? 
+             formatString(Language.assertsText.notOwner, parent.getName()) :
+             formatString(Language.assertsText.noPermission, flag.getDisplayName());
+            throw new DominionException(errorMessage);
+        }
+    }
+
+    public static void assertDominionManageFlag(@NotNull CommandSender operator, @NotNull DominionDTO dominion, @NotNull PriFlag flag) throws DominionException {
+        if (operator instanceof Player associatedPlayer) {
+            assertDominionManageFlag(associatedPlayer, dominion, flag);
+        }
+    }
+
+    public static void assertDominionManageFlag(@NotNull Player associatedPlayer, @NotNull DominionDTO dominion, @NotNull PriFlag flag) throws DominionException {
+        if (flag != Flags.RENAME && flag != Flags.RESIZE) {
+            throw new DominionException("Invalid flag for dominion management assertion.");
+        }
+        if (bypassLimit(associatedPlayer)) {
+            return;
+        }
+        boolean isOwner = dominion.getOwner().equals(associatedPlayer.getUniqueId());
+        boolean hasPrivilege = checkPrivilegeFlagSilence(dominion, flag, associatedPlayer, null);
+        if (!isOwner && !hasPrivilege) {
+            String errorMessage = !hasPrivilege ? 
+             formatString(Language.assertsText.notOwner, dominion.getName()) :
+             formatString(Language.assertsText.noPermission, flag.getDisplayName());
+            throw new DominionException(errorMessage);
         }
     }
 }

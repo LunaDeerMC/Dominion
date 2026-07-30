@@ -4,6 +4,7 @@ import cn.lunadeer.dominion.api.dtos.CuboidDTO;
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
+import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.commands.DominionOperateCommand;
@@ -113,9 +114,9 @@ public class DominionProviderHandler extends DominionProvider {
                 assertPlayerDominionAmount(event.getOperator(), event.getWorld().getUID(), parent != null);
                 // size check
                 assertDominionSize(event.getOperator(), event.getWorld().getUID(), event.getCuboid());
-                //permission check
+                // permission check
                 if (parent != null) {
-                    assertDominionOwner(event.getOperator(), parent);
+                    assertSubDominionManageFlag(event.getOperator(), parent, Flags.CREATE_SUB);
                 }
 
                 // parent check
@@ -155,7 +156,12 @@ public class DominionProviderHandler extends DominionProvider {
             }
             boolean expand = amount > 0;
             try {
-                assertDominionOwner(event.getOperator(), event.getDominion());
+                DominionDTO parent = dominion.getParentDomId() == -1 ? null : CacheManager.instance.getCache().getDominionCache().getDominion(dominion.getParentDomId());
+                if (parent != null) {
+                    assertSubDominionManageFlag(event.getOperator(), parent, Flags.RESIZE_SUB);
+                } else {
+                    assertDominionManageFlag(event.getOperator(), dominion, Flags.RESIZE);
+                }
                 assertDominionSize(event.getOperator(), event.getDominion().getWorldUid(), event.getNewCuboid());
                 assertWithinParent(event.getOperator(), event.getDominion(), event.getNewCuboid());
                 assertContainSubs(event.getOperator(), event.getDominion(), event.getNewCuboid());
@@ -194,7 +200,12 @@ public class DominionProviderHandler extends DominionProvider {
             return CompletableFuture.completedFuture(null);
         return CompletableFuture.supplyAsync(() -> {
             try {
-                assertDominionOwner(event.getOperator(), event.getDominion());
+                DominionDTO parent = dominion.getParentDomId() == -1 ? null : CacheManager.instance.getCache().getDominionCache().getDominion(dominion.getParentDomId());
+                if (parent != null) {
+                    assertSubDominionManageFlag(event.getOperator(), parent, Flags.DELETE_SUB);
+                } else {
+                    assertDominionOwner(event.getOperator(), dominion);
+                }
                 // check subs
                 List<DominionDTO> sub_dominions = getSubDominionsRecursive(event.getDominion());
                 if (!event.isForce()) {
@@ -231,7 +242,12 @@ public class DominionProviderHandler extends DominionProvider {
             return CompletableFuture.completedFuture(null);
         return event.getFutureToComplete().completeAsync(() -> {
             try {
-                assertDominionOwner(event.getOperator(), dominion);
+                DominionDTO parent = dominion.getParentDomId() == -1 ? null : CacheManager.instance.getCache().getDominionCache().getDominion(dominion.getParentDomId());
+                if (parent != null) {
+                    assertSubDominionManageFlag(event.getOperator(), parent, Flags.RENAME_SUB);
+                } else {
+                    assertDominionManageFlag(event.getOperator(), dominion, Flags.RENAME);
+                }
                 if (Objects.equals(event.getOldName(), event.getNewName())) {
                     throw new DominionException(Language.dominionProviderHandlerText.sameName);
                 }
