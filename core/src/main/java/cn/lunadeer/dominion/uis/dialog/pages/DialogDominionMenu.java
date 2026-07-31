@@ -191,7 +191,7 @@ final class DialogDominionMenu extends AbstractDialogMenu {
                                 confirmed -> ui.submit(viewer,
                                         DominionProvider.getInstance().deleteDominion(
                                                 viewer, dominion, false, true),
-                                        ignored -> nav.home(viewer))));
+                                        (ignored, sess) -> sess.home())));
         commonFooter(page);
         return page.build(2, null);
     }

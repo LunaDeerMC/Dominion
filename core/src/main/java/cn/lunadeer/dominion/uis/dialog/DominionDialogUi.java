@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -138,6 +139,11 @@ public final class DominionDialogUi implements DialogMenuUi, Listener {
 
     @Override
     public <T> void submit(Player player, CompletableFuture<T> future, Consumer<T> success) {
+        submit(player, future, (value, session) -> success.accept(value));
+    }
+
+    @Override
+    public <T> void submit(Player player, CompletableFuture<T> future, BiConsumer<T, DialogMenuSession> success) {
         DialogMenuSession session = sessions.get(player.getUniqueId());
         if (session == null || session.busy()) return;
         long generation = session.beginAsync();
@@ -150,7 +156,7 @@ public final class DominionDialogUi implements DialogMenuUi, Listener {
             }
             current.busy(false);
             if (throwable != null) Notification.error(player, throwable);
-            else if (value != null) success.accept(value);
+            else if (value != null) success.accept(value, current);
             current.touch();
             render(player, current);
         }, player));
@@ -177,14 +183,11 @@ public final class DominionDialogUi implements DialogMenuUi, Listener {
             show(player, session, dialog);
         } catch (Exception exception) {
             Notification.error(player, text.text("errors.unavailable"));
-            XLogger.error(exception);
-            if (!session.current().id().equals(homeRoute.id())) {
-                if (!session.back()) session.home();
-                render(player, session);
-            } else {
-                closeSession(player, false);
-                DominionUi.openChest(player);
-            }
+            XLogger.warn("Dialog render failed for {0} at {1}: {2}",
+                    player.getName(), session.current().id(), exception.getMessage());
+            XLogger.debug("{0}: {1}", exception.getClass().getName(), exception.getMessage());
+            closeSession(player, false);
+            DominionUi.openChest(player);
         }
     }
 
