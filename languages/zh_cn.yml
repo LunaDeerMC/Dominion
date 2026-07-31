@@ -92,6 +92,24 @@ flags:
   admin:
     display-name: 管理员
     description: 拥有此权限的成员可以管理普通成员和分组。
+  resize:
+    display-name: 调整领地大小
+    description: 拥有此权限的成员可以调整领地大小。
+  rename:
+    display-name: 重命名领地
+    description: 拥有此权限的成员可以重命名领地。
+  create_sub:
+    display-name: 创建子领地
+    description: 拥有此权限的成员可以创建子领地。
+  delete_sub:
+    display-name: 删除子领地
+    description: 拥有此权限的成员可以删除子领地。
+  resize_sub:
+    display-name: 调整子领地大小
+    description: 拥有此权限的成员可以调整子领地大小。
+  rename_sub:
+    display-name: 重命名子领地
+    description: 拥有此权限的成员可以重命名子领地。
   move:
     display-name: 玩家移动
     description: 玩家是否可以在领地内移动。
