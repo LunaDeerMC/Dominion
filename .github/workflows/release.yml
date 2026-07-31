@@ -18,6 +18,10 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: recursive
+      - name: Attach release commit to master branch
+        run: |
+          git checkout -B master "$GITHUB_SHA"
+          git branch --show-current
       - name: "Set up JDK 21"
         uses: actions/setup-java@v3
         with:
@@ -101,6 +105,10 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: recursive
+      - name: Attach release commit to master branch
+        run: |
+          git checkout -B master "$GITHUB_SHA"
+          git branch --show-current
       - name: "Set up JDK 21"
         uses: actions/setup-java@v3
         with:
