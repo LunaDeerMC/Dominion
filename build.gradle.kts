@@ -30,7 +30,7 @@ val currentBranch = getCurrentGitBranch()
 val isMainBranch = currentBranch == "master"
 
 group = "cn.lunadeer"
-version = if (isMainBranch) "4.9.1-$suffixes" else suffixes
+version = if (isMainBranch) "4.9.3-$suffixes" else suffixes
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
