@@ -95,7 +95,7 @@ flags:
   resize:
     display-name: 調整領地大小
     description: 擁有此許可權的成員可以調整領地大小。
-  rename:
+  rename_dominion:
     display-name: 重新命名領地
     description: 擁有此許可權的成員可以重新命名領地。
   create_sub:

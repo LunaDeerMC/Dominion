@@ -95,7 +95,7 @@ flags:
   resize:
     display-name: Resize Dominion
     description: Member with this flag can resize dominion.
-  rename:
+  rename_dominion:
     display-name: Rename Dominion
     description: Member with this flag can rename dominion.
   create_sub:

@@ -95,7 +95,7 @@ flags:
   resize:
     display-name: 領地サイズ変更
     description: このフラグを持つメンバーは領地のサイズを変更できます。
-  rename:
+  rename_dominion:
     display-name: 領地名変更
     description: このフラグを持つメンバーは領地の名前を変更できます。
   create_sub:
