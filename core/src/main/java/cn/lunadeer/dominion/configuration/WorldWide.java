@@ -4,7 +4,6 @@ import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
 import cn.lunadeer.dominion.api.dtos.flag.Flag;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
-import cn.lunadeer.dominion.handler.WorldLoadHandler;
 import cn.lunadeer.dominion.utils.XLogger;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -15,12 +14,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class WorldWide {
     private static final int FLAG_SCHEMA_VERSION = 2;
+    private static final String WORLD_WIDE_FILE_EXTENSION = ".yml";
 
     private static class WorldConfig {
         private boolean enabled = false;
@@ -70,12 +73,14 @@ public class WorldWide {
     }
 
     protected static void loadWorld(File file) throws IOException {
-        String worldName = file.getName().replace(".yml", "");
+        if (!isWorldWideFile(file.toPath())) return;
+        loadWorld(file, stripExtension(file.getName()));
+    }
+
+    private static void loadWorld(File file, String worldName) throws IOException {
 
         WorldConfig world = new WorldConfig();
         if (worlds.containsKey(worldName)) world = worlds.get(worldName);
-
-        if (!file.exists()) return;    // if no file exisit skip loading and keep default
 
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         world.enabled = config.getBoolean("enabled", false);
@@ -107,6 +112,38 @@ public class WorldWide {
         }
         if (changed) config.save(file);
         worlds.put(worldName, world);
+    }
+
+    static void loadWorldFiles(File rootPath) throws IOException {
+        Path root = rootPath.toPath().toAbsolutePath().normalize();
+        try (Stream<Path> files = Files.walk(root)) {
+            files.filter(WorldWide::isWorldWideFile)
+                    .forEach(file -> {
+                        try {
+                            loadWorld(file.toFile(), getWorldName(root, file));
+                        } catch (IOException e) {
+                            XLogger.error(e);
+                        }
+                    });
+        }
+    }
+
+    private static boolean isWorldWideFile(Path path) {
+        if (!Files.isRegularFile(path)) return false;
+        Path fileName = path.getFileName();
+        if (fileName == null) return false;
+        String name = fileName.toString();
+        return name.length() > WORLD_WIDE_FILE_EXTENSION.length()
+                && name.endsWith(WORLD_WIDE_FILE_EXTENSION);
+    }
+
+    private static String getWorldName(Path rootPath, Path file) {
+        String relativePath = rootPath.relativize(file.toAbsolutePath().normalize()).toString();
+        return stripExtension(relativePath).replace(File.separatorChar, '/');
+    }
+
+    private static String stripExtension(String fileName) {
+        return fileName.substring(0, fileName.length() - WORLD_WIDE_FILE_EXTENSION.length());
     }
 
     protected static void saveWorld(File worldWideRootPath, String worldName) throws IOException {
@@ -142,16 +179,7 @@ public class WorldWide {
                 throw new RuntimeException("Failed to create world-wide dominion directory: " + rootPath.getAbsolutePath());
             }
         }
-        File[] files = rootPath.listFiles();
-        if (files == null) return;
-        
-        for (File file : files) {
-            try {
-                loadWorld(file);
-            } catch (IOException e) {
-                XLogger.error(e);
-            }
-        }
+        loadWorldFiles(rootPath);
         
         // ensure to have a default world-wide setting to fallback
         if (worlds.size() <= 0 || !worlds.containsKey("default")) {
