@@ -43,6 +43,27 @@ public class XVersionManager {
         return null;
     }
 
+    /**
+     * Returns the Minecraft version string in a cross-platform-compatible way.
+     * <p>
+     * {@link org.bukkit.Bukkit#getMinecraftVersion()} is a Paper-API-only method that does not
+     * exist on vanilla Bukkit / Spigot / CraftBukkit. This helper prefers the Paper API when
+     * available and falls back to parsing {@link org.bukkit.Bukkit#getBukkitVersion()} otherwise.
+     *
+     * @return the Minecraft version string, e.g. {@code "1.21.4"} or {@code "26.2"}
+     */
+    public static String getMinecraftVersion() {
+        try {
+            return org.bukkit.Bukkit.getMinecraftVersion();
+        } catch (NoSuchMethodError | NoClassDefFoundError ignored) {
+            // Paper API not available — parse Bukkit version string instead.
+            // Format is typically "1.21.4-R0.1-SNAPSHOT" or "26.2".
+            String bukkitVersion = org.bukkit.Bukkit.getBukkitVersion();
+            int dashIndex = bukkitVersion.indexOf('-');
+            return dashIndex == -1 ? bukkitVersion : bukkitVersion.substring(0, dashIndex);
+        }
+    }
+
     public enum ImplementationVersion {
         v26_2,
         v26,

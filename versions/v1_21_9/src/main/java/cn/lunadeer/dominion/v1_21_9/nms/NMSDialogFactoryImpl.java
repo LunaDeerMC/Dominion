@@ -47,7 +47,7 @@ import net.minecraft.server.dialog.input.NumberRangeInput;
 import net.minecraft.server.dialog.input.SingleOptionInput;
 import net.minecraft.server.dialog.input.TextInput;
 import net.minecraft.server.level.ServerPlayer;
-import org.bukkit.Bukkit;
+import cn.lunadeer.dominion.utils.XVersionManager;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.entity.Player;
@@ -65,7 +65,7 @@ public final class NMSDialogFactoryImpl implements NMSDialogFactory {
 
     @Override
     public boolean isSupported() {
-        String version = Bukkit.getMinecraftVersion();
+        String version = XVersionManager.getMinecraftVersion();
         return version.startsWith("1.21.9")
                 || version.startsWith("1.21.10")
                 || version.startsWith("1.21.11");

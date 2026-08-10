@@ -145,7 +145,7 @@ public class NMSManager {
         XVersionManager.ImplementationVersion version = XVersionManager.VERSION;
         if (version == null
                 || version.compareWith(XVersionManager.ImplementationVersion.v1_21_8) < 0) {
-            XLogger.debug("Dialog NMS backend is not enabled for Minecraft {0}.", Bukkit.getMinecraftVersion());
+            XLogger.debug("Dialog NMS backend is not enabled for Minecraft {0}.", XVersionManager.getMinecraftVersion());
             return;
         }
 
@@ -159,15 +159,15 @@ public class NMSManager {
                 dialogFactory = null;
                 dialogCallbackBridge = null;
                 XLogger.warn("Minecraft {0} Dialog backend reported itself unavailable; Chest UI will be used.",
-                        Bukkit.getMinecraftVersion());
+                        XVersionManager.getMinecraftVersion());
                 return;
             }
-            XLogger.info("Loaded Dominion Dialog NMS backend for Minecraft {0}.", Bukkit.getMinecraftVersion());
+            XLogger.info("Loaded Dominion Dialog NMS backend for Minecraft {0}.", XVersionManager.getMinecraftVersion());
         } catch (Throwable throwable) {
             dialogFactory = null;
             dialogCallbackBridge = null;
             XLogger.warn("Unable to load Minecraft {0} Dialog backend; Chest UI will be used: {1}",
-                    Bukkit.getMinecraftVersion(), throwable.getMessage());
+                    XVersionManager.getMinecraftVersion(), throwable.getMessage());
         }
     }
 }

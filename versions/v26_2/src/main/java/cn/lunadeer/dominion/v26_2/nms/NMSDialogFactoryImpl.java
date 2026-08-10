@@ -4,7 +4,7 @@ import cn.lunadeer.dominion.nms.NMSDialogFactory;
 import cn.lunadeer.dominion.utils.dialogui.DialogEncodingResult;
 import cn.lunadeer.dominion.utils.dialogui.DialogSessionContext;
 import cn.lunadeer.dominion.utils.dialogui.DialogSpec;
-import org.bukkit.Bukkit;
+import cn.lunadeer.dominion.utils.XVersionManager;
 import org.bukkit.entity.Player;
 
 /**
@@ -18,7 +18,7 @@ public final class NMSDialogFactoryImpl implements NMSDialogFactory {
 
     @Override
     public boolean isSupported() {
-        return Bukkit.getMinecraftVersion().startsWith("26.2");
+        return XVersionManager.getMinecraftVersion().startsWith("26.2");
     }
 
     @Override
