@@ -119,6 +119,7 @@ public final class DominionDialogUi implements DialogMenuUi, Listener {
         String key = "value";
         DialogSpec.ActionButton submit = DialogSpec.ActionButton.of(
                 Component.text(text.text("dialog.submit"), NamedTextColor.GREEN),
+                text.icon("submit"),
                 new DialogSpec.CallbackAction((viewer, response) -> {
                     String value = response.getText(key);
                     if (value != null) success.accept(value);
@@ -126,6 +127,7 @@ public final class DominionDialogUi implements DialogMenuUi, Listener {
         );
         DialogSpec.ActionButton cancel = DialogSpec.ActionButton.of(
                 Component.text(text.text("dialog.cancel"), NamedTextColor.RED),
+                text.icon("cancel"),
                 new DialogSpec.CallbackAction((viewer, response) -> render(viewer, session))
         );
         DialogSpec dialog = DialogSpec.builder(
@@ -194,6 +196,7 @@ public final class DominionDialogUi implements DialogMenuUi, Listener {
     private void showWaiting(Player player, DialogMenuSession session) {
         DialogSpec.ActionButton close = DialogSpec.ActionButton.of(
                 Component.text(text.text("dialog.continue-in-background"), NamedTextColor.RED),
+                text.icon("cancel"),
                 new DialogSpec.CallbackAction((viewer, response) -> closeSession(viewer, true))
         );
         DialogSpec waiting = DialogSpec.builder(

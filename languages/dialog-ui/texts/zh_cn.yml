@@ -278,18 +278,41 @@ menus:
         name: <aqua>传送
         lore:
           - <gray>传送到该领地。
-      area:
-        name: <green>区域与传送
-        lore:
-          - <gray>管理边界、传送点和子领地。
       permissions:
-        name: <red>权限设置
+        name: <red>权限管理
         lore:
-          - <gray>管理环境设置和访客权限。
-      people:
-        name: <yellow>成员与权限组
+          - <gray>管理环境、访客、成员和权限组权限。
+      children:
+        name: <green>子领地列表
         lore:
-          - <gray>管理个人和权限组的访问权限。
+          - <gray>查看或创建子领地。
+      other:
+        name: <yellow>其他
+        lore:
+          - <gray>更多领地管理选项。
+      back:
+        name: <yellow>返回
+        lore: []
+      close:
+        name: <red>关闭
+        lore: []
+  other:
+    title: <dark_green>其他 · {dominion}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      info:
+        name: <gold>其他管理
+        lore: []
+      set-teleport:
+        name: <aqua>设置传送点
+        lore:
+          - <gray>使用你当前所在的位置。
+      resize:
+        name: <yellow>调整大小
+        lore:
+          - <gray>扩展或收缩领地边界。
       appearance:
         name: <light_purple>外观与消息
         lore:
@@ -298,10 +321,14 @@ menus:
         name: <gold>复制数据
         lore:
           - <gray>从其他领地复制选定的设置。
-      ownership:
-        name: <dark_red>所有权
+      transfer:
+        name: <yellow>转让领地
         lore:
-          - <gray>转让或删除该领地。
+          - <gray>将该领地转让给其他玩家。
+      delete:
+        name: <dark_red>删除领地
+        lore:
+          - <gray>删除该领地及其子领地。
       back:
         name: <yellow>返回
         lore: []
@@ -362,6 +389,14 @@ menus:
         name: <yellow>访客权限
         lore:
           - <gray>未分配身份的玩家可执行的操作。
+      members:
+        name: <green>成员列表
+        lore:
+          - <gray>管理成员的个人权限。
+      groups:
+        name: <aqua>权限组列表
+        lore:
+          - <gray>管理共享权限和成员关系。
       back:
         name: <yellow>返回
         lore: []

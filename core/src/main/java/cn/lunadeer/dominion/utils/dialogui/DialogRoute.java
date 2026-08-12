@@ -25,6 +25,13 @@ public record DialogRoute(String id, Map<String, String> parameters, int page, S
         return new DialogRoute(id, copy, page, filter);
     }
 
+    public DialogRoute without(String key) {
+        if (!parameters.containsKey(key)) return this;
+        Map<String, String> copy = new HashMap<>(parameters);
+        copy.remove(key);
+        return new DialogRoute(id, copy, page, filter);
+    }
+
     public DialogRoute page(int value) {
         return new DialogRoute(id, parameters, value, filter);
     }

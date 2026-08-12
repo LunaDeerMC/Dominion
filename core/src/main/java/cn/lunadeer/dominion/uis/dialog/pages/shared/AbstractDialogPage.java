@@ -1,26 +1,35 @@
-package cn.lunadeer.dominion.uis.dialog.pages;
+package cn.lunadeer.dominion.uis.dialog.pages.shared;
 
 import cn.lunadeer.dominion.api.DominionAPI;
 import cn.lunadeer.dominion.api.dtos.CuboidDTO;
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.GroupDTO;
 import cn.lunadeer.dominion.api.dtos.MemberDTO;
+import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.api.dtos.TemplateDTO;
 import cn.lunadeer.dominion.configuration.Configuration;
+import cn.lunadeer.dominion.handler.UiDataHandler;
 import cn.lunadeer.dominion.providers.DominionProvider;
 import cn.lunadeer.dominion.providers.TemplateProvider;
-import cn.lunadeer.dominion.handler.UiDataHandler;
+import cn.lunadeer.dominion.uis.dialog.DialogUiText;
+import cn.lunadeer.dominion.uis.dialog.components.DialogListStyle;
+import cn.lunadeer.dominion.uis.dialog.components.DialogListTemplate;
+import cn.lunadeer.dominion.uis.dialog.components.DialogTextRenderer;
+import cn.lunadeer.dominion.uis.dialog.components.DominionDialogPage;
+import cn.lunadeer.dominion.uis.dialog.pages.DialogMenuId;
 import cn.lunadeer.dominion.utils.Notification;
+import cn.lunadeer.dominion.utils.dialogui.DialogMenuSession;
 import cn.lunadeer.dominion.utils.dialogui.DialogMenuUi;
 import cn.lunadeer.dominion.utils.dialogui.DialogNavigator;
-import cn.lunadeer.dominion.utils.dialogui.DialogRoute;
 import cn.lunadeer.dominion.utils.dialogui.DialogPagination;
+import cn.lunadeer.dominion.utils.dialogui.DialogRoute;
 import cn.lunadeer.dominion.utils.dialogui.DialogSpec;
-import cn.lunadeer.dominion.uis.dialog.DialogUiText;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -30,14 +39,14 @@ import java.util.stream.Stream;
 
 import static cn.lunadeer.dominion.Dominion.adminPermission;
 
-/** Shared rendering and validation helpers for the built-in menu families. */
-abstract class AbstractDialogMenu {
+/** Shared data, validation, navigation, and mutation helpers for pages. */
+public abstract class AbstractDialogPage {
     protected final DialogMenuUi ui;
     protected final DialogUiText config;
     protected final DialogNavigator nav;
     protected final DominionAPI api;
 
-    AbstractDialogMenu(DialogMenuUi ui, DialogUiText config, DialogNavigator nav) {
+    protected AbstractDialogPage(DialogMenuUi ui, DialogUiText config, DialogNavigator nav) {
         this.ui = ui;
         this.config = config;
         this.nav = nav;
@@ -59,9 +68,9 @@ abstract class AbstractDialogMenu {
                 second.setY(Configuration.getPlayerLimitation(player).getWorldSettings(player.getWorld()).noHigherThan - 1);
             }
             CuboidDTO cuboid = new CuboidDTO(first, second);
-            ui.submit(player, DominionProvider.getInstance().createDominion(player, name, player.getUniqueId(),
-                    player.getWorld(), cuboid, parent, false), created -> nav.replace(player,
-                    DialogRoute.of(DialogMenuId.DASHBOARD).with("dom", created.getId())));
+            ui.submit(player, DominionProvider.getInstance().createDominion(player, name,
+                    player.getUniqueId(), player.getWorld(), cuboid, parent, false), created ->
+                    nav.replace(player, DialogRoute.of(DialogMenuId.DASHBOARD).with("dom", created.getId())));
         });
     }
 
@@ -77,43 +86,31 @@ abstract class AbstractDialogMenu {
         return DialogPagination.of(route.page(), total, perPage);
     }
 
-    protected void listSearchAction(DominionDialogPage page, DialogRoute route) {
-        page.action("search", Map.of(), DominionDialogPage.TWO_COLUMN_WIDTH,
-                        (viewer, response) -> {
-                            String filter = response.getText("search");
-                            nav.replace(viewer, route.filter(filter == null ? "" : filter.trim()));
-                        })
-                .action("clear", Map.of(), DominionDialogPage.TWO_COLUMN_WIDTH,
-                        (viewer, response) -> nav.replace(viewer, route.filter("")));
+    protected void listNavigation(DominionDialogPage page, DialogRoute route,
+                                  DialogPagination pagination, int total,
+                                  DialogListStyle style) {
+        DialogListTemplate.navigation(page, nav, route, pagination, style,
+                DominionDialogPage.component(config.text("buttons.search.name")),
+                (viewer, response) -> nav.push(viewer, DialogListTemplate.openSearch(route)),
+                null, null);
+        DialogListTemplate.summary(page, config, pagination, total);
     }
 
-    protected void listNavigation(Player player, DominionDialogPage page, DialogRoute route,
-                                  DialogPagination pagination, int total) {
-        page.completeListRow();
-        int pages = pagination.pages();
-        boolean hasPrevious = route.page() > 1;
-        boolean hasNext = route.page() < pages;
-        if (hasPrevious) {
-            page.action("previous", Map.of(), DominionDialogPage.TWO_COLUMN_WIDTH,
-                    (viewer, response) -> nav.replace(viewer, route.page(route.page() - 1)));
-        }
-        if (hasNext) {
-            page.action("next", Map.of(), DominionDialogPage.TWO_COLUMN_WIDTH,
-                    (viewer, response) -> nav.replace(viewer, route.page(route.page() + 1)));
-        }
-        page.message(configured("common.page", Map.of(
-                "page", pagination.page(), "pages", pages, "total", total)));
+    protected DialogSpec listSearchPage(String menuId, Map<String, ?> titleValues,
+                                        DialogRoute route, DialogListStyle style) {
+        return DialogListTemplate.searchPage(config, menuId, titleValues, route, nav, style);
     }
 
-    protected DialogSpec.ActionButton closeButton(Player player, DominionDialogPage page) {
-        return page.button("close", Map.of(), DominionDialogPage.WIDE_BUTTON_WIDTH,
+    protected DialogSpec.ActionButton closeButton(DominionDialogPage page) {
+        return page.button("close", Map.of(), page.layout().wideButtonWidth(),
                 (viewer, response) -> ui.close(viewer));
     }
 
     protected List<DominionDTO> managedDominions(Player player) {
         return Stream.concat(api.getPlayerOwnDominionDTOs(player.getUniqueId()).stream(),
                         api.getPlayerAdminDominionDTOs(player.getUniqueId()).stream())
-                .collect(java.util.stream.Collectors.toMap(DominionDTO::getId, Function.identity(), (a, b) -> a))
+                .collect(java.util.stream.Collectors.toMap(DominionDTO::getId,
+                        Function.identity(), (a, b) -> a))
                 .values().stream().toList();
     }
 
@@ -147,6 +144,23 @@ abstract class AbstractDialogMenu {
                 "role", config.text(admin ? "labels.administrator" : "labels.member"));
     }
 
+    /** Builds a native player-head icon while tolerating stale stored skin URLs. */
+    protected DialogSpec.PlayerHeadIcon playerHead(PlayerDTO player) {
+        String skinTextureUrl = null;
+        try {
+            URL skin = player.getSkinUrl();
+            if (skin != null) skinTextureUrl = skin.toExternalForm();
+        } catch (MalformedURLException | RuntimeException ignored) {
+            // PlayerHeadIcon replaces unavailable or malformed textures with built-in Steve.
+        }
+        return new DialogSpec.PlayerHeadIcon(
+                player.getUuid(), player.getLastKnownName(), skinTextureUrl);
+    }
+
+    protected DominionDTO currentDominion(Player player, DialogMenuSession session) {
+        return requireDominion(player, session.current().integer("dom"));
+    }
+
     protected DominionDTO requireDominion(Player player, int id) {
         DominionDTO value = api.getDominion(id);
         if (value == null) throw new IllegalStateException("Dominion no longer exists: " + id);
@@ -171,6 +185,13 @@ abstract class AbstractDialogMenu {
         TemplateDTO value = TemplateProvider.getInstance().getTemplate(player.getUniqueId(), id);
         if (value == null) throw new IllegalStateException("Template no longer exists: " + id);
         return value;
+    }
+
+    protected void teleport(Player player, DominionDTO dominion) {
+        ui.submit(player, cn.lunadeer.dominion.providers.TeleportProvider.getInstance()
+                .teleport(player, dominion), accepted -> {
+                    if (accepted) ui.close(player);
+                });
     }
 
     protected static boolean matches(String filter, String value) {

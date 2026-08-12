@@ -9,6 +9,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Complete, version-independent description of a Minecraft dialog.
@@ -352,13 +353,108 @@ public record DialogSpec(Base base, Type type) {
         }
     }
 
-    public record ActionButton(Component label, Component tooltip, int width, Action action) {
+    /**
+     * Version-independent data for Minecraft's native player-head text object.
+     *
+     * <p>A valid stored texture URL renders the player's skin without a profile
+     * lookup. Invalid profile names and unavailable or malformed texture URLs
+     * are normalized to Minecraft's built-in Steve skin.</p>
+     */
+    public record PlayerHeadIcon(
+            UUID playerId,
+            String playerName,
+            String skinTextureUrl,
+            boolean hat
+    ) {
+        public static final String DEFAULT_PLAYER_NAME = "Steve";
+        public static final String DEFAULT_SKIN_TEXTURE = "minecraft:entity/player/wide/steve";
+
+        public PlayerHeadIcon {
+            Objects.requireNonNull(playerId, "playerId");
+            String normalizedName = playerName == null ? null : playerName.trim();
+            if (!isValidPlayerName(normalizedName)) {
+                playerName = DEFAULT_PLAYER_NAME;
+                skinTextureUrl = null;
+            } else {
+                playerName = normalizedName;
+                skinTextureUrl = validSkinTextureUrl(skinTextureUrl);
+            }
+        }
+
+        public PlayerHeadIcon(UUID playerId, String playerName, String skinTextureUrl) {
+            this(playerId, playerName, skinTextureUrl, true);
+        }
+
+        public boolean usesDefaultSkin() {
+            return skinTextureUrl == null;
+        }
+
+        private static boolean isValidPlayerName(String value) {
+            return value != null && !value.isEmpty() && value.length() <= 16
+                    && value.chars().allMatch(character -> character > 32 && character < 127);
+        }
+
+        private static String validSkinTextureUrl(String value) {
+            if (value == null || value.isBlank()) return null;
+            try {
+                String normalized = value.trim();
+                URI texture = URI.create(normalized);
+                String scheme = texture.getScheme();
+                if (scheme == null || texture.getHost() == null
+                        || !(scheme.equalsIgnoreCase("http") || scheme.equalsIgnoreCase("https"))) {
+                    return null;
+                }
+                return normalized;
+            } catch (IllegalArgumentException ignored) {
+                return null;
+            }
+        }
+    }
+
+    /**
+     * A button in a dialog.
+     *
+     * <p>{@code icon} is an atlas resource path in the form
+     * {@code namespace:atlas/sprite}, for example
+     * {@code minecraft:items/item/emerald}. When {@code playerHead} is set,
+     * 1.21.9+ backends render it instead and retain the atlas icon as a
+     * fallback for backends that do not support native player-head objects.</p>
+     */
+    public record ActionButton(
+            Component label,
+            Component tooltip,
+            int width,
+            String icon,
+            PlayerHeadIcon playerHead,
+            Action action
+    ) {
         public ActionButton {
             Objects.requireNonNull(label, "label");
         }
 
+        public ActionButton(Component label, Component tooltip, int width, Action action) {
+            this(label, tooltip, width, null, null, action);
+        }
+
+        public ActionButton(Component label, Component tooltip, int width, String icon, Action action) {
+            this(label, tooltip, width, icon, null, action);
+        }
+
         public static ActionButton of(Component label, Action action) {
-            return new ActionButton(label, null, 150, action);
+            return new ActionButton(label, null, 150, null, null, action);
+        }
+
+        public static ActionButton of(Component label, String icon, Action action) {
+            return new ActionButton(label, null, 150, icon, null, action);
+        }
+
+        public static ActionButton of(Component label, int width, String icon, Action action) {
+            return new ActionButton(label, null, width, icon, null, action);
+        }
+
+        public static ActionButton of(Component label, int width, String fallbackIcon,
+                                      PlayerHeadIcon playerHead, Action action) {
+            return new ActionButton(label, null, width, fallbackIcon, playerHead, action);
         }
     }
 

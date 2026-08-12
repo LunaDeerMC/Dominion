@@ -1,4 +1,4 @@
-package cn.lunadeer.dominion.uis.dialog.pages;
+package cn.lunadeer.dominion.uis.dialog.pages.picker;
 
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.GroupDTO;
@@ -12,6 +12,11 @@ import cn.lunadeer.dominion.providers.MemberProvider;
 import cn.lunadeer.dominion.providers.PlayerProvider;
 import cn.lunadeer.dominion.providers.TemplateProvider;
 import cn.lunadeer.dominion.uis.dialog.DialogUiText;
+import cn.lunadeer.dominion.uis.dialog.components.DialogListStyle;
+import cn.lunadeer.dominion.uis.dialog.components.DialogListTemplate;
+import cn.lunadeer.dominion.uis.dialog.components.DominionDialogPage;
+import cn.lunadeer.dominion.uis.dialog.pages.DialogMenuId;
+import cn.lunadeer.dominion.uis.dialog.pages.shared.AbstractDialogPage;
 import cn.lunadeer.dominion.utils.dialogui.DialogMenuSession;
 import cn.lunadeer.dominion.utils.dialogui.DialogMenuUi;
 import cn.lunadeer.dominion.utils.dialogui.DialogNavigator;
@@ -29,13 +34,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-/** Native two-column selectors for templates, groups, members, and players. */
-final class DialogPickerMenu extends AbstractDialogMenu {
-    DialogPickerMenu(DialogMenuUi ui, DialogUiText config, DialogNavigator nav) {
+/** Selector list used by template, group, member, and player workflows. */
+public final class PickerListPage extends AbstractDialogPage {
+    private static final DialogListStyle STYLE = DialogListStyle.DEFAULT
+            .withCompactItemWidth(104);
+
+    public PickerListPage(DialogMenuUi ui, DialogUiText config, DialogNavigator nav) {
         super(ui, config, nav);
     }
 
-    DialogSpec picker(Player player, DialogMenuSession session) throws Exception {
+    public DialogSpec render(Player player, DialogMenuSession session) throws Exception {
         DialogRoute route = session.current();
         DominionDTO dominion = route.parameters().containsKey("dom")
                 ? requireDominion(player, route.integer("dom")) : null;
@@ -44,7 +52,8 @@ final class DialogPickerMenu extends AbstractDialogMenu {
         if (id(route) == DialogMenuId.TEMPLATE_PICKER) {
             title = config.text("titles.select-template");
             addTemplates(player, route, dominion, entries);
-        } else if (id(route) == DialogMenuId.GROUP_MEMBER_PICKER && "assign".equals(route.string("mode"))) {
+        } else if (id(route) == DialogMenuId.GROUP_MEMBER_PICKER
+                && "assign".equals(route.string("mode"))) {
             title = config.text("titles.assign-group");
             addGroups(player, route, dominion, entries);
         } else if (id(route) == DialogMenuId.GROUP_MEMBER_PICKER) {
@@ -56,12 +65,12 @@ final class DialogPickerMenu extends AbstractDialogMenu {
             addKnownPlayers(player, null, entries, false);
             for (int index = 0; index < entries.size(); index++) {
                 PickerEntry original = entries.get(index);
-                entries.set(index, new PickerEntry(
-                        original.name(), original.description(), original.insideDominion(), original.online(),
+                entries.set(index, new PickerEntry(original.name(), original.description(),
+                        original.insideDominion(), original.online(),
                         () -> nav.push(player, DialogRoute.of(DialogMenuId.PLAYER_DOMINIONS)
                                 .with("player", original.playerId().toString())
-                                .with("playerName", original.name())),
-                        original.playerId()));
+                                .with("playerName", original.name())), original.playerId(),
+                        original.playerHead()));
             }
         } else {
             boolean transfer = id(route) == DialogMenuId.TRANSFER_PICKER;
@@ -75,47 +84,46 @@ final class DialogPickerMenu extends AbstractDialogMenu {
                         .thenComparing(PickerEntry::insideDominion).reversed()
                         .thenComparing(PickerEntry::name, String.CASE_INSENSITIVE_ORDER))
                 .toList();
-
-        DominionDialogPage page = new DominionDialogPage(config, "picker-list", Map.of("title", title))
-                .keepOpenAfterAction();
-        boolean searchable = id(route) != DialogMenuId.TEMPLATE_PICKER;
-        if (searchable) {
-            page.textInput("search", "input.search", route.filter(), 128);
-            listSearchAction(page, route);
+        Map<String, Object> titleValues = Map.of("title", title);
+        if (DialogListTemplate.isSearchPage(route)) {
+            return listSearchPage("picker-list", titleValues, route, STYLE);
         }
-        DialogPagination pagination = pagination(route, entries.size(), DominionDialogPage.LIST_PAGE_SIZE);
+        DominionDialogPage page = new DominionDialogPage(config, "picker-list", titleValues, STYLE)
+                .keepOpenAfterAction();
+        DialogPagination pagination = pagination(route, entries.size(), STYLE.pageSize());
+        listNavigation(page, route, pagination, entries.size(), STYLE);
         for (PickerEntry entry : entries.subList(pagination.from(), pagination.to())) {
-            String status = entry.online()
-                    ? config.text("labels.online")
-                    : entry.insideDominion()
-                            ? config.text("labels.inside-dominion")
-                            : entry.description();
-            var tooltip = DominionDialogPage.component(status);
-            page.listAction(
-                    DominionDialogPage.component(entry.name()),
-                    tooltip,
+            String status = entry.online() ? config.text("labels.online")
+                    : entry.insideDominion() ? config.text("labels.inside-dominion")
+                    : entry.description();
+            DialogListTemplate.item(page, DominionDialogPage.component(entry.name()),
+                    DominionDialogPage.component(status), STYLE.compactItemWidth(),
+                    page.icon(pickerIcon(route)), entry.playerHead(),
                     (viewer, response) -> entry.action().run());
         }
-        listNavigation(player, page, route, pagination, entries.size());
         commonFooter(page);
         return page.buildList();
     }
 
+    private String pickerIcon(DialogRoute route) {
+        return switch (id(route)) {
+            case TEMPLATE_PICKER -> "template";
+            case GROUP_MEMBER_PICKER -> "group-member";
+            default -> "player";
+        };
+    }
+
     private void addTemplates(Player player, DialogRoute route, DominionDTO dominion,
                               List<PickerEntry> entries) {
-        for (TemplateDTO template : TemplateProvider.getInstance().getTemplates(player.getUniqueId())) {
-            entries.add(new PickerEntry(
-                    template.getName(),
-                    config.text("labels.template"),
-                    false,
-                    false,
-                    () -> {
+        for (TemplateDTO template : TemplateProvider.getInstance()
+                .getTemplates(player.getUniqueId())) {
+            entries.add(new PickerEntry(template.getName(), config.text("labels.template"),
+                    false, false, () -> {
                         MemberDTO member = requireMember(dominion, route.integer("member"));
-                        ui.submit(player,
-                                TemplateProvider.getInstance().applyTemplate(player, dominion, member, template),
+                        ui.submit(player, TemplateProvider.getInstance()
+                                        .applyTemplate(player, dominion, member, template),
                                 ignored -> nav.back(player));
-                    },
-                    null));
+                    }, null, null));
         }
     }
 
@@ -123,38 +131,26 @@ final class DialogPickerMenu extends AbstractDialogMenu {
                            List<PickerEntry> entries) {
         MemberDTO member = requireMember(dominion, route.integer("member"));
         for (GroupDTO group : dominion.getGroups()) {
-            entries.add(new PickerEntry(
-                    group.getNamePlain(),
-                    config.text("labels.group"),
-                    false,
-                    false,
-                    () -> ui.submit(player,
-                            GroupProvider.getInstance().addMember(player, dominion, group, member),
-                            ignored -> nav.back(player)),
-                    null));
+            entries.add(new PickerEntry(group.getNamePlain(), config.text("labels.group"),
+                    false, false, () -> ui.submit(player,
+                    GroupProvider.getInstance().addMember(player, dominion, group, member),
+                    ignored -> nav.back(player)), null, null));
         }
     }
 
     private void addGroupMembers(Player player, DialogRoute route, DominionDTO dominion,
                                  List<PickerEntry> entries, boolean remove) throws Exception {
         GroupDTO group = requireGroup(dominion, route.integer("group"));
-        List<MemberDTO> members = remove
-                ? group.getMembers()
+        List<MemberDTO> members = remove ? group.getMembers()
                 : dominion.getMembers().stream()
-                        .filter(member -> !group.getId().equals(member.getGroupId()))
-                        .toList();
+                .filter(member -> !group.getId().equals(member.getGroupId())).toList();
         for (MemberDTO member : members) {
-            entries.add(new PickerEntry(
-                    member.getPlayer().getLastKnownName(),
-                    config.text("labels.player"),
-                    false,
-                    false,
-                    () -> ui.submit(player,
-                            remove
-                                    ? GroupProvider.getInstance().removeMember(player, dominion, group, member)
-                                    : GroupProvider.getInstance().addMember(player, dominion, group, member),
-                            ignored -> nav.back(player)),
-                    member.getPlayerUUID()));
+            PlayerDTO memberPlayer = member.getPlayer();
+            entries.add(new PickerEntry(memberPlayer.getLastKnownName(),
+                    config.text("labels.player"), false, false, () -> ui.submit(player,
+                    remove ? GroupProvider.getInstance().removeMember(player, dominion, group, member)
+                            : GroupProvider.getInstance().addMember(player, dominion, group, member),
+                    ignored -> nav.back(player)), member.getPlayerUUID(), playerHead(memberPlayer)));
         }
     }
 
@@ -167,25 +163,18 @@ final class DialogPickerMenu extends AbstractDialogMenu {
         }
         for (PlayerDTO candidate : PlayerProvider.getInstance().getKnownPlayers()) {
             if ((!transfer && excluded.contains(candidate.getUuid()))
-                    || (transfer && candidate.getUuid().equals(dominion.getOwner()))) {
-                continue;
-            }
+                    || (transfer && candidate.getUuid().equals(dominion.getOwner()))) continue;
             Player onlinePlayer = Bukkit.getPlayer(candidate.getUuid());
             boolean online = onlinePlayer != null && onlinePlayer.isOnline();
             boolean insideDominion = dominion != null && online
                     && Others.isInDominion(dominion, onlinePlayer.getLocation());
-            String description = online
-                    ? config.text("labels.online")
-                    : insideDominion
-                            ? config.text("labels.inside-dominion")
-                            : config.text("labels.known-player");
-            entries.add(new PickerEntry(
-                    candidate.getLastKnownName(),
-                    description,
-                    insideDominion,
-                    online,
+            String description = online ? config.text("labels.online")
+                    : insideDominion ? config.text("labels.inside-dominion")
+                    : config.text("labels.known-player");
+            entries.add(new PickerEntry(candidate.getLastKnownName(), description,
+                    insideDominion, online,
                     () -> selectKnownPlayer(player, dominion, candidate, transfer),
-                    candidate.getUuid()));
+                    candidate.getUuid(), playerHead(candidate)));
         }
     }
 
@@ -193,10 +182,10 @@ final class DialogPickerMenu extends AbstractDialogMenu {
                                    PlayerDTO candidate, boolean transfer) {
         if (transfer) {
             ui.confirm(player, configured("confirm.transfer", Map.of(
-                    "dominion", dominion.getName(),
-                    "player", candidate.getLastKnownName())), confirmed ->
-                    ui.submit(player,
-                            DominionProvider.getInstance().transferDominion(player, dominion, candidate, true),
+                    "dominion", dominion.getName(), "player", candidate.getLastKnownName())),
+                    confirmed -> ui.submit(player,
+                            DominionProvider.getInstance().transferDominion(
+                                    player, dominion, candidate, true),
                             ignored -> nav.home(player)));
         } else {
             ui.submit(player, MemberProvider.getInstance().addMember(player, dominion, candidate),
@@ -204,13 +193,8 @@ final class DialogPickerMenu extends AbstractDialogMenu {
         }
     }
 
-    private record PickerEntry(
-            String name,
-            String description,
-            boolean insideDominion,
-            boolean online,
-            Runnable action,
-            UUID playerId
-    ) {
+    private record PickerEntry(String name, String description, boolean insideDominion,
+                               boolean online, Runnable action, UUID playerId,
+                               DialogSpec.PlayerHeadIcon playerHead) {
     }
 }

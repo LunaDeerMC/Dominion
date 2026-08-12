@@ -10,6 +10,7 @@ import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlagGroup;
 import cn.lunadeer.dominion.utils.XLogger;
+import cn.lunadeer.dominion.utils.dialogui.DialogSpritePath;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -31,6 +33,7 @@ import java.util.Map;
 public final class FlagConfiguration {
 
     private static final int SCHEMA_VERSION = 2;
+    private static final Map<Flag, String> declaredFlagIcons = new IdentityHashMap<>();
     private static final Map<String, List<String>> unresolvedEnvironmentGroupFlags = new HashMap<>();
     private static final Map<String, List<String>> unresolvedPrivilegeGroupFlags = new HashMap<>();
 
@@ -167,6 +170,7 @@ public final class FlagConfiguration {
             } else {
                 yaml.set(flag.getConfigurationMaterialKey(), flag.getMaterial().name());
             }
+            reconcileDialogUiIcon(yaml, flag);
             yaml.setInlineComments(
                     flag.getConfigurationNameKey(),
                     Collections.singletonList(flag.getDisplayName() + "-" + flag.getDescription())
@@ -187,6 +191,10 @@ public final class FlagConfiguration {
     private static List<EnvFlagGroup> loadEnvironmentGroups(ConfigurationSection section) {
         if (section == null) {
             return List.of();
+        }
+        Map<String, String> defaultIcons = new HashMap<>();
+        for (EnvFlagGroup defaultGroup : FlagGroups.defaultEnvironmentGroups()) {
+            defaultIcons.put(defaultGroup.getId(), defaultGroup.getIcon());
         }
         List<EnvFlagGroup> result = new ArrayList<>();
         for (String id : section.getKeys(false)) {
@@ -211,11 +219,14 @@ public final class FlagConfiguration {
             if (!unresolved.isEmpty()) {
                 unresolvedEnvironmentGroupFlags.put(id, List.copyOf(unresolved));
             }
+            Material material = groupMaterial(group.getString("material"));
             result.add(new EnvFlagGroup(
                     id,
                     id,
                     "",
-                    groupMaterial(group.getString("material")),
+                    material,
+                    readDialogUiIcon(group, defaultIcons.get(id),
+                            "environment group " + id),
                     flags
             ));
         }
@@ -225,6 +236,10 @@ public final class FlagConfiguration {
     private static List<PriFlagGroup> loadPrivilegeGroups(ConfigurationSection section) {
         if (section == null) {
             return List.of();
+        }
+        Map<String, String> defaultIcons = new HashMap<>();
+        for (PriFlagGroup defaultGroup : FlagGroups.defaultPrivilegeGroups()) {
+            defaultIcons.put(defaultGroup.getId(), defaultGroup.getIcon());
         }
         List<PriFlagGroup> result = new ArrayList<>();
         for (String id : section.getKeys(false)) {
@@ -249,11 +264,14 @@ public final class FlagConfiguration {
             if (!unresolved.isEmpty()) {
                 unresolvedPrivilegeGroupFlags.put(id, List.copyOf(unresolved));
             }
+            Material material = groupMaterial(group.getString("material"));
             result.add(new PriFlagGroup(
                     id,
                     id,
                     "",
-                    groupMaterial(group.getString("material")),
+                    material,
+                    readDialogUiIcon(group, defaultIcons.get(id),
+                            "privilege group " + id),
                     flags
             ));
         }
@@ -281,6 +299,58 @@ public final class FlagConfiguration {
             return Material.BUNDLE;
         }
         return material;
+    }
+
+    private static void reconcileDialogUiIcon(YamlConfiguration yaml, Flag flag) {
+        String key = flag.getConfigurationDialogUiIconKey();
+        String declaredIcon = declaredFlagIcon(flag);
+        if (yaml.contains(key)) {
+            String configured = yaml.getString(key);
+            if (configured == null || configured.isBlank()) {
+                flag.setIcon(null);
+                return;
+            }
+            if (DialogSpritePath.isValid(configured)) {
+                flag.setIcon(configured.trim());
+                return;
+            }
+            warn("Invalid flag Dialog UI icon {0} for {1}; falling back to its declared icon.",
+                    configured, flag.getFlagName());
+            flag.setIcon(declaredIcon);
+            return;
+        }
+        flag.setIcon(declaredIcon);
+        yaml.set(key, declaredIcon == null ? "" : declaredIcon);
+    }
+
+    private static String readDialogUiIcon(ConfigurationSection section,
+                                           String declaredDefault,
+                                           String owner) {
+        if (section.contains("dialog-ui-icon")) {
+            String configured = section.getString("dialog-ui-icon");
+            if (configured == null || configured.isBlank()) {
+                return null;
+            }
+            if (DialogSpritePath.isValid(configured)) {
+                return configured.trim();
+            }
+            warn("Invalid Dialog UI icon {0} for {1}; falling back to its declared icon.", configured, owner);
+            return declaredDefault;
+        }
+        return declaredDefault;
+    }
+
+    private static String declaredFlagIcon(Flag flag) {
+        synchronized (declaredFlagIcons) {
+            if (!declaredFlagIcons.containsKey(flag)) {
+                declaredFlagIcons.put(flag, flag.getIcon());
+            }
+            return declaredFlagIcons.get(flag);
+        }
+    }
+
+    private static void warn(String message, Object... args) {
+        if (XLogger.instance != null) XLogger.warn(message, args);
     }
 
     static void writeConfiguredFlagGroups(YamlConfiguration yaml) {
@@ -311,6 +381,7 @@ public final class FlagConfiguration {
                                    FlagGroup<?> group,
                                    List<String> unresolved) {
         yaml.set(path + ".material", group.getMaterial().name());
+        yaml.set(path + ".dialog-ui-icon", group.getIcon() == null ? "" : group.getIcon());
         LinkedHashSet<String> names = new LinkedHashSet<>();
         group.getFlags().forEach(flag -> names.add(flag.getFlagName()));
         names.addAll(unresolved);

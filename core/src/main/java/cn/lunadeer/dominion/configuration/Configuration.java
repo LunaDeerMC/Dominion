@@ -131,7 +131,7 @@ public class Configuration extends ConfigurationFile {
             "If player don't login for this days, his dominion will be auto cleaned.",
             "Set to -1 to disable."
     })
-    public static int autoCleanAfterDays = 180;
+    public static int autoCleanAfterDays = -1;
 
     @Comments("Prevent player from creating dominion around the spawn point.")
     public static int serverSpawnProtectionRadius = 10;

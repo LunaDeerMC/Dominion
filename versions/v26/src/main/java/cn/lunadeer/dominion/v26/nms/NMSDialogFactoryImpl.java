@@ -7,10 +7,15 @@ import cn.lunadeer.dominion.utils.dialogui.DialogKey;
 import cn.lunadeer.dominion.utils.dialogui.DialogModelValidator;
 import cn.lunadeer.dominion.utils.dialogui.DialogPayload;
 import cn.lunadeer.dominion.utils.dialogui.DialogSessionContext;
+import cn.lunadeer.dominion.utils.dialogui.DialogSpritePath;
 import cn.lunadeer.dominion.utils.dialogui.DialogSpec;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mojang.serialization.JsonOps;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.object.ObjectContents;
+import net.kyori.adventure.text.object.PlayerHeadObjectContents;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -53,7 +58,9 @@ import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -246,7 +253,7 @@ public final class NMSDialogFactoryImpl implements NMSDialogFactory {
         private ActionButton button(DialogSpec.ActionButton button, EncodeContext context) {
             if (button == null) return null;
             CommonButtonData common = new CommonButtonData(
-                    component(button.label()),
+                    component(button.label(), button.icon(), button.playerHead()),
                     Optional.ofNullable(button.tooltip()).map(NMSDialogFactoryImpl::component),
                     button.width()
             );
@@ -412,6 +419,76 @@ public final class NMSDialogFactoryImpl implements NMSDialogFactory {
 
     private static net.minecraft.network.chat.Component component(Component component) {
         return CraftChatMessage.fromJSON(GsonComponentSerializer.gson().serialize(component));
+    }
+
+    private static net.minecraft.network.chat.Component component(Component component, String icon) {
+        return component(component, icon, null);
+    }
+
+    private static net.minecraft.network.chat.Component component(
+            Component component,
+            String fallbackIcon,
+            DialogSpec.PlayerHeadIcon playerHead
+    ) {
+        if (playerHead != null) {
+            try {
+                return componentWithObject(component, playerHeadObject(playerHead));
+            } catch (RuntimeException ignored) {
+                try {
+                    return componentWithObject(component, defaultPlayerHeadObject(playerHead));
+                } catch (RuntimeException ignoredDefault) {
+                    return component(component, fallbackIcon, null);
+                }
+            }
+        }
+        if (fallbackIcon != null && !fallbackIcon.isBlank()) {
+            DialogSpritePath path = DialogSpritePath.parse(fallbackIcon);
+            return componentWithObject(component, Component.object(ObjectContents.sprite(
+                    Key.key(path.atlas()), Key.key(path.sprite()))));
+        }
+        return component(component);
+    }
+
+    private static Component playerHeadObject(DialogSpec.PlayerHeadIcon playerHead) {
+        PlayerHeadObjectContents.Builder builder = ObjectContents.playerHead()
+                .id(playerHead.playerId())
+                .name(playerHead.playerName())
+                .hat(playerHead.hat());
+        if (playerHead.usesDefaultSkin()) {
+            builder.texture(Key.key(DialogSpec.PlayerHeadIcon.DEFAULT_SKIN_TEXTURE));
+        } else {
+            builder.profileProperty(PlayerHeadObjectContents.property(
+                    "textures", textureProperty(playerHead.skinTextureUrl())));
+        }
+        return Component.object(builder.build());
+    }
+
+    private static Component defaultPlayerHeadObject(DialogSpec.PlayerHeadIcon playerHead) {
+        return Component.object(ObjectContents.playerHead()
+                .id(playerHead.playerId())
+                .name(DialogSpec.PlayerHeadIcon.DEFAULT_PLAYER_NAME)
+                .texture(Key.key(DialogSpec.PlayerHeadIcon.DEFAULT_SKIN_TEXTURE))
+                .hat(playerHead.hat())
+                .build());
+    }
+
+    private static net.minecraft.network.chat.Component componentWithObject(
+            Component component, Component object) {
+        Component withObject = object
+                .append(Component.space())
+                .append(component);
+        return CraftChatMessage.fromJSON(GsonComponentSerializer.gson().serialize(withObject));
+    }
+
+    private static String textureProperty(String skinTextureUrl) {
+        JsonObject skin = new JsonObject();
+        skin.addProperty("url", skinTextureUrl);
+        JsonObject textures = new JsonObject();
+        textures.add("SKIN", skin);
+        JsonObject profile = new JsonObject();
+        profile.add("textures", textures);
+        return Base64.getEncoder().encodeToString(
+                profile.toString().getBytes(StandardCharsets.UTF_8));
     }
 
     private static Identifier identifier(DialogKey key) {

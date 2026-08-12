@@ -127,6 +127,9 @@ public final class DialogModelValidator {
 
     private static void validateButton(DialogSpec.ActionButton button, Set<DialogSpec> visiting) {
         width(button.width(), "button width");
+        if (button.icon() != null && !button.icon().isBlank()) {
+            DialogSpritePath.parse(button.icon());
+        }
         if (button.action() != null) {
             DialogSpec.Action action = button.action();
             if (!(action instanceof DialogSpec.CallbackAction)

@@ -9,6 +9,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -109,6 +110,50 @@ class DialogModelTest {
                 DialogSpec.ActionButton.of(TEXT, new ReservedExtensionAction()))).build());
         assertDoesNotThrow(() -> DialogSpec.builder(TEXT,
                 new ExtensionType(DialogKey.parse("example:future_type"))).build());
+    }
+
+    @Test
+    void playerHeadButtonKeepsProfileAndAtlasFallbackData() {
+        UUID playerId = UUID.fromString("01234567-89ab-cdef-0123-456789abcdef");
+        DialogSpec.PlayerHeadIcon playerHead = new DialogSpec.PlayerHeadIcon(
+                playerId,
+                "LunaDeer",
+                "https://textures.minecraft.net/texture/example",
+                false
+        );
+        DialogSpec.ActionButton button = DialogSpec.ActionButton.of(
+                TEXT, 120, "minecraft:items/item/armor_stand", playerHead, null);
+
+        DialogSpec spec = DialogSpec.builder(TEXT, new DialogSpec.Notice(button)).build();
+        DialogSpec.ActionButton encoded = ((DialogSpec.Notice) spec.type()).action();
+        assertEquals("minecraft:items/item/armor_stand", encoded.icon());
+        assertEquals(playerId, encoded.playerHead().playerId());
+        assertEquals("LunaDeer", encoded.playerHead().playerName());
+        assertEquals("https://textures.minecraft.net/texture/example",
+                encoded.playerHead().skinTextureUrl());
+        assertFalse(encoded.playerHead().hat());
+
+        DialogSpec.PlayerHeadIcon invalidSkin = new DialogSpec.PlayerHeadIcon(
+                playerId, "LunaDeer", "file:///tmp/skin.png");
+        assertEquals("LunaDeer", invalidSkin.playerName());
+        assertNull(invalidSkin.skinTextureUrl());
+        assertTrue(invalidSkin.usesDefaultSkin());
+
+        DialogSpec.PlayerHeadIcon invalidName = new DialogSpec.PlayerHeadIcon(
+                playerId,
+                "Clincded_Xsa_79a4df70",
+                "https://textures.minecraft.net/texture/example");
+        assertEquals(DialogSpec.PlayerHeadIcon.DEFAULT_PLAYER_NAME, invalidName.playerName());
+        assertNull(invalidName.skinTextureUrl());
+        assertTrue(invalidName.usesDefaultSkin());
+
+        DialogSpec.PlayerHeadIcon missingSkin = new DialogSpec.PlayerHeadIcon(
+                playerId, "LunaDeer", null);
+        assertEquals("LunaDeer", missingSkin.playerName());
+        assertTrue(missingSkin.usesDefaultSkin());
+        assertThrows(IllegalArgumentException.class, () -> DialogSpec.builder(
+                TEXT, new DialogSpec.Notice(DialogSpec.ActionButton.of(
+                        TEXT, 120, "not-an-atlas-path", playerHead, null))).build());
     }
 
     @Test

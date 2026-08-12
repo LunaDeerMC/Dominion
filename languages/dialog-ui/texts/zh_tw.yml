@@ -278,35 +278,62 @@ menus:
         name: <aqua>传送
         lore:
           - <gray>传送到该领地。
-      area:
-        name: <green>区域与传送
-        lore:
-          - <gray>管理边界、传送点和子领地。
       permissions:
-        name: <red>权限设置
+        name: <red>權限管理
         lore:
-          - <gray>管理环境设置和访客权限。
-      people:
-        name: <yellow>成员与权限组
+          - <gray>管理環境、訪客、成員和權限組權限。
+      children:
+        name: <green>子領地列表
         lore:
-          - <gray>管理个人和权限组的访问权限。
-      appearance:
-        name: <light_purple>外观与消息
+          - <gray>查看或建立子領地。
+      other:
+        name: <yellow>其他
         lore:
-          - <gray>管理名称、提示消息和地图颜色。
-      copy:
-        name: <gold>复制数据
-        lore:
-          - <gray>从其他领地复制选定的设置。
-      ownership:
-        name: <dark_red>所有权
-        lore:
-          - <gray>转让或删除该领地。
+          - <gray>更多領地管理選項。
       back:
         name: <yellow>返回
         lore: []
       close:
         name: <red>关闭
+        lore: []
+  other:
+    title: <dark_green>其他 · {dominion}
+    items:
+      filler:
+        name: ' '
+        lore: []
+      info:
+        name: <gold>其他管理
+        lore: []
+      set-teleport:
+        name: <aqua>設定傳送點
+        lore:
+          - <gray>使用你目前所在的位置。
+      resize:
+        name: <yellow>調整大小
+        lore:
+          - <gray>擴展或收縮領地邊界。
+      appearance:
+        name: <light_purple>外觀與訊息
+        lore:
+          - <gray>管理名稱、提示訊息和地圖顏色。
+      copy:
+        name: <gold>複製資料
+        lore:
+          - <gray>從其他領地複製選定的設定。
+      transfer:
+        name: <yellow>轉讓領地
+        lore:
+          - <gray>將該領地轉讓給其他玩家。
+      delete:
+        name: <dark_red>刪除領地
+        lore:
+          - <gray>刪除該領地及其子領地。
+      back:
+        name: <yellow>返回
+        lore: []
+      close:
+        name: <red>關閉
         lore: []
   area:
     title: <dark_green>区域 · {dominion}
@@ -362,6 +389,14 @@ menus:
         name: <yellow>访客权限
         lore:
           - <gray>未分配身份的玩家可执行的操作。
+      members:
+        name: <green>成員列表
+        lore:
+          - <gray>管理成員的個人權限。
+      groups:
+        name: <aqua>權限組列表
+        lore:
+          - <gray>管理共享權限和成員關係。
       back:
         name: <yellow>返回
         lore: []

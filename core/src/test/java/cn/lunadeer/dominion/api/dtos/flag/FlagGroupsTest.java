@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -80,5 +81,34 @@ class FlagGroupsTest {
         assertEquals("flag-groups.environment.shared.description", environment.getDescriptionKey());
         assertEquals("flag-groups.privilege.shared.display-name", privilege.getDisplayNameKey());
         assertEquals("flag-groups.privilege.shared.description", privilege.getDescriptionKey());
+    }
+
+    @Test
+    void oldAndNewConstructorsExposeDialogUiIconsWithoutChangingMaterials() {
+        EnvFlag legacyFlag = new EnvFlag("legacy", "Legacy", "", false, true, Material.PAPER);
+        EnvFlag explicitFlag = new EnvFlag("explicit", "Explicit", "", false, true,
+                Material.PAPER, "custom:atlas/sprite");
+        assertNull(legacyFlag.getIcon());
+        assertEquals("custom:atlas/sprite", explicitFlag.getIcon());
+
+        EnvFlagGroup legacyGroup = new EnvFlagGroup("legacy", "Legacy", "", Material.PAPER);
+        EnvFlagGroup explicitGroup = new EnvFlagGroup("explicit", "Explicit", "", Material.PAPER,
+                "custom:atlas/group", List.of());
+        assertNull(legacyGroup.getIcon());
+        assertEquals("custom:atlas/group", explicitGroup.getIcon());
+        assertEquals("groups.environment.explicit.dialog-ui-icon",
+                explicitGroup.getConfigurationDialogUiIconKey());
+        explicitGroup.setIcon(null);
+        assertNull(explicitGroup.getIcon());
+        explicitGroup.setIcon("");
+        assertNull(explicitGroup.getIcon());
+
+        explicitFlag.setIcon(null);
+        assertNull(explicitFlag.getIcon());
+        explicitFlag.setIcon("");
+        assertNull(explicitFlag.getIcon());
+        explicitFlag.setMaterial("DIAMOND");
+        assertNull(explicitFlag.getIcon());
+        assertEquals(Material.DIAMOND, explicitFlag.getMaterial());
     }
 }

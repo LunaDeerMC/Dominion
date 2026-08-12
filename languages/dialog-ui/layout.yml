@@ -1,0 +1,151 @@
+# DialogUI icon layout.
+#
+# Icons use Minecraft's native atlas text-component path:
+#   namespace:atlas/sprite
+# The defaults below target the latest supported client resource layout.
+# Custom namespaces can be used after a resource pack is installed by the
+# server; the Dialog backend passes custom paths through unchanged.
+schema-version: 1
+
+# Used when a button has no more specific mapping.
+default-icon: minecraft:items/item/paper
+
+# Shared semantic button icons. Individual menus can override these below.
+buttons:
+  default:
+    icon: minecraft:items/item/paper
+  back:
+    icon: ''
+  home:
+    icon: minecraft:items/item/compass_00
+  close:
+    icon: minecraft:items/item/barrier
+  cancel:
+    icon: minecraft:items/item/barrier
+  submit:
+    icon: minecraft:items/item/lime_dye
+  confirm:
+    icon: minecraft:items/item/lime_dye
+  search:
+    icon: minecraft:items/item/spyglass
+  clear:
+    icon: minecraft:items/item/paper
+  refresh:
+    icon: minecraft:items/item/clock_00
+  previous:
+    icon: ''
+  next:
+    icon: ''
+  save:
+    icon: minecraft:items/item/lime_dye
+  apply:
+    icon: minecraft:items/item/lime_dye
+  primary:
+    icon: minecraft:items/item/emerald
+  create:
+    icon: minecraft:items/item/emerald
+  create-child:
+    icon: minecraft:blocks/block/oak_sapling
+  dominions:
+    icon: minecraft:blocks/block/grass_block_side
+  content:
+    icon: minecraft:blocks/block/grass_block_side
+  remote-content:
+    icon: minecraft:chests/entity/chest/ender
+  templates:
+    icon: minecraft:items/item/writable_book
+  template:
+    icon: minecraft:items/item/writable_book
+  copy:
+    icon: minecraft:items/item/writable_book
+  copy-type:
+    icon: minecraft:items/item/writable_book
+  permissions:
+    icon: minecraft:items/item/writable_book
+  environment:
+    icon: minecraft:items/item/writable_book
+  guest:
+    icon: minecraft:items/item/writable_book
+  flags:
+    icon: minecraft:blocks/block/redstone_torch
+  people:
+    icon: minecraft:items/item/armor_stand
+  members:
+    icon: minecraft:items/item/armor_stand
+  member:
+    icon: minecraft:items/item/armor_stand
+  add-member:
+    icon: minecraft:items/item/armor_stand
+  player:
+    icon: minecraft:items/item/armor_stand
+  player-dominions:
+    icon: minecraft:items/item/armor_stand
+  groups:
+    icon: minecraft:items/item/name_tag
+  group:
+    icon: minecraft:items/item/name_tag
+  group-member:
+    icon: minecraft:items/item/name_tag
+  title:
+    icon: minecraft:items/item/name_tag
+  titles:
+    icon: minecraft:items/item/name_tag
+  flag-group:
+    icon: minecraft:blocks/block/redstone_block
+  children:
+    icon: minecraft:blocks/block/oak_sapling
+  set-teleport:
+    icon: minecraft:items/item/recovery_compass_00
+  teleport:
+    icon: minecraft:items/item/ender_pearl
+  resize:
+    icon: minecraft:items/item/structure_void
+  appearance:
+    icon: minecraft:items/item/name_tag
+  ownership:
+    icon: minecraft:items/item/golden_helmet
+  transfer:
+    icon: minecraft:items/item/golden_helmet
+  help:
+    icon: minecraft:items/item/knowledge_book
+  ui:
+    icon: minecraft:chests/entity/chest/normal
+  other:
+    icon: minecraft:chests/entity/chest/normal
+  delete:
+    icon: minecraft:items/item/barrier
+  remove:
+    icon: minecraft:items/item/barrier
+  disable:
+    icon: minecraft:items/item/barrier
+  assign-group:
+    icon: minecraft:items/item/name_tag
+  remove-group:
+    icon: minecraft:items/item/barrier
+  enabled:
+    icon: minecraft:items/item/lime_dye
+  disabled:
+    icon: minecraft:items/item/gray_dye
+
+# Optional per-menu overrides. Any entry here wins over the shared buttons section.
+menus:
+  main:
+    items:
+      dominions:
+        icon: minecraft:blocks/block/grass_block_side
+      templates:
+        icon: minecraft:items/item/writable_book
+      titles:
+        icon: minecraft:items/item/name_tag
+      all:
+        icon: minecraft:items/item/compass_00
+      ui:
+        icon: minecraft:chests/entity/chest/normal
+  dominion-list:
+    items:
+      primary:
+        icon: minecraft:items/item/emerald
+      content:
+        icon: minecraft:blocks/block/grass_block_side
+      remote-content:
+        icon: minecraft:chests/entity/chest/ender

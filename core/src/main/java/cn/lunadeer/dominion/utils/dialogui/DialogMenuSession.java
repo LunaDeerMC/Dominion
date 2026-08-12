@@ -41,6 +41,7 @@ public final class DialogMenuSession {
         if (value == null) state.remove(key);
         else state.put(key, value);
     }
+    public void removeState(String key) { state.remove(key); }
     public <T> T state(String key, Class<T> type) {
         Object value = state.get(key);
         return type.isInstance(value) ? type.cast(value) : null;

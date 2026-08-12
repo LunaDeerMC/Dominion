@@ -276,18 +276,41 @@ menus:
         name: "<aqua>テレポート"
         lore:
           - "<gray>この領地へテレポートします。"
-      area:
-        name: "<green>領域・移動"
-        lore:
-          - "<gray>境界、テレポート地点、子領地を管理します。"
       permissions:
-        name: "<red>権限"
+        name: "<red>権限管理"
         lore:
-          - "<gray>環境設定とゲスト権限を管理します。"
-      people:
-        name: "<yellow>メンバー・グループ"
+          - "<gray>環境、ゲスト、メンバー、グループの権限を管理します。"
+      children:
+        name: "<green>子領地一覧"
         lore:
-          - "<gray>個別およびグループの権限を管理します。"
+          - "<gray>子領地を表示または作成します。"
+      other:
+        name: "<yellow>その他"
+        lore:
+          - "<gray>その他の領地管理オプション。"
+      back:
+        name: "<yellow>戻る"
+        lore: []
+      close:
+        name: "<red>閉じる"
+        lore: []
+  other:
+    title: "<dark_green>その他 · {dominion}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      info:
+        name: "<gold>その他の管理"
+        lore: []
+      set-teleport:
+        name: "<aqua>テレポート地点を設定"
+        lore:
+          - "<gray>現在位置を使用します。"
+      resize:
+        name: "<yellow>サイズを調整"
+        lore:
+          - "<gray>境界を拡張または縮小します。"
       appearance:
         name: "<light_purple>外観・メッセージ"
         lore:
@@ -296,10 +319,14 @@ menus:
         name: "<gold>データをコピー"
         lore:
           - "<gray>他の領地から設定をコピーします。"
-      ownership:
-        name: "<dark_red>所有権"
+      transfer:
+        name: "<yellow>領地を譲渡"
         lore:
-          - "<gray>この領地を譲渡または削除します。"
+          - "<gray>他のプレイヤーへ領地を譲渡します。"
+      delete:
+        name: "<dark_red>領地を削除"
+        lore:
+          - "<gray>この領地と子領地を削除します。"
       back:
         name: "<yellow>戻る"
         lore: []
@@ -360,6 +387,14 @@ menus:
         name: "<yellow>ゲスト権限"
         lore:
           - "<gray>未所属プレイヤーの権限を設定します。"
+      members:
+        name: "<green>メンバー一覧"
+        lore:
+          - "<gray>個別メンバーの権限を管理します。"
+      groups:
+        name: "<aqua>グループ一覧"
+        lore:
+          - "<gray>共有権限とメンバー関係を管理します。"
       back:
         name: "<yellow>戻る"
         lore: []

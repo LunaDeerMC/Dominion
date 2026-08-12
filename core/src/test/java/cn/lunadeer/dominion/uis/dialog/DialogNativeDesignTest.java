@@ -9,6 +9,7 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DialogNativeDesignTest {
@@ -46,6 +47,8 @@ class DialogNativeDesignTest {
                 "list labels must not be rendered as no-op buttons");
         assertTrue(sources.contains("BooleanInput"));
         assertTrue(sources.contains("SingleOptionInput"));
+        assertTrue(sources.contains("STYLE.compactItemWidth(), group.getIcon()"));
+        assertTrue(sources.contains("flag.getIcon()"));
     }
 
     @Test
@@ -79,6 +82,53 @@ class DialogNativeDesignTest {
                 assertTrue(yaml.isString(key), code + ':' + key);
             }
         }
+    }
+
+    @Test
+    void dialogIconLayoutUsesVanillaAtlasSpritesByDefault() {
+        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(
+                new File("../languages/dialog-ui/layout.yml"));
+        assertEquals(1, yaml.getInt("schema-version"));
+        assertEquals("minecraft:items/item/paper", yaml.getString("default-icon"));
+        for (String key : new String[]{
+                "buttons.back.icon", "buttons.close.icon", "buttons.search.icon",
+                "buttons.primary.icon", "buttons.member.icon", "buttons.flag-group.icon",
+                "buttons.enabled.icon", "buttons.disabled.icon",
+                "menus.main.items.dominions.icon",
+                "menus.dominion-list.items.remote-content.icon"
+        }) {
+            assertTrue(yaml.isString(key), key);
+            assertTrue(yaml.getString(key).isBlank()
+                            || yaml.getString(key).startsWith("minecraft:"),
+                    key);
+        }
+    }
+
+    @Test
+    void emptyConfiguredIconDoesNotFallBackToAnotherIcon() {
+        YamlConfiguration yaml = new YamlConfiguration();
+        yaml.set("default-icon", "minecraft:items/item/paper");
+        yaml.set("buttons.default.icon", "minecraft:items/item/paper");
+        yaml.set("buttons.empty.icon", "");
+
+        assertEquals("minecraft:items/item/paper",
+                DialogUiText.resolveIcon(yaml, null, "missing"));
+        assertEquals("minecraft:items/item/paper",
+                DialogUiText.resolveIcon(yaml, null, "default"));
+        assertNull(DialogUiText.resolveIcon(yaml, null, "empty"));
+    }
+
+    @Test
+    void playerRelatedListsAttachNativePlayerHeadIcons() {
+        String memberList = read(Path.of(
+                "src/main/java/cn/lunadeer/dominion/uis/dialog/pages/dominion/dashboard/permissions/members/MemberListPage.java"));
+        assertTrue(memberList.contains("playerHead(member.getPlayer())"));
+
+        String pickerList = read(Path.of(
+                "src/main/java/cn/lunadeer/dominion/uis/dialog/pages/picker/PickerListPage.java"));
+        assertTrue(pickerList.contains("entry.playerHead()"));
+        assertTrue(pickerList.contains("playerHead(memberPlayer)"));
+        assertTrue(pickerList.contains("playerHead(candidate)"));
     }
 
     private String read(Path path) {

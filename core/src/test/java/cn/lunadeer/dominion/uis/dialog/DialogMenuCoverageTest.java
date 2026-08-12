@@ -15,7 +15,7 @@ class DialogMenuCoverageTest {
     void dialogOwnsEveryRequiredBusinessRouteWithoutChestDependencies() throws Exception {
         Set<String> requiredRoutes = Set.of(
                 "MAIN", "DOMINION_LIST", "ALL_DOMINIONS", "CHILD_LIST", "DASHBOARD",
-                "AREA", "PERMISSIONS", "PEOPLE", "APPEARANCE", "OWNERSHIP", "RESIZE",
+                "AREA", "OTHER", "PERMISSIONS", "PEOPLE", "APPEARANCE", "OWNERSHIP", "RESIZE",
                 "ENV_FLAGS", "GUEST_FLAGS", "FLAG_LIST", "MEMBER_LIST", "MEMBER_DETAIL",
                 "MEMBER_FLAGS", "GROUP_LIST", "GROUP_DETAIL", "GROUP_FLAGS",
                 "GROUP_MEMBER_PICKER", "PLAYER_PICKER", "TRANSFER_PICKER", "TEMPLATE_LIST",

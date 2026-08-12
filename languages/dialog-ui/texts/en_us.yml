@@ -276,18 +276,41 @@ menus:
         name: "<aqua>Teleport"
         lore:
           - "<gray>Travel to this dominion."
-      area:
-        name: "<green>Area & Travel"
-        lore:
-          - "<gray>Boundary, teleport point and sub-dominions."
       permissions:
         name: "<red>Permissions"
         lore:
-          - "<gray>Environment and guest flags."
-      people:
-        name: "<yellow>Members & Groups"
+          - "<gray>Environment, guest, member and group access."
+      children:
+        name: "<green>Child Dominions"
         lore:
-          - "<gray>Manage individual and group access."
+          - "<gray>Open the child-dominion list or create one."
+      other:
+        name: "<yellow>Other"
+        lore:
+          - "<gray>More dominion management options."
+      back:
+        name: "<yellow>Back"
+        lore: []
+      close:
+        name: "<red>Close"
+        lore: []
+  other:
+    title: "<dark_green>Other · {dominion}"
+    items:
+      filler:
+        name: " "
+        lore: []
+      info:
+        name: "<gold>Other Management"
+        lore: []
+      set-teleport:
+        name: "<aqua>Set Teleport Point"
+        lore:
+          - "<gray>Use your current position."
+      resize:
+        name: "<yellow>Resize"
+        lore:
+          - "<gray>Expand or contract the boundaries."
       appearance:
         name: "<light_purple>Appearance & Messages"
         lore:
@@ -296,10 +319,14 @@ menus:
         name: "<gold>Copy Data"
         lore:
           - "<gray>Copy selected settings from another dominion."
-      ownership:
-        name: "<dark_red>Ownership"
+      transfer:
+        name: "<yellow>Transfer"
         lore:
-          - "<gray>Transfer or delete this dominion."
+          - "<gray>Transfer this dominion to another player."
+      delete:
+        name: "<dark_red>Delete"
+        lore:
+          - "<gray>Delete this dominion and its children."
       back:
         name: "<yellow>Back"
         lore: []
@@ -360,6 +387,14 @@ menus:
         name: "<yellow>Guest Privileges"
         lore:
           - "<gray>Actions available to unassigned players."
+      members:
+        name: "<green>Members"
+        lore:
+          - "<gray>Manage individual member privileges."
+      groups:
+        name: "<aqua>Groups"
+        lore:
+          - "<gray>Manage shared privileges and membership."
       back:
         name: "<yellow>Back"
         lore: []

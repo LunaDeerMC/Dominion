@@ -1,4 +1,4 @@
-package cn.lunadeer.dominion.uis.dialog.pages;
+package cn.lunadeer.dominion.uis.dialog.pages.dominion.dashboard.permissions.flags;
 
 import java.util.ArrayList;
 import java.util.Collection;
