@@ -51,6 +51,11 @@ public record DialogListStyle(
                 itemWidth, createItemWidth, compactItemWidth, specialItemWidth);
     }
 
+    public DialogListStyle withSearchButtonWidth(int value) {
+        return new DialogListStyle(pageLayout, searchLayout, pageSize, navigationButtonWidth, value,
+                itemWidth, createItemWidth, compactItemWidth, specialItemWidth);
+    }
+
     /** Returns the page style for a list that reserves one slot for creation. */
     public DialogListStyle withCreateButton() {
         return withPageSize(Math.max(1, pageSize - 1));

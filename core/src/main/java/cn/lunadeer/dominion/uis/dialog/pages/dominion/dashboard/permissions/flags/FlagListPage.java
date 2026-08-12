@@ -25,7 +25,8 @@ import java.util.Map;
 public final class FlagListPage extends AbstractFlagPage {
     private static final DialogListStyle STYLE = DialogListStyle.DEFAULT
             .withItemWidth(108)
-            .withCompactItemWidth(108);
+            .withCompactItemWidth(108)
+            .withSearchButtonWidth(64);
 
     public FlagListPage(DialogMenuUi ui, DialogUiText config, DialogNavigator nav) {
         super(ui, config, nav);

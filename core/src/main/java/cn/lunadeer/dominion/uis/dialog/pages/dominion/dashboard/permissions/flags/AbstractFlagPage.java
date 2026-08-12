@@ -52,9 +52,9 @@ abstract class AbstractFlagPage extends AbstractDialogPage {
     }
 
     protected Component flagActionLabel(Flag flag, boolean enabled) {
-        return Component.text(enabled ? "✓ " : "✗ ",
-                        enabled ? NamedTextColor.GREEN : NamedTextColor.RED)
-                .append(Component.text(flag.getDisplayName(), NamedTextColor.WHITE));
+        return Component.text(flag.getDisplayName(), NamedTextColor.WHITE)
+                .append(Component.text(enabled ? " ✔" : " ❌",
+                        enabled ? NamedTextColor.GREEN : NamedTextColor.RED));
     }
 
     protected boolean effectiveFlagState(DialogMenuSession session, String prefix,
