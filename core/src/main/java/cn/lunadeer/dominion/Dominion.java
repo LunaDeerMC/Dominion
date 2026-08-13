@@ -6,6 +6,7 @@ import cn.lunadeer.dominion.configuration.Language;
 import cn.lunadeer.dominion.events.EventsRegister;
 import cn.lunadeer.dominion.managers.HooksManager;
 import cn.lunadeer.dominion.managers.MultiServerManager;
+import cn.lunadeer.dominion.managers.PlayerSkinRefreshManager;
 import cn.lunadeer.dominion.managers.TeleportManager;
 import cn.lunadeer.dominion.misc.InitCommands;
 import cn.lunadeer.dominion.misc.Others;
@@ -19,6 +20,8 @@ import cn.lunadeer.dominion.nms.NMSManager;
 import cn.lunadeer.dominion.utils.bStatsMetrics;
 import cn.lunadeer.dominion.utils.command.CommandManager;
 import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
+import cn.lunadeer.dominion.utils.PlayerSkinProfileFactory;
+import cn.lunadeer.dominion.utils.chestui.ChestUiManager;
 import cn.lunadeer.dominion.storage.DatabaseManager;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
 import org.bukkit.Bukkit;
@@ -78,6 +81,8 @@ public final class Dominion extends JavaPlugin {
         new MultiServerManager(this);
         new TeleportManager(this);
         new CacheManager();
+        new PlayerSkinRefreshManager();
+        ChestUiManager.setHeadProfileProvider(PlayerSkinProfileFactory::create);
         new DominionInterface();
         new HooksManager(this);
 
@@ -117,6 +122,7 @@ public final class Dominion extends JavaPlugin {
             NMSManager.instance().shutdown();
         } catch (IllegalStateException ignored) {
         }
+        PlayerSkinRefreshManager.shutdownInstance();
         if (DatabaseManager.instance != null)
             DatabaseManager.instance.close();
         Scheduler.cancelAll();

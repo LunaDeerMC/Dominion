@@ -30,6 +30,8 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.flywaydb:flyway-core:11.8.2")
+    testImplementation("org.mockito:mockito-core:5.18.0")
     testImplementation("org.mybatis:mybatis:3.5.16")
     testImplementation("com.zaxxer:HikariCP:6.2.1")
     testImplementation("org.xerial:sqlite-jdbc:3.46.1.3")

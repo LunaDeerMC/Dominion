@@ -67,6 +67,15 @@ public class PlayerRepository extends RepositorySupport {
         });
     }
 
+    public static void updateSkin(UUID uuid, String skinUrl) throws SQLException {
+        sql((session, mapper) -> mapper.updateColumns(
+                PLAYER_NAME,
+                PLAYER_UUID,
+                uuid.toString(),
+                Map.of(PLAYER_SKIN_URL, skinUrl)
+        ));
+    }
+
     public static void updateUsingGroupTitle(Integer id, Integer groupTitleId) throws SQLException {
         sql((session, mapper) -> {
             Map<String, Object> values = new LinkedHashMap<>();

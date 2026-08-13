@@ -3,6 +3,7 @@ package cn.lunadeer.dominion.doos;
 import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.storage.repository.PlayerRepository;
+import cn.lunadeer.dominion.utils.PlayerSkin;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -89,7 +90,7 @@ public class PlayerDOO implements PlayerDTO {
         this.setLastKnownName(name);
         if (skinUrl == null) {
             // Default skin URL if none provided
-            skinUrl = new URL("http://textures.minecraft.net/texture/613ba1403f98221fab6f4ae0f9e5298068262258966e8f9e53cdedd97aa45ef1");
+            skinUrl = PlayerSkin.defaultSkinUrl();
         }
         this.setSkinUrl(skinUrl);
         this.setLastJoinAt(LocalDateTime.now());
@@ -134,7 +135,7 @@ public class PlayerDOO implements PlayerDTO {
     public @NotNull URL getSkinUrl() throws MalformedURLException {
         String skinUrlValue = skinUrl;
         if (skinUrlValue == null || skinUrlValue.isEmpty()) {
-            return new URL("http://textures.minecraft.net/texture/613ba1403f98221fab6f4ae0f9e5298068262258966e8f9e53cdedd97aa45ef1");
+            return PlayerSkin.defaultSkinUrl();
         }
         return new URL(skinUrlValue);
     }

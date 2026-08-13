@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.profile.PlayerProfile;
 
 import java.util.Map;
 import java.util.UUID;
@@ -43,6 +44,10 @@ public final class ChestUiManager implements Listener {
         controller = controllerFactory.apply(this);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         plugin.getServer().getPluginManager().registerEvents(input, plugin);
+    }
+
+    public static void setHeadProfileProvider(Function<UUID, PlayerProfile> provider) {
+        ItemFactory.setHeadProfileProvider(provider);
     }
 
     public MenuNavigator navigator() { return navigator; }

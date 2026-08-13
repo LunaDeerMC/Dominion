@@ -6,6 +6,7 @@ import cn.lunadeer.dominion.configuration.Configuration;
 import cn.lunadeer.dominion.events.PlayerCrossDominionBorderEvent;
 import cn.lunadeer.dominion.events.PlayerMoveInDominionEvent;
 import cn.lunadeer.dominion.events.PlayerMoveOutDominionEvent;
+import cn.lunadeer.dominion.managers.PlayerSkinRefreshManager;
 import cn.lunadeer.dominion.utils.MessageDisplay;
 import cn.lunadeer.dominion.utils.BorderRenderUtil;
 import cn.lunadeer.dominion.utils.XLogger;
@@ -66,6 +67,9 @@ public class CacheEventHandler implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         try {
             CacheManager.instance.updatePlayerName(event.getPlayer());
+            if (PlayerSkinRefreshManager.instance != null) {
+                PlayerSkinRefreshManager.instance.enqueue(event.getPlayer());
+            }
         } catch (Exception e) {
             XLogger.error(e);
         }

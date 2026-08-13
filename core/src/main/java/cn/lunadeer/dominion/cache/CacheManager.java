@@ -17,6 +17,7 @@ import cn.lunadeer.dominion.events.PlayerMoveInDominionEvent;
 import cn.lunadeer.dominion.events.PlayerMoveOutDominionEvent;
 import cn.lunadeer.dominion.handler.CacheEventHandler;
 import cn.lunadeer.dominion.misc.DominionException;
+import cn.lunadeer.dominion.storage.repository.PlayerRepository;
 import cn.lunadeer.dominion.storage.repository.ServerRepository;
 import cn.lunadeer.dominion.utils.AutoTimer;
 import cn.lunadeer.dominion.utils.Notification;
@@ -210,12 +211,6 @@ public class CacheManager {
      * @param bukkitPlayer the Player object representing the player
      */
     public void updatePlayerName(@NotNull Player bukkitPlayer) throws Exception {
-        URL skin = null;
-        try {
-            skin = bukkitPlayer.getPlayerProfile().getTextures().getSkin();
-        } catch (NoSuchMethodError ignored) {
-        }
-
         String playerName = bukkitPlayer.getName();
         PlayerDTO playerWithSameName = playerCache.getPlayer(playerName);
         if (playerWithSameName != null && !playerWithSameName.getUuid().equals(bukkitPlayer.getUniqueId())) {
@@ -228,7 +223,26 @@ public class CacheManager {
         PlayerDTO player = playerCache.getPlayer(bukkitPlayer.getUniqueId());
         if (player == null)
             player = PlayerDOO.create(bukkitPlayer.getUniqueId(), playerName);
+
+        URL skin = null;
+        try {
+            skin = player.getSkinUrl();
+        } catch (Exception exception) {
+            XLogger.debug("Unable to read cached skin for {0}: {1}", bukkitPlayer.getUniqueId(), exception.getMessage());
+        }
         player.updateLastKnownName(playerName, skin);
+    }
+
+    /**
+     * Stores only the refreshed skin URL and reloads the corresponding player
+     * cache entry. It deliberately does not touch the name or join timestamp.
+     */
+    public void updatePlayerSkin(@NotNull UUID uuid, @NotNull URL skinUrl) throws Exception {
+        PlayerRepository.updateSkin(uuid, skinUrl.toExternalForm());
+        PlayerDTO player = playerCache.getPlayer(uuid);
+        if (player != null && player.getId() != null) {
+            playerCache.load(player.getId());
+        }
     }
 
     /**
