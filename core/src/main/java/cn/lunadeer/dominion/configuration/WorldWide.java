@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public class WorldWide {
-    private static final int FLAG_SCHEMA_VERSION = 3;
+    private static final int FLAG_SCHEMA_VERSION = 4;
     private static final String WORLD_WIDE_FILE_EXTENSION = ".yml";
 
     private static class WorldConfig {
@@ -91,10 +91,7 @@ public class WorldWide {
             if (flag.getFlagName().equals(Flags.ADMIN.getFlagName())) continue; // not handle admin flag for world-wide config
 
             if (!config.contains(flag.getConfigurationNameKey())) {
-                Flag source = schemaVersion < FLAG_SCHEMA_VERSION ? Flags.getLegacySource(flag) : null;
-                boolean value = source == null
-                        ? flag.getDefaultValue()
-                        : config.getBoolean(source.getConfigurationNameKey(), source.getDefaultValue());
+                boolean value = migratedValue(config, flag, schemaVersion < FLAG_SCHEMA_VERSION);
                 if (schemaVersion < FLAG_SCHEMA_VERSION && Flags.preserveAllowedSpawnEggValue(flag)) value = true;
                 config.set(flag.getConfigurationNameKey(), value);
                 changed = true;
@@ -112,6 +109,17 @@ public class WorldWide {
         }
         if (changed) config.save(file);
         worlds.put(worldName, world);
+    }
+
+    private static boolean migratedValue(YamlConfiguration config, Flag flag, boolean migrateSplitFlags) {
+        if (!migrateSplitFlags) return flag.getDefaultValue();
+        List<Flag> sources = Flags.getLegacySources(flag);
+        if (sources.isEmpty()) return flag.getDefaultValue();
+        boolean value = true;
+        for (Flag source : sources) {
+            value &= config.getBoolean(source.getConfigurationNameKey(), source.getDefaultValue());
+        }
+        return value;
     }
 
     static void loadWorldFiles(File rootPath) throws IOException {

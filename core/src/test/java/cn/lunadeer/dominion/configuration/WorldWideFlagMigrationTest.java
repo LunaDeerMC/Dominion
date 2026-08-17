@@ -34,7 +34,7 @@ class WorldWideFlagMigrationTest {
 
         WorldWide.loadWorld(file);
         YamlConfiguration migrated = YamlConfiguration.loadConfiguration(file);
-        assertEquals(3, migrated.getInt("flag-schema-version"));
+        assertEquals(4, migrated.getInt("flag-schema-version"));
         assertTrue(migrated.getBoolean(Flags.ANIMAL_SPAWN_EGG.getConfigurationNameKey()));
         assertTrue(migrated.getBoolean(Flags.MONSTER_SPAWN_EGG.getConfigurationNameKey()));
         assertFalse(migrated.getBoolean(Flags.VILLAGER_SPAWN_EGG.getConfigurationNameKey()));

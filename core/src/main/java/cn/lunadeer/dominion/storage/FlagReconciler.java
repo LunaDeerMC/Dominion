@@ -47,28 +47,40 @@ final class FlagReconciler {
     private int reconcileSplitFlags(Connection connection) throws SQLException {
         int changed = 0;
         for (Flag flag : Flags.getAllFlags()) {
-            Flag source = Flags.getLegacySource(flag);
-            if (source == null) continue;
+            List<Flag> sources = Flags.getLegacySources(flag);
+            if (sources.isEmpty()) continue;
             if (flag instanceof EnvFlag) {
-                changed += reconcileSplitFlagColumn(connection, "dominion", source, flag);
+                changed += reconcileSplitFlagColumn(connection, "dominion", sources, flag);
             } else if (flag instanceof PriFlag) {
-                changed += reconcileSplitFlagColumn(connection, "dominion", source, flag);
-                changed += reconcileSplitFlagColumn(connection, "dominion_member", source, flag);
-                changed += reconcileSplitFlagColumn(connection, "dominion_group", source, flag);
-                changed += reconcileSplitFlagColumn(connection, "privilege_template", source, flag);
+                changed += reconcileSplitFlagColumn(connection, "dominion", sources, flag);
+                changed += reconcileSplitFlagColumn(connection, "dominion_member", sources, flag);
+                changed += reconcileSplitFlagColumn(connection, "dominion_group", sources, flag);
+                changed += reconcileSplitFlagColumn(connection, "privilege_template", sources, flag);
             }
         }
         return changed;
     }
 
-    private int reconcileSplitFlagColumn(Connection connection, String tableName, Flag source, Flag target)
+    private int reconcileSplitFlagColumn(Connection connection, String tableName, List<Flag> sources, Flag target)
             throws SQLException {
         if (columnExists(connection, tableName, target.getFlagName())) return 0;
         addFlagColumn(connection, tableName, target);
         if (Flags.preserveAllowedSpawnEggValue(target)) {
             setFlagColumn(connection, tableName, target.getFlagName(), true);
-        } else if (columnExists(connection, tableName, source.getFlagName())) {
-            copyFlagColumn(connection, tableName, source.getFlagName(), target.getFlagName());
+        } else {
+            List<String> sourceColumns = sources.stream()
+                    .map(Flag::getFlagName)
+                    .filter(source -> {
+                        try {
+                            return columnExists(connection, tableName, source);
+                        } catch (SQLException exception) {
+                            throw new IllegalStateException(exception);
+                        }
+                    })
+                    .toList();
+            if (!sourceColumns.isEmpty()) {
+                copyFlagColumns(connection, tableName, sourceColumns, target.getFlagName());
+            }
         }
         return 1;
     }
@@ -122,6 +134,14 @@ final class FlagReconciler {
     private void copyFlagColumn(Connection connection, String tableName, String sourceColumn, String targetColumn) throws SQLException {
         try (var statement = connection.createStatement()) {
             statement.executeUpdate("UPDATE " + tableName + " SET " + targetColumn + " = " + sourceColumn);
+        }
+    }
+
+    private void copyFlagColumns(Connection connection, String tableName, List<String> sourceColumns, String targetColumn)
+            throws SQLException {
+        try (var statement = connection.createStatement()) {
+            statement.executeUpdate("UPDATE " + tableName + " SET " + targetColumn + " = "
+                    + String.join(" AND ", sourceColumns));
         }
     }
 

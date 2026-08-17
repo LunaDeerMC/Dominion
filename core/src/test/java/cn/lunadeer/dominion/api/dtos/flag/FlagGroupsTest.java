@@ -102,8 +102,7 @@ class FlagGroupsTest {
                 Flags.SMOKER,
                 Flags.FLOWER_POT,
                 Flags.COPPER_CHEST,
-                Flags.SHELF,
-                Flags.ITEM_FRAME_CONTENT
+                Flags.SHELF
         ), storage.getFlags());
         assertFalse(storage.containsFlag(Flags.CONTAINER));
         assertFalse(Flags.getAllPriFlags().contains(Flags.CONTAINER));

@@ -80,9 +80,18 @@ flags:
   trig_pressure_drop:
     display-name: Pressure Plate (Dropping)
     description: Whether dropping items can trigger pressure plate.
-  item_frame_proj_damage:
-    display-name: Projectile Damage Item Frame
-    description: Whether projectile (arrow/snowball) can break item frame.
+  armor_stand_mob_damage:
+    display-name: Armor Stand Mob Damage
+    description: Whether non-player entities can damage armor stands.
+  hanging_entity_mob_damage:
+    display-name: Hanging Entity Mob Damage
+    description: Whether non-player entities can damage hanging entities.
+  armor_stand_explosion_damage:
+    display-name: Armor Stand Explosion Damage
+    description: Whether explosions can damage armor stands.
+  hanging_entity_explosion_damage:
+    display-name: Hanging Entity Explosion Damage
+    description: Whether explosions can damage hanging entities.
   mob_drop_item:
     display-name: Mob Drop Item
     description: Whether mob drop item when killed.
@@ -145,7 +154,13 @@ flags:
     description: Whether player can drop item in dominion.
   door:
     display-name: Door
-    description: Whether can interact with door (including trapdoor, fence gate).
+    description: Whether can interact with normal doors.
+  trapdoor:
+    display-name: Trapdoor
+    description: Whether can interact with trapdoors.
+  fence_gate:
+    display-name: Fence Gate
+    description: Whether can interact with fence gates.
   button:
     display-name: Button
     description: Whether can click button.
@@ -331,7 +346,7 @@ flags:
     description: Whether endermen can teleport.
   tnt_damage_entity:
     display-name: TNT Entity Damage
-    description: Whether TNT explosions can damage entities and hanging objects.
+    description: Whether TNT explosions can damage entities other than armor stands and hanging entities.
   wither_explode:
     display-name: Wither Spawn Explosion
     description: Whether a spawning wither can destroy blocks.
@@ -339,26 +354,26 @@ flags:
     display-name: Wither Block Breaking
     description: Whether a harmed wither can break blocks.
   creeper_damage_entity:
-    display-name: Creeper Decoration Damage
-    description: Whether creeper explosions can damage armor stands and hanging objects.
+    display-name: Creeper Entity Damage
+    description: Whether creeper explosions can damage entities other than armor stands and hanging entities.
   wither_skull_explode:
     display-name: Wither Skull Block Damage
     description: Whether wither skull explosions can destroy blocks.
   wither_skull_damage_entity:
-    display-name: Wither Skull Decoration Damage
-    description: Whether wither skull explosions can damage armor stands and hanging objects.
+    display-name: Wither Skull Entity Damage
+    description: Whether wither skull explosions can damage entities other than armor stands and hanging entities.
   ender_crystal_explode:
     display-name: End Crystal Block Damage
     description: Whether end crystal explosions can destroy blocks.
   ender_crystal_damage_entity:
-    display-name: End Crystal Decoration Damage
-    description: Whether end crystal explosions can damage armor stands and hanging objects.
+    display-name: End Crystal Entity Damage
+    description: Whether end crystal explosions can damage entities other than armor stands and hanging entities.
   fireball_explode:
     display-name: Fireball Block Damage
     description: Whether fireball explosions can destroy blocks.
   fireball_damage_entity:
-    display-name: Fireball Decoration Damage
-    description: Whether fireball explosions can damage armor stands and hanging objects.
+    display-name: Fireball Entity Damage
+    description: Whether fireball explosions can damage entities other than armor stands and hanging entities.
   block_explode:
     display-name: Bed and Anchor Block Damage
     description: Whether bed and respawn-anchor explosions can destroy blocks.
@@ -368,15 +383,21 @@ flags:
   place_liquid:
     display-name: Place Liquid
     description: Whether water and lava can be placed.
-  place_entity:
-    display-name: Place Decorative Entity
-    description: Whether armor stands and item frames can be placed.
+  place_armor_stand:
+    display-name: Place Armor Stand
+    description: Whether armor stands can be placed.
+  place_hanging_entity:
+    display-name: Place Hanging Entity
+    description: Whether hanging entities can be placed.
   break_liquid:
     display-name: Collect Liquid
     description: Whether water and lava can be collected.
-  break_entity:
-    display-name: Break Decorative Entity
-    description: Whether armor stands and item frames can be broken.
+  armor_stand_player_damage:
+    display-name: Armor Stand Player Damage
+    description: Whether players can damage armor stands.
+  hanging_entity_player_damage:
+    display-name: Hanging Entity Player Damage
+    description: Whether players can damage hanging entities.
   armor_stand_interactive:
     display-name: Armor Stand Interaction
     description: Whether equipment on armor stands can be changed.
@@ -420,7 +441,7 @@ flag-groups:
       description: External redstone and pressure-trigger behavior.
     entity-protection:
       display-name: Entity Protection
-      description: Protect decorative entities from projectiles and explosions.
+      description: Protect armor stands and hanging entities from outside damage.
     general:
       display-name: General
       description: General dominion presentation behavior.
@@ -433,7 +454,7 @@ flag-groups:
       description: Movement and travel inside a dominion.
     building:
       display-name: Building
-      description: Place and remove blocks, liquids and decorative entities.
+      description: Place and remove blocks and liquids.
     item-management:
       display-name: Item Management
       description: Pick up and drop items.
@@ -445,7 +466,7 @@ flag-groups:
       description: Interact with redstone components.
     storage:
       display-name: Storage
-      description: Containers and stored display items.
+      description: Openable storage containers.
     workstations:
       display-name: Workstations
       description: Crafting and utility workstations.

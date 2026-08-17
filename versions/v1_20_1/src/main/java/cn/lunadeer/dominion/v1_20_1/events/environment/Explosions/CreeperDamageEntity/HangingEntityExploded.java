@@ -10,12 +10,12 @@ import org.bukkit.event.hanging.HangingBreakEvent;
 
 import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 
-public class ItemFrameExploded implements Listener {
+public class HangingEntityExploded implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handle(HangingBreakByEntityEvent event) {
         if (event.isCancelled()) return;
         if (event.getCause() != HangingBreakEvent.RemoveCause.EXPLOSION) return;
         if (!ExplosionSource.CREEPER.matches(event.getRemover())) return;
-        checkEnvironmentFlag(event.getEntity().getLocation(), Flags.CREEPER_DAMAGE_ENTITY, event);
+        checkEnvironmentFlag(event.getEntity().getLocation(), Flags.HANGING_ENTITY_EXPLOSION_DAMAGE, event);
     }
 }

@@ -2,7 +2,9 @@ package cn.lunadeer.dominion.v1_20_1.events.environment.Explosions.EnderCrystalD
 
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.v1_20_1.events.environment.Explosions.ExplosionSource;
-import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Hanging;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -10,12 +12,13 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import static cn.lunadeer.dominion.misc.Others.checkEnvironmentFlag;
 
-public class ArmorStandExploded implements Listener {
+public class EntityExploded implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handle(EntityDamageByEntityEvent event) {
         if (event.isCancelled()) return;
-        if (event.getEntityType() != EntityType.ARMOR_STAND) return;
+        Entity entity = event.getEntity();
+        if (entity instanceof ArmorStand || entity instanceof Hanging) return;
         if (!ExplosionSource.ENDER_CRYSTAL.matches(event.getDamager())) return;
-        checkEnvironmentFlag(event.getEntity().getLocation(), Flags.ARMOR_STAND_EXPLOSION_DAMAGE, event);
+        checkEnvironmentFlag(entity.getLocation(), Flags.ENDER_CRYSTAL_DAMAGE_ENTITY, event);
     }
 }

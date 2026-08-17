@@ -12,21 +12,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 
-public class Door implements Listener {
+public class Trapdoor implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(PlayerInteractEvent event) {
-        if (event.isCancelled()) return;
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
-            return;
-        }
+        if (event.isCancelled() || event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         Block block = event.getClickedBlock();
-        if (block == null) {
-            return;
-        }
-        if (!Tag.DOORS.isTagged(block.getType())) {
-            return;
-        }
+        if (block == null || !Tag.TRAPDOORS.isTagged(block.getType())) return;
         Player player = event.getPlayer();
-        checkPrivilegeFlag(event.getClickedBlock().getLocation(), Flags.DOOR, player, event);
+        checkPrivilegeFlag(block.getLocation(), Flags.TRAPDOOR, player, event);
     }
 }

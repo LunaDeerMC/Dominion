@@ -80,9 +80,18 @@ flags:
   trig_pressure_drop:
     display-name: 压力板（掉落物）
     description: 掉落物是否可以触发压力板。
-  item_frame_proj_damage:
-    display-name: 投射物破坏物品展示框
-    description: 投射物（箭/雪球）是否可以破坏物品展示框。
+  armor_stand_mob_damage:
+    display-name: 生物伤害盔甲架
+    description: 非玩家实体是否可以伤害盔甲架。
+  hanging_entity_mob_damage:
+    display-name: 生物伤害悬挂实体
+    description: 非玩家实体是否可以伤害悬挂实体。
+  armor_stand_explosion_damage:
+    display-name: 爆炸伤害盔甲架
+    description: 爆炸是否可以伤害盔甲架。
+  hanging_entity_explosion_damage:
+    display-name: 爆炸伤害悬挂实体
+    description: 爆炸是否可以伤害悬挂实体。
   mob_drop_item:
     display-name: 生物掉落物品
     description: 生物被击杀时是否掉落物品。
@@ -145,7 +154,13 @@ flags:
     description: 玩家是否可以在领地内丢弃物品。
   door:
     display-name: 门
-    description: 是否可以与门交互（包括活板门、栅栏门）。
+    description: 是否可以与普通门交互。
+  trapdoor:
+    display-name: 活板门
+    description: 是否可以与活板门交互。
+  fence_gate:
+    display-name: 栅栏门
+    description: 是否可以与栅栏门交互。
   button:
     display-name: 按钮
     description: 是否可以点击按钮。
@@ -331,7 +346,7 @@ flags:
     description: 是否允许末影人传送。
   tnt_damage_entity:
     display-name: TNT 伤害实体
-    description: 是否允许 TNT 爆炸伤害实体和悬挂物。
+    description: 是否允许 TNT 爆炸伤害盔甲架和悬挂实体以外的实体。
   wither_explode:
     display-name: 凋灵生成爆炸
     description: 是否允许凋灵生成时的爆炸破坏方块。
@@ -339,26 +354,26 @@ flags:
     display-name: 凋灵破坏方块
     description: 是否允许受伤的凋灵破坏方块。
   creeper_damage_entity:
-    display-name: 苦力怕伤害装饰实体
-    description: 是否允许苦力怕爆炸伤害盔甲架和悬挂物。
+    display-name: 苦力怕伤害实体
+    description: 是否允许苦力怕爆炸伤害盔甲架和悬挂实体以外的实体。
   wither_skull_explode:
     display-name: 凋灵之首破坏方块
     description: 是否允许凋灵之首爆炸破坏方块。
   wither_skull_damage_entity:
-    display-name: 凋灵之首伤害装饰实体
-    description: 是否允许凋灵之首爆炸伤害盔甲架和悬挂物。
+    display-name: 凋灵之首伤害实体
+    description: 是否允许凋灵之首爆炸伤害盔甲架和悬挂实体以外的实体。
   ender_crystal_explode:
     display-name: 末影水晶破坏方块
     description: 是否允许末影水晶爆炸破坏方块。
   ender_crystal_damage_entity:
-    display-name: 末影水晶伤害装饰实体
-    description: 是否允许末影水晶爆炸伤害盔甲架和悬挂物。
+    display-name: 末影水晶伤害实体
+    description: 是否允许末影水晶爆炸伤害盔甲架和悬挂实体以外的实体。
   fireball_explode:
     display-name: 火球破坏方块
     description: 是否允许火球爆炸破坏方块。
   fireball_damage_entity:
-    display-name: 火球伤害装饰实体
-    description: 是否允许火球爆炸伤害盔甲架和悬挂物。
+    display-name: 火球伤害实体
+    description: 是否允许火球爆炸伤害盔甲架和悬挂实体以外的实体。
   block_explode:
     display-name: 床与重生锚爆炸
     description: 是否允许床和重生锚爆炸破坏方块。
@@ -368,15 +383,21 @@ flags:
   place_liquid:
     display-name: 放置液体
     description: 是否可以放置水和岩浆。
-  place_entity:
-    display-name: 放置装饰实体
-    description: 是否可以放置盔甲架和物品展示框。
+  place_armor_stand:
+    display-name: 放置盔甲架
+    description: 是否可以放置盔甲架。
+  place_hanging_entity:
+    display-name: 放置悬挂实体
+    description: 是否可以放置悬挂实体。
   break_liquid:
     display-name: 收集液体
     description: 是否可以收集水和岩浆。
-  break_entity:
-    display-name: 破坏装饰实体
-    description: 是否可以破坏盔甲架和物品展示框。
+  armor_stand_player_damage:
+    display-name: 玩家伤害盔甲架
+    description: 玩家是否可以伤害盔甲架。
+  hanging_entity_player_damage:
+    display-name: 玩家伤害悬挂实体
+    description: 玩家是否可以伤害悬挂实体。
   armor_stand_interactive:
     display-name: 盔甲架交互
     description: 是否可以更改盔甲架上的装备。
@@ -420,7 +441,7 @@ flag-groups:
       description: 外部红石及压力触发行为。
     entity-protection:
       display-name: 实体保护
-      description: 保护装饰实体免受投射物和爆炸破坏。
+      description: 保护盔甲架和悬挂实体免受外部伤害。
     general:
       display-name: 常规
       description: 领地的常规显示行为。
@@ -433,7 +454,7 @@ flag-groups:
       description: 在领地内移动和旅行。
     building:
       display-name: 建造
-      description: 放置和移除方块、液体及装饰实体。
+      description: 放置和移除方块及液体。
     item-management:
       display-name: 物品管理
       description: 拾取和丢弃物品。
@@ -445,7 +466,7 @@ flag-groups:
       description: 与红石元件交互。
     storage:
       display-name: 存储
-      description: 容器及展示物品的存取。
+      description: 可打开的存储容器。
     workstations:
       display-name: 工作站
       description: 合成及实用工作站。

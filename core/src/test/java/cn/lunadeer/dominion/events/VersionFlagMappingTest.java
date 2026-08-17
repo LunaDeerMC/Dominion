@@ -53,19 +53,24 @@ class VersionFlagMappingTest {
         expected.put("environment/Explosions/BlockExplode.java", "Flags.BLOCK_EXPLODE");
         expected.put("environment/Explosions/CreeperExplode.java", "Flags.CREEPER_EXPLODE");
         expected.put("environment/Explosions/CreeperDamageEntity/ArmorStandExploded.java",
-                "Flags.CREEPER_DAMAGE_ENTITY");
-        expected.put("environment/Explosions/CreeperDamageEntity/ItemFrameExploded.java",
-                "Flags.CREEPER_DAMAGE_ENTITY");
+                "Flags.ARMOR_STAND_EXPLOSION_DAMAGE");
+        expected.put("environment/Explosions/CreeperDamageEntity/HangingEntityExploded.java",
+                "Flags.HANGING_ENTITY_EXPLOSION_DAMAGE");
         expected.put("environment/Explosions/TNTDamageEntity/EntityExploded.java", "Flags.TNT_DAMAGE_ENTITY");
-        expected.put("environment/Explosions/TNTDamageEntity/HangingExploded.java", "Flags.TNT_DAMAGE_ENTITY");
+        expected.put("environment/Explosions/TNTDamageEntity/HangingExploded.java", "Flags.HANGING_ENTITY_EXPLOSION_DAMAGE");
+        expected.put("environment/EntityProtection/ArmorStandMobDamage.java", "Flags.ARMOR_STAND_MOB_DAMAGE");
+        expected.put("environment/EntityProtection/HangingEntityMobDamage.java", "Flags.HANGING_ENTITY_MOB_DAMAGE");
         expected.put("player/Building/PlaceLiquid.java", "Flags.PLACE_LIQUID");
-        expected.put("player/Building/PlaceEntity/ArmorStand.java", "Flags.PLACE_ENTITY");
-        expected.put("player/Building/PlaceEntity/ItemFrame.java", "Flags.PLACE_ENTITY");
+        expected.put("player/Building/PlaceEntity/ArmorStand.java", "Flags.PLACE_ARMOR_STAND");
+        expected.put("player/Building/PlaceEntity/HangingEntity.java", "Flags.PLACE_HANGING_ENTITY");
         expected.put("player/Building/BreakLiquid.java", "Flags.BREAK_LIQUID");
-        expected.put("player/Building/BreakEntity/ArmorStandBroken.java", "Flags.BREAK_ENTITY");
-        expected.put("player/Building/BreakEntity/ArmorStandShot.java", "Flags.BREAK_ENTITY");
-        expected.put("player/Building/BreakEntity/ItemFrameBroken.java", "Flags.BREAK_ENTITY");
-        expected.put("player/Building/BreakEntity/ItemFrameShot.java", "Flags.BREAK_ENTITY");
+        expected.put("player/Building/BreakEntity/ArmorStandBroken.java", "Flags.ARMOR_STAND_PLAYER_DAMAGE");
+        expected.put("player/Building/BreakEntity/ArmorStandShot.java", "Flags.ARMOR_STAND_PLAYER_DAMAGE");
+        expected.put("player/Building/BreakEntity/HangingEntityBroken.java", "Flags.HANGING_ENTITY_PLAYER_DAMAGE");
+        expected.put("player/Building/BreakEntity/HangingEntityShot.java", "Flags.HANGING_ENTITY_PLAYER_DAMAGE");
+        expected.put("player/Access/Door.java", "Flags.DOOR");
+        expected.put("player/Access/Trapdoor.java", "Flags.TRAPDOOR");
+        expected.put("player/Access/FenceGate.java", "Flags.FENCE_GATE");
         expected.put("player/Storage/ArmorStandInteractive.java", "Flags.ARMOR_STAND_INTERACTIVE");
         expected.put("player/Storage/Chest.java", "Flags.CHEST");
         expected.put("player/Storage/Barrel.java", "Flags.BARREL");
@@ -118,10 +123,11 @@ class VersionFlagMappingTest {
                 "v1_21/src/main/java/cn/lunadeer/dominion/v1_21/events/environment/Explosions/TNTDamageEntity");
         for (String file : new String[]{"EntityExploded.java", "HangingExploded.java"}) {
             String source = Files.readString(root.resolve(file));
-            assertTrue(source.contains("Flags.TNT_DAMAGE_ENTITY"), file);
             assertTrue(source.contains("EntityType.TNT_MINECART"), file);
             assertTrue(source.contains("EntityType.TNT"), file);
         }
+        assertTrue(Files.readString(root.resolve("EntityExploded.java")).contains("Flags.TNT_DAMAGE_ENTITY"));
+        assertTrue(Files.readString(root.resolve("HangingExploded.java")).contains("Flags.HANGING_ENTITY_EXPLOSION_DAMAGE"));
     }
 
     @Test
@@ -134,12 +140,13 @@ class VersionFlagMappingTest {
         assertFalse(Files.readString(baseRoot.resolve("CreeperExplode.java")).contains("SulfurCube"));
         assertTrue(Files.readString(modernRoot.resolve("CreeperExplode.java")).contains("instanceof SulfurCube"));
 
-        for (String file : new String[]{"ArmorStandExploded.java", "ItemFrameExploded.java"}) {
+        for (String file : new String[]{"ArmorStandExploded.java", "HangingEntityExploded.java"}) {
             String baseSource = Files.readString(baseRoot.resolve("CreeperDamageEntity").resolve(file));
             String modernSource = Files.readString(modernRoot.resolve("CreeperDamageEntity").resolve(file));
             assertFalse(baseSource.contains("SulfurCube"), file);
             assertTrue(modernSource.contains("instanceof SulfurCube"), file);
-            assertTrue(modernSource.contains("Flags.CREEPER_DAMAGE_ENTITY"), file);
+            assertTrue(modernSource.contains("Flags.ARMOR_STAND_EXPLOSION_DAMAGE")
+                    || modernSource.contains("Flags.HANGING_ENTITY_EXPLOSION_DAMAGE"), file);
         }
     }
 

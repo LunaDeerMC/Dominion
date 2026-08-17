@@ -21,4 +21,15 @@ public enum ExplosionSource {
     public boolean matches(Entity entity) {
         return type.isInstance(entity);
     }
+
+    public static boolean isExplosion(Entity entity) {
+        if (entity == null) return false;
+        for (ExplosionSource source : values()) {
+            if (source.matches(entity)) return true;
+        }
+        return switch (entity.getType().name()) {
+            case "MINECART_TNT", "PRIMED_TNT", "TNT", "SULFUR_CUBE" -> true;
+            default -> false;
+        };
+    }
 }

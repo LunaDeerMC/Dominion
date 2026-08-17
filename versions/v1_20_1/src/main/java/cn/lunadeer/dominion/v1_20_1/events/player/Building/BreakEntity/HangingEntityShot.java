@@ -11,7 +11,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 
 import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 
-public class ItemFrameShot implements Listener {
+public class HangingEntityShot implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(ProjectileHitEvent event) {
         if (event.isCancelled()) return;
@@ -25,6 +25,6 @@ public class ItemFrameShot implements Listener {
         if (!(hit instanceof Hanging)) {
             return;
         }
-        checkPrivilegeFlag(hit.getLocation(), Flags.BREAK_ENTITY, player, event);
+        checkPrivilegeFlag(hit.getLocation(), Flags.HANGING_ENTITY_PLAYER_DAMAGE, player, event);
     }
 }

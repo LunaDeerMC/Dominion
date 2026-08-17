@@ -27,6 +27,6 @@ public class ArmorStandShot implements Listener {
         if (!(projectile.getShooter() instanceof Player player)) {
             return;
         }
-        checkPrivilegeFlag(victim.getLocation(), Flags.BREAK_ENTITY, player, event);
+        checkPrivilegeFlag(victim.getLocation(), Flags.ARMOR_STAND_PLAYER_DAMAGE, player, event);
     }
 }

@@ -22,6 +22,6 @@ public class ArmorStandBroken implements Listener {
         if (!(event.getDamager() instanceof Player player)) {
             return;
         }
-        checkPrivilegeFlag(entity.getLocation(), Flags.BREAK_ENTITY, player, event);
+        checkPrivilegeFlag(entity.getLocation(), Flags.ARMOR_STAND_PLAYER_DAMAGE, player, event);
     }
 }

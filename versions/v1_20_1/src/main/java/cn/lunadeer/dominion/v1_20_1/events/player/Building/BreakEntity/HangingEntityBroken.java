@@ -13,7 +13,7 @@ import org.bukkit.event.hanging.HangingBreakEvent;
 
 import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 
-public class ItemFrameBroken implements Listener {
+public class HangingEntityBroken implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(HangingBreakByEntityEvent event) {
         if (event.isCancelled()) return;
@@ -30,6 +30,6 @@ public class ItemFrameBroken implements Listener {
                 return;
             }
         }
-        checkPrivilegeFlag(entity.getLocation(), Flags.BREAK_ENTITY, player, event);
+        checkPrivilegeFlag(entity.getLocation(), Flags.HANGING_ENTITY_PLAYER_DAMAGE, player, event);
     }
 }

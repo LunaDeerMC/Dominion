@@ -54,10 +54,7 @@ class FlagReconcilerMigrationTest {
     private static Set<Flag> legacySources(List<? extends Flag> flags) {
         Set<Flag> sources = new LinkedHashSet<>();
         for (Flag flag : flags) {
-            Flag source = Flags.getLegacySource(flag);
-            if (source != null) {
-                sources.add(source);
-            }
+            sources.addAll(Flags.getLegacySources(flag));
         }
         return sources;
     }
@@ -86,17 +83,24 @@ class FlagReconcilerMigrationTest {
                                        String table,
                                        List<? extends Flag> flags) throws Exception {
         for (Flag target : flags) {
-            Flag source = Flags.getLegacySource(target);
-            if (source == null) {
+            // These flags are themselves part of the legacy schema and are
+            // already present in the synthetic legacy tables.
+            if (legacySources(Flags.getAllFlags()).contains(target)) continue;
+            List<Flag> sources = Flags.getLegacySources(target);
+            if (sources.isEmpty()) {
                 continue;
             }
+            String columns = sources.stream().map(Flag::getFlagName).collect(java.util.stream.Collectors.joining(", "));
             try (ResultSet result = connection.createStatement().executeQuery(
-                    "SELECT " + source.getFlagName() + ", " + target.getFlagName() + " FROM " + table + " WHERE id = 1"
-            )) {
+                    "SELECT " + columns + ", " + target.getFlagName() + " FROM " + table + " WHERE id = 1")) {
                 assertTrue(result.next());
-                boolean expected = Flags.preserveAllowedSpawnEggValue(target)
-                        ? true : result.getBoolean(1);
-                assertEquals(expected, result.getBoolean(2), table + "." + target.getFlagName());
+                boolean expected = true;
+                for (int index = 1; index <= sources.size(); index++) {
+                    expected &= result.getBoolean(index);
+                }
+                if (Flags.preserveAllowedSpawnEggValue(target)) expected = true;
+                assertEquals(expected, result.getBoolean(sources.size() + 1),
+                        table + "." + target.getFlagName());
             }
         }
     }

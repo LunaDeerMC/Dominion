@@ -22,6 +22,6 @@ public class ArmorStand implements Listener {
         if (!(entity instanceof org.bukkit.entity.ArmorStand)) {
             return;
         }
-        checkPrivilegeFlag(entity.getLocation(), Flags.PLACE_ENTITY, player, event);
+        checkPrivilegeFlag(entity.getLocation(), Flags.PLACE_ARMOR_STAND, player, event);
     }
 }

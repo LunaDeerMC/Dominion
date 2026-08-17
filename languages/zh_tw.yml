@@ -80,9 +80,18 @@ flags:
   trig_pressure_drop:
     display-name: 壓力板（掉落物）
     description: 掉落物是否可以觸發壓力板。
-  item_frame_proj_damage:
-    display-name: 投射物破壞物品展示框
-    description: 投射物（箭/雪球）是否可以破壞物品展示框。
+  armor_stand_mob_damage:
+    display-name: 生物傷害盔甲座
+    description: 非玩家實體是否可以傷害盔甲座。
+  hanging_entity_mob_damage:
+    display-name: 生物傷害懸掛實體
+    description: 非玩家實體是否可以傷害懸掛實體。
+  armor_stand_explosion_damage:
+    display-name: 爆炸傷害盔甲座
+    description: 爆炸是否可以傷害盔甲座。
+  hanging_entity_explosion_damage:
+    display-name: 爆炸傷害懸掛實體
+    description: 爆炸是否可以傷害懸掛實體。
   mob_drop_item:
     display-name: 生物掉落物品
     description: 生物被擊殺時是否掉落物品。
@@ -145,7 +154,13 @@ flags:
     description: 玩家是否可以在領地內丟棄物品。
   door:
     display-name: 門
-    description: 是否可以與門互動（包括活板門、柵欄門）。
+    description: 是否可以與普通門互動。
+  trapdoor:
+    display-name: 活板門
+    description: 是否可以與活板門互動。
+  fence_gate:
+    display-name: 柵欄門
+    description: 是否可以與柵欄門互動。
   button:
     display-name: 按鈕
     description: 是否可以點選按鈕。
@@ -331,7 +346,7 @@ flags:
     description: 是否允許終界使者傳送。
   tnt_damage_entity:
     display-name: TNT 傷害實體
-    description: 是否允許 TNT 爆炸傷害實體和懸掛物。
+    description: 是否允許 TNT 爆炸傷害盔甲座和懸掛實體以外的實體。
   wither_explode:
     display-name: 凋零怪生成爆炸
     description: 是否允許凋零怪生成時的爆炸破壞方塊。
@@ -339,26 +354,26 @@ flags:
     display-name: 凋零怪破壞方塊
     description: 是否允許受傷的凋零怪破壞方塊。
   creeper_damage_entity:
-    display-name: 苦力怕傷害裝飾實體
-    description: 是否允許苦力怕爆炸傷害盔甲座和懸掛物。
+    display-name: 苦力怕傷害實體
+    description: 是否允許苦力怕爆炸傷害盔甲座和懸掛實體以外的實體。
   wither_skull_explode:
     display-name: 凋零怪骷髏破壞方塊
     description: 是否允許凋零怪骷髏爆炸破壞方塊。
   wither_skull_damage_entity:
-    display-name: 凋零怪骷髏傷害裝飾實體
-    description: 是否允許凋零怪骷髏爆炸傷害盔甲座和懸掛物。
+    display-name: 凋零怪骷髏傷害實體
+    description: 是否允許凋零怪骷髏爆炸傷害盔甲座和懸掛實體以外的實體。
   ender_crystal_explode:
     display-name: 終界水晶破壞方塊
     description: 是否允許終界水晶爆炸破壞方塊。
   ender_crystal_damage_entity:
-    display-name: 終界水晶傷害裝飾實體
-    description: 是否允許終界水晶爆炸傷害盔甲座和懸掛物。
+    display-name: 終界水晶傷害實體
+    description: 是否允許終界水晶爆炸傷害盔甲座和懸掛實體以外的實體。
   fireball_explode:
     display-name: 火球破壞方塊
     description: 是否允許火球爆炸破壞方塊。
   fireball_damage_entity:
-    display-name: 火球傷害裝飾實體
-    description: 是否允許火球爆炸傷害盔甲座和懸掛物。
+    display-name: 火球傷害實體
+    description: 是否允許火球爆炸傷害盔甲座和懸掛實體以外的實體。
   block_explode:
     display-name: 床與重生錨爆炸
     description: 是否允許床和重生錨爆炸破壞方塊。
@@ -368,15 +383,21 @@ flags:
   place_liquid:
     display-name: 放置液體
     description: 是否可以放置水和熔岩。
-  place_entity:
-    display-name: 放置裝飾實體
-    description: 是否可以放置盔甲座和物品展示框。
+  place_armor_stand:
+    display-name: 放置盔甲座
+    description: 是否可以放置盔甲座。
+  place_hanging_entity:
+    display-name: 放置懸掛實體
+    description: 是否可以放置懸掛實體。
   break_liquid:
     display-name: 收集液體
     description: 是否可以收集水和熔岩。
-  break_entity:
-    display-name: 破壞裝飾實體
-    description: 是否可以破壞盔甲座和物品展示框。
+  armor_stand_player_damage:
+    display-name: 玩家傷害盔甲座
+    description: 玩家是否可以傷害盔甲座。
+  hanging_entity_player_damage:
+    display-name: 玩家傷害懸掛實體
+    description: 玩家是否可以傷害懸掛實體。
   armor_stand_interactive:
     display-name: 盔甲座互動
     description: 是否可以更改盔甲座上的裝備。
@@ -420,7 +441,7 @@ flag-groups:
       description: 外部紅石及壓力觸發行為。
     entity-protection:
       display-name: 實體保護
-      description: 保護裝飾實體免受投射物和爆炸破壞。
+      description: 保護盔甲座和懸掛實體免受外部傷害。
     general:
       display-name: 一般
       description: 領地的一般顯示行為。
@@ -433,7 +454,7 @@ flag-groups:
       description: 在領地內移動和旅行。
     building:
       display-name: 建造
-      description: 放置和移除方塊、液體及裝飾實體。
+      description: 放置和移除方塊及液體。
     item-management:
       display-name: 物品管理
       description: 撿取和丟棄物品。
@@ -445,7 +466,7 @@ flag-groups:
       description: 與紅石元件互動。
     storage:
       display-name: 儲存
-      description: 容器及展示物品的存取。
+      description: 可開啟的儲存容器。
     workstations:
       display-name: 工作站
       description: 合成及實用工作站。

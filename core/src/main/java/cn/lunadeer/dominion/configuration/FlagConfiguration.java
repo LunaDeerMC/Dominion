@@ -32,7 +32,7 @@ import java.util.Map;
  */
 public final class FlagConfiguration {
 
-    private static final int SCHEMA_VERSION = 3;
+    private static final int SCHEMA_VERSION = 4;
     private static final Map<Flag, String> declaredFlagIcons = new IdentityHashMap<>();
     private static final Map<String, List<String>> unresolvedEnvironmentGroupFlags = new HashMap<>();
     private static final Map<String, List<String>> unresolvedPrivilegeGroupFlags = new HashMap<>();
@@ -148,20 +148,14 @@ public final class FlagConfiguration {
             if (yaml.contains(flag.getConfigurationDefaultKey())) {
                 flag.setDefaultValue(yaml.getBoolean(flag.getConfigurationDefaultKey()));
             } else {
-                Flag source = migrateSplitFlags ? Flags.getLegacySource(flag) : null;
-                boolean value = source == null
-                        ? flag.getDefaultValue()
-                        : yaml.getBoolean(source.getConfigurationDefaultKey(), source.getDefaultValue());
+                boolean value = migratedValue(yaml, flag, migrateSplitFlags, false);
                 flag.setDefaultValue(value);
                 yaml.set(flag.getConfigurationDefaultKey(), value);
             }
             if (yaml.contains(flag.getConfigurationEnableKey())) {
                 flag.setEnable(yaml.getBoolean(flag.getConfigurationEnableKey()));
             } else {
-                Flag source = migrateSplitFlags ? Flags.getLegacySource(flag) : null;
-                boolean value = source == null
-                        ? flag.getEnable()
-                        : yaml.getBoolean(source.getConfigurationEnableKey(), source.getEnable());
+                boolean value = migratedValue(yaml, flag, migrateSplitFlags, true);
                 flag.setEnable(value);
                 yaml.set(flag.getConfigurationEnableKey(), value);
             }
@@ -176,6 +170,27 @@ public final class FlagConfiguration {
                     Collections.singletonList(flag.getDisplayName() + "-" + flag.getDescription())
             );
         }
+    }
+
+    private static boolean migratedValue(YamlConfiguration yaml, Flag flag, boolean migrateSplitFlags, boolean enable) {
+        if (!migrateSplitFlags) {
+            return enable ? flag.getEnable() : flag.getDefaultValue();
+        }
+        List<Flag> sources = Flags.getLegacySources(flag);
+        if (sources.isEmpty()) {
+            return enable ? flag.getEnable() : flag.getDefaultValue();
+        }
+        // A split permission is restrictive when any former source was
+        // restrictive by default, while an enabled definition is retained if
+        // at least one former definition was enabled.
+        boolean value = enable ? false : true;
+        for (Flag source : sources) {
+            boolean sourceValue = enable
+                    ? yaml.getBoolean(source.getConfigurationEnableKey(), source.getEnable())
+                    : yaml.getBoolean(source.getConfigurationDefaultKey(), source.getDefaultValue());
+            value = enable ? value || sourceValue : value && sourceValue;
+        }
+        return value;
     }
 
     private static void loadConfiguredFlagGroups(YamlConfiguration yaml) {

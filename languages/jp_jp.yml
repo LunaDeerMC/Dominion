@@ -80,9 +80,18 @@ flags:
   trig_pressure_drop:
     display-name: 感圧板（ドロップ）
     description: 落ちているアイテムが感圧板を作動させられるかどうか。
-  item_frame_proj_damage:
-    display-name: 飛び道具による額縁破壊
-    description: 飛び道具（矢、雪玉）が額縁を破壊できるかどうか。
+  armor_stand_mob_damage:
+    display-name: モブによる防具立てダメージ
+    description: プレイヤー以外のエンティティが防具立てにダメージを与えられるかどうか。
+  hanging_entity_mob_damage:
+    display-name: モブによる吊り下げエンティティダメージ
+    description: プレイヤー以外のエンティティが吊り下げエンティティにダメージを与えられるかどうか。
+  armor_stand_explosion_damage:
+    display-name: 爆発による防具立てダメージ
+    description: 爆発が防具立てにダメージを与えられるかどうか。
+  hanging_entity_explosion_damage:
+    display-name: 爆発による吊り下げエンティティダメージ
+    description: 爆発が吊り下げエンティティにダメージを与えられるかどうか。
   mob_drop_item:
     display-name: モブのアイテムドロップ
     description: モブが倒されたときにアイテムをドロップするかどうか。
@@ -145,7 +154,13 @@ flags:
     description: プレイヤーが領地内でアイテムを捨てられるかどうか。
   door:
     display-name: ドア
-    description: ドアと相互作用できるかどうか（トラップドア、フェンスゲートを含む）。
+    description: 通常のドアと相互作用できるかどうか。
+  trapdoor:
+    display-name: トラップドア
+    description: トラップドアと相互作用できるかどうか。
+  fence_gate:
+    display-name: フェンスゲート
+    description: フェンスゲートと相互作用できるかどうか。
   button:
     display-name: ボタン
     description: ボタンを押せるかどうか。
@@ -331,7 +346,7 @@ flags:
     description: エンダーマンがテレポートできるかどうか。
   tnt_damage_entity:
     display-name: TNTのエンティティダメージ
-    description: TNT爆発がエンティティや吊り下げ物を破壊できるかどうか。
+    description: TNT爆発が防具立てや吊り下げエンティティ以外のエンティティにダメージを与えられるかどうか。
   wither_explode:
     display-name: ウィザー出現時の爆発
     description: ウィザー出現時の爆発がブロックを破壊できるかどうか。
@@ -339,26 +354,26 @@ flags:
     display-name: ウィザーのブロック破壊
     description: ダメージを受けたウィザーがブロックを破壊できるかどうか。
   creeper_damage_entity:
-    display-name: クリーパーの装飾エンティティ破壊
-    description: クリーパー爆発が防具立てや吊り下げ物を破壊できるかどうか。
+    display-name: クリーパーのエンティティダメージ
+    description: クリーパー爆発が防具立てや吊り下げエンティティ以外にダメージを与えられるかどうか。
   wither_skull_explode:
     display-name: ウィザーの頭のブロック破壊
     description: ウィザーの頭の爆発がブロックを破壊できるかどうか。
   wither_skull_damage_entity:
-    display-name: ウィザーの頭の装飾エンティティ破壊
-    description: ウィザーの頭の爆発が防具立てや吊り下げ物を破壊できるかどうか。
+    display-name: ウィザーの頭のエンティティダメージ
+    description: ウィザーの頭の爆発が防具立てや吊り下げエンティティ以外にダメージを与えられるかどうか。
   ender_crystal_explode:
     display-name: エンドクリスタルのブロック破壊
     description: エンドクリスタル爆発がブロックを破壊できるかどうか。
   ender_crystal_damage_entity:
-    display-name: エンドクリスタルの装飾エンティティ破壊
-    description: エンドクリスタル爆発が防具立てや吊り下げ物を破壊できるかどうか。
+    display-name: エンドクリスタルのエンティティダメージ
+    description: エンドクリスタル爆発が防具立てや吊り下げエンティティ以外にダメージを与えられるかどうか。
   fireball_explode:
     display-name: 火の玉のブロック破壊
     description: 火の玉の爆発がブロックを破壊できるかどうか。
   fireball_damage_entity:
-    display-name: 火の玉の装飾エンティティ破壊
-    description: 火の玉の爆発が防具立てや吊り下げ物を破壊できるかどうか。
+    display-name: 火の玉のエンティティダメージ
+    description: 火の玉の爆発が防具立てや吊り下げエンティティ以外にダメージを与えられるかどうか。
   block_explode:
     display-name: ベッドとリスポーンアンカーの爆発
     description: ベッドとリスポーンアンカーの爆発がブロックを破壊できるかどうか。
@@ -368,15 +383,21 @@ flags:
   place_liquid:
     display-name: 液体の設置
     description: 水や溶岩を設置できるかどうか。
-  place_entity:
-    display-name: 装飾エンティティの設置
-    description: 防具立てや額縁を設置できるかどうか。
+  place_armor_stand:
+    display-name: 防具立ての設置
+    description: 防具立てを設置できるかどうか。
+  place_hanging_entity:
+    display-name: 吊り下げエンティティの設置
+    description: 吊り下げエンティティを設置できるかどうか。
   break_liquid:
     display-name: 液体の回収
     description: 水や溶岩を回収できるかどうか。
-  break_entity:
-    display-name: 装飾エンティティの破壊
-    description: 防具立てや額縁を破壊できるかどうか。
+  armor_stand_player_damage:
+    display-name: プレイヤーによる防具立てダメージ
+    description: プレイヤーが防具立てにダメージを与えられるかどうか。
+  hanging_entity_player_damage:
+    display-name: プレイヤーによる吊り下げエンティティダメージ
+    description: プレイヤーが吊り下げエンティティにダメージを与えられるかどうか。
   armor_stand_interactive:
     display-name: 防具立ての操作
     description: 防具立ての装備を変更できるかどうか。
@@ -420,7 +441,7 @@ flag-groups:
       description: 外部レッドストーンと感圧トリガーの挙動。
     entity-protection:
       display-name: エンティティ保護
-      description: 装飾エンティティを飛び道具や爆発から保護します。
+      description: 防具立てと吊り下げエンティティを外部ダメージから保護します。
     general:
       display-name: 全般
       description: 領地の一般的な表示動作。
@@ -433,7 +454,7 @@ flag-groups:
       description: 領地内の移動と移動手段。
     building:
       display-name: 建築
-      description: ブロック、液体、装飾エンティティの設置と撤去。
+      description: ブロックと液体の設置と撤去。
     item-management:
       display-name: アイテム管理
       description: アイテムの拾得とドロップ。
@@ -445,7 +466,7 @@ flag-groups:
       description: レッドストーン部品との操作。
     storage:
       display-name: 収納
-      description: コンテナと展示アイテムの出し入れ。
+      description: 開閉できる収納コンテナ。
     workstations:
       display-name: 作業台
       description: クラフトおよび各種作業ブロック。

@@ -5,6 +5,8 @@ import cn.lunadeer.dominion.events.LowestVersion;
 import cn.lunadeer.dominion.utils.XVersionManager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Hanging;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -20,6 +22,9 @@ public class EntityExploded implements Listener {
         Entity entity = event.getEntity();
         Entity harmer = event.getDamager();
         if (harmer.getType() != EntityType.TNT_MINECART && harmer.getType() != EntityType.TNT) {
+            return;
+        }
+        if (entity instanceof ArmorStand || entity instanceof Hanging) {
             return;
         }
         checkEnvironmentFlag(entity.getLocation(), Flags.TNT_DAMAGE_ENTITY, event);

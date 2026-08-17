@@ -21,6 +21,6 @@ public class ArmorStandExploded implements Listener {
         Entity entity = event.getEntity();
         if (entity.getType() != EntityType.ARMOR_STAND) return;
         if (!(event.getDamager() instanceof SulfurCube)) return;
-        checkEnvironmentFlag(entity.getLocation(), Flags.CREEPER_DAMAGE_ENTITY, event);
+        checkEnvironmentFlag(entity.getLocation(), Flags.ARMOR_STAND_EXPLOSION_DAMAGE, event);
     }
 }
