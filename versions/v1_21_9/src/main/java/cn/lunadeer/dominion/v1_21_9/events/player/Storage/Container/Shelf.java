@@ -25,6 +25,6 @@ public class Shelf implements Listener {
         if (!event.getClickedBlock().getType().name().contains("SHELF")) {
             return;
         }
-        checkPrivilegeFlag(event.getClickedBlock().getLocation(), Flags.CONTAINER, event.getPlayer(), event);
+        checkPrivilegeFlag(event.getClickedBlock().getLocation(), Flags.SHELF, event.getPlayer(), event);
     }
 }

@@ -167,12 +167,42 @@ flags:
   note_block:
     display-name: Note Block
     description: Whether can interact with note block.
-  container:
-    display-name: Storage Container
-    description: Whether chest-like storage containers can be opened.
+  chest:
+    display-name: Chest
+    description: Whether chests can be opened.
+  barrel:
+    display-name: Barrel
+    description: Whether barrels can be opened.
+  shulker_box:
+    display-name: Shulker Box
+    description: Whether shulker boxes can be opened.
   hopper:
-    display-name: Special Container
-    description: Such as hopper, furnace, dropper, dispenser, blast furnace, smoker.
+    display-name: Hopper
+    description: Whether hoppers can be opened.
+  dropper:
+    display-name: Dropper
+    description: Whether droppers can be opened.
+  dispenser:
+    display-name: Dispenser
+    description: Whether dispensers can be opened.
+  furnace:
+    display-name: Furnace
+    description: Whether furnaces can be opened.
+  blast_furnace:
+    display-name: Blast Furnace
+    description: Whether blast furnaces can be opened.
+  smoker:
+    display-name: Smoker
+    description: Whether smokers can be opened.
+  flower_pot:
+    display-name: Flower Pot
+    description: Whether flower pots can be opened.
+  copper_chest:
+    display-name: Copper Chest
+    description: Whether copper chests can be opened.
+  shelf:
+    display-name: Shelf
+    description: Whether shelves can be opened.
   craft:
     display-name: Crafting Table
     description: Whether can use crafting table.

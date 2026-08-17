@@ -84,6 +84,32 @@ class FlagGroupsTest {
     }
 
     @Test
+    void storageGroupContainsOneFlagPerSupportedContainerType() {
+        PriFlagGroup storage = FlagGroups.defaultPrivilegeGroups().stream()
+                .filter(group -> group.getId().equals("storage"))
+                .findFirst()
+                .orElseThrow();
+
+        assertEquals(List.of(
+                Flags.CHEST,
+                Flags.BARREL,
+                Flags.SHULKER_BOX,
+                Flags.HOPPER,
+                Flags.DROPPER,
+                Flags.DISPENSER,
+                Flags.FURNACE,
+                Flags.BLAST_FURNACE,
+                Flags.SMOKER,
+                Flags.FLOWER_POT,
+                Flags.COPPER_CHEST,
+                Flags.SHELF,
+                Flags.ITEM_FRAME_CONTENT
+        ), storage.getFlags());
+        assertFalse(storage.containsFlag(Flags.CONTAINER));
+        assertFalse(Flags.getAllPriFlags().contains(Flags.CONTAINER));
+    }
+
+    @Test
     void oldAndNewConstructorsExposeDialogUiIconsWithoutChangingMaterials() {
         EnvFlag legacyFlag = new EnvFlag("legacy", "Legacy", "", false, true, Material.PAPER);
         EnvFlag explicitFlag = new EnvFlag("explicit", "Explicit", "", false, true,

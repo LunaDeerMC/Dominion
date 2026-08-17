@@ -28,16 +28,22 @@ class WorldWideFlagMigrationTest {
         legacy.set(Flags.VILLAGER_SPAWN.getConfigurationNameKey(), false);
         legacy.set(Flags.ENDER_MAN.getConfigurationNameKey(), true);
         legacy.set(Flags.PLACE.getConfigurationNameKey(), true);
+        legacy.set(Flags.CONTAINER.getConfigurationNameKey(), false);
+        legacy.set(Flags.HOPPER.getConfigurationNameKey(), true);
         legacy.save(file);
 
         WorldWide.loadWorld(file);
         YamlConfiguration migrated = YamlConfiguration.loadConfiguration(file);
-        assertEquals(2, migrated.getInt("flag-schema-version"));
+        assertEquals(3, migrated.getInt("flag-schema-version"));
         assertTrue(migrated.getBoolean(Flags.ANIMAL_SPAWN_EGG.getConfigurationNameKey()));
         assertTrue(migrated.getBoolean(Flags.MONSTER_SPAWN_EGG.getConfigurationNameKey()));
         assertFalse(migrated.getBoolean(Flags.VILLAGER_SPAWN_EGG.getConfigurationNameKey()));
         assertTrue(migrated.getBoolean(Flags.ENDER_MAN_SPAWN.getConfigurationNameKey()));
         assertTrue(migrated.getBoolean(Flags.PLACE_LIQUID.getConfigurationNameKey()));
+        assertFalse(migrated.getBoolean(Flags.CHEST.getConfigurationNameKey()));
+        assertFalse(migrated.getBoolean(Flags.BARREL.getConfigurationNameKey()));
+        assertTrue(migrated.getBoolean(Flags.HOPPER.getConfigurationNameKey()));
+        assertTrue(migrated.getBoolean(Flags.DROPPER.getConfigurationNameKey()));
 
         String firstMigration = Files.readString(file.toPath());
         WorldWide.loadWorld(file);

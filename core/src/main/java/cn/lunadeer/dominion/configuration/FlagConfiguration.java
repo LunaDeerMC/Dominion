@@ -32,7 +32,7 @@ import java.util.Map;
  */
 public final class FlagConfiguration {
 
-    private static final int SCHEMA_VERSION = 2;
+    private static final int SCHEMA_VERSION = 3;
     private static final Map<Flag, String> declaredFlagIcons = new IdentityHashMap<>();
     private static final Map<String, List<String>> unresolvedEnvironmentGroupFlags = new HashMap<>();
     private static final Map<String, List<String>> unresolvedPrivilegeGroupFlags = new HashMap<>();

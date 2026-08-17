@@ -167,12 +167,42 @@ flags:
   note_block:
     display-name: 音符盒
     description: 是否可以與音符盒互動。
-  container:
-    display-name: 儲存容器
-    description: 是否可以開啟類似箱子的儲存容器。
+  chest:
+    display-name: 箱子
+    description: 是否可以開啟箱子。
+  barrel:
+    display-name: 木桶
+    description: 是否可以開啟木桶。
+  shulker_box:
+    display-name: 潛影盒
+    description: 是否可以開啟潛影盒。
   hopper:
-    display-name: 特殊容器
-    description: 例如漏斗、熔爐、投擲器、發射器、高爐、煙燻爐。
+    display-name: 漏斗
+    description: 是否可以開啟漏斗。
+  dropper:
+    display-name: 投擲器
+    description: 是否可以開啟投擲器。
+  dispenser:
+    display-name: 發射器
+    description: 是否可以開啟發射器。
+  furnace:
+    display-name: 熔爐
+    description: 是否可以開啟熔爐。
+  blast_furnace:
+    display-name: 高爐
+    description: 是否可以開啟高爐。
+  smoker:
+    display-name: 煙燻爐
+    description: 是否可以開啟煙燻爐。
+  flower_pot:
+    display-name: 花盆
+    description: 是否可以開啟花盆。
+  copper_chest:
+    display-name: 銅箱
+    description: 是否可以開啟銅箱。
+  shelf:
+    display-name: 書架
+    description: 是否可以開啟書架。
   craft:
     display-name: 工作臺
     description: 是否可以使用工作臺。

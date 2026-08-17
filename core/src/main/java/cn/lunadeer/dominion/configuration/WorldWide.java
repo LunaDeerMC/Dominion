@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public class WorldWide {
-    private static final int FLAG_SCHEMA_VERSION = 2;
+    private static final int FLAG_SCHEMA_VERSION = 3;
     private static final String WORLD_WIDE_FILE_EXTENSION = ".yml";
 
     private static class WorldConfig {

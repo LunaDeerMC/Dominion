@@ -167,12 +167,42 @@ flags:
   note_block:
     display-name: 音符ブロック
     description: 音符ブロックと相互作用できるかどうか。
-  container:
-    display-name: 収納コンテナ
-    description: チェストのような収納コンテナを開けられるかどうか。
+  chest:
+    display-name: チェスト
+    description: チェストを開けられるかどうか。
+  barrel:
+    display-name: 樽
+    description: 樽を開けられるかどうか。
+  shulker_box:
+    display-name: シュルカーボックス
+    description: シュルカーボックスを開けられるかどうか。
   hopper:
-    display-name: 特殊コンテナ
-    description: '例: ホッパー、かまど、ドロッパー、ディスペンサー、高炉、燻製器。'
+    display-name: ホッパー
+    description: ホッパーを開けられるかどうか。
+  dropper:
+    display-name: ドロッパー
+    description: ドロッパーを開けられるかどうか。
+  dispenser:
+    display-name: ディスペンサー
+    description: ディスペンサーを開けられるかどうか。
+  furnace:
+    display-name: かまど
+    description: かまどを開けられるかどうか。
+  blast_furnace:
+    display-name: 溶鉱炉
+    description: 溶鉱炉を開けられるかどうか。
+  smoker:
+    display-name: 燻製器
+    description: 燻製器を開けられるかどうか。
+  flower_pot:
+    display-name: 植木鉢
+    description: 植木鉢を開けられるかどうか。
+  copper_chest:
+    display-name: 銅のチェスト
+    description: 銅のチェストを開けられるかどうか。
+  shelf:
+    display-name: 棚
+    description: 棚を開けられるかどうか。
   craft:
     display-name: 作業台
     description: 作業台を使用できるかどうか。

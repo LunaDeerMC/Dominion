@@ -67,6 +67,16 @@ class VersionFlagMappingTest {
         expected.put("player/Building/BreakEntity/ItemFrameBroken.java", "Flags.BREAK_ENTITY");
         expected.put("player/Building/BreakEntity/ItemFrameShot.java", "Flags.BREAK_ENTITY");
         expected.put("player/Storage/ArmorStandInteractive.java", "Flags.ARMOR_STAND_INTERACTIVE");
+        expected.put("player/Storage/Chest.java", "Flags.CHEST");
+        expected.put("player/Storage/Barrel.java", "Flags.BARREL");
+        expected.put("player/Storage/ShulkerBox.java", "Flags.SHULKER_BOX");
+        expected.put("player/Storage/Hopper.java", "Flags.HOPPER");
+        expected.put("player/Storage/Dropper.java", "Flags.DROPPER");
+        expected.put("player/Storage/Dispenser.java", "Flags.DISPENSER");
+        expected.put("player/Storage/Furnace.java", "Flags.FURNACE");
+        expected.put("player/Storage/BlastFurnace.java", "Flags.BLAST_FURNACE");
+        expected.put("player/Storage/Smoker.java", "Flags.SMOKER");
+        expected.put("player/Storage/FlowerPot.java", "Flags.FLOWER_POT");
         expected.put("player/Storage/ItemFrameContent/ItemFrameGet.java", "Flags.ITEM_FRAME_CONTENT");
         expected.put("player/Storage/ItemFrameContent/ItemFramePut.java", "Flags.ITEM_FRAME_CONTENT");
         expected.put("player/Farming/Fertilizer.java", "Flags.FERTILIZER");
@@ -92,6 +102,14 @@ class VersionFlagMappingTest {
             Path source = root.resolve(file);
             assertTrue(Files.readString(source).contains("Flags.WIND_CHARGE"), source.toString());
         }
+    }
+
+    @Test
+    void versionSpecificStorageListenersUseDedicatedFlags() throws Exception {
+        Path root = VERSIONS_ROOT.resolve(
+                "v1_21_9/src/main/java/cn/lunadeer/dominion/v1_21_9/events/player/Storage/Container");
+        assertTrue(Files.readString(root.resolve("CopperChest.java")).contains("Flags.COPPER_CHEST"));
+        assertTrue(Files.readString(root.resolve("Shelf.java")).contains("Flags.SHELF"));
     }
 
     @Test

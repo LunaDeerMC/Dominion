@@ -26,6 +26,6 @@ public class CopperChest implements Listener {
         if (!Tag.COPPER_CHESTS.isTagged(event.getClickedBlock().getType())) {
             return;
         }
-        checkPrivilegeFlag(event.getClickedBlock().getLocation(), Flags.CONTAINER, event.getPlayer(), event);
+        checkPrivilegeFlag(event.getClickedBlock().getLocation(), Flags.COPPER_CHEST, event.getPlayer(), event);
     }
 }

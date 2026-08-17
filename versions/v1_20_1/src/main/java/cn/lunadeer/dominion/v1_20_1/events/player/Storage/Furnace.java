@@ -10,19 +10,12 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import static cn.lunadeer.dominion.misc.Others.checkPrivilegeFlag;
 
-public class Hopper implements Listener {
+public class Furnace implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void handler(PlayerInteractEvent event) {
         if (event.isCancelled()) return;
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
-            return;
-        }
-        if (event.getClickedBlock() == null) {
-            return;
-        }
-        if (event.getClickedBlock().getType() != Material.HOPPER) {
-            return;
-        }
-        checkPrivilegeFlag(event.getClickedBlock().getLocation(), Flags.HOPPER, event.getPlayer(), event);
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (event.getClickedBlock() == null || event.getClickedBlock().getType() != Material.FURNACE) return;
+        checkPrivilegeFlag(event.getClickedBlock().getLocation(), Flags.FURNACE, event.getPlayer(), event);
     }
 }

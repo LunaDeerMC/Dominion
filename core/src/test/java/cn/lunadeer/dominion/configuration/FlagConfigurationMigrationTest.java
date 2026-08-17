@@ -39,6 +39,25 @@ class FlagConfigurationMigrationTest {
     }
 
     @Test
+    void containerSplitDefinitionsInheritTheirFormerCoarseFlags() {
+        YamlConfiguration yaml = new YamlConfiguration();
+        yaml.set(Flags.CONTAINER.getConfigurationDefaultKey(), false);
+        yaml.set(Flags.CONTAINER.getConfigurationEnableKey(), false);
+        yaml.set(Flags.HOPPER.getConfigurationDefaultKey(), true);
+        yaml.set(Flags.HOPPER.getConfigurationEnableKey(), false);
+
+        FlagConfiguration.reconcileFlagDefinitions(yaml, true);
+
+        assertFalse(yaml.getBoolean(Flags.CHEST.getConfigurationDefaultKey()));
+        assertFalse(yaml.getBoolean(Flags.BARREL.getConfigurationDefaultKey()));
+        assertFalse(yaml.getBoolean(Flags.SHULKER_BOX.getConfigurationDefaultKey()));
+        assertTrue(yaml.getBoolean(Flags.DROPPER.getConfigurationDefaultKey()));
+        assertTrue(yaml.getBoolean(Flags.FLOWER_POT.getConfigurationDefaultKey()));
+        assertFalse(yaml.getBoolean(Flags.CHEST.getConfigurationEnableKey()));
+        assertFalse(yaml.getBoolean(Flags.DROPPER.getConfigurationEnableKey()));
+    }
+
+    @Test
     void flagsConfigurationStoresGroupStructureMaterialAndDialogUiIcon() {
         YamlConfiguration yaml = new YamlConfiguration();
         FlagGroups.replaceConfiguredGroups(
