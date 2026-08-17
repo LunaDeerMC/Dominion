@@ -4,6 +4,7 @@ import cn.lunadeer.dominion.utils.UiMode;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +90,17 @@ public class PlayerRepository extends RepositorySupport {
             List<Map<String, Object>> rows = mapper.selectWhere(PLAYER_NAME, PLAYER_UUID, uuid.toString());
             if (rows == null || rows.isEmpty()) return UiMode.DEFAULT;
             return UiMode.parse(string(rows.get(0), PLAYER_UI_PREFERENCE), UiMode.DEFAULT);
+        });
+    }
+
+    public static Map<UiMode, Integer> uiPreferenceCounts() throws SQLException {
+        return sql((session, mapper) -> {
+            Map<UiMode, Integer> counts = new EnumMap<>(UiMode.class);
+            for (Map<String, Object> row : mapper.selectWhereCompare(PLAYER_NAME, PLAYER_ID, ">", 0)) {
+                UiMode preference = UiMode.parse(string(row, PLAYER_UI_PREFERENCE), UiMode.DEFAULT);
+                counts.merge(preference, 1, Integer::sum);
+            }
+            return counts;
         });
     }
 

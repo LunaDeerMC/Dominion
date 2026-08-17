@@ -23,13 +23,16 @@ import cn.lunadeer.dominion.utils.configuration.ConfigurationPart;
 import cn.lunadeer.dominion.utils.PlayerSkinProfileFactory;
 import cn.lunadeer.dominion.utils.chestui.ChestUiManager;
 import cn.lunadeer.dominion.storage.DatabaseManager;
+import cn.lunadeer.dominion.storage.repository.PlayerRepository;
 import cn.lunadeer.dominion.utils.scheduler.Scheduler;
+import cn.lunadeer.dominion.utils.UiMode;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -108,6 +111,16 @@ public final class Dominion extends JavaPlugin {
         metrics.addCustomChart(new bStatsMetrics.SingleLineChart("dominion_count", () -> CacheManager.instance.dominionCount()));
         metrics.addCustomChart(new bStatsMetrics.SingleLineChart("group_count", () -> CacheManager.instance.groupCount()));
         metrics.addCustomChart(new bStatsMetrics.SingleLineChart("member_count", () -> CacheManager.instance.memberCount()));
+        metrics.addCustomChart(new bStatsMetrics.AdvancedPie("ui_type", () -> {
+            Map<String, Integer> uiTypes = new HashMap<>();
+            PlayerRepository.uiPreferenceCounts().forEach((preference, count) -> {
+                UiMode mode = preference == UiMode.DEFAULT
+                        ? UiMode.parse(Configuration.ui.defaultUi, UiMode.CHEST)
+                        : preference;
+                uiTypes.merge(mode.name().toLowerCase(Locale.ROOT), count, Integer::sum);
+            });
+            return uiTypes;
+        }));
 
         XLogger.info(Language.dominionText.pluginEnabled);
 
