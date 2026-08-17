@@ -1,4 +1,4 @@
-package cn.lunadeer.dominion.v1_21_9.nms;
+package cn.lunadeer.dominion.v1_21_11.nms;
 
 import cn.lunadeer.dominion.nms.NMSDialogFactory;
 import cn.lunadeer.dominion.utils.dialogui.DialogCallbackRegistry;
@@ -27,7 +27,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.protocol.common.ClientboundClearDialogPacket;
 import net.minecraft.network.protocol.common.ClientboundShowDialogPacket;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.dialog.ActionButton;
 import net.minecraft.server.dialog.CommonButtonData;
 import net.minecraft.server.dialog.CommonDialogData;
@@ -65,7 +65,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Minecraft 1.21.9 implementation of the version-independent dialog model.
+ * Minecraft 1.21.11 implementation of the version-independent dialog model.
  */
 public final class NMSDialogFactoryImpl implements NMSDialogFactory {
     private final EncoderRegistry encoders = new EncoderRegistry();
@@ -73,8 +73,7 @@ public final class NMSDialogFactoryImpl implements NMSDialogFactory {
     @Override
     public boolean isSupported() {
         String version = XVersionManager.getMinecraftVersion();
-        return version.startsWith("1.21.9")
-                || version.startsWith("1.21.10");
+        return version.startsWith("1.21.11");
     }
 
     @Override
@@ -317,7 +316,7 @@ public final class NMSDialogFactoryImpl implements NMSDialogFactory {
                     context.player().getUniqueId(), context.session(), callback.callback(), callback.options());
             CompoundTag additions = new CompoundTag();
             additions.putString(DialogCallbackRegistry.TOKEN_KEY, token);
-            return new CustomAll(ResourceLocation.parse(DialogCallbackRegistry.CALLBACK_ACTION_ID), Optional.of(additions));
+            return new CustomAll(Identifier.parse(DialogCallbackRegistry.CALLBACK_ACTION_ID), Optional.of(additions));
         }
 
         private Action customClick(DialogSpec.CustomClickAction action) {
@@ -466,8 +465,8 @@ public final class NMSDialogFactoryImpl implements NMSDialogFactory {
                 profile.toString().getBytes(StandardCharsets.UTF_8));
     }
 
-    private static ResourceLocation identifier(DialogKey key) {
-        return ResourceLocation.fromNamespaceAndPath(key.namespace(), key.value());
+    private static Identifier identifier(DialogKey key) {
+        return Identifier.fromNamespaceAndPath(key.namespace(), key.value());
     }
 
     private static CompoundTag compound(DialogPayload payload) {
