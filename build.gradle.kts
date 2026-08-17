@@ -110,6 +110,7 @@ dependencies {
     implementation(project(path = ":versions:v1_21_6", configuration = "reobf"))
     implementation(project(path = ":versions:v1_21_8", configuration = "reobf"))
     implementation(project(path = ":versions:v1_21_9", configuration = "reobf"))
+    implementation(project(path = ":versions:v1_21_11", configuration = "reobf"))
     // Minecraft 26.x no longer supports Spigot runtime mappings.
     implementation(project(path = ":versions:v26", configuration = "shadowRuntimeElements"))
     implementation(project(path = ":versions:v26_2", configuration = "shadowRuntimeElements"))
