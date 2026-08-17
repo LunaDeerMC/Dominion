@@ -18,17 +18,17 @@ flags:
     display-name: 怪物傷害玩家
     description: 是否允許怪物傷害玩家。
   ender_man:
-    display-name: 末影人
-    description: 關閉後可阻止末影人拾取方塊、生成和傳送。
+    display-name: 末影人方塊移動
+    description: 是否允許末影人拾取或放置方塊。
   tnt_explode:
-    display-name: TNT 爆炸
-    description: 是否允許 TNT 爆炸。
+    display-name: TNT 破壞方塊
+    description: 是否允許 TNT 爆炸破壞方塊。
   wither_spawn:
     display-name: 凋靈生成
-    description: 是否允許生成凋靈及凋靈爆炸。
+    description: 是否允許凋靈生成。
   creeper_explode:
-    display-name: 實體爆炸（非 TNT）
-    description: 苦力怕、凋靈頭顱、末影水晶、火球、床、重生錨等爆炸。
+    display-name: 苦力怕破壞方塊
+    description: 是否允許苦力怕爆炸破壞方塊。
   dragon_break_block:
     display-name: 末影龍破壞方塊
     description: 是否允許末影龍破壞方塊。
@@ -60,8 +60,8 @@ flags:
     display-name: 積雪融化
     description: 是否允許積雪融化。
   trample:
-    display-name: 踩踏耕地
-    description: 是否允許耕地被踩踏（關閉表示保護耕地）。
+    display-name: 玩家踩踏耕地
+    description: 是否允許玩家踩踏耕地。
   decay:
     display-name: 樹葉腐爛
     description: 是否允許樹葉腐爛。
@@ -130,10 +130,10 @@ flags:
     description: 是否可以觸發襲擊。
   place:
     display-name: 放置方塊
-    description: 是否可以放置方塊（普通方塊、物品展示框、岩漿、水等）。
+    description: 是否可以放置普通方塊和花盆中的植物。
   break:
     display-name: 破壞方塊
-    description: 是否可以破壞方塊（包括物品展示框、盔甲架）。
+    description: 是否可以移除普通方塊和花盆中的植物。
   ignite:
     display-name: 點火
     description: 是否可以點燃火焰。
@@ -168,8 +168,8 @@ flags:
     display-name: 音符盒
     description: 是否可以與音符盒互動。
   container:
-    display-name: 特殊容器
-    description: 例如漏斗、熔爐、投擲器、發射器、高爐、煙燻爐。
+    display-name: 儲存容器
+    description: 是否可以開啟類似箱子的儲存容器。
   hopper:
     display-name: 特殊容器
     description: 例如漏斗、熔爐、投擲器、發射器、高爐、煙燻爐。
@@ -226,7 +226,7 @@ flags:
     description: 玩家是否可以收穫作物。
   sowing:
     display-name: 播種
-    description: 是否允許播種作物（小麥、胡蘿蔔等）。
+    description: 是否可以種植作物。
   feed:
     display-name: 餵養動物
     description: 是否可以餵養動物。
@@ -249,8 +249,8 @@ flags:
     display-name: 村民交易
     description: 是否可以與村民交易。
   shoot:
-    display-name: 射擊
-    description: 包括箭、雪球、三叉戟、火球、風彈（1.21）。
+    display-name: 發射箭矢
+    description: 是否可以使用弓和弩發射箭。
   egg:
     display-name: 扔雞蛋
     description: 是否可以扔雞蛋。

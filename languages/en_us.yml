@@ -18,17 +18,17 @@ flags:
     display-name: Monster Kill Player
     description: Whether monster can do harm to player.
   ender_man:
-    display-name: Ender Man
-    description: False to prevent ender-man from picking up blocks, spawning, teleporting.
+    display-name: Enderman Block Movement
+    description: Whether endermen can pick up or place blocks.
   tnt_explode:
-    display-name: TNT Explode
-    description: Whether TNT can explode.
+    display-name: TNT Block Damage
+    description: Whether TNT explosions can destroy blocks.
   wither_spawn:
     display-name: Wither Spawn
-    description: Whether can spawn wither, and wither' explode.
+    description: Whether withers can spawn.
   creeper_explode:
-    display-name: Entity Explode (No-TNT)
-    description: Creeper/Wither Skull/Ender Crystal/Fireball/Bed/Respawn Anchor.
+    display-name: Creeper Block Damage
+    description: Whether creeper explosions can destroy blocks.
   dragon_break_block:
     display-name: Ender Dragon Break Block
     description: Whether ender dragon can break blocks.
@@ -60,8 +60,8 @@ flags:
     display-name: Snow Melt
     description: Whether to allow snow to melt.
   trample:
-    display-name: Trample Farmland
-    description: Whether farmland can be trampled (false means protect farmland).
+    display-name: Player Trample Farmland
+    description: Whether players can trample farmland.
   decay:
     display-name: Leaf Decay
     description: Whether leaves can decay.
@@ -130,10 +130,10 @@ flags:
     description: Whether can trigger raid.
   place:
     display-name: Place Block
-    description: Whether can place blocks (normal blocks, item frame, lava, water).
+    description: Whether normal blocks and flower-pot contents can be placed.
   break:
     display-name: Break Block
-    description: Whether can break blocks (including item frame, armor stand).
+    description: Whether normal blocks and flower-pot contents can be removed.
   ignite:
     display-name: Ignite
     description: Whether can ignite fire.
@@ -156,8 +156,8 @@ flags:
     display-name: Pressure Plate (Player)
     description: Whether player can trigger pressure plate.
   red_stone_powder:
-    display-name: Redstone Dust
-    description: Whether redstone dust can be interacted with.
+    display-name: Red Stone Powder
+    description: Whether can interact with red stone powder.
   repeater:
     display-name: Repeater
     description: Whether can change (interact with) repeater.
@@ -168,8 +168,8 @@ flags:
     display-name: Note Block
     description: Whether can interact with note block.
   container:
-    display-name: Special Container
-    description: Such as hopper, furnace, dropper, dispenser, blast furnace, smoker.
+    display-name: Storage Container
+    description: Whether chest-like storage containers can be opened.
   hopper:
     display-name: Special Container
     description: Such as hopper, furnace, dropper, dispenser, blast furnace, smoker.
@@ -226,7 +226,7 @@ flags:
     description: Whether player can harvest crops.
   sowing:
     display-name: Sowing
-    description: Whether to allow sowing crops (wheat, carrot etc.).
+    description: Whether crops can be planted.
   feed:
     display-name: Feed Animal
     description: Whether can feed animals.
@@ -249,8 +249,8 @@ flags:
     display-name: Villager Trade
     description: Whether can trade with villager.
   shoot:
-    display-name: Shooting
-    description: Include arrow/snowball/trident/fireball/wind-charge(1.21).
+    display-name: Shoot Arrows
+    description: Whether bows and crossbows can shoot arrows.
   egg:
     display-name: Throw Egg
     description: Whether can throw egg.

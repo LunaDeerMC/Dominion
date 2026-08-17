@@ -18,17 +18,17 @@ flags:
     display-name: モンスターのプレイヤー攻撃
     description: モンスターがプレイヤーにダメージを与えられるかどうか。
   ender_man:
-    display-name: エンダーマン
-    description: 無効にすると、エンダーマンのブロック持ち去り、スポーン、テレポートを防ぎます。
+    display-name: エンダーマンのブロック移動
+    description: エンダーマンがブロックを拾ったり設置したりできるかどうか。
   tnt_explode:
-    display-name: TNT爆発
-    description: TNT の爆発を許可するかどうか。
+    display-name: TNTによるブロック破壊
+    description: TNTの爆発でブロックを破壊できるかどうか。
   wither_spawn:
     display-name: ウィザーのスポーン
-    description: ウィザーの召喚とウィザーによる爆発を許可するかどうか。
+    description: ウィザーがスポーンできるかどうか。
   creeper_explode:
-    display-name: エンティティ爆発（TNT以外）
-    description: クリーパー、ウィザースカル、エンドクリスタル、火の玉、ベッド、リスポーンアンカーなど。
+    display-name: クリーパーによるブロック破壊
+    description: クリーパーの爆発でブロックを破壊できるかどうか。
   dragon_break_block:
     display-name: エンダードラゴンのブロック破壊
     description: エンダードラゴンがブロックを破壊できるかどうか。
@@ -60,8 +60,8 @@ flags:
     display-name: 雪の融解
     description: 雪が溶けることを許可するかどうか。
   trample:
-    display-name: 耕地の踏み荒らし
-    description: 耕地が踏み荒らされることを許可するかどうか（無効で耕地を保護）。
+    display-name: プレイヤーによる耕地の踏み荒らし
+    description: プレイヤーが耕地を踏み荒らせるかどうか。
   decay:
     display-name: 葉の自然消滅
     description: 葉が自然消滅することを許可するかどうか。
@@ -130,10 +130,10 @@ flags:
     description: 襲撃を発生させられるかどうか。
   place:
     display-name: ブロック設置
-    description: ブロックを設置できるかどうか（通常ブロック、額縁、溶岩、水などを含む）。
+    description: 通常のブロックや植木鉢の中身を設置できるかどうか。
   break:
     display-name: ブロック破壊
-    description: ブロックを破壊できるかどうか（額縁や防具立てを含む）。
+    description: 通常のブロックや植木鉢の中身を撤去できるかどうか。
   ignite:
     display-name: 着火
     description: 火をつけられるかどうか。
@@ -168,8 +168,8 @@ flags:
     display-name: 音符ブロック
     description: 音符ブロックと相互作用できるかどうか。
   container:
-    display-name: 特殊コンテナ
-    description: '例: ホッパー、かまど、ドロッパー、ディスペンサー、高炉、燻製器。'
+    display-name: 収納コンテナ
+    description: チェストのような収納コンテナを開けられるかどうか。
   hopper:
     display-name: 特殊コンテナ
     description: '例: ホッパー、かまど、ドロッパー、ディスペンサー、高炉、燻製器。'
@@ -226,7 +226,7 @@ flags:
     description: プレイヤーが作物を収穫できるかどうか。
   sowing:
     display-name: 種まき
-    description: 作物（小麦、ニンジンなど）の植え付けを許可するかどうか。
+    description: 作物を植えられるかどうか。
   feed:
     display-name: 動物への餌やり
     description: 動物に餌を与えられるかどうか。
@@ -249,8 +249,8 @@ flags:
     display-name: 村人取引
     description: 村人と取引できるかどうか。
   shoot:
-    display-name: 射撃
-    description: 矢、雪玉、トライデント、火の玉、ウィンドチャージ（1.21）を含みます。
+    display-name: 矢を射る
+    description: 弓やクロスボウで矢を射られるかどうか。
   egg:
     display-name: 卵投げ
     description: 卵を投げられるかどうか。
