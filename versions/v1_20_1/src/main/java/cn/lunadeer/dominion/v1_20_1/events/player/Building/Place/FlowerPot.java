@@ -17,6 +17,6 @@ public class FlowerPot implements Listener {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (event.getClickedBlock() == null) return;
         if (event.getClickedBlock().getType() != Material.FLOWER_POT) return;
-        checkPrivilegeFlag(event.getClickedBlock().getLocation(), Flags.PLACE, event.getPlayer(), event);
+        checkPrivilegeFlag(event.getClickedBlock().getLocation(), Flags.PLACE_FLOWER_POT_CONTENT, event.getPlayer(), event);
     }
 }

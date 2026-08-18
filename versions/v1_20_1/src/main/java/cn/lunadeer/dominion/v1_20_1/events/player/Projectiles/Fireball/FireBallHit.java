@@ -22,7 +22,7 @@ public class FireBallHit implements Listener {
         if (projectile.getType() != EntityType.FIREBALL) {
             return;
         }
-        if (!checkPrivilegeFlag(projectile.getLocation(), Flags.FIREBALL, player, event)) {
+        if (!checkPrivilegeFlag(projectile.getLocation(), Flags.FIREBALL_HIT, player, event)) {
             projectile.teleportAsync(player.getLocation());
         }
     }

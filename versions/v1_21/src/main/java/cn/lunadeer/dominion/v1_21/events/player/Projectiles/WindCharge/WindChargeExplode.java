@@ -31,7 +31,7 @@ public class WindChargeExplode implements Listener {
         if (!(projectile.getShooter() instanceof Player player)) {
             return;
         }
-        if (!checkPrivilegeFlag(projectile.getLocation(), Flags.WIND_CHARGE, player, event)) {
+        if (!checkPrivilegeFlag(projectile.getLocation(), Flags.WIND_CHARGE_EXPLODE, player, event)) {
             projectile.remove();
         }
     }

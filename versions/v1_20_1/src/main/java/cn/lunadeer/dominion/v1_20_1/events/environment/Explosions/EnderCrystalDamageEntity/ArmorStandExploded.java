@@ -16,6 +16,6 @@ public class ArmorStandExploded implements Listener {
         if (event.isCancelled()) return;
         if (event.getEntityType() != EntityType.ARMOR_STAND) return;
         if (!ExplosionSource.ENDER_CRYSTAL.matches(event.getDamager())) return;
-        checkEnvironmentFlag(event.getEntity().getLocation(), Flags.ARMOR_STAND_EXPLOSION_DAMAGE, event);
+        checkEnvironmentFlag(event.getEntity().getLocation(), Flags.ENDER_CRYSTAL_DAMAGE_ARMOR_STAND, event);
     }
 }

@@ -7,6 +7,8 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -55,6 +57,33 @@ class FlagConfigurationMigrationTest {
         assertTrue(yaml.getBoolean(Flags.FLOWER_POT.getConfigurationDefaultKey()));
         assertFalse(yaml.getBoolean(Flags.CHEST.getConfigurationEnableKey()));
         assertFalse(yaml.getBoolean(Flags.DROPPER.getConfigurationEnableKey()));
+    }
+
+    @Test
+    void burnEntitySplitPrefersIntermediateFlagAndFallsBackToHistoricalBurn() {
+        YamlConfiguration current = new YamlConfiguration();
+        current.set(Flags.BURN_ENTITY.getConfigurationDefaultKey(), true);
+        current.set(Flags.BURN_ENTITY.getConfigurationEnableKey(), false);
+        current.set(Flags.BURN.getConfigurationDefaultKey(), false);
+        current.set(Flags.BURN.getConfigurationEnableKey(), true);
+
+        FlagConfiguration.reconcileFlagDefinitions(current, true);
+
+        assertTrue(current.getBoolean(Flags.BURN_ENTITY_FIRE.getConfigurationDefaultKey()));
+        assertFalse(current.getBoolean(Flags.BURN_ENTITY_FIRE.getConfigurationEnableKey()));
+        assertTrue(current.getBoolean(Flags.BURN_ENTITY_LAVA.getConfigurationDefaultKey()));
+        assertFalse(current.getBoolean(Flags.BURN_ENTITY_LAVA.getConfigurationEnableKey()));
+
+        YamlConfiguration historical = new YamlConfiguration();
+        historical.set(Flags.BURN.getConfigurationDefaultKey(), false);
+        historical.set(Flags.BURN.getConfigurationEnableKey(), true);
+
+        FlagConfiguration.reconcileFlagDefinitions(historical, true);
+
+        assertFalse(historical.getBoolean(Flags.BURN_ENTITY_FIRE.getConfigurationDefaultKey()));
+        assertTrue(historical.getBoolean(Flags.BURN_ENTITY_FIRE.getConfigurationEnableKey()));
+        assertFalse(historical.getBoolean(Flags.BURN_ENTITY_LAVA.getConfigurationDefaultKey()));
+        assertTrue(historical.getBoolean(Flags.BURN_ENTITY_LAVA.getConfigurationEnableKey()));
     }
 
     @Test
@@ -189,6 +218,26 @@ class FlagConfigurationMigrationTest {
         try {
             assertEquals("minecraft:items/item/tnt",
                     FlagGroups.getEnvFlagGroup("explosions").getIcon());
+        } finally {
+            FlagGroups.replaceConfiguredGroups(
+                    FlagGroups.defaultEnvironmentGroups(),
+                    FlagGroups.defaultPrivilegeGroups()
+            );
+        }
+    }
+
+    @Test
+    void schemaFiveConfiguredGroupsAreLoadedWithoutDefaultGroupReplacement() throws Exception {
+        YamlConfiguration yaml = new YamlConfiguration();
+        yaml.set("schema-version", 5);
+        yaml.set("groups.privilege.custom.material", Material.PAPER.name());
+        yaml.set("groups.privilege.custom.flags", List.of("cake"));
+
+        invokeLoadConfiguredFlagGroups(yaml);
+        try {
+            assertEquals("custom", FlagGroups.getPriFlagGroup("custom").getId());
+            assertNull(FlagGroups.getPriFlagGroup("storage"));
+            assertNull(FlagGroups.getEnvFlagGroup("mob-griefing"));
         } finally {
             FlagGroups.replaceConfiguredGroups(
                     FlagGroups.defaultEnvironmentGroups(),

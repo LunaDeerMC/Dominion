@@ -17,7 +17,7 @@ public class ArrowsDoHarm implements Listener {
         if (!(event.getDamager() instanceof Arrow arrow)) return;
         if (!(arrow.getShooter() instanceof Player player)) return;
 
-        if (!checkPrivilegeFlag(event.getEntity().getLocation(), Flags.SHOOT, player, event)) {
+        if (!checkPrivilegeFlag(event.getEntity().getLocation(), Flags.ARROW_DAMAGE, player, event)) {
             arrow.remove();
         }
     }

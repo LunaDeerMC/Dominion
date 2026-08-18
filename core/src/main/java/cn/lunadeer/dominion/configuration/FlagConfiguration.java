@@ -32,7 +32,7 @@ import java.util.Map;
  */
 public final class FlagConfiguration {
 
-    private static final int SCHEMA_VERSION = 4;
+    private static final int SCHEMA_VERSION = 5;
     private static final Map<Flag, String> declaredFlagIcons = new IdentityHashMap<>();
     private static final Map<String, List<String>> unresolvedEnvironmentGroupFlags = new HashMap<>();
     private static final Map<String, List<String>> unresolvedPrivilegeGroupFlags = new HashMap<>();
@@ -176,7 +176,7 @@ public final class FlagConfiguration {
         if (!migrateSplitFlags) {
             return enable ? flag.getEnable() : flag.getDefaultValue();
         }
-        List<Flag> sources = Flags.getLegacySources(flag);
+        List<Flag> sources = migrationSources(yaml, flag, enable);
         if (sources.isEmpty()) {
             return enable ? flag.getEnable() : flag.getDefaultValue();
         }
@@ -191,6 +191,21 @@ public final class FlagConfiguration {
             value = enable ? value || sourceValue : value && sourceValue;
         }
         return value;
+    }
+
+    private static List<Flag> migrationSources(YamlConfiguration yaml, Flag flag, boolean enable) {
+        if (flag != Flags.BURN_ENTITY_FIRE && flag != Flags.BURN_ENTITY_LAVA) {
+            return Flags.getLegacySources(flag);
+        }
+        String currentKey = enable
+                ? Flags.BURN_ENTITY.getConfigurationEnableKey()
+                : Flags.BURN_ENTITY.getConfigurationDefaultKey();
+        String historicalKey = enable
+                ? Flags.BURN.getConfigurationEnableKey()
+                : Flags.BURN.getConfigurationDefaultKey();
+        if (yaml.contains(currentKey)) return List.of(Flags.BURN_ENTITY);
+        if (yaml.contains(historicalKey)) return List.of(Flags.BURN);
+        return List.of(Flags.BURN_ENTITY);
     }
 
     private static void loadConfiguredFlagGroups(YamlConfiguration yaml) {

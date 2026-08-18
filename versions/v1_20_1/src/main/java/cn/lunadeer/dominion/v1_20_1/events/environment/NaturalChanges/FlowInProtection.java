@@ -2,8 +2,10 @@ package cn.lunadeer.dominion.v1_20_1.events.environment.NaturalChanges;
 
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
+import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -29,6 +31,15 @@ public class FlowInProtection implements Listener {
                 return;
             }
         }
-        checkEnvironmentFlag(to, Flags.FLOW_IN_PROTECTION, event);
+        Material source = event.getBlock().getType();
+        EnvFlag flag;
+        if (source == Material.LAVA) {
+            flag = Flags.FLOW_IN_LAVA;
+        } else if (source == Material.WATER || source == Material.BUBBLE_COLUMN) {
+            flag = Flags.FLOW_IN_WATER;
+        } else {
+            return;
+        }
+        checkEnvironmentFlag(to, flag, event);
     }
 }

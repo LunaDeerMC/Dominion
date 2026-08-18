@@ -25,6 +25,6 @@ public class HangingEntityShot implements Listener {
         if (!(hit instanceof Hanging)) {
             return;
         }
-        checkPrivilegeFlag(hit.getLocation(), Flags.HANGING_ENTITY_PLAYER_DAMAGE, player, event);
+        checkPrivilegeFlag(hit.getLocation(), Flags.HANGING_ENTITY_PROJECTILE_BREAK, player, event);
     }
 }

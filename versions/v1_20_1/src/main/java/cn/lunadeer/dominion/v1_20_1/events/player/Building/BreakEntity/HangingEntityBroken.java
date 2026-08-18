@@ -30,6 +30,6 @@ public class HangingEntityBroken implements Listener {
                 return;
             }
         }
-        checkPrivilegeFlag(entity.getLocation(), Flags.HANGING_ENTITY_PLAYER_DAMAGE, player, event);
+        checkPrivilegeFlag(entity.getLocation(), Flags.HANGING_ENTITY_DIRECT_BREAK, player, event);
     }
 }

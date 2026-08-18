@@ -36,7 +36,7 @@ class WorldWideLoadTest {
         assertTrue(isLoadedAndEnabled("acidisland_world"));
         assertTrue(isLoadedAndEnabled("acidisland_world/bentobox"));
         assertFalse(loadedWorlds().containsKey("ignored-world"));
-        assertEquals(4, YamlConfiguration.loadConfiguration(nestedConfig.toFile())
+        assertEquals(5, YamlConfiguration.loadConfiguration(nestedConfig.toFile())
                 .getInt("flag-schema-version"));
     }
 

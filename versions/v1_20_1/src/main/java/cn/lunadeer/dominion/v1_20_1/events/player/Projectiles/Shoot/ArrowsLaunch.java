@@ -17,6 +17,6 @@ public class ArrowsLaunch implements Listener {
         if (!(event.getEntity() instanceof Arrow arrow)) return;
         if (!(arrow.getShooter() instanceof Player player)) return;
 
-        checkPrivilegeFlag(player.getLocation(), Flags.SHOOT, player, event);
+        checkPrivilegeFlag(player.getLocation(), Flags.ARROW_LAUNCH, player, event);
     }
 }

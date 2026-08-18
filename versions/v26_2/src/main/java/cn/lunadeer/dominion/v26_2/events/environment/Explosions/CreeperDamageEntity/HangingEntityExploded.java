@@ -21,6 +21,6 @@ public class HangingEntityExploded implements Listener {
         if (event.getCause() != HangingBreakEvent.RemoveCause.EXPLOSION) return;
         if (!(event.getRemover() instanceof SulfurCube)) return;
         Entity entity = event.getEntity();
-        checkEnvironmentFlag(entity.getLocation(), Flags.HANGING_ENTITY_EXPLOSION_DAMAGE, event);
+        checkEnvironmentFlag(entity.getLocation(), Flags.CREEPER_DAMAGE_HANGING_ENTITY, event);
     }
 }

@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public class WorldWide {
-    private static final int FLAG_SCHEMA_VERSION = 4;
+    private static final int FLAG_SCHEMA_VERSION = 5;
     private static final String WORLD_WIDE_FILE_EXTENSION = ".yml";
 
     private static class WorldConfig {
@@ -113,13 +113,26 @@ public class WorldWide {
 
     private static boolean migratedValue(YamlConfiguration config, Flag flag, boolean migrateSplitFlags) {
         if (!migrateSplitFlags) return flag.getDefaultValue();
-        List<Flag> sources = Flags.getLegacySources(flag);
+        List<Flag> sources = migrationSources(config, flag);
         if (sources.isEmpty()) return flag.getDefaultValue();
         boolean value = true;
         for (Flag source : sources) {
             value &= config.getBoolean(source.getConfigurationNameKey(), source.getDefaultValue());
         }
         return value;
+    }
+
+    private static List<Flag> migrationSources(YamlConfiguration config, Flag flag) {
+        if (flag != Flags.BURN_ENTITY_FIRE && flag != Flags.BURN_ENTITY_LAVA) {
+            return Flags.getLegacySources(flag);
+        }
+        if (config.contains(Flags.BURN_ENTITY.getConfigurationNameKey())) {
+            return List.of(Flags.BURN_ENTITY);
+        }
+        if (config.contains(Flags.BURN.getConfigurationNameKey())) {
+            return List.of(Flags.BURN);
+        }
+        return List.of(Flags.BURN_ENTITY);
     }
 
     static void loadWorldFiles(File rootPath) throws IOException {

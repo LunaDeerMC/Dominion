@@ -79,6 +79,10 @@ final class FlagReconciler {
                     })
                     .toList();
             if (!sourceColumns.isEmpty()) {
+                if ((target == Flags.BURN_ENTITY_FIRE || target == Flags.BURN_ENTITY_LAVA)
+                        && sourceColumns.contains(Flags.BURN_ENTITY.getFlagName())) {
+                    sourceColumns = List.of(Flags.BURN_ENTITY.getFlagName());
+                }
                 copyFlagColumns(connection, tableName, sourceColumns, target.getFlagName());
             }
         }
@@ -86,21 +90,14 @@ final class FlagReconciler {
     }
 
     private int reconcileSplitBurnFlag(Connection connection) throws SQLException {
-        int changed = 0;
         boolean oldBurnExists = columnExists(connection, "dominion", "burn");
-        changed += reconcileSplitFlagColumn(connection, oldBurnExists, Flags.BURN_BLOCK);
-        changed += reconcileSplitFlagColumn(connection, oldBurnExists, Flags.BURN_ENTITY);
-        return changed;
-    }
-
-    private int reconcileSplitFlagColumn(Connection connection, boolean oldBurnExists, Flag newFlag) throws SQLException {
-        if (columnExists(connection, "dominion", newFlag.getFlagName())) {
+        if (!oldBurnExists || columnExists(connection, "dominion", Flags.BURN_ENTITY.getFlagName())) {
             return 0;
         }
-        addFlagColumn(connection, "dominion", newFlag);
-        if (oldBurnExists) {
-            copyFlagColumn(connection, "dominion", "burn", newFlag.getFlagName());
-        }
+        // Keep the intermediate column available as a migration source for
+        // installations that still have only the historical `burn` column.
+        addFlagColumn(connection, "dominion", Flags.BURN_ENTITY);
+        copyFlagColumn(connection, "dominion", "burn", Flags.BURN_ENTITY.getFlagName());
         return 1;
     }
 

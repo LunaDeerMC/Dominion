@@ -22,7 +22,7 @@ public class TridentHit implements Listener {
         if (projectile.getType() != EntityType.TRIDENT) {
             return;
         }
-        if (!checkPrivilegeFlag(projectile.getLocation(), Flags.TRIDENT, player, event)) {
+        if (!checkPrivilegeFlag(projectile.getLocation(), Flags.TRIDENT_HIT, player, event)) {
             projectile.teleportAsync(player.getLocation());
         }
     }

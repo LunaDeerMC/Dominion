@@ -1,16 +1,16 @@
 flags:
   animal_spawn:
-    display-name: 動物のスポーン（繁殖）
-    description: 動物のスポーンを許可するかどうか（スポーンエッグと繁殖を含む）。
+    display-name: 動物のスポーン
+    description: 自然またはワールド生成による動物のスポーンを許可するかどうか（繁殖、スポナー、スポーンエッグを除く）。
   animal_move:
     display-name: 動物の移動
     description: 領地内で動物の移動を許可するかどうか。
   villager_spawn:
-    display-name: 村人の繁殖
-    description: 村人の繁殖を許可するかどうか（スポーンエッグを含む）。
+    display-name: 村人のスポーン
+    description: 自然またはワールド生成による村人のスポーンを許可するかどうか（繁殖、スポナー、スポーンエッグを除く）。
   monster_spawn:
     display-name: モンスターのスポーン
-    description: モンスターのスポーンを許可するかどうか（スポーンエッグを含む）。
+    description: 自然またはワールド生成によるモンスターのスポーンを許可するかどうか（スポナーとスポーンエッグを除く）。
   monster_move:
     display-name: モンスターの移動
     description: 領地内でモンスターの移動を許可するかどうか。
@@ -139,10 +139,10 @@ flags:
     description: 襲撃を発生させられるかどうか。
   place:
     display-name: ブロック設置
-    description: 通常のブロックや植木鉢の中身を設置できるかどうか。
+    description: 通常のブロックを設置できるかどうか（植木鉢の中身を除く）。
   break:
     display-name: ブロック破壊
-    description: 通常のブロックや植木鉢の中身を撤去できるかどうか。
+    description: 通常のブロックを破壊できるかどうか（植木鉢の中身を除く）。
   ignite:
     display-name: 着火
     description: 火をつけられるかどうか。
@@ -419,6 +419,117 @@ flags:
   wind_charge:
     display-name: ウィンドチャージ
     description: プレイヤーがウィンドチャージを発射できるかどうか。
+  ender_man_pickup_block:
+    display-name: エンダーマンのブロック拾い
+    description: エンダーマンがブロックを拾えるかどうか。
+  ender_man_place_block:
+    display-name: エンダーマンのブロック設置
+    description: エンダーマンがブロックを設置できるかどうか。
+  bed_explode:
+    display-name: ベッド爆発によるブロック破壊
+    description: ベッドの爆発で領地内のブロックを破壊できるかどうか。
+  anchor_explode:
+    display-name: リスポーンアンカー爆発によるブロック破壊
+    description: リスポーンアンカーの爆発で領地内のブロックを破壊できるかどうか。
+  burn_entity_fire:
+    display-name: エンティティの炎ダメージ
+    description: プレイヤー以外のエンティティが燃焼または炎ダメージを受けるかどうか。
+  burn_entity_lava:
+    display-name: エンティティの溶岩ダメージ
+    description: プレイヤー以外のエンティティが溶岩または高温の床からダメージを受けるかどうか。
+  flow_in_water:
+    display-name: 水の流入
+    description: 外部の水が領地内に流れ込めるかどうか。
+  flow_in_lava:
+    display-name: 溶岩の流入
+    description: 外部の溶岩が領地内に流れ込めるかどうか。
+  ice_form_natural:
+    display-name: 自然な氷生成
+    description: 自然な環境変化で氷が生成されるかどうか。
+  ice_form_frost_walker:
+    display-name: 氷渡りの氷生成
+    description: 氷渡りで氷を生成できるかどうか。
+  tnt_damage_armor_stand:
+    display-name: TNTによる防具立てダメージ
+    description: TNTの爆発が防具立てにダメージを与えられるかどうか。
+  tnt_damage_hanging_entity:
+    display-name: TNTによる吊り下げエンティティダメージ
+    description: TNTの爆発が吊り下げエンティティにダメージを与えられるかどうか。
+  creeper_damage_armor_stand:
+    display-name: クリーパーによる防具立てダメージ
+    description: クリーパーの爆発が防具立てにダメージを与えられるかどうか。
+  creeper_damage_hanging_entity:
+    display-name: クリーパーによる吊り下げエンティティダメージ
+    description: クリーパーの爆発が吊り下げエンティティにダメージを与えられるかどうか。
+  wither_skull_damage_armor_stand:
+    display-name: ウィザースカルによる防具立てダメージ
+    description: ウィザースカルの爆発が防具立てにダメージを与えられるかどうか。
+  wither_skull_damage_hanging_entity:
+    display-name: ウィザースカルによる吊り下げエンティティダメージ
+    description: ウィザースカルの爆発が吊り下げエンティティにダメージを与えられるかどうか。
+  ender_crystal_damage_armor_stand:
+    display-name: エンドクリスタルによる防具立てダメージ
+    description: エンドクリスタルの爆発が防具立てにダメージを与えられるかどうか。
+  ender_crystal_damage_hanging_entity:
+    display-name: エンドクリスタルによる吊り下げエンティティダメージ
+    description: エンドクリスタルの爆発が吊り下げエンティティにダメージを与えられるかどうか。
+  fireball_damage_armor_stand:
+    display-name: 火の玉による防具立てダメージ
+    description: 火の玉の爆発が防具立てにダメージを与えられるかどうか。
+  fireball_damage_hanging_entity:
+    display-name: 火の玉による吊り下げエンティティダメージ
+    description: 火の玉の爆発が吊り下げエンティティにダメージを与えられるかどうか。
+  place_flower_pot_content:
+    display-name: 植木鉢の中身を設置
+    description: 花などを植木鉢に設置できるかどうか。
+  break_flower_pot_content:
+    display-name: 植木鉢の中身を取り出す
+    description: 花などを植木鉢から取り出せるかどうか。
+  armor_stand_direct_break:
+    display-name: 防具立ての直接破壊
+    description: プレイヤーが防具立てを直接破壊できるかどうか。
+  armor_stand_projectile_break:
+    display-name: 投射物による防具立て破壊
+    description: プレイヤーが発射した投射物で防具立てを破壊できるかどうか。
+  hanging_entity_direct_break:
+    display-name: 吊り下げエンティティの直接破壊
+    description: プレイヤーが吊り下げエンティティを直接破壊できるかどうか。
+  hanging_entity_projectile_break:
+    display-name: 投射物による吊り下げエンティティ破壊
+    description: プレイヤーが発射した投射物で吊り下げエンティティを破壊できるかどうか。
+  projectile_charge:
+    display-name: 弓・クロスボウのチャージ
+    description: プレイヤーが弓やクロスボウをチャージできるかどうか。
+  arrow_launch:
+    display-name: 矢の発射
+    description: プレイヤーが矢を発射できるかどうか。
+  arrow_hit:
+    display-name: 矢の命中
+    description: プレイヤーが発射した矢がブロックやエンティティに命中できるかどうか。
+  arrow_damage:
+    display-name: 矢のダメージ
+    description: プレイヤーが発射した矢がエンティティにダメージを与えられるかどうか。
+  trident_launch:
+    display-name: トライデントの発射
+    description: プレイヤーがトライデントを発射できるかどうか。
+  trident_hit:
+    display-name: トライデントの命中
+    description: プレイヤーが発射したトライデントがブロックやエンティティに命中できるかどうか。
+  fireball_launch:
+    display-name: 火の玉の発射
+    description: プレイヤーが火の玉を発射できるかどうか。
+  fireball_hit:
+    display-name: 火の玉の命中
+    description: プレイヤーが発射した火の玉がブロックやエンティティに命中できるかどうか。
+  wind_charge_launch:
+    display-name: ウィンドチャージの発射
+    description: プレイヤーがウィンドチャージを発射できるかどうか。
+  wind_charge_hit:
+    display-name: ウィンドチャージの命中
+    description: プレイヤーが発射したウィンドチャージがブロックやエンティティに命中できるかどうか。
+  wind_charge_explode:
+    display-name: ウィンドチャージの爆発
+    description: プレイヤーが発射したウィンドチャージが爆発できるかどうか。
 flag-groups:
   environment:
     creature-spawning:
@@ -427,24 +538,42 @@ flag-groups:
     creature-behavior:
       display-name: Mobの挙動
       description: 移動、ダメージ、Mob固有の挙動。
+    mob-griefing:
+      display-name: Mobによる破壊
+      description: Mobによるブロックの拾得・設置・破壊と耕地の踏み荒らし。
     explosions:
       display-name: 爆発
       description: 発生源ごとのブロック破壊とエンティティダメージ。
+    explosion-block-damage:
+      display-name: 爆発によるブロック破壊
+      description: 爆発の発生源ごとのブロック破壊。
+    explosion-entity-damage:
+      display-name: 爆発によるエンティティダメージ
+      description: 爆発の発生源ごとのエンティティダメージ。
     fire:
       display-name: 火と燃焼
       description: 延焼と高温によるダメージ。
     natural-changes:
       display-name: 自然変化
       description: 液体、重力、天候、自然なブロック変化。
+    fluid-flow:
+      display-name: 液体の流入
+      description: 領地外からの水と溶岩の流入。
+    ice-and-snow:
+      display-name: 氷雪の変化
+      description: 氷や雪の融解・生成・堆積。
+    farmland:
+      display-name: 耕地の踏み荒らし
+      description: プレイヤーとMobによる耕地の踏み荒らし。
     mechanisms:
-      display-name: 装置
-      description: 外部レッドストーンと感圧トリガーの挙動。
+      display-name: 外部装置とトリガー
+      description: 領地外からのホッパー、ピストン、感圧トリガーの挙動。
     entity-protection:
       display-name: エンティティ保護
       description: 防具立てと吊り下げエンティティを外部ダメージから保護します。
     general:
-      display-name: 全般
-      description: 領地の一般的な表示動作。
+      display-name: 表示と境界
+      description: 領地の境界表示などの表示設定。
   privilege:
     administration:
       display-name: 管理
@@ -454,7 +583,7 @@ flag-groups:
       description: 領地内の移動と移動手段。
     building:
       display-name: 建築
-      description: ブロックと液体の設置と撤去。
+      description: ブロック、液体、装飾エンティティ、植木鉢の中身の設置と撤去。
     item-management:
       display-name: アイテム管理
       description: アイテムの拾得とドロップ。
@@ -485,9 +614,12 @@ flag-groups:
     animal-care:
       display-name: 動物の世話
       description: 動物への餌やりと取り扱い。
-    food-and-trade:
-      display-name: 食料と取引
-      description: 食料、ハチミツ、村人との取引。
+    food:
+      display-name: 食料
+      description: 食料と消費に関する操作。
+    trading:
+      display-name: 取引
+      description: 村人との取引。
     projectiles:
       display-name: 飛び道具
       description: 飛び道具の発射と使用。

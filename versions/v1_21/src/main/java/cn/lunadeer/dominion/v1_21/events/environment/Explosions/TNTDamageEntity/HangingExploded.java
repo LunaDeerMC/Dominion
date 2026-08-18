@@ -22,6 +22,6 @@ public class HangingExploded implements Listener {
         if (harmer.getType() != EntityType.TNT_MINECART && harmer.getType() != EntityType.TNT) {
             return;
         }
-        checkEnvironmentFlag(entity.getLocation(), Flags.HANGING_ENTITY_EXPLOSION_DAMAGE, event);
+        checkEnvironmentFlag(entity.getLocation(), Flags.TNT_DAMAGE_HANGING_ENTITY, event);
     }
 }

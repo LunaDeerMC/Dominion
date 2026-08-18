@@ -16,6 +16,6 @@ public class HangingEntityExploded implements Listener {
         if (event.isCancelled()) return;
         if (event.getCause() != HangingBreakEvent.RemoveCause.EXPLOSION) return;
         if (!ExplosionSource.ENDER_CRYSTAL.matches(event.getRemover())) return;
-        checkEnvironmentFlag(event.getEntity().getLocation(), Flags.HANGING_ENTITY_EXPLOSION_DAMAGE, event);
+        checkEnvironmentFlag(event.getEntity().getLocation(), Flags.ENDER_CRYSTAL_DAMAGE_HANGING_ENTITY, event);
     }
 }

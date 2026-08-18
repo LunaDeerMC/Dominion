@@ -1,16 +1,16 @@
 flags:
   animal_spawn:
-    display-name: 動物生成（繁殖）
-    description: 是否允許動物生成（包括刷怪蛋與繁殖）。
+    display-name: 動物生成
+    description: 是否允許透過自然或世界機制生成動物（不包括繁殖、生怪磚和生怪蛋）。
   animal_move:
     display-name: 動物移動
     description: 是否允許動物在領地內移動。
   villager_spawn:
-    display-name: 村民繁殖
-    description: 是否允許村民繁殖（包括刷怪蛋）。
+    display-name: 村民生成
+    description: 是否允許透過自然或世界機制生成村民（不包括繁殖、生怪磚和生怪蛋）。
   monster_spawn:
     display-name: 怪物生成
-    description: 是否允許怪物生成（包括刷怪蛋）。
+    description: 是否允許透過自然或世界機制生成怪物（不包括生怪磚和生怪蛋）。
   monster_move:
     display-name: 怪物移動
     description: 是否允許怪物在領地內移動。
@@ -139,10 +139,10 @@ flags:
     description: 是否可以觸發襲擊。
   place:
     display-name: 放置方塊
-    description: 是否可以放置普通方塊和花盆中的植物。
+    description: 是否可以放置普通方塊（不包括花盆內容物）。
   break:
     display-name: 破壞方塊
-    description: 是否可以移除普通方塊和花盆中的植物。
+    description: 是否可以移除普通方塊（不包括花盆內容物）。
   ignite:
     display-name: 點火
     description: 是否可以點燃火焰。
@@ -419,6 +419,117 @@ flags:
   wind_charge:
     display-name: 使用風彈
     description: 是否可以發射風彈。
+  ender_man_pickup_block:
+    display-name: 終界使者拾取方塊
+    description: 是否允許終界使者拾取方塊。
+  ender_man_place_block:
+    display-name: 終界使者放置方塊
+    description: 是否允許終界使者放置方塊。
+  bed_explode:
+    display-name: 床爆炸破壞方塊
+    description: 是否允許床爆炸並破壞領地內的方塊。
+  anchor_explode:
+    display-name: 重生錨爆炸破壞方塊
+    description: 是否允許重生錨爆炸並破壞領地內的方塊。
+  burn_entity_fire:
+    display-name: 實體燃燒（火焰）
+    description: 是否允許非玩家實體燃燒或受到火焰傷害。
+  burn_entity_lava:
+    display-name: 實體燃燒（岩漿）
+    description: 是否允許非玩家實體受到岩漿或高溫地面傷害。
+  flow_in_water:
+    display-name: 水流入
+    description: 是否允許外部水流入領地。
+  flow_in_lava:
+    display-name: 岩漿流入
+    description: 是否允許外部岩漿流入領地。
+  ice_form_natural:
+    display-name: 自然結冰
+    description: 是否允許透過自然環境變化形成冰。
+  ice_form_frost_walker:
+    display-name: 冰霜行者結冰
+    description: 是否允許冰霜行者生成冰。
+  tnt_damage_armor_stand:
+    display-name: TNT 傷害盔甲座
+    description: 是否允許 TNT 爆炸傷害盔甲座。
+  tnt_damage_hanging_entity:
+    display-name: TNT 傷害懸掛實體
+    description: 是否允許 TNT 爆炸傷害懸掛實體。
+  creeper_damage_armor_stand:
+    display-name: 苦力怕傷害盔甲座
+    description: 是否允許苦力怕爆炸傷害盔甲座。
+  creeper_damage_hanging_entity:
+    display-name: 苦力怕傷害懸掛實體
+    description: 是否允許苦力怕爆炸傷害懸掛實體。
+  wither_skull_damage_armor_stand:
+    display-name: 凋零怪骷髏傷害盔甲座
+    description: 是否允許凋零怪骷髏爆炸傷害盔甲座。
+  wither_skull_damage_hanging_entity:
+    display-name: 凋零怪骷髏傷害懸掛實體
+    description: 是否允許凋零怪骷髏爆炸傷害懸掛實體。
+  ender_crystal_damage_armor_stand:
+    display-name: 終界水晶傷害盔甲座
+    description: 是否允許終界水晶爆炸傷害盔甲座。
+  ender_crystal_damage_hanging_entity:
+    display-name: 終界水晶傷害懸掛實體
+    description: 是否允許終界水晶爆炸傷害懸掛實體。
+  fireball_damage_armor_stand:
+    display-name: 火球傷害盔甲座
+    description: 是否允許火球爆炸傷害盔甲座。
+  fireball_damage_hanging_entity:
+    display-name: 火球傷害懸掛實體
+    description: 是否允許火球爆炸傷害懸掛實體。
+  place_flower_pot_content:
+    display-name: 放置花盆內容物
+    description: 是否可以將花和其他內容物放入花盆。
+  break_flower_pot_content:
+    display-name: 取出花盆內容物
+    description: 是否可以從花盆中取出花和其他內容物。
+  armor_stand_direct_break:
+    display-name: 直接破壞盔甲座
+    description: 玩家是否可以直接破壞盔甲座。
+  armor_stand_projectile_break:
+    display-name: 投射物破壞盔甲座
+    description: 玩家發射的投射物是否可以破壞盔甲座。
+  hanging_entity_direct_break:
+    display-name: 直接破壞懸掛實體
+    description: 玩家是否可以直接破壞懸掛實體。
+  hanging_entity_projectile_break:
+    display-name: 投射物破壞懸掛實體
+    description: 玩家發射的投射物是否可以破壞懸掛實體。
+  projectile_charge:
+    display-name: 蓄力弓或弩
+    description: 玩家是否可以為弓和弩蓄力。
+  arrow_launch:
+    display-name: 發射箭矢
+    description: 玩家是否可以發射箭矢。
+  arrow_hit:
+    display-name: 箭矢命中
+    description: 玩家發射的箭矢是否可以命中方塊或實體。
+  arrow_damage:
+    display-name: 箭矢傷害
+    description: 玩家發射的箭矢是否可以傷害實體。
+  trident_launch:
+    display-name: 發射三叉戟
+    description: 玩家是否可以發射三叉戟。
+  trident_hit:
+    display-name: 三叉戟命中
+    description: 玩家發射的三叉戟是否可以命中方塊或實體。
+  fireball_launch:
+    display-name: 發射火球
+    description: 玩家是否可以發射火球。
+  fireball_hit:
+    display-name: 火球命中
+    description: 玩家發射的火球是否可以命中方塊或實體。
+  wind_charge_launch:
+    display-name: 發射風彈
+    description: 玩家是否可以發射風彈。
+  wind_charge_hit:
+    display-name: 風彈命中
+    description: 玩家發射的風彈是否可以命中方塊或實體。
+  wind_charge_explode:
+    display-name: 風彈爆炸
+    description: 玩家發射的風彈是否可以爆炸。
 flag-groups:
   environment:
     creature-spawning:
@@ -427,24 +538,42 @@ flag-groups:
     creature-behavior:
       display-name: 生物行為
       description: 生物移動、傷害及特殊行為。
+    mob-griefing:
+      display-name: 生物破壞
+      description: 生物拾取、放置、破壞方塊及踐踏耕地。
     explosions:
       display-name: 爆炸
       description: 按來源控制爆炸的方塊破壞和實體傷害。
+    explosion-block-damage:
+      display-name: 爆炸方塊破壞
+      description: 不同爆炸來源對方塊的破壞。
+    explosion-entity-damage:
+      display-name: 爆炸實體傷害
+      description: 不同爆炸來源對實體的傷害。
     fire:
       display-name: 火焰與燃燒
       description: 火焰蔓延及高溫傷害。
     natural-changes:
       display-name: 自然變化
       description: 液體、重力、天氣及自然方塊變化。
+    fluid-flow:
+      display-name: 液體流動
+      description: 外部水和岩漿流入領地。
+    ice-and-snow:
+      display-name: 冰雪變化
+      description: 冰雪的融化、生成和累積。
+    farmland:
+      display-name: 耕地踐踏
+      description: 玩家和生物對耕地的踐踏。
     mechanisms:
-      display-name: 機械裝置
-      description: 外部紅石及壓力觸發行為。
+      display-name: 外部機械與觸發
+      description: 領地邊界外的漏斗、活塞及壓力觸發行為。
     entity-protection:
       display-name: 實體保護
       description: 保護盔甲座和懸掛實體免受外部傷害。
     general:
-      display-name: 一般
-      description: 領地的一般顯示行為。
+      display-name: 介面與邊界
+      description: 領地邊界顯示及其他一般展示設定。
   privilege:
     administration:
       display-name: 管理
@@ -454,7 +583,7 @@ flag-groups:
       description: 在領地內移動和旅行。
     building:
       display-name: 建造
-      description: 放置和移除方塊及液體。
+      description: 放置和移除方塊、液體、裝飾實體及花盆內容物。
     item-management:
       display-name: 物品管理
       description: 撿取和丟棄物品。
@@ -485,9 +614,12 @@ flag-groups:
     animal-care:
       display-name: 動物照料
       description: 餵養及管理動物。
-    food-and-trade:
-      display-name: 食物與交易
-      description: 食物、蜂蜜及村民交易。
+    food:
+      display-name: 食物
+      description: 食物和可食用互動。
+    trading:
+      display-name: 交易
+      description: 村民交易。
     projectiles:
       display-name: 投射物
       description: 發射和使用投射物。

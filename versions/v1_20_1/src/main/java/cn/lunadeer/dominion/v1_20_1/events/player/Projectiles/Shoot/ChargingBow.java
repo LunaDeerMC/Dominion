@@ -16,6 +16,6 @@ public class ChargingBow implements Listener {
         if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        checkPrivilegeFlag(player.getLocation(), Flags.SHOOT, player, event);
+        checkPrivilegeFlag(player.getLocation(), Flags.PROJECTILE_CHARGE, player, event);
     }
 }

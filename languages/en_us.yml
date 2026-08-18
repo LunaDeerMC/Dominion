@@ -1,16 +1,16 @@
 flags:
   animal_spawn:
-    display-name: Animal Spawn (Breeding)
-    description: Whether animals can spawn (including spawn egg & breeding).
+    display-name: Animal Spawn
+    description: Whether animals can spawn through natural or world-generated spawning (not breeding, spawners or spawn eggs).
   animal_move:
     display-name: Animal Move
     description: Whether animals can move in dominion.
   villager_spawn:
-    display-name: Villager Breed
-    description: Whether villager can breeding (including spawn egg).
+    display-name: Villager Spawn
+    description: Whether villagers can spawn through natural or world-generated spawning (not breeding, spawners or spawn eggs).
   monster_spawn:
     display-name: Monster Spawn
-    description: Whether monster can spawn (including spawn egg).
+    description: Whether monsters can spawn through natural or world-generated spawning (not spawners or spawn eggs).
   monster_move:
     display-name: Monster Move
     description: Whether monster can move in dominion.
@@ -139,10 +139,10 @@ flags:
     description: Whether can trigger raid.
   place:
     display-name: Place Block
-    description: Whether normal blocks and flower-pot contents can be placed.
+    description: Whether normal blocks can be placed (not flower-pot contents).
   break:
     display-name: Break Block
-    description: Whether normal blocks and flower-pot contents can be removed.
+    description: Whether normal blocks can be removed (not flower-pot contents).
   ignite:
     display-name: Ignite
     description: Whether can ignite fire.
@@ -419,6 +419,117 @@ flags:
   wind_charge:
     display-name: Use Wind Charge
     description: Whether players can launch wind charges.
+  ender_man_pickup_block:
+    display-name: Enderman Pick Up Block
+    description: Whether Endermen can pick up blocks.
+  ender_man_place_block:
+    display-name: Enderman Place Block
+    description: Whether Endermen can place blocks.
+  bed_explode:
+    display-name: Bed Explosion Block Damage
+    description: Whether beds can explode and destroy blocks in this dominion.
+  anchor_explode:
+    display-name: Respawn Anchor Explosion Block Damage
+    description: Whether respawn anchors can explode and destroy blocks in this dominion.
+  burn_entity_fire:
+    display-name: Burn Entity (Fire)
+    description: Whether entities other than players can burn or take fire damage.
+  burn_entity_lava:
+    display-name: Burn Entity (Lava)
+    description: Whether entities other than players can take lava or hot-floor damage.
+  flow_in_water:
+    display-name: Water Flow In
+    description: Whether external water can flow into this dominion.
+  flow_in_lava:
+    display-name: Lava Flow In
+    description: Whether external lava can flow into this dominion.
+  ice_form_natural:
+    display-name: Natural Ice Form
+    description: Whether ice can form through natural environmental changes.
+  ice_form_frost_walker:
+    display-name: Frost Walker Ice Form
+    description: Whether Frost Walker can create ice.
+  tnt_damage_armor_stand:
+    display-name: TNT Armor Stand Damage
+    description: Whether TNT explosions can damage armor stands.
+  tnt_damage_hanging_entity:
+    display-name: TNT Hanging Entity Damage
+    description: Whether TNT explosions can damage hanging entities.
+  creeper_damage_armor_stand:
+    display-name: Creeper Armor Stand Damage
+    description: Whether creeper explosions can damage armor stands.
+  creeper_damage_hanging_entity:
+    display-name: Creeper Hanging Entity Damage
+    description: Whether creeper explosions can damage hanging entities.
+  wither_skull_damage_armor_stand:
+    display-name: Wither Skull Armor Stand Damage
+    description: Whether wither skull explosions can damage armor stands.
+  wither_skull_damage_hanging_entity:
+    display-name: Wither Skull Hanging Entity Damage
+    description: Whether wither skull explosions can damage hanging entities.
+  ender_crystal_damage_armor_stand:
+    display-name: End Crystal Armor Stand Damage
+    description: Whether end crystal explosions can damage armor stands.
+  ender_crystal_damage_hanging_entity:
+    display-name: End Crystal Hanging Entity Damage
+    description: Whether end crystal explosions can damage hanging entities.
+  fireball_damage_armor_stand:
+    display-name: Fireball Armor Stand Damage
+    description: Whether fireball explosions can damage armor stands.
+  fireball_damage_hanging_entity:
+    display-name: Fireball Hanging Entity Damage
+    description: Whether fireball explosions can damage hanging entities.
+  place_flower_pot_content:
+    display-name: Place Flower Pot Content
+    description: Whether flowers and other contents can be placed into flower pots.
+  break_flower_pot_content:
+    display-name: Break Flower Pot Content
+    description: Whether flowers and other contents can be removed from flower pots.
+  armor_stand_direct_break:
+    display-name: Directly Break Armor Stand
+    description: Whether players can directly break armor stands.
+  armor_stand_projectile_break:
+    display-name: Projectile Break Armor Stand
+    description: Whether player-fired projectiles can break armor stands.
+  hanging_entity_direct_break:
+    display-name: Directly Break Hanging Entity
+    description: Whether players can directly break hanging entities.
+  hanging_entity_projectile_break:
+    display-name: Projectile Break Hanging Entity
+    description: Whether player-fired projectiles can break hanging entities.
+  projectile_charge:
+    display-name: Charge Bow or Crossbow
+    description: Whether players can charge bows and crossbows.
+  arrow_launch:
+    display-name: Launch Arrow
+    description: Whether players can launch arrows.
+  arrow_hit:
+    display-name: Arrow Impact
+    description: Whether player-fired arrows can impact blocks or entities.
+  arrow_damage:
+    display-name: Arrow Damage
+    description: Whether player-fired arrows can damage entities.
+  trident_launch:
+    display-name: Launch Trident
+    description: Whether players can launch tridents.
+  trident_hit:
+    display-name: Trident Impact
+    description: Whether player-fired tridents can impact blocks or entities.
+  fireball_launch:
+    display-name: Launch Fireball
+    description: Whether players can launch fireballs.
+  fireball_hit:
+    display-name: Fireball Impact
+    description: Whether player-fired fireballs can impact blocks or entities.
+  wind_charge_launch:
+    display-name: Launch Wind Charge
+    description: Whether players can launch wind charges.
+  wind_charge_hit:
+    display-name: Wind Charge Impact
+    description: Whether player-fired wind charges can impact blocks or entities.
+  wind_charge_explode:
+    display-name: Wind Charge Explosion
+    description: Whether player-fired wind charges can explode.
 flag-groups:
   environment:
     creature-spawning:
@@ -427,24 +538,42 @@ flag-groups:
     creature-behavior:
       display-name: Creature Behavior
       description: Movement, damage and special creature behavior.
+    mob-griefing:
+      display-name: Mob Griefing
+      description: Mob actions that modify blocks or farmland.
     explosions:
       display-name: Explosions
       description: Explosion block damage and entity damage by source.
+    explosion-block-damage:
+      display-name: Explosion Block Damage
+      description: Block damage caused by different explosion sources.
+    explosion-entity-damage:
+      display-name: Explosion Entity Damage
+      description: Entity damage caused by different explosion sources.
     fire:
       display-name: Fire and Burning
       description: Fire spread and heat damage.
     natural-changes:
       display-name: Natural Changes
       description: Fluids, gravity, weather and natural block changes.
+    fluid-flow:
+      display-name: Fluid Flow
+      description: External water and lava flowing into a dominion.
+    ice-and-snow:
+      display-name: Ice and Snow
+      description: Ice and snow melting, forming and accumulating.
+    farmland:
+      display-name: Farmland
+      description: Player and mob trampling of farmland.
     mechanisms:
-      display-name: Mechanisms
-      description: External redstone and pressure-trigger behavior.
+      display-name: External Mechanisms
+      description: Hoppers, pistons and pressure-trigger behavior across dominion boundaries.
     entity-protection:
       display-name: Entity Protection
       description: Protect armor stands and hanging entities from outside damage.
     general:
-      display-name: General
-      description: General dominion presentation behavior.
+      display-name: Visuals and Border
+      description: Border display and other dominion presentation settings.
   privilege:
     administration:
       display-name: Administration
@@ -454,7 +583,7 @@ flag-groups:
       description: Movement and travel inside a dominion.
     building:
       display-name: Building
-      description: Place and remove blocks and liquids.
+      description: Place and remove blocks, liquids, decorative entities and flower-pot contents.
     item-management:
       display-name: Item Management
       description: Pick up and drop items.
@@ -485,9 +614,12 @@ flag-groups:
     animal-care:
       display-name: Animal Care
       description: Feed and handle animals.
-    food-and-trade:
-      display-name: Food and Trade
-      description: Food, honey and villager trading.
+    food:
+      display-name: Food
+      description: Food and consumable interactions.
+    trading:
+      display-name: Trading
+      description: Villager trading.
     projectiles:
       display-name: Projectiles
       description: Launch and use projectiles.

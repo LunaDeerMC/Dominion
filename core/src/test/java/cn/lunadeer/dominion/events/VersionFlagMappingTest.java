@@ -50,24 +50,26 @@ class VersionFlagMappingTest {
         expected.put("environment/CreatureSpawning/MonsterSpawn.java", "Flags.MONSTER_SPAWN");
         expected.put("environment/CreatureBehavior/EnderManTeleport.java", "Flags.ENDER_MAN_TELEPORT");
         expected.put("environment/CreatureBehavior/WitherBreakBlock.java", "Flags.WITHER_BREAK_BLOCK");
-        expected.put("environment/Explosions/BlockExplode.java", "Flags.BLOCK_EXPLODE");
+        expected.put("environment/Explosions/BlockExplode.java", "Flags.BED_EXPLODE");
         expected.put("environment/Explosions/CreeperExplode.java", "Flags.CREEPER_EXPLODE");
         expected.put("environment/Explosions/CreeperDamageEntity/ArmorStandExploded.java",
-                "Flags.ARMOR_STAND_EXPLOSION_DAMAGE");
+                "Flags.CREEPER_DAMAGE_ARMOR_STAND");
         expected.put("environment/Explosions/CreeperDamageEntity/HangingEntityExploded.java",
-                "Flags.HANGING_ENTITY_EXPLOSION_DAMAGE");
+                "Flags.CREEPER_DAMAGE_HANGING_ENTITY");
         expected.put("environment/Explosions/TNTDamageEntity/EntityExploded.java", "Flags.TNT_DAMAGE_ENTITY");
-        expected.put("environment/Explosions/TNTDamageEntity/HangingExploded.java", "Flags.HANGING_ENTITY_EXPLOSION_DAMAGE");
+        expected.put("environment/Explosions/TNTDamageEntity/HangingExploded.java", "Flags.TNT_DAMAGE_HANGING_ENTITY");
         expected.put("environment/EntityProtection/ArmorStandMobDamage.java", "Flags.ARMOR_STAND_MOB_DAMAGE");
         expected.put("environment/EntityProtection/HangingEntityMobDamage.java", "Flags.HANGING_ENTITY_MOB_DAMAGE");
         expected.put("player/Building/PlaceLiquid.java", "Flags.PLACE_LIQUID");
+        expected.put("player/Building/Place/FlowerPot.java", "Flags.PLACE_FLOWER_POT_CONTENT");
         expected.put("player/Building/PlaceEntity/ArmorStand.java", "Flags.PLACE_ARMOR_STAND");
         expected.put("player/Building/PlaceEntity/HangingEntity.java", "Flags.PLACE_HANGING_ENTITY");
         expected.put("player/Building/BreakLiquid.java", "Flags.BREAK_LIQUID");
-        expected.put("player/Building/BreakEntity/ArmorStandBroken.java", "Flags.ARMOR_STAND_PLAYER_DAMAGE");
-        expected.put("player/Building/BreakEntity/ArmorStandShot.java", "Flags.ARMOR_STAND_PLAYER_DAMAGE");
-        expected.put("player/Building/BreakEntity/HangingEntityBroken.java", "Flags.HANGING_ENTITY_PLAYER_DAMAGE");
-        expected.put("player/Building/BreakEntity/HangingEntityShot.java", "Flags.HANGING_ENTITY_PLAYER_DAMAGE");
+        expected.put("player/Building/BreakBlock/FlowerPot.java", "Flags.BREAK_FLOWER_POT_CONTENT");
+        expected.put("player/Building/BreakEntity/ArmorStandBroken.java", "Flags.ARMOR_STAND_DIRECT_BREAK");
+        expected.put("player/Building/BreakEntity/ArmorStandShot.java", "Flags.ARMOR_STAND_PROJECTILE_BREAK");
+        expected.put("player/Building/BreakEntity/HangingEntityBroken.java", "Flags.HANGING_ENTITY_DIRECT_BREAK");
+        expected.put("player/Building/BreakEntity/HangingEntityShot.java", "Flags.HANGING_ENTITY_PROJECTILE_BREAK");
         expected.put("player/Access/Door.java", "Flags.DOOR");
         expected.put("player/Access/Trapdoor.java", "Flags.TRAPDOOR");
         expected.put("player/Access/FenceGate.java", "Flags.FENCE_GATE");
@@ -86,10 +88,15 @@ class VersionFlagMappingTest {
         expected.put("player/Storage/ItemFrameContent/ItemFramePut.java", "Flags.ITEM_FRAME_CONTENT");
         expected.put("player/Farming/Fertilizer.java", "Flags.FERTILIZER");
         expected.put("player/Farming/PlantTree.java", "Flags.PLANT_TREE");
-        expected.put("player/Projectiles/Trident/TridentLaunch.java", "Flags.TRIDENT");
-        expected.put("player/Projectiles/Trident/TridentHit.java", "Flags.TRIDENT");
-        expected.put("player/Projectiles/Fireball/FireBallLaunch.java", "Flags.FIREBALL");
-        expected.put("player/Projectiles/Fireball/FireBallHit.java", "Flags.FIREBALL");
+        expected.put("player/Projectiles/Shoot/ChargingBow.java", "Flags.PROJECTILE_CHARGE");
+        expected.put("player/Projectiles/Shoot/ChargingCrossBow.java", "Flags.PROJECTILE_CHARGE");
+        expected.put("player/Projectiles/Shoot/ArrowsLaunch.java", "Flags.ARROW_LAUNCH");
+        expected.put("player/Projectiles/Shoot/ArrowsHit.java", "Flags.ARROW_HIT");
+        expected.put("player/Projectiles/Shoot/ArrowsDoHarm.java", "Flags.ARROW_DAMAGE");
+        expected.put("player/Projectiles/Trident/TridentLaunch.java", "Flags.TRIDENT_LAUNCH");
+        expected.put("player/Projectiles/Trident/TridentHit.java", "Flags.TRIDENT_HIT");
+        expected.put("player/Projectiles/Fireball/FireBallLaunch.java", "Flags.FIREBALL_LAUNCH");
+        expected.put("player/Projectiles/Fireball/FireBallHit.java", "Flags.FIREBALL_HIT");
 
         Path root = VERSIONS_ROOT.resolve("v1_20_1/src/main/java/cn/lunadeer/dominion/v1_20_1/events");
         for (Map.Entry<String, String> entry : expected.entrySet()) {
@@ -97,16 +104,30 @@ class VersionFlagMappingTest {
             assertTrue(Files.readString(source).contains(entry.getValue()),
                     source + " should reference " + entry.getValue());
         }
+
+        String enderMan = Files.readString(root.resolve("environment/CreatureBehavior/EnderMan.java"));
+        assertTrue(enderMan.contains("Flags.ENDER_MAN_PICKUP_BLOCK"));
+        assertTrue(enderMan.contains("Flags.ENDER_MAN_PLACE_BLOCK"));
+        String blockExplode = Files.readString(root.resolve("environment/Explosions/BlockExplode.java"));
+        assertTrue(blockExplode.contains("Flags.ANCHOR_EXPLODE"));
+        String burnEntity = Files.readString(root.resolve("environment/Fire/BurnEntity.java"));
+        assertTrue(burnEntity.contains("Flags.BURN_ENTITY_FIRE"));
+        assertTrue(burnEntity.contains("Flags.BURN_ENTITY_LAVA"));
+        String flow = Files.readString(root.resolve("environment/NaturalChanges/FlowInProtection.java"));
+        assertTrue(flow.contains("Flags.FLOW_IN_WATER"));
+        assertTrue(flow.contains("Flags.FLOW_IN_LAVA"));
+        String ice = Files.readString(root.resolve("environment/NaturalChanges/IceForm.java"));
+        assertTrue(ice.contains("Flags.ICE_FORM_NATURAL"));
+        assertTrue(ice.contains("Flags.ICE_FORM_FROST_WALKER"));
     }
 
     @Test
     void windChargeListenersUseWindChargeFlag() throws Exception {
         Path root = VERSIONS_ROOT.resolve(
                 "v1_21/src/main/java/cn/lunadeer/dominion/v1_21/events/player/Projectiles/WindCharge");
-        for (String file : new String[]{"WindChargeLaunch.java", "WindChargeHit.java", "WindChargeExplode.java"}) {
-            Path source = root.resolve(file);
-            assertTrue(Files.readString(source).contains("Flags.WIND_CHARGE"), source.toString());
-        }
+        assertTrue(Files.readString(root.resolve("WindChargeLaunch.java")).contains("Flags.WIND_CHARGE_LAUNCH"));
+        assertTrue(Files.readString(root.resolve("WindChargeHit.java")).contains("Flags.WIND_CHARGE_HIT"));
+        assertTrue(Files.readString(root.resolve("WindChargeExplode.java")).contains("Flags.WIND_CHARGE_EXPLODE"));
     }
 
     @Test
@@ -127,7 +148,7 @@ class VersionFlagMappingTest {
             assertTrue(source.contains("EntityType.TNT"), file);
         }
         assertTrue(Files.readString(root.resolve("EntityExploded.java")).contains("Flags.TNT_DAMAGE_ENTITY"));
-        assertTrue(Files.readString(root.resolve("HangingExploded.java")).contains("Flags.HANGING_ENTITY_EXPLOSION_DAMAGE"));
+        assertTrue(Files.readString(root.resolve("HangingExploded.java")).contains("Flags.TNT_DAMAGE_HANGING_ENTITY"));
     }
 
     @Test
@@ -145,8 +166,8 @@ class VersionFlagMappingTest {
             String modernSource = Files.readString(modernRoot.resolve("CreeperDamageEntity").resolve(file));
             assertFalse(baseSource.contains("SulfurCube"), file);
             assertTrue(modernSource.contains("instanceof SulfurCube"), file);
-            assertTrue(modernSource.contains("Flags.ARMOR_STAND_EXPLOSION_DAMAGE")
-                    || modernSource.contains("Flags.HANGING_ENTITY_EXPLOSION_DAMAGE"), file);
+            assertTrue(modernSource.contains("Flags.CREEPER_DAMAGE_ARMOR_STAND")
+                    || modernSource.contains("Flags.CREEPER_DAMAGE_HANGING_ENTITY"), file);
         }
     }
 

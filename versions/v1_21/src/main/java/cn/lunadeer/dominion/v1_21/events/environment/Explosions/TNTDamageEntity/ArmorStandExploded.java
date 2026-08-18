@@ -19,6 +19,6 @@ public class ArmorStandExploded implements Listener {
         if (event.isCancelled() || !(event.getEntity() instanceof ArmorStand)) return;
         EntityType source = event.getDamager().getType();
         if (source != EntityType.TNT_MINECART && source != EntityType.TNT) return;
-        checkEnvironmentFlag(event.getEntity().getLocation(), Flags.ARMOR_STAND_EXPLOSION_DAMAGE, event);
+        checkEnvironmentFlag(event.getEntity().getLocation(), Flags.TNT_DAMAGE_ARMOR_STAND, event);
     }
 }
