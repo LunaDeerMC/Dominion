@@ -26,7 +26,7 @@ public class GroupProviderHandler extends GroupProvider {
     public static class GroupProviderHandlerText extends ConfigurationPart {
         public String ownerOnly = "Only the owner can manage admin group.";
         public String setFlagSuccess = "Set group {0} flag {1} to {2} successfully.";
-        public String setFlagFailed = "Failed to set group flag, reason: {3}";
+        public String setFlagFailed = "Failed to set group flag, reason: {0}";
 
         public String createGroupSuccess = "Group {0} created successfully.";
         public String createGroupFailed = "Failed to create group, reason: {0}";
