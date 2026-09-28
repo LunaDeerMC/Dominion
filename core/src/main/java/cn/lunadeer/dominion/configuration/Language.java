@@ -28,6 +28,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +55,14 @@ public class Language extends ConfigurationFile {
         zh_tw,
     }
 
+    /**
+     * The language file bundled inside the plugin jar for the active language code,
+     * used as the value source for keys missing in the local language file so that
+     * user-customized texts are kept while new keys get the bundled translation
+     * appended at the end of the local file.
+     */
+    private static YamlConfiguration jarLanguageDefaults;
+
     public static void loadLanguageFiles(CommandSender sender, JavaPlugin plugin, String code) {
         try {
             // save default language files to the languages folder
@@ -60,11 +71,33 @@ public class Language extends ConfigurationFile {
                 updateLanguageFiles(plugin, languageCode.name(), false);
             }
             Notification.info(sender != null ? sender : Dominion.instance.getServer().getConsoleSender(), Language.configurationText.loadingLanguage, code);
-            ConfigurationManager.load(Language.class, new File(languagesFolder, code + ".yml"));
+            jarLanguageDefaults = loadJarLanguageDefaults(plugin, code);
+            ConfigurationManager.load(Language.class, new File(languagesFolder, code + ".yml"), jarLanguageDefaults);
             Notification.info(sender != null ? sender : Dominion.instance.getServer().getConsoleSender(), Language.configurationText.loadLanguageSuccess, code);
         } catch (Exception e) {
             Notification.error(sender != null ? sender : Dominion.instance.getServer().getConsoleSender(), Language.configurationText.loadLanguageFail, code, e.getMessage());
         }
+    }
+
+    private static YamlConfiguration loadJarLanguageDefaults(JavaPlugin plugin, String code) {
+        try (InputStream input = plugin.getResource("languages/" + code + ".yml")) {
+            if (input == null) {
+                return null;
+            }
+            return YamlConfiguration.loadConfiguration(new InputStreamReader(input, StandardCharsets.UTF_8));
+        } catch (Exception e) {
+            XLogger.warn("Failed to read bundled language file for {0} : {1}", code, e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Resolves the text for a key missing in the local language file, preferring the
+     * bundled translation of the active language over the value coded in the class.
+     */
+    private static String fallbackText(String key, String fallback) {
+        Object value = ConfigurationManager.fallbackValue(key, fallback, jarLanguageDefaults);
+        return value instanceof String text ? text : fallback;
     }
 
     public static void updateLanguageFiles(JavaPlugin plugin, String code, boolean overwrite) {
@@ -85,10 +118,10 @@ public class Language extends ConfigurationFile {
         YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
         for (Flag flag : Flags.getAllFlags()) {
             if (!yaml.contains(flag.getDisplayNameKey())) {
-                yaml.set(flag.getDisplayNameKey(), flag.getDisplayName());
+                yaml.set(flag.getDisplayNameKey(), fallbackText(flag.getDisplayNameKey(), flag.getDisplayName()));
             }
             if (!yaml.contains(flag.getDescriptionKey())) {
-                yaml.set(flag.getDescriptionKey(), flag.getDescription());
+                yaml.set(flag.getDescriptionKey(), fallbackText(flag.getDescriptionKey(), flag.getDescription()));
             }
         }
         yaml.save(file);
@@ -116,7 +149,9 @@ public class Language extends ConfigurationFile {
                     group.setDisplayName(displayName);
                 }
             } else {
-                yaml.set(group.getDisplayNameKey(), group.getDisplayName());
+                String displayName = fallbackText(group.getDisplayNameKey(), group.getDisplayName());
+                group.setDisplayName(displayName);
+                yaml.set(group.getDisplayNameKey(), displayName);
                 changed = true;
             }
             if (yaml.isString(group.getDescriptionKey())) {
@@ -125,7 +160,9 @@ public class Language extends ConfigurationFile {
                     group.setDescription(description);
                 }
             } else {
-                yaml.set(group.getDescriptionKey(), group.getDescription());
+                String description = fallbackText(group.getDescriptionKey(), group.getDescription());
+                group.setDescription(description);
+                yaml.set(group.getDescriptionKey(), description);
                 changed = true;
             }
         }
@@ -206,17 +243,18 @@ public class Language extends ConfigurationFile {
     @PreProcess
     public void loadFlagsText() {
         for (Flag flag : Flags.getAllFlags()) {
-            if (getYaml().contains(flag.getDisplayNameKey())) {
-                flag.setDisplayName(getYaml().getString(flag.getDisplayNameKey()));
-            } else {
-                getYaml().set(flag.getDisplayNameKey(), flag.getDisplayName());
-            }
-            if (getYaml().contains(flag.getDescriptionKey())) {
-                flag.setDescription(getYaml().getString(flag.getDescriptionKey()));
-            } else {
-                getYaml().set(flag.getDescriptionKey(), flag.getDescription());
-            }
+            flag.setDisplayName(loadFlagText(flag.getDisplayNameKey(), flag.getDisplayName()));
+            flag.setDescription(loadFlagText(flag.getDescriptionKey(), flag.getDescription()));
         }
+    }
+
+    private String loadFlagText(String key, String fallback) {
+        if (getYaml().contains(key)) {
+            return getYaml().getString(key);
+        }
+        String value = fallbackText(key, fallback);
+        getYaml().set(key, value);
+        return value;
     }
 
     @PostProcess
