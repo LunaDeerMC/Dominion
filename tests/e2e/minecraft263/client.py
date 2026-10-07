@@ -79,6 +79,15 @@ try:
                     send('accept_teleportation',vi(teleport)+struct.pack('>dddff',*position))
                 elif name=='chunk_batch_finished':send('chunk_batch_received',struct.pack('>f',20.0))
                 elif name=='system_chat':
+                    m=re.search(rb'CUSHION_PLACE:(\d+):(\d+):(\d+)',payload)
+                    if m:
+                        x,y,z=map(int,m.groups());sequence+=1
+                        packed=((x&0x3ffffff)<<38)|((z&0x3ffffff)<<12)|(y&0xfff)
+                        send('use_item_on',vi(0)+struct.pack('>Q',packed)+vi(1)+struct.pack('>fff',0.5,1.,0.5)+b'\x00\x00'+vi(sequence))
+                        print('CUSHION place',flush=True)
+                    m=re.search(rb'CUSHION_ATTACK:(\d+)',payload)
+                    if m:
+                        send('attack',vi(int(m.group(1))));print('CUSHION attack',flush=True)
                     if b'E288_FIRE' in payload:
                         sequence+=1;send('use_item',vi(0)+vi(sequence)+struct.pack('>ff',0.,0.))
                         print('CROSSBOW fired',flush=True)

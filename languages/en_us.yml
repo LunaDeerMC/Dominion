@@ -1,5 +1,18 @@
+# Cushion protection and groups contributed by Codex.
 # Resize validation and explosion protection messages contributed by Codex.
 flags:
+  cushion_place:
+    display-name: Cushion Place
+    description: Whether players can place cushions.
+  cushion_break:
+    display-name: Cushion Break
+    description: Whether players can break cushions directly or with their projectiles.
+  cushion_mob_damage:
+    display-name: Cushion Mob Damage
+    description: Whether mobs can break cushions directly or with their projectiles.
+  cushion_environment_break:
+    display-name: Cushion Environment Break
+    description: Whether fire, physics, pistons and non-player/non-mob projectiles can remove cushions. Known explosions use their own flags; lightning is not covered.
   animal_spawn:
     display-name: Animal Spawn
     description: Whether animals can spawn through natural or world-generated spawning (not breeding, spawners or spawn eggs).
@@ -536,6 +549,9 @@ flags:
     description: Whether player-fired wind charges can explode.
 flag-groups:
   environment:
+    cushion:
+      display-name: Cushion
+      description: Mob and environmental cushion protection.
     creature-spawning:
       display-name: Creature Spawning
       description: Animal, villager and monster spawning.
@@ -579,6 +595,9 @@ flag-groups:
       display-name: Visuals and Border
       description: Border display and other dominion presentation settings.
   privilege:
+    cushion:
+      display-name: Cushion
+      description: Place cushions and break them directly or with player projectiles.
     administration:
       display-name: Administration
       description: Dominion administration privileges.

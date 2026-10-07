@@ -1,0 +1,63 @@
+=== first-run.log ===
+[10:47:50] [Server thread/INFO]: [Cushion263] PASS privilege group building
+[10:47:50] [Server thread/INFO]: [Cushion263] PASS building memberships
+[10:47:50] [Server thread/INFO]: [Cushion263] PASS privilege group decoration
+[10:47:50] [Server thread/INFO]: [Cushion263] PASS decoration memberships
+[10:47:50] [Server thread/INFO]: [Cushion263] PASS privilege group cushion
+[10:47:50] [Server thread/INFO]: [Cushion263] PASS cushion memberships
+[10:47:50] [Server thread/INFO]: [Cushion263] PASS environment group entity-protection
+[10:47:50] [Server thread/INFO]: [Cushion263] PASS entity-protection memberships
+[10:47:50] [Server thread/INFO]: [Cushion263] PASS environment group cushion
+[10:47:50] [Server thread/INFO]: [Cushion263] PASS cushion memberships
+[10:47:50] [Server thread/INFO]: [Cushion263] PASS schema upgraded to 6
+[10:47:50] [Server thread/INFO]: [Cushion263] PASS custom group preserved
+[10:47:50] [Server thread/INFO]: [Cushion263] PASS custom material preserved
+[10:47:52] [Server thread/INFO]: [Cushion263] PASS default false cushion_place
+[10:47:52] [Server thread/INFO]: [Cushion263] PASS default false cushion_break
+[10:47:52] [Server thread/INFO]: [Cushion263] PASS default false cushion_mob_damage
+[10:47:52] [Server thread/INFO]: [Cushion263] PASS default false cushion_environment_break
+[10:47:52] [Server thread/INFO]: [Cushion263] PASS new claim denies player flags
+[10:47:52] [Server thread/INFO]: [Cushion263] PASS new claim denies environment flags
+[10:47:55] [Server thread/INFO]: [Cushion263] PASS network place allow=false
+[10:47:57] [Server thread/INFO]: [Cushion263] PASS network place allow=true
+[10:47:59] [Server thread/INFO]: [Cushion263] PASS network direct break allow=false
+[10:48:01] [Server thread/INFO]: [Cushion263] PASS network direct break allow=true
+[10:48:01] [Server thread/INFO]: [Cushion263] PASS player projectile allow=false
+[10:48:01] [Server thread/INFO]: [Cushion263] PASS mob melee allow=false
+[10:48:01] [Server thread/INFO]: [Cushion263] PASS mob projectile allow=false
+[10:48:01] [Server thread/INFO]: [Cushion263] PASS ownerless projectile allow=false
+[10:48:01] [Server thread/INFO]: [Cushion263] PASS dispenser projectile allow=false
+[10:48:01] [Server thread/INFO]: [Cushion263] PASS fire allow=false
+[10:48:01] [Server thread/INFO]: [Cushion263] PASS support loss allow=false
+[10:48:01] [Server thread/INFO]: [Cushion263] PASS TNT existing flag allow=false
+[10:48:01] [Server thread/INFO]: [Cushion263] PASS player projectile allow=true
+[10:48:01] [Server thread/INFO]: [Cushion263] PASS mob melee allow=true
+[10:48:01] [Server thread/INFO]: [Cushion263] PASS mob projectile allow=true
+[10:48:01] [Server thread/INFO]: [Cushion263] PASS ownerless projectile allow=true
+[10:48:01] [Server thread/INFO]: [Cushion263] PASS dispenser projectile allow=true
+[10:48:01] [Server thread/INFO]: [Cushion263] PASS fire allow=true
+[10:48:01] [Server thread/INFO]: [Cushion263] PASS support loss allow=true
+[10:48:01] [Server thread/INFO]: [Cushion263] PASS TNT existing flag allow=true
+[10:48:02] [Server thread/INFO]: [Cushion263] PASS real piston removal allow=false
+[10:48:04] [Server thread/INFO]: [Cushion263] PASS real piston removal allow=true
+[10:48:04] [Server thread/INFO]: [Cushion263] SUMMARY checks=41 failures=0
+=== restart-verification.log ===
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS claim survives restart
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS place value persists
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS break value persists
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS mob value persists
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS environment value persists
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS privilege group building
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS building memberships
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS privilege group decoration
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS decoration memberships
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS privilege group cushion
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS cushion memberships
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS environment group entity-protection
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS entity-protection memberships
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS environment group cushion
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS cushion memberships
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS schema upgraded to 6
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS custom group preserved
+[10:49:41] [Server thread/INFO]: [Cushion263] PASS custom material preserved
+[10:49:41] [Server thread/INFO]: [Cushion263] SUMMARY checks=18 failures=0

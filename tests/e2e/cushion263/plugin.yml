@@ -1,0 +1,11 @@
+name: Cushion263
+version: 1
+main: Cushion263
+api-version: '26.3'
+depend: [Dominion]
+commands:
+  cushion263:
+    permission: cushion263.console
+permissions:
+  cushion263.console:
+    default: op

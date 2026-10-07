@@ -1,5 +1,18 @@
+# Cushion protection and groups contributed by Codex.
 # Resize validation and explosion protection messages contributed by Codex.
 flags:
+  cushion_place:
+    display-name: クッションの設置
+    description: プレイヤーによるクッションの設置を許可するか。
+  cushion_break:
+    display-name: クッションの破壊
+    description: プレイヤーによる直接攻撃や飛び道具でのクッション破壊を許可するか。
+  cushion_mob_damage:
+    display-name: モブによるクッション破壊
+    description: モブによる直接攻撃や飛び道具でのクッション破壊を許可するか。
+  cushion_environment_break:
+    display-name: 環境によるクッション除去
+    description: 火、支持ブロックの変化、ピストン、プレイヤーやモブ以外の飛び道具による除去を許可するか。既知の爆発は専用権限で管理し、落雷は対象外。
   animal_spawn:
     display-name: 動物のスポーン
     description: 自然またはワールド生成による動物のスポーンを許可するかどうか（繁殖、スポナー、スポーンエッグを除く）。
@@ -536,6 +549,9 @@ flags:
     description: プレイヤーが発射したウィンドチャージが爆発できるかどうか。
 flag-groups:
   environment:
+    cushion:
+      display-name: クッション
+      description: モブと環境によるクッション破壊。
     creature-spawning:
       display-name: Mobのスポーン
       description: 動物、村人、モンスターのスポーン。
@@ -579,6 +595,9 @@ flag-groups:
       display-name: 表示と境界
       description: 領地の境界表示などの表示設定。
   privilege:
+    cushion:
+      display-name: クッション
+      description: クッションの設置とプレイヤーによる直接または飛び道具での破壊。
     administration:
       display-name: 管理
       description: 領地の管理権限。

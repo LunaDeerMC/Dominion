@@ -1,5 +1,18 @@
+# Cushion protection and groups contributed by Codex.
 # Resize validation and explosion protection messages contributed by Codex.
 flags:
+  cushion_place:
+    display-name: 放置坐墊
+    description: 是否允許玩家放置坐墊。
+  cushion_break:
+    display-name: 拆除坐墊
+    description: 是否允許玩家直接或使用玩家發射的投射物拆除坐墊。
+  cushion_mob_damage:
+    display-name: 生物破壞坐墊
+    description: 是否允許生物直接或使用生物發射的投射物破壞坐墊。
+  cushion_environment_break:
+    display-name: 環境移除坐墊
+    description: 是否允許火、支撐變化、活塞及非玩家非生物來源的投射物移除坐墊。已識別的爆炸由對應權限控制；不涵蓋雷擊。
   animal_spawn:
     display-name: 動物生成
     description: 是否允許透過自然或世界機制生成動物（不包括繁殖、生怪磚和生怪蛋）。
@@ -536,6 +549,9 @@ flags:
     description: 玩家發射的風彈是否可以爆炸。
 flag-groups:
   environment:
+    cushion:
+      display-name: 坐墊
+      description: 生物破壞和環境移除坐墊。
     creature-spawning:
       display-name: 生物生成
       description: 動物、村民和怪物的生成。
@@ -579,6 +595,9 @@ flag-groups:
       display-name: 介面與邊界
       description: 領地邊界顯示及其他一般展示設定。
   privilege:
+    cushion:
+      display-name: 坐墊
+      description: 放置坐墊，以及玩家直接或使用投射物拆除坐墊。
     administration:
       display-name: 管理
       description: 領地管理權限。

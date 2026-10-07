@@ -32,7 +32,8 @@ import java.util.Map;
  */
 public final class FlagConfiguration {
 
-    private static final int SCHEMA_VERSION = 5;
+    private static final int SCHEMA_VERSION = 6;
+    private static final int SPLIT_FLAGS_SCHEMA_VERSION = 5;
     private static final Map<Flag, String> declaredFlagIcons = new IdentityHashMap<>();
     private static final Map<String, List<String>> unresolvedEnvironmentGroupFlags = new HashMap<>();
     private static final Map<String, List<String>> unresolvedPrivilegeGroupFlags = new HashMap<>();
@@ -49,9 +50,9 @@ public final class FlagConfiguration {
         }
         YamlConfiguration yaml = YamlConfiguration.loadConfiguration(yamlFile);
         int schemaVersion = yaml.getInt("schema-version", existed ? 1 : SCHEMA_VERSION);
-        boolean migrateSplitFlags = existed && schemaVersion < SCHEMA_VERSION;
+        boolean migrateSplitFlags = existed && schemaVersion < SPLIT_FLAGS_SCHEMA_VERSION;
         reconcileFlagDefinitions(yaml, migrateSplitFlags);
-        if (!existed || schemaVersion < SCHEMA_VERSION) {
+        if (!existed || schemaVersion < SPLIT_FLAGS_SCHEMA_VERSION) {
             FlagGroups.replaceConfiguredGroups(
                     FlagGroups.defaultEnvironmentGroups(),
                     FlagGroups.defaultPrivilegeGroups()
@@ -59,6 +60,7 @@ public final class FlagConfiguration {
             unresolvedEnvironmentGroupFlags.clear();
             unresolvedPrivilegeGroupFlags.clear();
         } else {
+            migrateCushionGroups(yaml, schemaVersion);
             loadConfiguredFlagGroups(yaml);
         }
         Language.loadFlagGroupTexts();
@@ -206,6 +208,34 @@ public final class FlagConfiguration {
         if (yaml.contains(currentKey)) return List.of(Flags.BURN_ENTITY);
         if (yaml.contains(historicalKey)) return List.of(Flags.BURN);
         return List.of(Flags.BURN_ENTITY);
+    }
+
+    /** One-time additive migration: preserve custom groups, icons, order and subsequent edits. */
+    static void migrateCushionGroups(YamlConfiguration yaml, int schemaVersion) {
+        if (schemaVersion >= SCHEMA_VERSION) return;
+        for (String id : List.of("building", "decoration")) {
+            String path = "groups.privilege." + id;
+            if (yaml.isConfigurationSection(path)) appendGroupFlags(yaml, path, "cushion_place", "cushion_break");
+        }
+        String protection = "groups.environment.entity-protection";
+        if (yaml.isConfigurationSection(protection)) {
+            appendGroupFlags(yaml, protection, "cushion_mob_damage", "cushion_environment_break");
+        }
+        for (String type : List.of("privilege", "environment")) {
+            String path = "groups." + type + ".cushion";
+            if (!yaml.isConfigurationSection(path)) {
+                yaml.set(path + ".material", "WHITE_WOOL");
+                yaml.set(path + ".dialog-ui-icon", "minecraft:blocks/block/white_wool");
+            }
+            if (type.equals("privilege")) appendGroupFlags(yaml, path, "cushion_place", "cushion_break");
+            else appendGroupFlags(yaml, path, "cushion_mob_damage", "cushion_environment_break");
+        }
+    }
+
+    private static void appendGroupFlags(YamlConfiguration yaml, String path, String... additions) {
+        List<String> flags = new ArrayList<>(yaml.getStringList(path + ".flags"));
+        for (String name : additions) if (!flags.contains(name)) flags.add(name);
+        yaml.set(path + ".flags", flags);
     }
 
     private static void loadConfiguredFlagGroups(YamlConfiguration yaml) {

@@ -20,6 +20,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:26.3.build.+")
     paperweight.paperDevBundle("26.3.build.+")
     testImplementation(project(":core"))
+    testImplementation(project(":api"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
     testImplementation("org.mockito:mockito-core:5.18.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
