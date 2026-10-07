@@ -1,4 +1,4 @@
-# Resize validation messages contributed by Codex.
+# Resize validation and firework damage messages contributed by Codex.
 flags:
   animal_spawn:
     display-name: 動物のスポーン
@@ -375,6 +375,9 @@ flags:
   fireball_damage_entity:
     display-name: 火の玉のエンティティダメージ
     description: 火の玉の爆発が防具立てや吊り下げエンティティ以外にダメージを与えられるかどうか。
+  firework_damage_entity:
+    display-name: 花火のエンティティダメージ
+    description: 花火が領地内のエンティティにダメージを与えられるかどうか。無効にしても花火の視覚効果は維持されます。
   block_explode:
     display-name: ベッドとリスポーンアンカーの爆発
     description: ベッドとリスポーンアンカーの爆発がブロックを破壊できるかどうか。

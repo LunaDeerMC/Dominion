@@ -2,7 +2,6 @@ package cn.lunadeer.dominion.storage;
 
 import cn.lunadeer.dominion.api.dtos.flag.Flag;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
-import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.sqlite.SQLiteDataSource;
@@ -15,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FlagReconcilerMigrationTest {
@@ -38,6 +38,65 @@ class FlagReconcilerMigrationTest {
             assertMigrated(connection, "privilege_template", Flags.getAllPriFlags());
         }
         assertEquals(0, reconciler.reconcile().changedEntries());
+    }
+
+    @Test
+    void newFireworkFlagDefaultsToFalseAndPreservesExplicitChanges() throws Exception {
+        SQLiteDataSource dataSource = new SQLiteDataSource();
+        dataSource.setUrl("jdbc:sqlite:" + tempDir.resolve("firework-flags.db"));
+        try (Connection connection = dataSource.getConnection()) {
+            createTableBeforeFireworkFlag(connection, "dominion", Flags.getAllFlags());
+            createTableBeforeFireworkFlag(connection, "dominion_member", Flags.getAllPriFlags());
+            createTableBeforeFireworkFlag(connection, "dominion_group", Flags.getAllPriFlags());
+            createTableBeforeFireworkFlag(connection, "privilege_template", Flags.getAllPriFlags());
+            connection.createStatement().execute("INSERT INTO dominion (id) VALUES (1)");
+        }
+
+        FlagReconciler reconciler = new FlagReconciler(dataSource, DatabaseType.SQLITE);
+        assertEquals(1, reconciler.reconcile().changedEntries());
+        try (Connection connection = dataSource.getConnection()) {
+            assertFireworkFlag(connection, 1, false);
+            connection.createStatement().execute("INSERT INTO dominion (id) VALUES (2)");
+            assertFireworkFlag(connection, 2, false);
+            connection.createStatement().execute(
+                    "UPDATE dominion SET firework_damage_entity = true WHERE id = 1");
+        }
+
+        assertEquals(0, reconciler.reconcile().changedEntries());
+        try (Connection connection = dataSource.getConnection()) {
+            assertFireworkFlag(connection, 1, true);
+            assertFireworkFlag(connection, 2, false);
+        }
+        assertEquals(0, reconciler.reconcile().changedEntries());
+    }
+
+    private static void createTableBeforeFireworkFlag(Connection connection,
+                                                     String table,
+                                                     List<? extends Flag> flags) throws Exception {
+        StringBuilder sql = new StringBuilder("CREATE TABLE ").append(table).append(" (id INTEGER PRIMARY KEY");
+        for (Flag flag : flags) {
+            if (flag == Flags.FIREWORK_DAMAGE_ENTITY) continue;
+            // Previously allowed explosion sources must not enable the new protection flag.
+            sql.append(", ").append(flag.getFlagName()).append(" BOOLEAN NOT NULL DEFAULT true");
+        }
+        sql.append(')');
+        connection.createStatement().execute(sql.toString());
+    }
+
+    private static void assertFireworkFlag(Connection connection, int id, boolean expected) throws Exception {
+        try (var statement = connection.prepareStatement(
+                "SELECT firework_damage_entity, tnt_damage_entity, creeper_damage_entity, fireball_damage_entity "
+                        + "FROM dominion WHERE id = ?")) {
+            statement.setInt(1, id);
+            try (ResultSet result = statement.executeQuery()) {
+                assertTrue(result.next());
+                assertEquals(expected, result.getBoolean("firework_damage_entity"));
+                assertTrue(result.getBoolean("tnt_damage_entity"));
+                assertTrue(result.getBoolean("creeper_damage_entity"));
+                assertTrue(result.getBoolean("fireball_damage_entity"));
+                assertFalse(result.next());
+            }
+        }
     }
 
     private static void createLegacyTables(SQLiteDataSource dataSource) throws Exception {

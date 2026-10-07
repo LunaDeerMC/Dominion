@@ -163,6 +163,7 @@ class FlagGroupsTest {
                 Flags.WITHER_SKULL_DAMAGE_ENTITY,
                 Flags.ENDER_CRYSTAL_DAMAGE_ENTITY,
                 Flags.FIREBALL_DAMAGE_ENTITY,
+                Flags.FIREWORK_DAMAGE_ENTITY,
                 Flags.TNT_DAMAGE_ARMOR_STAND,
                 Flags.TNT_DAMAGE_HANGING_ENTITY,
                 Flags.CREEPER_DAMAGE_ARMOR_STAND,
@@ -178,7 +179,7 @@ class FlagGroupsTest {
         EnvFlagGroup explosions = environmentGroup("explosions");
         EnvFlagGroup entityProtection = environmentGroup("entity-protection");
         explosionEntityFlags.forEach(flag -> assertTrue(explosions.containsFlag(flag)));
-        explosionEntityFlags.subList(5, explosionEntityFlags.size())
+        explosionEntityFlags.subList(6, explosionEntityFlags.size())
                 .forEach(flag -> assertTrue(entityProtection.containsFlag(flag)));
         assertTrue(environmentGroup("creature-behavior").containsFlag(Flags.MOB_TRAMPLE));
         assertTrue(environmentGroup("natural-changes").containsFlag(Flags.MOB_TRAMPLE));

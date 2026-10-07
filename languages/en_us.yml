@@ -1,4 +1,4 @@
-# Resize validation messages contributed by Codex.
+# Resize validation and firework damage messages contributed by Codex.
 flags:
   animal_spawn:
     display-name: Animal Spawn
@@ -375,6 +375,9 @@ flags:
   fireball_damage_entity:
     display-name: Fireball Entity Damage
     description: Whether fireball explosions can damage entities other than armor stands and hanging entities.
+  firework_damage_entity:
+    display-name: Firework Entity Damage
+    description: Whether fireworks can damage entities inside the dominion. Disabling this preserves firework visual effects.
   block_explode:
     display-name: Bed and Anchor Block Damage
     description: Whether bed and respawn-anchor explosions can destroy blocks.

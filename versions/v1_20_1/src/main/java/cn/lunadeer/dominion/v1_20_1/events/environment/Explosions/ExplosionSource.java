@@ -4,13 +4,15 @@ import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.WitherSkull;
 
 public enum ExplosionSource {
     CREEPER(Creeper.class),
     WITHER_SKULL(WitherSkull.class),
     ENDER_CRYSTAL(EnderCrystal.class),
-    FIREBALL(Fireball.class);
+    FIREBALL(Fireball.class),
+    FIREWORK(Firework.class);
 
     private final Class<? extends Entity> type;
 

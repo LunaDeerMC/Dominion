@@ -1,4 +1,4 @@
-# Resize validation messages contributed by Codex.
+# Resize validation and firework damage messages contributed by Codex.
 flags:
   animal_spawn:
     display-name: 动物生成
@@ -375,6 +375,9 @@ flags:
   fireball_damage_entity:
     display-name: 火球伤害实体
     description: 是否允许火球爆炸伤害盔甲架和悬挂实体以外的实体。
+  firework_damage_entity:
+    display-name: 烟花伤害实体
+    description: 是否允许烟花伤害领地内的实体。关闭后仍保留烟花视觉效果。
   block_explode:
     display-name: 床与重生锚爆炸
     description: 是否允许床和重生锚爆炸破坏方块。
