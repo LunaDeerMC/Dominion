@@ -45,10 +45,11 @@ public final class ChestUiConfig {
         if (layoutResult.parsed()) userLayout.save(layoutFile);
 
         File selectedFile = selectTextFile(root, language);
-        YamlConfiguration defaultText = loadResource(ENGLISH_RESOURCE);
+        YamlConfiguration defaultText = loadTextDefaults(selectedFile);
         LoadResult textResult = loadUserOrDefault(selectedFile, defaultText);
         YamlConfiguration userText = textResult.yaml();
         mergeMissing(userText, defaultText);
+        mergeMissing(userText, loadResource(ENGLISH_RESOURCE));
         if (textResult.parsed()) userText.save(selectedFile);
 
         Map<String, MenuDefinition> loaded = new HashMap<>();
@@ -121,6 +122,20 @@ public final class ChestUiConfig {
     private YamlConfiguration loadResource(String resource) throws IOException {
         InputStream input = plugin.getResource(resource);
         if (input == null) throw new FileNotFoundException(resource);
+        try (Reader reader = new InputStreamReader(input, StandardCharsets.UTF_8)) {
+            return YamlConfiguration.loadConfiguration(reader);
+        }
+    }
+
+    /**
+     * Loads the bundled text file matching the selected language file, so keys
+     * missing from the user's file are filled with the bundled translation of
+     * that language instead of English. Falls back to the bundled English file
+     * for languages not shipped in the jar.
+     */
+    private YamlConfiguration loadTextDefaults(File selectedFile) throws IOException {
+        InputStream input = plugin.getResource("languages/chest-ui/texts/" + selectedFile.getName());
+        if (input == null) return loadResource(ENGLISH_RESOURCE);
         try (Reader reader = new InputStreamReader(input, StandardCharsets.UTF_8)) {
             return YamlConfiguration.loadConfiguration(reader);
         }

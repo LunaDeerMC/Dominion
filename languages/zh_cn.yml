@@ -672,6 +672,7 @@ asserts-text:
   y-too-low: 领地 {0} 的最低点应高于 {1}。
   not-owner: 只有 {0} 的所有者可以执行此命令/操作。
   not-admin: 只有 {0} 的管理员可以执行此命令/操作。
+  no-permission: 你没有执行此命令/操作的 {0} 权限。
   intersect-with-dom: 领地 {0} 与领地 {1} 重叠。
   intersect-with-spawn: 领地 {0} 与出生点保护区域重叠。
   outside-of-parent-dom: 领地 {0} 位于其父领地 {1} 之外。
@@ -753,7 +754,7 @@ member-provider-handler-text:
 group-provider-handler-text:
   owner-only: 只有所有者可以管理管理员分组。
   set-flag-success: 已成功将分组 {0} 的权限 {1} 设置为 {2}。
-  set-flag-failed: '设置分组权限失败，原因：{3}'
+  set-flag-failed: '设置分组权限失败，原因：{0}'
   create-group-success: 分组 {0} 创建成功。
   create-group-failed: '创建分组失败，原因：{0}'
   delete-group-success: 分组 {0} 删除成功。
@@ -849,6 +850,8 @@ migration-command-text:
   not-your-residence: Residence 领地 {0} 不属于你。
   migrate-description: 将指定 Residence 领地迁移为 Dominion 领地。
   migrate-all-description: 将所有 Residence 领地迁移为 Dominion 领地。
+  not-enabled: Residence 迁移功能未启用。
+  no-data: 未找到 Residence 数据。
 template-command-text:
   name-not-valid: 模板名称不能包含空格
   template-name-exist: 模板 {0} 已存在
@@ -893,6 +896,10 @@ dominion-operate-command-text:
   set-map-color-description: 设置领地地图颜色。
   give-description: 将领地转让给玩家。
   tp-description: 传送到领地。
+  info-description: 显示你所在位置的领地信息。
+  owner-name: 此领地属于 {0}。
+  info-lwh: 大小：{0} x {1} x {2}
+  info-height: 高度：{0} ~ {1}
   switch-ui-description: 切换领地命令的 UI 类型。
 dominion-create-command-text:
   create-description: 使用已选择的点创建新领地。

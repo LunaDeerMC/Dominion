@@ -672,6 +672,7 @@ asserts-text:
   y-too-low: 領地 {0} の最低地点は {1} より大きい必要があります。
   not-owner: このコマンド/操作を実行できるのは {0} の所有者のみです。
   not-admin: このコマンド/操作を実行できるのは {0} の管理者のみです。
+  no-permission: このコマンド/操作を実行する {0} 権限がありません。
   intersect-with-dom: 領地 {0} は領地 {1} と重なっています。
   intersect-with-spawn: 領地 {0} はスポーン保護エリアと重なっています。
   outside-of-parent-dom: 領地 {0} は親領地 {1} の外側にあります。
@@ -753,7 +754,7 @@ member-provider-handler-text:
 group-provider-handler-text:
   owner-only: 所有者のみが管理者グループを管理できます。
   set-flag-success: グループ {0} のフラグ {1} を {2} に設定しました。
-  set-flag-failed: 'グループフラグの設定に失敗しました。理由: {3}'
+  set-flag-failed: 'グループフラグの設定に失敗しました。理由: {0}'
   create-group-success: グループ {0} を作成しました。
   create-group-failed: 'グループの作成に失敗しました。理由: {0}'
   delete-group-success: グループ {0} を削除しました。
@@ -849,6 +850,8 @@ migration-command-text:
   not-your-residence: Residence {0} はあなたのものではありません。
   migrate-description: 特定の Residence を Dominion に移行します。
   migrate-all-description: すべての Residence を領地へ移行します。
+  not-enabled: Residence の移行機能が有効になっていません。
+  no-data: Residence のデータが見つかりませんでした。
 template-command-text:
   name-not-valid: テンプレート名にスペースは使用できません
   template-name-exist: テンプレート {0} は既に存在します
@@ -893,6 +896,10 @@ dominion-operate-command-text:
   set-map-color-description: 領地のマップ色を設定します。
   give-description: 領地をプレイヤーに譲渡します。
   tp-description: 領地へテレポートします。
+  info-description: 現在地の領地情報を表示します。
+  owner-name: この領地は {0} が所有しています。
+  info-lwh: 'サイズ: {0} x {1} x {2}'
+  info-height: '高さ: {0} ~ {1}'
   switch-ui-description: 領地コマンドの UI タイプを切り替えます。
 dominion-create-command-text:
   create-description: 選択した 2 点を使って新しい領地を作成します。

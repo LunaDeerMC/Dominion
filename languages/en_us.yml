@@ -672,6 +672,7 @@ asserts-text:
   y-too-low: The lowest point of the dominion {0} should more than {1}.
   not-owner: Only {0}'s owner can perform this command/operation.
   not-admin: Only {0}'s admin can perform this command/operation.
+  no-permission: You do not have {0} permission to perform this command/operation.
   intersect-with-dom: Dominion {0} intersects with dominion {1}.
   intersect-with-spawn: Dominion {0} intersects with the spawn protection area.
   outside-of-parent-dom: Dominion {0} is outside of it's parent dominion {1}.
@@ -753,7 +754,7 @@ member-provider-handler-text:
 group-provider-handler-text:
   owner-only: Only the owner can manage admin group.
   set-flag-success: Set group {0} flag {1} to {2} successfully.
-  set-flag-failed: 'Failed to set group flag, reason: {3}'
+  set-flag-failed: 'Failed to set group flag, reason: {0}'
   create-group-success: Group {0} created successfully.
   create-group-failed: 'Failed to create group, reason: {0}'
   delete-group-success: Group {0} deleted successfully.
@@ -849,6 +850,8 @@ migration-command-text:
   not-your-residence: Residence {0} is not yours.
   migrate-description: Migrate a specific residence to dominion.
   migrate-all-description: Migrate all residences to dominions.
+  not-enabled: Residence migration is not enabled.
+  no-data: No residence data found.
 template-command-text:
   name-not-valid: Template name cannot contain space
   template-name-exist: Template {0} already exists
@@ -893,6 +896,10 @@ dominion-operate-command-text:
   set-map-color-description: Set the map color for a dominion.
   give-description: Give a dominion to a player.
   tp-description: Teleport to a dominion.
+  info-description: Show information about the dominion at your location.
+  owner-name: This dominion is owned by {0}.
+  info-lwh: 'Size: {0} x {1} x {2}'
+  info-height: 'Height: {0} ~ {1}'
   switch-ui-description: Switch the UI type for the dominion commands.
 dominion-create-command-text:
   create-description: Create a new dominion using selected points.

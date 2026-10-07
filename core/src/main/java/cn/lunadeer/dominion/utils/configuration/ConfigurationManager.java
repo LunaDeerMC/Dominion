@@ -1,5 +1,6 @@
 package cn.lunadeer.dominion.utils.configuration;
 
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -23,10 +24,25 @@ public class ConfigurationManager {
      * @throws Exception If failed to load the file.
      */
     public static ConfigurationFile load(Class<? extends ConfigurationFile> clazz, File file) throws Exception {
+        return load(clazz, file, (Configuration) null);
+    }
+
+    /**
+     * Load the configuration file, filling keys missing in the file with values
+     * taken from {@code defaults} first (e.g. the language file bundled inside the jar),
+     * falling back to the values coded in the class. Missing keys are appended at the
+     * end of the file, values already present in the file are never touched.
+     *
+     * @param clazz    The configuration file class. The class should extend {@link ConfigurationFile}.
+     * @param file     The file to load.
+     * @param defaults Values used for keys missing in the file, may be null.
+     * @throws Exception If failed to load the file.
+     */
+    public static ConfigurationFile load(Class<? extends ConfigurationFile> clazz, File file, Configuration defaults) throws Exception {
         if (!file.exists()) {
             return saveDefault(clazz, file);
         }
-        ConfigurationFile instance = readConfigurationFile(YamlConfiguration.loadConfiguration(file), clazz);
+        ConfigurationFile instance = readConfigurationFile(YamlConfiguration.loadConfiguration(file), clazz, defaults);
         instance.save(file);
         return instance;
     }
@@ -119,7 +135,7 @@ public class ConfigurationManager {
         if (!file.createNewFile()) throw new Exception("Failed to create %s file.".formatted(file.getAbsolutePath()));
     }
 
-    private static ConfigurationFile readConfigurationFile(YamlConfiguration yaml, Class<? extends ConfigurationFile> clazz) throws Exception {
+    private static ConfigurationFile readConfigurationFile(YamlConfiguration yaml, Class<? extends ConfigurationFile> clazz, Configuration defaults) throws Exception {
         ConfigurationFile instance = clazz.getConstructor().newInstance();
         instance.setYaml(yaml);
         PrePostProcessInorder processes = getAndSortPrePostProcess(clazz);
@@ -127,7 +143,7 @@ public class ConfigurationManager {
         for (Method method : processes.preProcessMethods) {
             method.invoke(instance);
         }
-        readConfigurationPart(instance.getYaml(), instance, null);
+        readConfigurationPart(instance.getYaml(), instance, null, defaults);
         // execute methods with @PostProcess annotation
         for (Method method : processes.postProcessMethods) {
             method.invoke(instance);
@@ -136,6 +152,10 @@ public class ConfigurationManager {
     }
 
     public static ConfigurationPart readConfigurationPart(ConfigurationSection yaml, ConfigurationPart obj, String prefix) throws Exception {
+        return readConfigurationPart(yaml, obj, prefix, null);
+    }
+
+    public static ConfigurationPart readConfigurationPart(ConfigurationSection yaml, ConfigurationPart obj, String prefix, Configuration defaults) throws Exception {
         for (Field field : obj.getClass().getFields()) {
             field.setAccessible(true);
             if (field.isAnnotationPresent(HandleManually.class)) {
@@ -156,16 +176,33 @@ public class ConfigurationManager {
                 }
             }
             if (ConfigurationPart.class.isAssignableFrom(field.getType())) {
-                field.set(obj, readConfigurationPart(yaml, (ConfigurationPart) field.get(obj), key));
+                field.set(obj, readConfigurationPart(yaml, (ConfigurationPart) field.get(obj), key, defaults));
             } else {
                 if (missingKey) {
-                    yaml.set(key, field.get(obj));
+                    Object value = fallbackValue(key, field.get(obj), defaults);
+                    yaml.set(key, value);
+                    field.set(obj, value);
                 } else {
                     field.set(obj, yaml.get(key));
                 }
             }
         }
         return obj;
+    }
+
+    /**
+     * Resolves the value for a key missing from the loaded file: the value from
+     * {@code defaults} if it has the key, otherwise the value coded in the class.
+     */
+    public static Object fallbackValue(String key, Object fallback, Configuration defaults) {
+        if (defaults == null || !defaults.contains(key)) {
+            return fallback;
+        }
+        Object value = defaults.get(key);
+        if (value == null || value instanceof ConfigurationSection) {
+            return fallback;
+        }
+        return value;
     }
 
     /**
