@@ -59,7 +59,7 @@ delimiter occupies game clientbound ID 0). It is a protocol probe, not a rendere
 - Actual bed/anchor/TNT explosions, firework damage, crossbow/dispenser launches,
   boundary protection and SQLite/cache persistence through the existing probes.
 - New-content audits log `AUDIT`, separately from regression assertions. In particular,
-  straw beds are intentionally still outside the old `bed` flag pending approval.
+  the original straw-bed audit preceded approval; straw-bed use now maps to `bed`.
 
 No rendered-client visual verification, Folia/Spigot runtime, external economy,
 WorldGuard/PlaceholderAPI integration, or multi-server SQL deployment was tested.
