@@ -1,4 +1,4 @@
-# Resize validation and firework damage messages contributed by Codex.
+# Resize validation and explosion protection messages contributed by Codex.
 flags:
   animal_spawn:
     display-name: Animal Spawn
@@ -431,10 +431,10 @@ flags:
     description: Whether Endermen can place blocks.
   bed_explode:
     display-name: Bed Explosion Block Damage
-    description: Whether beds can explode and destroy blocks in this dominion.
+    description: Whether bed explosions can destroy blocks in this dominion, including explosions from outside.
   anchor_explode:
     display-name: Respawn Anchor Explosion Block Damage
-    description: Whether respawn anchors can explode and destroy blocks in this dominion.
+    description: Whether respawn anchor explosions can destroy blocks in this dominion, including explosions from outside.
   burn_entity_fire:
     display-name: Burn Entity (Fire)
     description: Whether entities other than players can burn or take fire damage.

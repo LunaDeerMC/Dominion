@@ -1,0 +1,16 @@
+{
+  "name": "dominion-issue287-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Real Minecraft TCP client for the issue 287 explosion regression scenarios",
+  "scripts": {
+    "test": "node client.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "mineflayer": "4.39.0",
+    "vec3": "0.1.10"
+  }
+}

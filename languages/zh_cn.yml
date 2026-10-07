@@ -1,4 +1,4 @@
-# Resize validation and firework damage messages contributed by Codex.
+# Resize validation and explosion protection messages contributed by Codex.
 flags:
   animal_spawn:
     display-name: 动物生成
@@ -431,10 +431,10 @@ flags:
     description: 是否允许末影人放置方块。
   bed_explode:
     display-name: 床爆炸破坏方块
-    description: 是否允许床爆炸并破坏领地内的方块。
+    description: 是否允许床爆炸破坏领地内的方块，包括来自领地外的爆炸。
   anchor_explode:
     display-name: 重生锚爆炸破坏方块
-    description: 是否允许重生锚爆炸并破坏领地内的方块。
+    description: 是否允许重生锚爆炸破坏领地内的方块，包括来自领地外的爆炸。
   burn_entity_fire:
     display-name: 实体燃烧（火焰）
     description: 是否允许非玩家实体燃烧或受到火焰伤害。

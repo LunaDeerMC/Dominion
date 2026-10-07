@@ -1,4 +1,4 @@
-# Resize validation and firework damage messages contributed by Codex.
+# Resize validation and explosion protection messages contributed by Codex.
 flags:
   animal_spawn:
     display-name: 動物のスポーン
@@ -431,10 +431,10 @@ flags:
     description: エンダーマンがブロックを設置できるかどうか。
   bed_explode:
     display-name: ベッド爆発によるブロック破壊
-    description: ベッドの爆発で領地内のブロックを破壊できるかどうか。
+    description: 領地外からの爆発も含め、ベッドの爆発による領地内のブロック破壊を許可するかどうか。
   anchor_explode:
     display-name: リスポーンアンカー爆発によるブロック破壊
-    description: リスポーンアンカーの爆発で領地内のブロックを破壊できるかどうか。
+    description: 領地外からの爆発も含め、リスポーンアンカーの爆発による領地内のブロック破壊を許可するかどうか。
   burn_entity_fire:
     display-name: エンティティの炎ダメージ
     description: プレイヤー以外のエンティティが燃焼または炎ダメージを受けるかどうか。
