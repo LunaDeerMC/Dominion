@@ -1,3 +1,4 @@
+# Resize validation messages contributed by Codex.
 flags:
   animal_spawn:
     display-name: Animal Spawn
@@ -709,6 +710,9 @@ vault-connect-text:
   economy-unavailable: Economy plugin not found, you need to install one Economy plugin to use economy features.
   insufficient-funds: Insufficient money, need {0} {1}, but only have {2} {1}.
 dominion-provider-handler-text:
+  resize-positive-size: 'Resize size must be a positive integer.'
+  resize-in-progress: 'Dominion {0} is being resized. Please wait and try again.'
+  resize-changed: 'Dominion boundaries have changed. Refresh the dominion and try again.'
   create-success: Create dominion {0} success.
   create-failed: 'Create dominion {0} failed, reason: {1}'
   expand-success: Expand dominion {0} success.

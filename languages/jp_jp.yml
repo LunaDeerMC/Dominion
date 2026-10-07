@@ -1,3 +1,4 @@
+# Resize validation messages contributed by Codex.
 flags:
   animal_spawn:
     display-name: 動物のスポーン
@@ -709,6 +710,9 @@ vault-connect-text:
   economy-unavailable: 経済プラグインが見つかりません。経済機能を使うには経済プラグインを 1 つ導入する必要があります。
   insufficient-funds: 所持金が不足しています。必要額は {0} {1}、現在の所持額は {2} {1} です。
 dominion-provider-handler-text:
+  resize-positive-size: 'サイズ変更のブロック数は正の整数である必要があります。'
+  resize-in-progress: '領地 {0} のサイズを変更中です。しばらく待ってから再試行してください。'
+  resize-changed: '領地の境界が変更されました。領地情報を更新して再試行してください。'
   create-success: 領地 {0} を作成しました。
   create-failed: '領地 {0} の作成に失敗しました。理由: {1}'
   expand-success: 領地 {0} を拡張しました。

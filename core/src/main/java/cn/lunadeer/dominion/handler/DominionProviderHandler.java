@@ -27,10 +27,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static cn.lunadeer.dominion.misc.Asserts.*;
 import static cn.lunadeer.dominion.misc.Converts.toPlayer;
@@ -43,9 +46,16 @@ import static cn.lunadeer.dominion.misc.Others.getSubDominionsRecursive;
  */
 public class DominionProviderHandler extends DominionProvider {
 
+    // A resize writes all six bounds, so overlapping writes must not share an old snapshot.
+    private final Set<Integer> resizingDominions = ConcurrentHashMap.newKeySet();
+
     public static class DominionProviderHandlerText extends ConfigurationPart {
         public String createSuccess = "Create dominion {0} success.";
         public String createFailed = "Create dominion {0} failed, reason: {1}";
+
+        public String resizePositiveSize = "Resize size must be a positive integer.";
+        public String resizeInProgress = "Dominion {0} is being resized. Please wait and try again.";
+        public String resizeChanged = "Dominion boundaries have changed. Refresh the dominion and try again.";
 
         public String expandSuccess = "Expand dominion {0} success.";
         public String expandFailed = "Expand dominion {0} failed, reason: {1}";
@@ -146,42 +156,81 @@ public class DominionProviderHandler extends DominionProvider {
                                                          @NotNull DominionReSizeEvent.TYPE type,
                                                          @NotNull DominionReSizeEvent.DIRECTION direction,
                                                          int size) {
-        DominionReSizeEvent event = new DominionReSizeEvent(operator, dominion, type, direction, size);
-        if (!event.call())
+        if (size <= 0) {
+            Notification.error(operator, Language.dominionProviderHandlerText.resizePositiveSize);
             return CompletableFuture.completedFuture(null);
+        }
+        DominionReSizeEvent event = new DominionReSizeEvent(operator, dominion, type, direction, size);
+        if (!event.call()) {
+            event.getFutureToComplete().complete(null);
+            return event.getFutureToComplete();
+        }
+        // Listeners may change the amount or target before the operation starts.
+        if (event.getSize() <= 0) {
+            Notification.error(operator, Language.dominionProviderHandlerText.resizePositiveSize);
+            event.getFutureToComplete().complete(null);
+            return event.getFutureToComplete();
+        }
+        Integer dominionId = event.getDominion().getId();
+        if (!resizingDominions.add(dominionId)) {
+            Notification.error(operator, Language.dominionProviderHandlerText.resizeInProgress, event.getDominion().getName());
+            event.getFutureToComplete().complete(null);
+            return event.getFutureToComplete();
+        }
+        try {
+            return resizeDominionExclusive(event)
+                    .whenComplete((result, failure) -> resizingDominions.remove(dominionId));
+        } catch (RuntimeException | Error exception) {
+            resizingDominions.remove(dominionId);
+            throw exception;
+        }
+    }
+
+    private CompletableFuture<DominionDTO> resizeDominionExclusive(DominionReSizeEvent event) {
+        DominionDTO dominion = event.getDominion();
+        CuboidDTO oldCuboid = new CuboidDTO(event.getOldCuboid());
+        CuboidDTO newCuboid = event.getNewCuboid();
         return event.getFutureToComplete().completeAsync(() -> {
-            long amount = event.getNewCuboid().minusVolumeWith(event.getOldCuboid());
+            long amount = newCuboid.minusVolumeWith(oldCuboid);
             if (amount == 0) {
                 return null;
             }
             boolean expand = amount > 0;
             try {
-                DominionDTO parent = dominion.getParentDomId() == -1 ? null : CacheManager.instance.getCache().getDominionCache().getDominion(dominion.getParentDomId());
+                // Menus and the throttled cache can retain a snapshot after an earlier resize.
+                // Never persist that snapshot over newer bounds, even once the previous task is done.
+                DominionDOO current = DominionDOO.select(dominion.getId());
+                if (current == null
+                        || !Arrays.equals(current.getCuboid().getPos1(), oldCuboid.getPos1())
+                        || !Arrays.equals(current.getCuboid().getPos2(), oldCuboid.getPos2())) {
+                    throw new DominionException(Language.dominionProviderHandlerText.resizeChanged);
+                }
+                DominionDTO parent = current.getParentDomId() == -1 ? null : CacheManager.instance.getCache().getDominionCache().getDominion(current.getParentDomId());
                 if (parent != null) {
                     assertSubDominionManageFlag(event.getOperator(), parent, Flags.RESIZE_SUB);
                 } else {
-                    assertDominionManageFlag(event.getOperator(), dominion, Flags.RESIZE);
+                    assertDominionManageFlag(event.getOperator(), current, Flags.RESIZE);
                 }
-                assertDominionSize(event.getOperator(), event.getDominion().getWorldUid(), event.getNewCuboid());
-                assertWithinParent(event.getOperator(), event.getDominion(), event.getNewCuboid());
-                assertContainSubs(event.getOperator(), event.getDominion(), event.getNewCuboid());
-                assertDominionIntersect(event.getOperator(), event.getDominion(), event.getNewCuboid());
+                assertDominionSize(event.getOperator(), current.getWorldUid(), newCuboid);
+                assertWithinParent(event.getOperator(), current, newCuboid);
+                assertContainSubs(event.getOperator(), current, newCuboid);
+                assertDominionIntersect(event.getOperator(), current, newCuboid);
                 if (!event.isSkipEconomy()) {
-                    assertEconomy(event.getOperator(), event.getOldCuboid(), event.getNewCuboid(), dominion.getParentDomId() != -1);
+                    assertEconomy(event.getOperator(), oldCuboid, newCuboid, current.getParentDomId() != -1);
                 }
-                event.setDominion(event.getDominion().setCuboid(event.getNewCuboid()));
+                event.setDominion(dominion.setCuboid(newCuboid));
                 BorderRenderUtil.showAreaBorder(event.getOperator(), event.getDominion());
                 if (expand) {
-                    Notification.info(event.getOperator(), Language.dominionProviderHandlerText.expandSuccess, event.getDominion().getName());
+                    Notification.info(event.getOperator(), Language.dominionProviderHandlerText.expandSuccess, current.getName());
                 } else {
-                    Notification.info(event.getOperator(), Language.dominionProviderHandlerText.contractSuccess, event.getDominion().getName());
+                    Notification.info(event.getOperator(), Language.dominionProviderHandlerText.contractSuccess, current.getName());
                 }
                 return event.getDominion();
             } catch (Exception e) {
                 if (expand) {
-                    Notification.error(event.getOperator(), Language.dominionProviderHandlerText.expandFailed, event.getDominion().getName(), e.getMessage());
+                    Notification.error(event.getOperator(), Language.dominionProviderHandlerText.expandFailed, dominion.getName(), e.getMessage());
                 } else {
-                    Notification.error(event.getOperator(), Language.dominionProviderHandlerText.contractFailed, event.getDominion().getName(), e.getMessage());
+                    Notification.error(event.getOperator(), Language.dominionProviderHandlerText.contractFailed, dominion.getName(), e.getMessage());
                 }
                 return null;
             }

@@ -1,3 +1,4 @@
+# Resize validation messages contributed by Codex.
 flags:
   animal_spawn:
     display-name: 動物生成
@@ -709,6 +710,9 @@ vault-connect-text:
   economy-unavailable: 未找到經濟外掛，你需要安裝一個經濟外掛才能使用經濟功能。
   insufficient-funds: 資金不足，需要 {0} {1}，但只有 {2} {1}。
 dominion-provider-handler-text:
+  resize-positive-size: '調整大小的格數必須是正整數。'
+  resize-in-progress: '領地 {0} 正在調整大小，請稍後重試。'
+  resize-changed: '領地邊界已發生變化，請重新整理領地資訊後重試。'
   create-success: 建立領地 {0} 成功。
   create-failed: '建立領地 {0} 失敗，原因：{1}'
   expand-success: 擴張領地 {0} 成功。
