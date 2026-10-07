@@ -175,8 +175,9 @@ public class TeleportManager implements Listener {
         if (!player.getPassengers().isEmpty()) {
             player.getPassengers().forEach(player::removePassenger);
         }
-        if (player.isInsideVehicle() && player.getVehicle() != null) {
-            Scheduler.runEntityTask(() -> player.getVehicle().removePassenger(player), player.getVehicle());
+        if (player.isInsideVehicle()) {
+            // Already on the player's entity thread; leaving also removes it from the vehicle.
+            // A deferred vehicle task would run after getVehicle() has become null.
             player.leaveVehicle();
         }
         if (!isPaper()) {
