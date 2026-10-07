@@ -22,7 +22,7 @@ public class Shelf implements Listener {
         if (event.getClickedBlock() == null) {
             return;
         }
-        if (!event.getClickedBlock().getType().name().contains("SHELF")) {
+        if (!event.getClickedBlock().getType().name().endsWith("_SHELF")) {
             return;
         }
         checkPrivilegeFlag(event.getClickedBlock().getLocation(), Flags.SHELF, event.getPlayer(), event);

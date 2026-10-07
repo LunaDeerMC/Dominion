@@ -1,0 +1,439 @@
+[11:15:08] [Server thread/INFO]: [Minecraft263Probe] Loading server plugin Minecraft263Probe v1.0
+[11:15:12] [Server thread/INFO]: [Minecraft263Probe] Enabling Minecraft263Probe v1.0
+[11:15:20] [Server thread/INFO]: [Minecraft263Probe] PASS runtime 26.3
+[11:15:20] [Server thread/INFO]: [Minecraft263Probe] PASS version dispatch
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS create dominion
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS cache populated
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny resize
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow resize
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny rename_dominion
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow rename_dominion
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny create_sub
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow create_sub
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny delete_sub
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow delete_sub
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny resize_sub
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow resize_sub
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny rename_sub
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow rename_sub
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny move
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow move
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny teleport
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow teleport
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny riding
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow riding
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny ender_pearl
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow ender_pearl
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny raid
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow raid
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny place
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow place
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny place_flower_pot_content
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow place_flower_pot_content
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny place_liquid
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow place_liquid
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny place_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow place_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny place_armor_stand
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow place_armor_stand
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny place_hanging_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow place_hanging_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny cushion_place
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow cushion_place
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny cushion_break
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow cushion_break
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny break
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow break
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny break_flower_pot_content
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow break_flower_pot_content
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny break_liquid
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow break_liquid
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny break_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow break_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny armor_stand_direct_break
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow armor_stand_direct_break
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny armor_stand_projectile_break
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow armor_stand_projectile_break
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny hanging_entity_direct_break
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow hanging_entity_direct_break
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny hanging_entity_projectile_break
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow hanging_entity_projectile_break
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny armor_stand_player_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow armor_stand_player_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny hanging_entity_player_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow hanging_entity_player_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny ignite
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow ignite
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny pick_up
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow pick_up
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny drop_item
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow drop_item
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny door
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow door
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny trapdoor
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow trapdoor
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny fence_gate
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow fence_gate
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny button
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow button
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny lever
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow lever
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny pressure
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow pressure
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny red_stone_powder
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow red_stone_powder
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny repeater
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow repeater
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny comparer
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow comparer
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny note_block
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow note_block
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny container
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow container
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny chest
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow chest
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny barrel
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow barrel
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny shulker_box
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow shulker_box
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny armor_stand_interactive
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow armor_stand_interactive
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny item_frame_content
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow item_frame_content
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny hopper
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow hopper
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny dropper
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow dropper
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny dispenser
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow dispenser
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny furnace
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow furnace
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny blast_furnace
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow blast_furnace
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny smoker
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow smoker
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny flower_pot
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow flower_pot
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny copper_chest
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow copper_chest
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny shelf
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow shelf
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny craft
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow craft
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny crafter
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow crafter
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny anvil
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow anvil
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny enchant
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow enchant
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny brew
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow brew
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny beacon
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow beacon
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny jukebox
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow jukebox
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny lectern
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow lectern
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny bookshelf
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow bookshelf
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny dragon_egg
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow dragon_egg
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny item_frame_interactive
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow item_frame_interactive
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny edit_sign
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow edit_sign
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny bed
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow bed
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny anchor
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow anchor
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny vehicle_spawn
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow vehicle_spawn
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny vehicle_destroy
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow vehicle_destroy
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny harvest
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow harvest
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny sowing
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow sowing
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny fertilizer
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow fertilizer
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny plant_tree
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow plant_tree
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny feed
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow feed
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny shear
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow shear
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny leash
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow leash
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny dye
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow dye
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny honey
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow honey
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny cake
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow cake
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny trade
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow trade
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny projectile_charge
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow projectile_charge
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny arrow_launch
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow arrow_launch
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny arrow_hit
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow arrow_hit
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny arrow_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow arrow_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny shoot
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow shoot
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny trident_launch
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow trident_launch
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny trident_hit
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow trident_hit
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny trident
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow trident
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny fireball_launch
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow fireball_launch
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny fireball_hit
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow fireball_hit
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny fireball
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow fireball
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny wind_charge_launch
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow wind_charge_launch
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny wind_charge_hit
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow wind_charge_hit
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny wind_charge_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow wind_charge_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny wind_charge
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow wind_charge
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny egg
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow egg
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny hook
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow hook
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny pvp
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow pvp
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny monster_killing
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow monster_killing
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny animal_killing
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow animal_killing
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny villager_killing
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow villager_killing
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny ender_man
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow ender_man
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny ender_man_pickup_block
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow ender_man_pickup_block
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny ender_man_place_block
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow ender_man_place_block
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny ender_man_spawn
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow ender_man_spawn
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny ender_man_teleport
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow ender_man_teleport
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny tnt_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow tnt_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny tnt_damage_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow tnt_damage_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny wither_spawn
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow wither_spawn
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny wither_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow wither_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny wither_break_block
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow wither_break_block
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny creeper_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow creeper_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny creeper_damage_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow creeper_damage_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny wither_skull_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow wither_skull_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny wither_skull_damage_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow wither_skull_damage_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny ender_crystal_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow ender_crystal_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny ender_crystal_damage_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow ender_crystal_damage_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny fireball_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow fireball_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny fireball_damage_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow fireball_damage_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny firework_damage_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow firework_damage_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny tnt_damage_armor_stand
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow tnt_damage_armor_stand
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny tnt_damage_hanging_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow tnt_damage_hanging_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny creeper_damage_armor_stand
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow creeper_damage_armor_stand
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny creeper_damage_hanging_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow creeper_damage_hanging_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny wither_skull_damage_armor_stand
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow wither_skull_damage_armor_stand
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny wither_skull_damage_hanging_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow wither_skull_damage_hanging_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny ender_crystal_damage_armor_stand
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow ender_crystal_damage_armor_stand
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny ender_crystal_damage_hanging_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow ender_crystal_damage_hanging_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny fireball_damage_armor_stand
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow fireball_damage_armor_stand
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny fireball_damage_hanging_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow fireball_damage_hanging_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny bed_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow bed_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny anchor_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow anchor_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny block_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow block_explode
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny dragon_break_block
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow dragon_break_block
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny fire_spread
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow fire_spread
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny burn
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow burn
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny burn_block
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow burn_block
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny burn_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow burn_entity
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny burn_entity_fire
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow burn_entity_fire
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny burn_entity_lava
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow burn_entity_lava
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny flow_in_water
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow flow_in_water
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny flow_in_lava
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow flow_in_lava
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny flow_in_protection
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow flow_in_protection
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny gravity_block
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow gravity_block
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny ice_form_natural
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow ice_form_natural
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny ice_form_frost_walker
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow ice_form_frost_walker
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny ice_form
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow ice_form
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny trample
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow trample
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny mob_trample
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow mob_trample
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny decay
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow decay
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny hopper_outside
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow hopper_outside
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny piston_outside
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow piston_outside
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny trig_pressure_proj
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow trig_pressure_proj
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny trig_pressure_mob
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow trig_pressure_mob
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny trig_pressure_drop
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow trig_pressure_drop
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny item_frame_proj_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow item_frame_proj_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny armor_stand_mob_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow armor_stand_mob_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny hanging_entity_mob_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow hanging_entity_mob_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny cushion_mob_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow cushion_mob_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny cushion_environment_break
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow cushion_environment_break
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny armor_stand_explosion_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow armor_stand_explosion_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny hanging_entity_explosion_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow hanging_entity_explosion_damage
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny mob_drop_item
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow mob_drop_item
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS deny show_border
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS allow show_border
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS OAK_DOOR DOOR allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS OAK_DOOR DOOR allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS OAK_TRAPDOOR TRAPDOOR allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS OAK_TRAPDOOR TRAPDOOR allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS OAK_FENCE_GATE FENCE_GATE allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS OAK_FENCE_GATE FENCE_GATE allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS STONE_BUTTON BUTTON allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS STONE_BUTTON BUTTON allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS LEVER LEVER allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS LEVER LEVER allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS STONE_PRESSURE_PLATE PRESSURE allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS STONE_PRESSURE_PLATE PRESSURE allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS RED_BED BED allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS RED_BED BED allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS CRAFTING_TABLE CRAFT allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS CRAFTING_TABLE CRAFT allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS ENCHANTING_TABLE ENCHANT allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS ENCHANTING_TABLE ENCHANT allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS ANVIL ANVIL allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS ANVIL ANVIL allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS BEACON BEACON allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS BEACON BEACON allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS BREWING_STAND BREW allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS BREWING_STAND BREW allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS CHEST CHEST allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS CHEST CHEST allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS BARREL BARREL allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS BARREL BARREL allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS FURNACE FURNACE allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS FURNACE FURNACE allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS BLAST_FURNACE BLAST_FURNACE allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS BLAST_FURNACE BLAST_FURNACE allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS SMOKER SMOKER allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS SMOKER SMOKER allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS HOPPER HOPPER allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS HOPPER HOPPER allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS DISPENSER DISPENSER allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS DISPENSER DISPENSER allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS DROPPER DROPPER allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS DROPPER DROPPER allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS SHULKER_BOX SHULKER_BOX allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS SHULKER_BOX SHULKER_BOX allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS OAK_SHELF SHELF allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS OAK_SHELF SHELF allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS SPRUCE_SHELF SHELF allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS SPRUCE_SHELF SHELF allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS BIRCH_SHELF SHELF allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS BIRCH_SHELF SHELF allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS JUNGLE_SHELF SHELF allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS JUNGLE_SHELF SHELF allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS ACACIA_SHELF SHELF allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS ACACIA_SHELF SHELF allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS DARK_OAK_SHELF SHELF allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS DARK_OAK_SHELF SHELF allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS MANGROVE_SHELF SHELF allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS MANGROVE_SHELF SHELF allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS CHERRY_SHELF SHELF allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS CHERRY_SHELF SHELF allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS PALE_OAK_SHELF SHELF allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS PALE_OAK_SHELF SHELF allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS BAMBOO_SHELF SHELF allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS BAMBOO_SHELF SHELF allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS CRIMSON_SHELF SHELF allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS CRIMSON_SHELF SHELF allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS WARPED_SHELF SHELF allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS WARPED_SHELF SHELF allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS POPLAR_DOOR DOOR allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS POPLAR_DOOR DOOR allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS POPLAR_TRAPDOOR TRAPDOOR allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS POPLAR_TRAPDOOR TRAPDOOR allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS POPLAR_FENCE_GATE FENCE_GATE allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS POPLAR_FENCE_GATE FENCE_GATE allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS POPLAR_BUTTON BUTTON allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS POPLAR_BUTTON BUTTON allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS POPLAR_PRESSURE_PLATE PRESSURE allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS POPLAR_PRESSURE_PLATE PRESSURE allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS POPLAR_SHELF SHELF allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS POPLAR_SHELF SHELF allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS STRAW_BED BED allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS STRAW_BED BED allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS SHELF_MUSHROOM unaffected by SHELF=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS BOOKSHELF unaffected by SHELF=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS CHISELED_BOOKSHELF unaffected by SHELF=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS STONE unaffected by SHELF=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS block break allow=false
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS block break allow=true
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS display backend
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS unique display IDs
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS dialog supported
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS callback bridge installed
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS dialog validation
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] PASS dialog send
+[11:15:22] [Server thread/INFO]: [Minecraft263Probe] CALLBACK received=1
+[11:15:27] [Server thread/INFO]: [Minecraft263Probe] PASS network callback and replay rejection
+[11:15:29] [Server thread/INFO]: [Minecraft263Probe] PASS network block break denied
+[11:15:31] [Server thread/INFO]: [Minecraft263Probe] PASS network block break allowed
+[11:15:31] [Server thread/INFO]: [Minecraft263Probe] SUMMARY checks=435 failures=0

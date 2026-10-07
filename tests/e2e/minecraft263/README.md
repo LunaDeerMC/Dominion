@@ -2,7 +2,7 @@
 
 Use a disposable, localhost-only Paper 26.3 server with Java 25 and a fresh SQLite database.
 The probes create persistent claims, replace blocks and teleport test players. They must not
-be installed on a production server. The plugin itself does not add any new flags.
+be installed on a production server. Later approved cushion flags and straw-bed/shelf mappings are included; see REPORT.zh-CN.md.
 
 ## Build and run
 
@@ -50,16 +50,16 @@ delimiter occupies game clientbound ID 0). It is a protocol probe, not a rendere
 - Every enabled existing guest/environment flag's allow/deny decision against a
   real claim and connected non-op player. This tests policy lookup, not every
   gameplay event which can reach each flag.
-- Event-dispatch allow/deny tests for 22 existing block interactions and block
-  breaking. These are explicitly synthetic Bukkit events on the real server.
+- Event-dispatch allow/deny tests for existing interactions, straw beds, all 13
+  wood shelves, unrelated shelf-name exclusions, and block breaking. These are explicitly synthetic Bukkit events on the real server.
 - Actual client-to-engine block breaking, denied then allowed with world-state assertions.
 - Block/item display creation, unique entity IDs, metadata, teleport and removal
   packets sent to a connected client.
 - Actual dialog delivery, custom-click callback execution, and single-use replay rejection.
 - Actual bed/anchor/TNT explosions, firework damage, crossbow/dispenser launches,
   boundary protection and SQLite/cache persistence through the existing probes.
-- New-content audits log `AUDIT`, separately from regression assertions. In particular,
-  the original straw-bed audit preceded approval; straw-bed use now maps to `bed`.
+- Approved straw-bed and shelf mappings are now regression assertions. Shelf mushrooms,
+  ordinary bookshelves and chiseled bookshelves are unaffected by the `shelf` flag.
 
 No rendered-client visual verification, Folia/Spigot runtime, external economy,
 WorldGuard/PlaceholderAPI integration, or multi-server SQL deployment was tested.

@@ -76,7 +76,10 @@ public final class Minecraft263Probe extends JavaPlugin {
                 {"CHEST","CHEST"},{"BARREL","BARREL"},{"FURNACE","FURNACE"},
                 {"BLAST_FURNACE","BLAST_FURNACE"},{"SMOKER","SMOKER"},{"HOPPER","HOPPER"},
                 {"DISPENSER","DISPENSER"},{"DROPPER","DROPPER"},{"SHULKER_BOX","SHULKER_BOX"},
-                {"OAK_SHELF","SHELF"},
+                {"OAK_SHELF","SHELF"},{"SPRUCE_SHELF","SHELF"},{"BIRCH_SHELF","SHELF"},
+                {"JUNGLE_SHELF","SHELF"},{"ACACIA_SHELF","SHELF"},{"DARK_OAK_SHELF","SHELF"},
+                {"MANGROVE_SHELF","SHELF"},{"CHERRY_SHELF","SHELF"},{"PALE_OAK_SHELF","SHELF"},
+                {"BAMBOO_SHELF","SHELF"},{"CRIMSON_SHELF","SHELF"},{"WARPED_SHELF","SHELF"},
                 {"POPLAR_DOOR","DOOR"},{"POPLAR_TRAPDOOR","TRAPDOOR"},{"POPLAR_FENCE_GATE","FENCE_GATE"},
                 {"POPLAR_BUTTON","BUTTON"},{"POPLAR_PRESSURE_PLATE","PRESSURE"},{"POPLAR_SHELF","SHELF"},
                 {"STRAW_BED","BED"}
@@ -92,13 +95,20 @@ public final class Minecraft263Probe extends JavaPlugin {
                     event.setUseInteractedBlock(Event.Result.DEFAULT); event.setUseItemInHand(Event.Result.DEFAULT);
                     Bukkit.getPluginManager().callEvent(event);
                     boolean denied=event.useInteractedBlock()==Event.Result.DENY;
-                    // New content is audited, not added to protection policy by this probe.
-                    if (c[0].startsWith("POPLAR") || c[0].equals("STRAW_BED"))
-                        getLogger().info("AUDIT "+c[0]+" "+c[1]+" allow="+allow+" denied="+denied);
-                    else check(denied != allow,c[0]+" "+c[1]+" allow="+allow);
+                    check(denied != allow,c[0]+" "+c[1]+" allow="+allow);
                 }
                 dom.getGuestPrivilegeFlagValue().put(flag,true);
             }
+            dom.getGuestPrivilegeFlagValue().put(Flags.SHELF,false);
+            for (String material : List.of("SHELF_MUSHROOM", "BOOKSHELF", "CHISELED_BOOKSHELF", "STONE")) {
+                block.setType(Material.valueOf(material), false);
+                var event = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK,
+                    new ItemStack(Material.STICK), block, BlockFace.UP, EquipmentSlot.HAND);
+                event.setUseInteractedBlock(Event.Result.DEFAULT); event.setUseItemInHand(Event.Result.DEFAULT);
+                Bukkit.getPluginManager().callEvent(event);
+                check(event.useInteractedBlock()!=Event.Result.DENY,material+" unaffected by SHELF=false");
+            }
+            dom.getGuestPrivilegeFlagValue().put(Flags.SHELF,true);
             block.setType(Material.STONE,false);
             for (boolean allow : new boolean[]{false,true}) {
                 dom.getGuestPrivilegeFlagValue().put(Flags.BREAK_BLOCK,allow);
