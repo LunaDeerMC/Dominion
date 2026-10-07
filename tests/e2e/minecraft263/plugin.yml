@@ -1,0 +1,11 @@
+name: Minecraft263Probe
+version: 1.0
+main: Minecraft263Probe
+api-version: '1.20'
+depend: [Dominion]
+commands:
+  probe263:
+    permission: probe263.console
+permissions:
+  probe263.console:
+    default: op

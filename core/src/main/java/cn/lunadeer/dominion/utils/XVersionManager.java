@@ -9,6 +9,9 @@ public class XVersionManager {
     public static ImplementationVersion GetVersion(JavaPlugin plugin) {
         String version = plugin.getServer().getBukkitVersion();
         XLogger.debug("API version: {0}", version);
+        if (version.equals("26.3") || version.startsWith("26.3-") || version.startsWith("26.3.")) {
+            return ImplementationVersion.v26_3;
+        }
         if (version.startsWith("26.2")) {
             return ImplementationVersion.v26_2;
         }
@@ -67,6 +70,7 @@ public class XVersionManager {
     }
 
     public enum ImplementationVersion {
+        v26_3,
         v26_2,
         v26,
         v1_21_11,

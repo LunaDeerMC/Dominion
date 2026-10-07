@@ -1,0 +1,23 @@
+// Invoke from the repository root: ./gradlew -I tests/e2e/minecraft263/init.gradle minecraft263HarnessJar
+import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.jvm.tasks.Jar
+
+gradle.projectsEvaluated {
+    def root = gradle.rootProject
+    def core = root.project(':core')
+    def compile = root.tasks.register('compileMinecraft263ProbeHarness', JavaCompile) {
+        source = root.fileTree('tests/e2e/minecraft263') { include '*.java' }
+        classpath = core.configurations.compileClasspath + core.sourceSets.main.output
+        destinationDirectory = root.layout.buildDirectory.dir('minecraft263/classes')
+        javaCompiler = core.tasks.named('compileJava', JavaCompile).get().javaCompiler
+        options.encoding = 'UTF-8'
+        dependsOn core.tasks.named('classes')
+    }
+    root.tasks.register('minecraft263HarnessJar', Jar) {
+        dependsOn compile
+        from compile.flatMap { it.destinationDirectory }
+        from root.file('tests/e2e/minecraft263/plugin.yml')
+        archiveFileName = 'Minecraft263Probe.jar'
+        destinationDirectory = root.layout.buildDirectory.dir('minecraft263')
+    }
+}

@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-07",
+  "base_commit": "93f33ad6185cb90544783f73dc3f224735a643c1",
+  "paper": "26.3-159-main@a4b87cf",
+  "protocol": 777,
+  "java": "Temurin 25+36",
+  "database": "SQLite",
+  "jar": "Dominion-feat-minecraft-26.3.1-full.jar",
+  "sha256": "64f98dcd8fc908043316c949f8bcd382e9525593b6fb68bcf11d600edb700811",
+  "unit_tests": {
+    "checks": 135,
+    "failures": 0
+  },
+  "probe": {
+    "checks": 387,
+    "failures": 0
+  },
+  "explosions": {
+    "scenarios": 16,
+    "checks": 234,
+    "failures": 0
+  },
+  "fireworks": {
+    "scenarios": 22,
+    "checks": 136,
+    "failures": 0,
+    "restart_checks": 6
+  },
+  "resize": {
+    "scenarios": 30,
+    "checks": 127,
+    "failures": 0,
+    "restart_checks_on_final_jar": 60,
+    "initial_run_jar": "Dominion-work.9-full.jar"
+  },
+  "new_flags_implemented": []
+}
