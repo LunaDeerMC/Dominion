@@ -60,6 +60,7 @@ class VersionFlagMappingTest {
         expected.put("environment/Explosions/TNTDamageEntity/HangingExploded.java", "Flags.TNT_DAMAGE_HANGING_ENTITY");
         expected.put("environment/EntityProtection/ArmorStandMobDamage.java", "Flags.ARMOR_STAND_MOB_DAMAGE");
         expected.put("environment/EntityProtection/HangingEntityMobDamage.java", "Flags.HANGING_ENTITY_MOB_DAMAGE");
+        expected.put("environment/NaturalChanges/NetherPortalCreate.java", "Flags.NETHER_PORTAL_CREATE");
         expected.put("player/Building/PlaceLiquid.java", "Flags.PLACE_LIQUID");
         expected.put("player/Building/Place/FlowerPot.java", "Flags.PLACE_FLOWER_POT_CONTENT");
         expected.put("player/Building/PlaceEntity/ArmorStand.java", "Flags.PLACE_ARMOR_STAND");

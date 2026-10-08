@@ -183,6 +183,7 @@ class FlagGroupsTest {
                 .forEach(flag -> assertTrue(entityProtection.containsFlag(flag)));
         assertTrue(environmentGroup("creature-behavior").containsFlag(Flags.MOB_TRAMPLE));
         assertTrue(environmentGroup("natural-changes").containsFlag(Flags.MOB_TRAMPLE));
+        assertTrue(environmentGroup("natural-changes").containsFlag(Flags.NETHER_PORTAL_CREATE));
         assertTrue(environmentGroup("farmland").containsFlag(Flags.MOB_TRAMPLE));
     }
 

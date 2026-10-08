@@ -1,5 +1,6 @@
 # Cushion protection and groups contributed by Codex.
 # Resize validation and explosion protection messages contributed by Codex.
+# Automatic Nether portal creation text contributed by Codex.
 flags:
   cushion_place:
     display-name: Cushion Place
@@ -46,6 +47,9 @@ flags:
   dragon_break_block:
     display-name: Ender Dragon Break Block
     description: Whether ender dragon can break blocks.
+  nether_portal_create:
+    display-name: Automatic Nether Portal Creation
+    description: Whether paired Nether portal exits can be generated automatically in this dominion (not manual ignition or existing portal use).
   fire_spread:
     display-name: Fire Spread
     description: Prevent fire spread in dominion.

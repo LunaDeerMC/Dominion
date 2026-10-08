@@ -1,5 +1,6 @@
 # Cushion protection and groups contributed by Codex.
 # Resize validation and explosion protection messages contributed by Codex.
+# Automatic Nether portal creation text contributed by Codex.
 flags:
   cushion_place:
     display-name: クッションの設置
@@ -46,6 +47,9 @@ flags:
   dragon_break_block:
     display-name: エンダードラゴンのブロック破壊
     description: エンダードラゴンがブロックを破壊できるかどうか。
+  nether_portal_create:
+    display-name: ネザーポータルの自動生成
+    description: ネザーポータルで次元を移動した際、領地内に対応する出口ポータルを自動生成できるかどうか（手動での点火や既存ポータルの使用には影響しません）。
   fire_spread:
     display-name: 火の延焼
     description: 領地内での火の延焼を防ぎます。

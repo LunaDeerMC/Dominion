@@ -1,5 +1,6 @@
 # Cushion protection and groups contributed by Codex.
 # Resize validation and explosion protection messages contributed by Codex.
+# Automatic Nether portal creation text contributed by Codex.
 flags:
   cushion_place:
     display-name: 放置坐墊
@@ -46,6 +47,9 @@ flags:
   dragon_break_block:
     display-name: 末影龍破壞方塊
     description: 是否允許末影龍破壞方塊。
+  nether_portal_create:
+    display-name: 地獄傳送門自動生成
+    description: 是否允許跨維度穿過地獄傳送門時，在領地內自動生成配對出口（不影響手動點火和既有傳送門的使用）。
   fire_spread:
     display-name: 火焰蔓延
     description: 阻止火焰在領地內蔓延。

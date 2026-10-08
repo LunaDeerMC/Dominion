@@ -45,10 +45,10 @@ class FlagReconcilerMigrationTest {
         SQLiteDataSource dataSource = new SQLiteDataSource();
         dataSource.setUrl("jdbc:sqlite:" + tempDir.resolve("firework-flags.db"));
         try (Connection connection = dataSource.getConnection()) {
-            createTableBeforeFireworkFlag(connection, "dominion", Flags.getAllFlags());
-            createTableBeforeFireworkFlag(connection, "dominion_member", Flags.getAllPriFlags());
-            createTableBeforeFireworkFlag(connection, "dominion_group", Flags.getAllPriFlags());
-            createTableBeforeFireworkFlag(connection, "privilege_template", Flags.getAllPriFlags());
+            createTableWithoutFlag(connection, "dominion", Flags.getAllFlags(), Flags.FIREWORK_DAMAGE_ENTITY);
+            createTableWithoutFlag(connection, "dominion_member", Flags.getAllPriFlags(), Flags.FIREWORK_DAMAGE_ENTITY);
+            createTableWithoutFlag(connection, "dominion_group", Flags.getAllPriFlags(), Flags.FIREWORK_DAMAGE_ENTITY);
+            createTableWithoutFlag(connection, "privilege_template", Flags.getAllPriFlags(), Flags.FIREWORK_DAMAGE_ENTITY);
             connection.createStatement().execute("INSERT INTO dominion (id) VALUES (1)");
         }
 
@@ -70,17 +70,63 @@ class FlagReconcilerMigrationTest {
         assertEquals(0, reconciler.reconcile().changedEntries());
     }
 
-    private static void createTableBeforeFireworkFlag(Connection connection,
-                                                     String table,
-                                                     List<? extends Flag> flags) throws Exception {
+    @Test
+    void newNetherPortalFlagProtectsExistingAndNewRowsAndPreservesExplicitChanges() throws Exception {
+        SQLiteDataSource dataSource = new SQLiteDataSource();
+        dataSource.setUrl("jdbc:sqlite:" + tempDir.resolve("nether-portal-flags.db"));
+        try (Connection connection = dataSource.getConnection()) {
+            createTableWithoutFlag(connection, "dominion", Flags.getAllFlags(), Flags.NETHER_PORTAL_CREATE);
+            createTableWithoutFlag(connection, "dominion_member", Flags.getAllPriFlags(), Flags.NETHER_PORTAL_CREATE);
+            createTableWithoutFlag(connection, "dominion_group", Flags.getAllPriFlags(), Flags.NETHER_PORTAL_CREATE);
+            createTableWithoutFlag(connection, "privilege_template", Flags.getAllPriFlags(), Flags.NETHER_PORTAL_CREATE);
+            connection.createStatement().execute("INSERT INTO dominion (id) VALUES (1)");
+        }
+
+        FlagReconciler reconciler = new FlagReconciler(dataSource, DatabaseType.SQLITE);
+        assertEquals(1, reconciler.reconcile().changedEntries());
+        try (Connection connection = dataSource.getConnection()) {
+            assertNetherPortalFlag(connection, 1, false);
+            connection.createStatement().execute("INSERT INTO dominion (id) VALUES (2)");
+            assertNetherPortalFlag(connection, 2, false);
+            connection.createStatement().execute(
+                    "UPDATE dominion SET nether_portal_create = true WHERE id = 1");
+        }
+
+        assertEquals(0, reconciler.reconcile().changedEntries());
+        try (Connection connection = dataSource.getConnection()) {
+            assertNetherPortalFlag(connection, 1, true);
+            assertNetherPortalFlag(connection, 2, false);
+        }
+        assertEquals(0, reconciler.reconcile().changedEntries());
+    }
+
+    private static void createTableWithoutFlag(Connection connection,
+                                               String table,
+                                               List<? extends Flag> flags,
+                                               Flag missingFlag) throws Exception {
         StringBuilder sql = new StringBuilder("CREATE TABLE ").append(table).append(" (id INTEGER PRIMARY KEY");
         for (Flag flag : flags) {
-            if (flag == Flags.FIREWORK_DAMAGE_ENTITY) continue;
-            // Previously allowed explosion sources must not enable the new protection flag.
+            if (flag == missingFlag) continue;
+            // Existing allowances must not enable the new protection flag.
             sql.append(", ").append(flag.getFlagName()).append(" BOOLEAN NOT NULL DEFAULT true");
         }
         sql.append(')');
         connection.createStatement().execute(sql.toString());
+    }
+
+    private static void assertNetherPortalFlag(Connection connection, int id, boolean expected) throws Exception {
+        try (var statement = connection.prepareStatement(
+                "SELECT nether_portal_create, place, ignite, teleport FROM dominion WHERE id = ?")) {
+            statement.setInt(1, id);
+            try (ResultSet result = statement.executeQuery()) {
+                assertTrue(result.next());
+                assertEquals(expected, result.getBoolean("nether_portal_create"));
+                assertTrue(result.getBoolean("place"));
+                assertTrue(result.getBoolean("ignite"));
+                assertTrue(result.getBoolean("teleport"));
+                assertFalse(result.next());
+            }
+        }
     }
 
     private static void assertFireworkFlag(Connection connection, int id, boolean expected) throws Exception {

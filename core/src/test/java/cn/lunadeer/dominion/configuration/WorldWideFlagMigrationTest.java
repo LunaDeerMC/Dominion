@@ -1,9 +1,12 @@
 package cn.lunadeer.dominion.configuration;
 
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
+import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -12,11 +15,50 @@ import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class WorldWideFlagMigrationTest {
 
     @TempDir
     Path tempDir;
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 5})
+    void netherPortalCreationDefaultsToFalseAndPreservesExplicitAllowance(int schemaVersion) throws Exception {
+        String worldName = "nether-portal-migration-" + schemaVersion;
+        File file = tempDir.resolve(worldName + ".yml").toFile();
+        YamlConfiguration legacy = new YamlConfiguration();
+        legacy.set("enabled", true);
+        legacy.set("flag-schema-version", schemaVersion);
+        legacy.set(Flags.PLACE.getConfigurationNameKey(), true);
+        legacy.set(Flags.IGNITE.getConfigurationNameKey(), true);
+        legacy.set(Flags.TELEPORT.getConfigurationNameKey(), true);
+        legacy.save(file);
+        World world = mock(World.class);
+        when(world.getName()).thenReturn(worldName);
+
+        WorldWide.loadWorld(file);
+
+        String portalKey = Flags.NETHER_PORTAL_CREATE.getConfigurationNameKey();
+        YamlConfiguration migrated = YamlConfiguration.loadConfiguration(file);
+        assertEquals(5, migrated.getInt("flag-schema-version"));
+        assertTrue(migrated.contains(portalKey));
+        assertFalse(migrated.getBoolean(portalKey));
+        assertTrue(WorldWide.isWorldWideEnabled(world));
+        assertFalse(WorldWide.getEnvFlagValue(world, Flags.NETHER_PORTAL_CREATE));
+
+        migrated.set(portalKey, true);
+        migrated.save(file);
+        WorldWide.loadWorld(file);
+
+        assertTrue(YamlConfiguration.loadConfiguration(file).getBoolean(portalKey));
+        assertTrue(WorldWide.getEnvFlagValue(world, Flags.NETHER_PORTAL_CREATE));
+        String firstReload = Files.readString(file.toPath());
+        WorldWide.loadWorld(file);
+        assertEquals(firstReload, Files.readString(file.toPath()));
+        assertTrue(WorldWide.getEnvFlagValue(world, Flags.NETHER_PORTAL_CREATE));
+    }
 
     @Test
     void migratesLegacyValuesAndDoesNotOverwriteThemAgain() throws Exception {

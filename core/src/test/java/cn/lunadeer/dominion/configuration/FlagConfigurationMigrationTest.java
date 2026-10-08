@@ -1,13 +1,18 @@
 package cn.lunadeer.dominion.configuration;
 
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
+import cn.lunadeer.dominion.api.dtos.flag.Flag;
 import cn.lunadeer.dominion.api.dtos.flag.FlagGroups;
 import cn.lunadeer.dominion.api.dtos.flag.EnvFlagGroup;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,6 +20,53 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FlagConfigurationMigrationTest {
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 5})
+    void netherPortalDefinitionDefaultsToProtectionAndPreservesConfiguredValues(int schemaVersion) throws Exception {
+        Map<Flag, Boolean> oldDefaults = new HashMap<>();
+        Map<Flag, Boolean> oldEnables = new HashMap<>();
+        for (Flag flag : Flags.getAllFlags()) {
+            oldDefaults.put(flag, flag.getDefaultValue());
+            oldEnables.put(flag, flag.getEnable());
+        }
+        try {
+            YamlConfiguration yaml = new YamlConfiguration();
+            yaml.set("schema-version", schemaVersion);
+            for (Flag flag : List.of(Flags.PLACE, Flags.IGNITE, Flags.TELEPORT)) {
+                yaml.set(flag.getConfigurationDefaultKey(), true);
+                yaml.set(flag.getConfigurationEnableKey(), false);
+            }
+
+            FlagConfiguration.reconcileFlagDefinitions(yaml, schemaVersion < 5);
+
+            String defaultKey = Flags.NETHER_PORTAL_CREATE.getConfigurationDefaultKey();
+            String enableKey = Flags.NETHER_PORTAL_CREATE.getConfigurationEnableKey();
+            assertTrue(yaml.contains(defaultKey));
+            assertFalse(yaml.getBoolean(defaultKey));
+            assertTrue(yaml.getBoolean(enableKey));
+            assertFalse(Flags.NETHER_PORTAL_CREATE.getDefaultValue());
+            assertTrue(Flags.NETHER_PORTAL_CREATE.getEnable());
+
+            yaml.set(defaultKey, true);
+            yaml.set(enableKey, false);
+            yaml.set("schema-version", 5);
+            YamlConfiguration reloaded = new YamlConfiguration();
+            reloaded.loadFromString(yaml.saveToString());
+            FlagConfiguration.reconcileFlagDefinitions(reloaded, false);
+
+            assertTrue(reloaded.getBoolean(defaultKey));
+            assertFalse(reloaded.getBoolean(enableKey));
+            assertTrue(Flags.NETHER_PORTAL_CREATE.getDefaultValue());
+            assertFalse(Flags.NETHER_PORTAL_CREATE.getEnable());
+            String firstReload = reloaded.saveToString();
+            FlagConfiguration.reconcileFlagDefinitions(reloaded, false);
+            assertEquals(firstReload, reloaded.saveToString());
+        } finally {
+            oldDefaults.forEach(Flag::setDefaultValue);
+            oldEnables.forEach(Flag::setEnable);
+        }
+    }
 
     @Test
     void splitDefinitionInheritsLegacyDefaultAndEnableOnlyOnce() {
