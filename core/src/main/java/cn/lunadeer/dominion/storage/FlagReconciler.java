@@ -36,17 +36,17 @@ final class FlagReconciler {
         int changed = 0;
         changed += reconcileSplitBurnFlag(connection);
         changed += reconcileSplitFlags(connection);
-        changed += reconcileFlags(connection, "dominion", Flags.getAllEnvFlags());
-        changed += reconcileFlags(connection, "dominion", Flags.getAllPriFlags());
-        changed += reconcileFlags(connection, "dominion_member", Flags.getAllPriFlags());
-        changed += reconcileFlags(connection, "dominion_group", Flags.getAllPriFlags());
-        changed += reconcileFlags(connection, "privilege_template", Flags.getAllPriFlags());
+        changed += reconcileFlags(connection, "dominion", Flags.getActiveEnvFlags());
+        changed += reconcileFlags(connection, "dominion", Flags.getActivePriFlags());
+        changed += reconcileFlags(connection, "dominion_member", Flags.getActivePriFlags());
+        changed += reconcileFlags(connection, "dominion_group", Flags.getActivePriFlags());
+        changed += reconcileFlags(connection, "privilege_template", Flags.getActivePriFlags());
         return new SyncResult(changed);
     }
 
     private int reconcileSplitFlags(Connection connection) throws SQLException {
         int changed = 0;
-        for (Flag flag : Flags.getAllFlags()) {
+        for (Flag flag : Flags.getActiveFlags()) {
             List<Flag> sources = Flags.getLegacySources(flag);
             if (sources.isEmpty()) continue;
             if (flag instanceof EnvFlag) {
@@ -116,7 +116,7 @@ final class FlagReconciler {
     private void addFlagColumn(Connection connection, String tableName, Flag flag) throws SQLException {
         try (var statement = connection.createStatement()) {
             statement.execute("ALTER TABLE " + tableName + " ADD COLUMN " + flag.getFlagName() + " "
-                    + boolType() + " NOT NULL DEFAULT " + booleanLiteral(flag.getDefaultValue()));
+                    + boolType() + " NOT NULL DEFAULT " + booleanLiteral(flag.getMigrationDefaultValue()));
         }
     }
 

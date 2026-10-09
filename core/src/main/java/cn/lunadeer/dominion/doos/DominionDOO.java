@@ -8,6 +8,7 @@ import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.cache.CacheSyncManager;
 import cn.lunadeer.dominion.configuration.Configuration;
+import cn.lunadeer.dominion.flags.FlagValues;
 import cn.lunadeer.dominion.storage.repository.DominionRepository;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -29,8 +30,8 @@ public class DominionDOO implements DominionDTO {
     private Integer parentDomId = -1;
     private String joinMessage = "";
     private String leaveMessage = "";
-    private final Map<EnvFlag, Boolean> envFlags = new HashMap<>();
-    private final Map<PriFlag, Boolean> preFlags = new HashMap<>();
+    private final FlagValues<EnvFlag> envFlags = new FlagValues<>();
+    private final FlagValues<PriFlag> preFlags = new FlagValues<>();
     private String tp_location = "default";
     private String color = "#00BFFF";
     private UUID world_uid;
@@ -124,8 +125,8 @@ public class DominionDOO implements DominionDTO {
         this.parentDomId = parentDomId;
         this.joinMessage = joinMessage;
         this.leaveMessage = leaveMessage;
-        this.envFlags.putAll(envFlags);
-        this.preFlags.putAll(preFlags);
+        this.envFlags.copyFrom(envFlags);
+        this.preFlags.copyFrom(preFlags);
         this.tp_location = tp_location;
         this.color = color;
         this.serverId = serverId;
@@ -145,11 +146,11 @@ public class DominionDOO implements DominionDTO {
         this.joinMessage = Configuration.pluginMessage.defaultEnterMessage;
         this.leaveMessage = Configuration.pluginMessage.defaultLeaveMessage;
         this.serverId = Configuration.multiServer.serverId;
-        for (EnvFlag flag : Flags.getAllEnvFlagsEnable()) {
-            this.envFlags.put(flag, flag.getDefaultValue());
+        for (EnvFlag flag : Flags.getActiveEnvFlagsEnable()) {
+            this.envFlags.set(flag, flag.getDefaultValue());
         }
-        for (PriFlag flag : Flags.getAllPriFlagsEnable()) {
-            this.preFlags.put(flag, flag.getDefaultValue());
+        for (PriFlag flag : Flags.getActivePriFlagsEnable()) {
+            this.preFlags.set(flag, flag.getDefaultValue());
         }
     }
 
@@ -157,7 +158,7 @@ public class DominionDOO implements DominionDTO {
         return new DominionRepository.DominionRow(
                 id, owner, name, world_uid,
                 cuboid.x1(), cuboid.y1(), cuboid.z1(), cuboid.x2(), cuboid.y2(), cuboid.z2(),
-                parentDomId, joinMessage, leaveMessage, envFlags, preFlags, tp_location, color, serverId
+                parentDomId, joinMessage, leaveMessage, envFlags.activeValues(), preFlags.activeValues(), tp_location, color, serverId
         );
     }
 
@@ -305,7 +306,7 @@ public class DominionDOO implements DominionDTO {
 
     @Override
     public @NotNull Map<EnvFlag, Boolean> getEnvironmentFlagValue() {
-        return envFlags;
+        return envFlags.asMap();
     }
 
     /**
@@ -321,7 +322,7 @@ public class DominionDOO implements DominionDTO {
 
     @Override
     public @NotNull Map<PriFlag, Boolean> getGuestPrivilegeFlagValue() {
-        return preFlags;
+        return preFlags.asMap();
     }
 
     /**
@@ -332,15 +333,12 @@ public class DominionDOO implements DominionDTO {
      */
     @Override
     public boolean getGuestFlagValue(@NotNull PriFlag flag) {
-        if (preFlags.equals(Flags.ADMIN)) { // guest's admin flag is always false
-            return false;
-        }
         return preFlags.getOrDefault(flag, false);
     }
 
     @Override
     public @NotNull DominionDOO setEnvFlagValue(@NotNull EnvFlag flag, @NotNull Boolean value) throws SQLException {
-        envFlags.put(flag, value);
+        envFlags.set(flag, value);
         DominionRepository.updateEnvFlag(id, flag, value);
         if (CacheSyncManager.instance != null) {
             CacheSyncManager.instance.notifyDominion(getId());
@@ -350,7 +348,7 @@ public class DominionDOO implements DominionDTO {
 
     @Override
     public @NotNull DominionDOO setGuestFlagValue(@NotNull PriFlag flag, @NotNull Boolean value) throws SQLException {
-        preFlags.put(flag, value);
+        preFlags.set(flag, value);
         DominionRepository.updateGuestFlag(id, flag, value);
         if (CacheSyncManager.instance != null) {
             CacheSyncManager.instance.notifyDominion(getId());

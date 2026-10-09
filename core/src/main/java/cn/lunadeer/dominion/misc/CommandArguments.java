@@ -60,7 +60,7 @@ public class CommandArguments {
      */
     public static class EnvFlagArgument extends Argument {
         public EnvFlagArgument() {
-            super("env_flag_name", true, (commandSender, preArguments) -> Flags.getAllEnvFlagsEnable().stream().map(Flag::getFlagName).toList());
+            super("env_flag_name", true, (commandSender, preArguments) -> Flags.getActiveEnvFlagsEnable().stream().map(Flag::getFlagName).toList());
         }
     }
 
@@ -71,7 +71,7 @@ public class CommandArguments {
      */
     public static class GuestFlagArgument extends Argument {
         public GuestFlagArgument() {
-            super("guest_flag_name", true, (commandSender, preArguments) -> Flags.getAllPriFlagsEnable().stream().filter(
+            super("guest_flag_name", true, (commandSender, preArguments) -> Flags.getActivePriFlagsEnable().stream().filter(
                     flag -> !flag.equals(Flags.ADMIN)
             ).map(Flag::getFlagName).toList());
         }
@@ -83,7 +83,7 @@ public class CommandArguments {
      */
     public static class PriFlagArgument extends Argument {
         public PriFlagArgument() {
-            super("pri_flag_name", true, (commandSender, preArguments) -> Flags.getAllPriFlagsEnable().stream().map(Flag::getFlagName).toList());
+            super("pri_flag_name", true, (commandSender, preArguments) -> Flags.getActivePriFlagsEnable().stream().map(Flag::getFlagName).toList());
         }
     }
 

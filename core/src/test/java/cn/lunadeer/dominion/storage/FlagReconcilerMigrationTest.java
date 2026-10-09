@@ -2,6 +2,8 @@ package cn.lunadeer.dominion.storage;
 
 import cn.lunadeer.dominion.api.dtos.flag.Flag;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
+import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
+import org.bukkit.Material;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.sqlite.SQLiteDataSource;
@@ -16,11 +18,54 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.mockStatic;
 
 class FlagReconcilerMigrationTest {
 
     @TempDir
     Path tempDir;
+
+    @Test
+    void customDefaultsApplyToNewColumnsAndNullBackfills() throws Exception {
+        EnvFlag added = customDefaultFlag("custom_added");
+        EnvFlag nullable = customDefaultFlag("custom_nullable");
+        SQLiteDataSource dataSource = new SQLiteDataSource();
+        dataSource.setUrl("jdbc:sqlite:" + tempDir.resolve("custom-defaults.db"));
+        try (Connection connection = dataSource.getConnection(); var statement = connection.createStatement()) {
+            statement.execute("CREATE TABLE dominion (id INTEGER PRIMARY KEY, custom_nullable BOOLEAN)");
+            statement.execute("INSERT INTO dominion (id) VALUES (1)");
+        }
+
+        try (var registry = mockStatic(Flags.class, CALLS_REAL_METHODS)) {
+            registry.when(Flags::getActiveFlags).thenReturn(List.of(added, nullable));
+            registry.when(Flags::getActiveEnvFlags).thenReturn(List.of(added, nullable));
+            registry.when(Flags::getActivePriFlags).thenReturn(List.of());
+            new FlagReconciler(dataSource, DatabaseType.SQLITE).reconcile();
+        }
+
+        try (Connection connection = dataSource.getConnection(); var statement = connection.createStatement()) {
+            try (ResultSet result = statement.executeQuery("SELECT custom_added, custom_nullable FROM dominion WHERE id = 1")) {
+                assertTrue(result.next());
+                assertTrue(result.getBoolean("custom_added"));
+                assertTrue(result.getBoolean("custom_nullable"));
+            }
+            statement.execute("INSERT INTO dominion (id) VALUES (2)");
+            try (ResultSet result = statement.executeQuery("SELECT custom_added FROM dominion WHERE id = 2")) {
+                assertTrue(result.next());
+                assertTrue(result.getBoolean("custom_added"));
+            }
+        }
+    }
+
+    private static EnvFlag customDefaultFlag(String name) {
+        return new EnvFlag(name, name, name, false, true, Material.STONE) {
+            @Override
+            public Boolean getDefaultValue() {
+                return true;
+            }
+        };
+    }
 
     @Test
     void copiesSplitColumnsAcrossEveryTableAndIsIdempotent() throws Exception {
@@ -32,10 +77,10 @@ class FlagReconcilerMigrationTest {
         assertTrue(reconciler.reconcile().changedEntries() > 0);
 
         try (Connection connection = dataSource.getConnection()) {
-            assertMigrated(connection, "dominion", Flags.getAllFlags());
-            assertMigrated(connection, "dominion_member", Flags.getAllPriFlags());
-            assertMigrated(connection, "dominion_group", Flags.getAllPriFlags());
-            assertMigrated(connection, "privilege_template", Flags.getAllPriFlags());
+            assertMigrated(connection, "dominion", Flags.getActiveFlags());
+            assertMigrated(connection, "dominion_member", Flags.getActivePriFlags());
+            assertMigrated(connection, "dominion_group", Flags.getActivePriFlags());
+            assertMigrated(connection, "privilege_template", Flags.getActivePriFlags());
         }
         assertEquals(0, reconciler.reconcile().changedEntries());
     }
@@ -45,10 +90,10 @@ class FlagReconcilerMigrationTest {
         SQLiteDataSource dataSource = new SQLiteDataSource();
         dataSource.setUrl("jdbc:sqlite:" + tempDir.resolve("firework-flags.db"));
         try (Connection connection = dataSource.getConnection()) {
-            createTableWithoutFlag(connection, "dominion", Flags.getAllFlags(), Flags.FIREWORK_DAMAGE_ENTITY);
-            createTableWithoutFlag(connection, "dominion_member", Flags.getAllPriFlags(), Flags.FIREWORK_DAMAGE_ENTITY);
-            createTableWithoutFlag(connection, "dominion_group", Flags.getAllPriFlags(), Flags.FIREWORK_DAMAGE_ENTITY);
-            createTableWithoutFlag(connection, "privilege_template", Flags.getAllPriFlags(), Flags.FIREWORK_DAMAGE_ENTITY);
+            createTableWithoutFlag(connection, "dominion", Flags.getActiveFlags(), Flags.FIREWORK_DAMAGE_ENTITY);
+            createTableWithoutFlag(connection, "dominion_member", Flags.getActivePriFlags(), Flags.FIREWORK_DAMAGE_ENTITY);
+            createTableWithoutFlag(connection, "dominion_group", Flags.getActivePriFlags(), Flags.FIREWORK_DAMAGE_ENTITY);
+            createTableWithoutFlag(connection, "privilege_template", Flags.getActivePriFlags(), Flags.FIREWORK_DAMAGE_ENTITY);
             connection.createStatement().execute("INSERT INTO dominion (id) VALUES (1)");
         }
 
@@ -75,10 +120,10 @@ class FlagReconcilerMigrationTest {
         SQLiteDataSource dataSource = new SQLiteDataSource();
         dataSource.setUrl("jdbc:sqlite:" + tempDir.resolve("nether-portal-flags.db"));
         try (Connection connection = dataSource.getConnection()) {
-            createTableWithoutFlag(connection, "dominion", Flags.getAllFlags(), Flags.NETHER_PORTAL_CREATE);
-            createTableWithoutFlag(connection, "dominion_member", Flags.getAllPriFlags(), Flags.NETHER_PORTAL_CREATE);
-            createTableWithoutFlag(connection, "dominion_group", Flags.getAllPriFlags(), Flags.NETHER_PORTAL_CREATE);
-            createTableWithoutFlag(connection, "privilege_template", Flags.getAllPriFlags(), Flags.NETHER_PORTAL_CREATE);
+            createTableWithoutFlag(connection, "dominion", Flags.getActiveFlags(), Flags.NETHER_PORTAL_CREATE);
+            createTableWithoutFlag(connection, "dominion_member", Flags.getActivePriFlags(), Flags.NETHER_PORTAL_CREATE);
+            createTableWithoutFlag(connection, "dominion_group", Flags.getActivePriFlags(), Flags.NETHER_PORTAL_CREATE);
+            createTableWithoutFlag(connection, "privilege_template", Flags.getActivePriFlags(), Flags.NETHER_PORTAL_CREATE);
             connection.createStatement().execute("INSERT INTO dominion (id) VALUES (1)");
         }
 
@@ -146,8 +191,8 @@ class FlagReconcilerMigrationTest {
     }
 
     private static void createLegacyTables(SQLiteDataSource dataSource) throws Exception {
-        Set<Flag> environmentAndPrivilegeSources = legacySources(Flags.getAllFlags());
-        Set<Flag> privilegeSources = legacySources(Flags.getAllPriFlags());
+        Set<Flag> environmentAndPrivilegeSources = legacySources(Flags.getActiveFlags());
+        Set<Flag> privilegeSources = legacySources(Flags.getActivePriFlags());
         try (Connection connection = dataSource.getConnection()) {
             createTable(connection, "dominion", environmentAndPrivilegeSources);
             createTable(connection, "dominion_member", privilegeSources);
@@ -190,7 +235,7 @@ class FlagReconcilerMigrationTest {
         for (Flag target : flags) {
             // These flags are themselves part of the legacy schema and are
             // already present in the synthetic legacy tables.
-            if (legacySources(Flags.getAllFlags()).contains(target)) continue;
+            if (legacySources(Flags.getActiveFlags()).contains(target)) continue;
             List<Flag> sources = Flags.getLegacySources(target);
             if (sources.isEmpty()) {
                 continue;

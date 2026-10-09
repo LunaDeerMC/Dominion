@@ -4,6 +4,7 @@ import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
 import cn.lunadeer.dominion.api.dtos.flag.Flag;
 import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
+import cn.lunadeer.dominion.flags.FlagValues;
 import cn.lunadeer.dominion.utils.XLogger;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -27,49 +28,34 @@ public class WorldWide {
 
     private static class WorldConfig {
         private boolean enabled = false;
-        private final Map<PriFlag, Boolean> guestPrivilegeFlags = new HashMap<>();
-        private final Map<EnvFlag, Boolean> environmentFlags = new HashMap<>();
+        private final FlagValues<PriFlag> guestPrivilegeFlags = new FlagValues<>();
+        private final FlagValues<EnvFlag> environmentFlags = new FlagValues<>();
     }
 
     private static final Map<String, WorldConfig> worlds = new HashMap<>();
 
+    private static WorldConfig worldConfig(World world) {
+        return worlds.getOrDefault(world.getName(), worlds.get("default"));
+    }
+
     public static boolean isWorldWideEnabled(World world) {
-        if (!worlds.containsKey(world.getName())) {
-            return worlds.get("default").enabled;
-        }
-        return worlds.containsKey(world.getName()) && worlds.get(world.getName()).enabled;
+        return worldConfig(world).enabled;
     }
 
     public static @Nullable Map<EnvFlag, Boolean> getEnvironmentFlagValue(World world) {
-        if (!worlds.containsKey(world.getName())) {
-            // If the world is not loaded, return null
-            return worlds.get("default").environmentFlags;
-        }
-        return worlds.get(world.getName()).environmentFlags;
+        return worldConfig(world).environmentFlags.asMap();
     }
 
     public static boolean getEnvFlagValue(World world, @NotNull EnvFlag flag) {
-        if (!worlds.containsKey(world.getName())) {
-            // If the world is not loaded, return the default value of the flag
-            return worlds.get("default").environmentFlags.getOrDefault(flag, flag.getDefaultValue());
-        }
-        return worlds.get(world.getName()).environmentFlags.getOrDefault(flag, flag.getDefaultValue());
+        return worldConfig(world).environmentFlags.get(flag);
     }
 
     public static @Nullable Map<PriFlag, Boolean> getGuestPrivilegeFlagValue(World world) {
-        if (!worlds.containsKey(world.getName())) {
-            // If the world is not loaded, return null
-            return worlds.get("default").guestPrivilegeFlags;
-        }
-        return worlds.get(world.getName()).guestPrivilegeFlags;
+        return worldConfig(world).guestPrivilegeFlags.asMap();
     }
 
     public static boolean getGuestFlagValue(World world, @NotNull PriFlag flag) {
-        if (!worlds.containsKey(world.getName())) {
-            // If the world is not loaded, return the default value of the flag
-            return worlds.get("default").guestPrivilegeFlags.getOrDefault(flag, flag.getDefaultValue());
-        }
-        return worlds.get(world.getName()).guestPrivilegeFlags.getOrDefault(flag, flag.getDefaultValue());
+        return worldConfig(world).guestPrivilegeFlags.get(flag);
     }
 
     protected static void loadWorld(File file) throws IOException {
@@ -87,7 +73,7 @@ public class WorldWide {
         int schemaVersion = config.getInt("flag-schema-version", 1);
         boolean changed = false;
 
-        for (Flag flag : Flags.getAllFlags()) {
+        for (Flag flag : Flags.getActiveFlags()) {
             if (flag.getFlagName().equals(Flags.ADMIN.getFlagName())) continue; // not handle admin flag for world-wide config
 
             if (!config.contains(flag.getConfigurationNameKey())) {
@@ -97,9 +83,9 @@ public class WorldWide {
                 changed = true;
             }
             if (flag instanceof PriFlag priFlag) {
-                world.guestPrivilegeFlags.put(priFlag, config.getBoolean(flag.getConfigurationNameKey(), flag.getDefaultValue()));
+                world.guestPrivilegeFlags.set(priFlag, config.getBoolean(flag.getConfigurationNameKey(), flag.getDefaultValue()));
             } else if (flag instanceof EnvFlag envFlag) {
-                world.environmentFlags.put(envFlag, config.getBoolean(flag.getConfigurationNameKey(), flag.getDefaultValue()));
+                world.environmentFlags.set(envFlag, config.getBoolean(flag.getConfigurationNameKey(), flag.getDefaultValue()));
             }
         }
 
@@ -117,7 +103,7 @@ public class WorldWide {
         if (sources.isEmpty()) return flag.getDefaultValue();
         boolean value = true;
         for (Flag source : sources) {
-            value &= config.getBoolean(source.getConfigurationNameKey(), source.getDefaultValue());
+            value &= config.getBoolean(source.getConfigurationNameKey(), source.getMigrationDefaultValue());
         }
         return value;
     }
@@ -180,7 +166,7 @@ public class WorldWide {
         config.set("enabled", world.enabled);
         config.set("flag-schema-version", FLAG_SCHEMA_VERSION);
 
-        for (Flag flag : Flags.getAllFlags()) {
+        for (Flag flag : Flags.getActiveFlags()) {
             if (flag.getFlagName().equals(Flags.ADMIN.getFlagName())) continue;
 
             if (config.get(flag.getConfigurationNameKey()) == null) {

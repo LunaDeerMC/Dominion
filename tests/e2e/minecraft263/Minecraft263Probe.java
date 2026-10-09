@@ -51,22 +51,24 @@ public final class Minecraft263Probe extends JavaPlugin {
         Location loc = new Location(player.getWorld(), 110, 70, 110);
         player.teleport(loc); player.setGameMode(GameMode.CREATIVE); player.setOp(false); player.setAllowFlight(true); player.setFlying(true);
         // Exercise every enabled existing privilege flag's guest allow/deny decision.
-        for (var field : Flags.class.getFields()) {
-            if (!(field.get(null) instanceof PriFlag flag) || !flag.getEnable() || flag == Flags.ADMIN) continue;
+        for (PriFlag flag : Flags.getActivePriFlagsEnable()) {
+            if (flag == Flags.ADMIN) continue;
             var flags = dom.getGuestPrivilegeFlagValue(); Boolean before = flags.get(flag);
             flags.put(flag, false); check(!Others.checkPrivilegeFlagSilence(loc, flag, player, null), "deny "+flag.getFlagName());
             flags.put(flag, true); check(Others.checkPrivilegeFlagSilence(loc, flag, player, null), "allow "+flag.getFlagName());
             flags.put(flag, before);
         }
-        for (var field : Flags.class.getFields()) {
-            if (!(field.get(null) instanceof EnvFlag flag) || !flag.getEnable()) continue;
+        for (EnvFlag flag : Flags.getActiveEnvFlagsEnable()) {
             var flags = dom.getEnvironmentFlagValue(); Boolean before = flags.get(flag);
             flags.put(flag, false); check(!Others.checkEnvironmentFlag(loc, flag, null), "deny "+flag.getFlagName());
             flags.put(flag, true); check(Others.checkEnvironmentFlag(loc, flag, null), "allow "+flag.getFlagName());
             flags.put(flag, before);
         }
-        Map<PriFlag,Boolean> previous = new HashMap<>(dom.getGuestPrivilegeFlagValue());
-        dom.getGuestPrivilegeFlagValue().replaceAll((k,v) -> true);
+        Map<PriFlag,Boolean> previous = new HashMap<>();
+        dom.getGuestPrivilegeFlagValue().forEach((flag, value) -> {
+            if (!Flags.isLegacyFlag(flag)) previous.put(flag, value);
+        });
+        previous.keySet().forEach(flag -> dom.getGuestPrivilegeFlagValue().put(flag, true));
         try {
             String[][] cases = {
                 {"OAK_DOOR","DOOR"},{"OAK_TRAPDOOR","TRAPDOOR"},{"OAK_FENCE_GATE","FENCE_GATE"},

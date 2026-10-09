@@ -105,7 +105,7 @@ public final class FlagConfiguration {
             }
             List<String> remaining = new ArrayList<>();
             for (String name : entry.getValue()) {
-                EnvFlag flag = Flags.getEnvFlag(name);
+                EnvFlag flag = Flags.getActiveEnvFlag(name);
                 if (flag == null) {
                     remaining.add(name);
                 } else {
@@ -130,7 +130,7 @@ public final class FlagConfiguration {
             }
             List<String> remaining = new ArrayList<>();
             for (String name : entry.getValue()) {
-                PriFlag flag = Flags.getPreFlag(name);
+                PriFlag flag = Flags.getActivePriFlag(name);
                 if (flag == null) {
                     remaining.add(name);
                 } else {
@@ -146,7 +146,7 @@ public final class FlagConfiguration {
     }
 
     static void reconcileFlagDefinitions(YamlConfiguration yaml, boolean migrateSplitFlags) {
-        for (Flag flag : Flags.getAllFlags()) {
+        for (Flag flag : Flags.getActiveFlags()) {
             if (yaml.contains(flag.getConfigurationDefaultKey())) {
                 flag.setDefaultValue(yaml.getBoolean(flag.getConfigurationDefaultKey()));
             } else {
@@ -188,8 +188,8 @@ public final class FlagConfiguration {
         boolean value = enable ? false : true;
         for (Flag source : sources) {
             boolean sourceValue = enable
-                    ? yaml.getBoolean(source.getConfigurationEnableKey(), source.getEnable())
-                    : yaml.getBoolean(source.getConfigurationDefaultKey(), source.getDefaultValue());
+                    ? yaml.getBoolean(source.getConfigurationEnableKey(), source.getMigrationEnable())
+                    : yaml.getBoolean(source.getConfigurationDefaultKey(), source.getMigrationDefaultValue());
             value = enable ? value || sourceValue : value && sourceValue;
         }
         return value;
@@ -268,7 +268,7 @@ public final class FlagConfiguration {
             List<EnvFlag> flags = new ArrayList<>();
             List<String> unresolved = new ArrayList<>();
             for (String name : group.getStringList("flags")) {
-                EnvFlag flag = Flags.getEnvFlag(name);
+                EnvFlag flag = Flags.getActiveEnvFlag(name);
                 if (flag == null) {
                     unresolved.add(name);
                     XLogger.warn("Unknown or non-environment flag {0} in environment group {1}.", name, id);
@@ -313,7 +313,7 @@ public final class FlagConfiguration {
             List<PriFlag> flags = new ArrayList<>();
             List<String> unresolved = new ArrayList<>();
             for (String name : group.getStringList("flags")) {
-                PriFlag flag = Flags.getPreFlag(name);
+                PriFlag flag = Flags.getActivePriFlag(name);
                 if (flag == null) {
                     unresolved.add(name);
                     XLogger.warn("Unknown or non-privilege flag {0} in privilege group {1}.", name, id);

@@ -5,6 +5,7 @@ import cn.lunadeer.dominion.api.dtos.GroupDTO;
 import cn.lunadeer.dominion.api.dtos.MemberDTO;
 import cn.lunadeer.dominion.api.dtos.PlayerDTO;
 import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
+import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Configuration;
@@ -148,12 +149,14 @@ public class Others {
     }
 
     public static void showNoPermissionMessage(@NotNull Player player, @NotNull PriFlag flag) {
+        flag = Flags.resolveReadFlag(flag);
         String msg = formatString(Language.othersText.noPermissionForFlag, flag.getDisplayName(), flag.getDescription());
         msg = "&4" + "&l" + msg;
         MessageDisplay.show(player, MessageDisplay.Place.valueOf(Configuration.pluginMessage.noPermissionDisplayPlace.toUpperCase()), msg);
     }
 
     public static boolean checkPrivilegeFlagSilence(@NotNull Location location, @NotNull PriFlag flag, @NotNull Player player, @Nullable Cancellable event) {
+        flag = Flags.resolveReadFlag(flag);
         if (!flag.getEnable()) {
             return true;
         }
@@ -175,7 +178,7 @@ public class Others {
                         ? group.getFlagValue(flag)
                         : member.getFlagValue(flag);
             } else {
-                hasPrivilege = dom.getGuestPrivilegeFlagValue().get(flag);
+                hasPrivilege = dom.getGuestFlagValue(flag);
             }
         }
         if (hasPrivilege) {
@@ -194,6 +197,7 @@ public class Others {
      * which is not recommended to use.
      */
     public static boolean checkPrivilegeFlagSilence(@Nullable DominionDTO dom, @NotNull PriFlag flag, @NotNull Player player, @Nullable Cancellable event) {
+        flag = Flags.resolveReadFlag(flag);
         if (!flag.getEnable()) {
             return true;
         }
@@ -213,7 +217,7 @@ public class Others {
                     hasPrivilege = member.getFlagValue(flag);
                 }
             } else {
-                hasPrivilege = dom.getGuestPrivilegeFlagValue().get(flag);
+                hasPrivilege = dom.getGuestFlagValue(flag);
             }
             if (hasPrivilege) {
                 return true;
@@ -227,6 +231,7 @@ public class Others {
     }
 
     public static boolean checkEnvironmentFlag(@NotNull Location location, @NotNull EnvFlag flag, @Nullable Cancellable event) {
+        flag = Flags.resolveReadFlag(flag);
         if (!flag.getEnable()) {
             return true;
         }
@@ -238,7 +243,7 @@ public class Others {
             }
             enabled = WorldWide.getEnvFlagValue(location.getWorld(), flag);
         } else {
-            enabled = dom.getEnvironmentFlagValue().getOrDefault(flag, false);
+            enabled = dom.getEnvFlagValue(flag);
         }
         if (!enabled && event != null) {
             event.setCancelled(true);
@@ -253,13 +258,14 @@ public class Others {
      * which is not recommended to use.
      */
     public static boolean checkEnvironmentFlag(@Nullable DominionDTO dom, @NotNull EnvFlag flag, @Nullable Cancellable event) {
+        flag = Flags.resolveReadFlag(flag);
         if (!flag.getEnable()) {
             return true;
         }
         if (dom == null) {
             return true;
         }
-        if (dom.getEnvironmentFlagValue().get(flag)) {
+        if (dom.getEnvFlagValue(flag)) {
             return true;
         }
         if (event != null) {

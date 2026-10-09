@@ -141,7 +141,7 @@ public class Converts {
      * @throws DominionException If the environment flag is unknown.
      */
     public static @NotNull EnvFlag toEnvFlag(String flagName) throws DominionException {
-        EnvFlag flag = Flags.getEnvFlag(flagName);
+        EnvFlag flag = Flags.getActiveEnvFlag(flagName);
         if (flag == null) {
             throw new DominionException(Language.convertsText.unknownEnvFlag, flagName);
         } else {
@@ -157,7 +157,7 @@ public class Converts {
      * @throws DominionException If the privilege flag is unknown.
      */
     public static @NotNull PriFlag toPriFlag(String flagName) throws DominionException {
-        PriFlag flag = Flags.getPreFlag(flagName);
+        PriFlag flag = Flags.getActivePriFlag(flagName);
         if (flag == null) {
             throw new DominionException(Language.convertsText.unknownPreFlag, flagName);
         } else {

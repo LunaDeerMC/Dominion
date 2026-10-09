@@ -4,6 +4,7 @@ import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.dtos.GroupDTO;
 import cn.lunadeer.dominion.api.dtos.MemberDTO;
 import cn.lunadeer.dominion.api.dtos.flag.EnvFlag;
+import cn.lunadeer.dominion.flags.FlagValues;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.configuration.Language;
@@ -73,7 +74,7 @@ public final class CopyProviderHandler extends CopyProvider {
     }
 
     private static void copyEnvironment(CommandSender operator, DominionDTO source, DominionDTO target) {
-        for (Map.Entry<EnvFlag, Boolean> entry : source.getEnvironmentFlagValue().entrySet()) {
+        for (Map.Entry<EnvFlag, Boolean> entry : FlagValues.activeCopy(source.getEnvironmentFlagValue()).entrySet()) {
             if (target.getEnvFlagValue(entry.getKey()) == entry.getValue()) continue;
             onOperatorThread(operator, () -> DominionProvider.getInstance()
                     .setDominionEnvFlag(operator, target, entry.getKey(), entry.getValue())).join();
@@ -81,7 +82,7 @@ public final class CopyProviderHandler extends CopyProvider {
     }
 
     private static void copyGuest(CommandSender operator, DominionDTO source, DominionDTO target) {
-        for (Map.Entry<PriFlag, Boolean> entry : source.getGuestPrivilegeFlagValue().entrySet()) {
+        for (Map.Entry<PriFlag, Boolean> entry : FlagValues.activeCopy(source.getGuestPrivilegeFlagValue()).entrySet()) {
             if (target.getGuestFlagValue(entry.getKey()) == entry.getValue()) continue;
             onOperatorThread(operator, () -> DominionProvider.getInstance()
                     .setDominionGuestFlag(operator, target, entry.getKey(), entry.getValue())).join();
@@ -99,7 +100,7 @@ public final class CopyProviderHandler extends CopyProvider {
             if (targetMember == null) continue;
             copied.put(sourceMember.getId(), targetMember);
             if (targetMember.getGroupId() != -1) continue;
-            for (Map.Entry<PriFlag, Boolean> entry : sourceMember.getFlagsValue().entrySet()) {
+            for (Map.Entry<PriFlag, Boolean> entry : FlagValues.activeCopy(sourceMember.getFlagsValue()).entrySet()) {
                 if (targetMember.getFlagValue(entry.getKey()) == entry.getValue()) continue;
                 MemberDTO memberToUpdate = targetMember;
                 onOperatorThread(operator, () -> MemberProvider.getInstance()
@@ -120,7 +121,7 @@ public final class CopyProviderHandler extends CopyProvider {
                         .createGroup(operator, target, sourceGroup.getNameRaw())).join();
             }
             if (targetGroup == null) continue;
-            for (Map.Entry<PriFlag, Boolean> entry : sourceGroup.getFlagsValue().entrySet()) {
+            for (Map.Entry<PriFlag, Boolean> entry : FlagValues.activeCopy(sourceGroup.getFlagsValue()).entrySet()) {
                 if (targetGroup.getFlagValue(entry.getKey()) == entry.getValue()) continue;
                 GroupDTO groupToUpdate = targetGroup;
                 onOperatorThread(operator, () -> GroupProvider.getInstance()

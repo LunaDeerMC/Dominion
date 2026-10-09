@@ -8,6 +8,7 @@ import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.cache.CacheSyncManager;
 import cn.lunadeer.dominion.configuration.Configuration;
+import cn.lunadeer.dominion.flags.FlagValues;
 import cn.lunadeer.dominion.storage.repository.GroupRepository;
 import cn.lunadeer.dominion.utils.ColorParser;
 import net.kyori.adventure.text.Component;
@@ -22,7 +23,7 @@ public class GroupDOO implements GroupDTO {
     private Integer dom_id;
     private String name_raw;
     private String name_color;
-    private final Map<PriFlag, Boolean> flags = new HashMap<>();
+    private final FlagValues<PriFlag> flags = new FlagValues<>();
 
     private static GroupDOO parse(GroupRepository.GroupRow row) {
         if (row == null) return null;
@@ -71,12 +72,12 @@ public class GroupDOO implements GroupDTO {
 
     @Override
     public @NotNull Boolean getFlagValue(@NotNull PriFlag flag) {
-        return flags.getOrDefault(flag, flag.getDefaultValue());
+        return flags.get(flag);
     }
 
     @Override
     public @NotNull Map<PriFlag, Boolean> getFlagsValue() {
-        return flags;
+        return flags.asMap();
     }
 
     @Override
@@ -92,7 +93,7 @@ public class GroupDOO implements GroupDTO {
 
     @Override
     public @NotNull GroupDOO setFlagValue(@NotNull PriFlag flag, @NotNull Boolean value) throws SQLException {
-        flags.put(flag, value);
+        flags.set(flag, value);
         GroupRepository.updateFlag(id, flag, value);
         if (CacheSyncManager.instance != null) {
             CacheSyncManager.instance.notifyGroup(getId());
@@ -116,7 +117,7 @@ public class GroupDOO implements GroupDTO {
 
     public static GroupDOO create(String name, DominionDTO dominionDTO) throws SQLException {
         GroupDOO group = new GroupDOO(name, dominionDTO.getId());
-        GroupDOO inserted = parse(GroupRepository.create(group.dom_id, group.name_raw, group.name_color, group.flags));
+        GroupDOO inserted = parse(GroupRepository.create(group.dom_id, group.name_raw, group.name_color, group.flags.activeValues()));
         if (inserted == null) {
             throw new SQLException("Failed to insert dominion.");
         }
@@ -156,8 +157,8 @@ public class GroupDOO implements GroupDTO {
         this.dom_id = domID;
         this.name_raw = ColorParser.getPlainText(name);
         this.name_color = name;
-        for (PriFlag f : Flags.getAllPriFlagsEnable()) {
-            flags.put(f, f.getDefaultValue());
+        for (PriFlag f : Flags.getActivePriFlagsEnable()) {
+            flags.set(f, f.getDefaultValue());
         }
     }
 
@@ -165,7 +166,7 @@ public class GroupDOO implements GroupDTO {
         this.id = id;
         this.dom_id = domID;
         this.name_raw = name;
-        this.flags.putAll(flags);
+        this.flags.copyFrom(flags);
         this.name_color = nameColored;
     }
 }

@@ -2,6 +2,7 @@ package cn.lunadeer.dominion.doos;
 
 import cn.lunadeer.dominion.api.dtos.TemplateDTO;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
+import cn.lunadeer.dominion.flags.FlagValues;
 import cn.lunadeer.dominion.storage.repository.TemplateRepository;
 
 import java.sql.SQLException;
@@ -14,7 +15,7 @@ public class TemplateDOO implements TemplateDTO {
     private Integer id;
     private UUID creator;
     private String name;
-    private final Map<PriFlag, Boolean> flags;
+    private final FlagValues<PriFlag> flags = new FlagValues<>();
 
     private static TemplateDOO parse(TemplateRepository.TemplateRow row) {
         if (row == null) return null;
@@ -45,7 +46,7 @@ public class TemplateDOO implements TemplateDTO {
         this.id = id;
         this.creator = creator;
         this.name = name;
-        this.flags = flags;
+        this.flags.copyFrom(flags);
     }
 
     public Integer getId() {
@@ -61,17 +62,16 @@ public class TemplateDOO implements TemplateDTO {
     }
 
     public Boolean getFlagValue(PriFlag flag) {
-        if (!flags.containsKey(flag)) return flag.getDefaultValue();
         return flags.get(flag);
     }
 
     @Override
     public Map<PriFlag, Boolean> getFlagsValue() {
-        return Map.copyOf(flags);
+        return flags.snapshot();
     }
 
     public TemplateDOO setFlagValue(PriFlag flag, Boolean value) throws SQLException {
-        flags.put(flag, value);
+        flags.set(flag, value);
         TemplateRepository.updateFlag(id, flag, value);
         return this;
     }

@@ -92,7 +92,7 @@ abstract class RepositorySupport {
 
     protected static Map<PriFlag, Boolean> defaultPriFlags() {
         Map<PriFlag, Boolean> flags = new HashMap<>();
-        for (PriFlag flag : Flags.getAllPriFlagsEnable()) {
+        for (PriFlag flag : Flags.getActivePriFlagsEnable()) {
             flags.put(flag, flag.getDefaultValue());
         }
         return flags;
@@ -100,7 +100,7 @@ abstract class RepositorySupport {
 
     protected static Map<EnvFlag, Boolean> defaultEnvFlags() {
         Map<EnvFlag, Boolean> flags = new HashMap<>();
-        for (EnvFlag flag : Flags.getAllEnvFlagsEnable()) {
+        for (EnvFlag flag : Flags.getActiveEnvFlagsEnable()) {
             flags.put(flag, flag.getDefaultValue());
         }
         return flags;
@@ -108,7 +108,7 @@ abstract class RepositorySupport {
 
     protected static Map<PriFlag, Boolean> readPriFlags(Map<String, Object> row) {
         Map<PriFlag, Boolean> flags = defaultPriFlags();
-        for (PriFlag flag : Flags.getAllPriFlagsEnable()) {
+        for (PriFlag flag : Flags.getActivePriFlagsEnable()) {
             flags.put(flag, readFlag(row, flag));
         }
         return flags;
@@ -116,7 +116,7 @@ abstract class RepositorySupport {
 
     protected static Map<EnvFlag, Boolean> readEnvFlags(Map<String, Object> row) {
         Map<EnvFlag, Boolean> flags = defaultEnvFlags();
-        for (EnvFlag flag : Flags.getAllEnvFlagsEnable()) {
+        for (EnvFlag flag : Flags.getActiveEnvFlagsEnable()) {
             flags.put(flag, readFlag(row, flag));
         }
         return flags;
@@ -124,14 +124,14 @@ abstract class RepositorySupport {
 
     protected static void putPriFlags(Map<String, Object> values, Map<PriFlag, Boolean> flags) {
         Map<PriFlag, Boolean> source = flags == null ? Collections.emptyMap() : flags;
-        for (PriFlag flag : Flags.getAllPriFlagsEnable()) {
+        for (PriFlag flag : Flags.getActivePriFlagsEnable()) {
             values.put(flag.getFlagName(), normalizeValue(flag, source.get(flag)));
         }
     }
 
     protected static void putEnvFlags(Map<String, Object> values, Map<EnvFlag, Boolean> flags) {
         Map<EnvFlag, Boolean> source = flags == null ? Collections.emptyMap() : flags;
-        for (EnvFlag flag : Flags.getAllEnvFlagsEnable()) {
+        for (EnvFlag flag : Flags.getActiveEnvFlagsEnable()) {
             values.put(flag.getFlagName(), normalizeValue(flag, source.get(flag)));
         }
     }

@@ -18,7 +18,7 @@ class CushionFlagMigrationTest {
         List<String> tables=List.of("dominion","dominion_member","dominion_group","privilege_template");
         try(var connection=ds.getConnection();var statement=connection.createStatement()) {
             for(String table:tables) {
-                List<? extends Flag> flags=table.equals("dominion")?Flags.getAllFlags():Flags.getAllPriFlags();
+                List<? extends Flag> flags=table.equals("dominion")?Flags.getActiveFlags():Flags.getActivePriFlags();
                 StringBuilder sql=new StringBuilder("CREATE TABLE "+table+" (id INTEGER PRIMARY KEY");
                 for(Flag flag:flags)if(!cushion.contains(flag))sql.append(", ").append(flag.getFlagName()).append(" BOOLEAN NOT NULL DEFAULT true");
                 statement.execute(sql+")");statement.execute("INSERT INTO "+table+" (id) VALUES (1)");

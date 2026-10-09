@@ -18,7 +18,7 @@ class FlagLanguageCoverageTest {
         for (String code : new String[]{"en_us", "zh_cn", "zh_tw", "jp_jp"}) {
             YamlConfiguration yaml = YamlConfiguration.loadConfiguration(
                     new File("../languages/" + code + ".yml"));
-            for (Flag flag : Flags.getAllFlags()) {
+            for (Flag flag : Flags.getActiveFlags()) {
                 assertTrue(yaml.isString(flag.getDisplayNameKey()),
                         code + ":" + flag.getDisplayNameKey());
                 assertTrue(yaml.isString(flag.getDescriptionKey()),

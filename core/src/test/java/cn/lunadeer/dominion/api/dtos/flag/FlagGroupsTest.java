@@ -123,7 +123,7 @@ class FlagGroupsTest {
         assertTrue(decoration.containsFlag(Flags.ARMOR_STAND_PROJECTILE_BREAK));
         assertTrue(workstations.containsFlag(Flags.LECTERN));
         assertTrue(decoration.containsFlag(Flags.SHELF));
-        assertFalse(Flags.getAllPriFlags().contains(Flags.CONTAINER));
+        assertFalse(Flags.getActivePriFlags().contains(Flags.CONTAINER));
     }
 
     @Test
@@ -194,8 +194,8 @@ class FlagGroupsTest {
         Set<PriFlag> privilegeFlags = new LinkedHashSet<>();
         FlagGroups.defaultPrivilegeGroups().forEach(group -> privilegeFlags.addAll(group.getFlags()));
 
-        assertEquals(Set.copyOf(Flags.getAllEnvFlags()), environmentFlags);
-        assertEquals(Set.copyOf(Flags.getAllPriFlags()), privilegeFlags);
+        assertEquals(Set.copyOf(Flags.getActiveEnvFlags()), environmentFlags);
+        assertEquals(Set.copyOf(Flags.getActivePriFlags()), privilegeFlags);
         assertFalse(environmentFlags.contains(Flags.ENDER_MAN));
         assertFalse(environmentFlags.contains(Flags.BLOCK_EXPLODE));
         assertFalse(privilegeFlags.contains(Flags.SHOOT));

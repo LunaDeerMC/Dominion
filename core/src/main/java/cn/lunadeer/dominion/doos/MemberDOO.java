@@ -7,6 +7,7 @@ import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import cn.lunadeer.dominion.cache.CacheManager;
 import cn.lunadeer.dominion.cache.CacheSyncManager;
+import cn.lunadeer.dominion.flags.FlagValues;
 import cn.lunadeer.dominion.storage.repository.MemberRepository;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,7 +20,7 @@ public class MemberDOO implements MemberDTO {
     private UUID playerUUID;
     private Integer domID;
     private Integer groupId;
-    private final Map<PriFlag, Boolean> flags = new HashMap<>();
+    private final FlagValues<PriFlag> flags = new FlagValues<>();
 
     private static MemberDOO parse(MemberRepository.MemberRow row) {
         if (row == null) return null;
@@ -27,7 +28,7 @@ public class MemberDOO implements MemberDTO {
     }
 
     public static MemberDOO insert(MemberDOO player) throws SQLException {
-        MemberDOO inserted = parse(MemberRepository.insert(player.playerUUID, player.domID, player.flags));
+        MemberDOO inserted = parse(MemberRepository.insert(player.playerUUID, player.domID, player.flags.activeValues()));
         CacheManager.instance.getCache().getMemberCache().load(inserted.getId());
         if (CacheSyncManager.instance != null) {
             CacheSyncManager.instance.notifyMember(inserted.getId());
@@ -82,18 +83,17 @@ public class MemberDOO implements MemberDTO {
 
     @Override
     public @NotNull Boolean getFlagValue(PriFlag flag) {
-        if (!flags.containsKey(flag)) return flag.getDefaultValue();
         return flags.get(flag);
     }
 
     @Override
     public @NotNull Map<PriFlag, Boolean> getFlagsValue() {
-        return flags;
+        return flags.asMap();
     }
 
     @Override
     public MemberDOO setFlagValue(@NotNull PriFlag flag, @NotNull Boolean value) throws SQLException {
-        flags.put(flag, value);
+        flags.set(flag, value);
         MemberRepository.updateFlag(id, flag, value);
         if (CacheSyncManager.instance != null) {
             CacheSyncManager.instance.notifyMember(getId());
@@ -116,10 +116,10 @@ public class MemberDOO implements MemberDTO {
     }
 
     public void applyTemplate(TemplateDOO template) throws SQLException {
-        for (PriFlag flag : Flags.getAllPriFlagsEnable()) {
-            this.flags.put(flag, template.getFlagValue(flag));
+        for (PriFlag flag : Flags.getActivePriFlagsEnable()) {
+            this.flags.set(flag, template.getFlagValue(flag));
         }
-        MemberRepository.updateFlags(id, flags);
+        MemberRepository.updateFlags(id, flags.activeValues());
         if (CacheSyncManager.instance != null) {
             CacheSyncManager.instance.notifyMember(getId());
         }
@@ -142,14 +142,14 @@ public class MemberDOO implements MemberDTO {
         this.playerUUID = playerUUID;
         this.domID = domID;
         this.groupId = groupId;
-        this.flags.putAll(flags);
+        this.flags.copyFrom(flags);
     }
 
     public MemberDOO(UUID playerUUID, DominionDTO dom) {
         this.playerUUID = playerUUID;
         this.domID = dom.getId();
         this.groupId = -1;
-        this.flags.putAll(dom.getGuestPrivilegeFlagValue());
+        this.flags.copyFrom(dom.getGuestPrivilegeFlagValue());
     }
 
 }

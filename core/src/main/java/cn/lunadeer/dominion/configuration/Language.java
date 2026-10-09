@@ -116,7 +116,7 @@ public class Language extends ConfigurationFile {
     public static synchronized void reconcileFlagTexts() throws IOException {
         File file = activeLanguageFile();
         YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
-        for (Flag flag : Flags.getAllFlags()) {
+        for (Flag flag : Flags.getActiveFlags()) {
             if (!yaml.contains(flag.getDisplayNameKey())) {
                 yaml.set(flag.getDisplayNameKey(), fallbackText(flag.getDisplayNameKey(), flag.getDisplayName()));
             }
@@ -242,7 +242,7 @@ public class Language extends ConfigurationFile {
 
     @PreProcess
     public void loadFlagsText() {
-        for (Flag flag : Flags.getAllFlags()) {
+        for (Flag flag : Flags.getActiveFlags()) {
             flag.setDisplayName(loadFlagText(flag.getDisplayNameKey(), flag.getDisplayName()));
             flag.setDescription(loadFlagText(flag.getDescriptionKey(), flag.getDescription()));
         }

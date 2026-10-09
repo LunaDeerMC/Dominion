@@ -26,7 +26,7 @@ class FlagConfigurationMigrationTest {
     void netherPortalDefinitionDefaultsToProtectionAndPreservesConfiguredValues(int schemaVersion) throws Exception {
         Map<Flag, Boolean> oldDefaults = new HashMap<>();
         Map<Flag, Boolean> oldEnables = new HashMap<>();
-        for (Flag flag : Flags.getAllFlags()) {
+        for (Flag flag : Flags.getActiveFlags()) {
             oldDefaults.put(flag, flag.getDefaultValue());
             oldEnables.put(flag, flag.getEnable());
         }
