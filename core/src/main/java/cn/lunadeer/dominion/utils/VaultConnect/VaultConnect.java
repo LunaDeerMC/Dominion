@@ -42,12 +42,22 @@ public class VaultConnect implements Listener {
                 throw new Exception(Language.vaultConnectText.vaultUnavailable);
             }
             if (vaultPlugin.getDescription().getAuthors().contains("creatorfromhell")) {
-                vaultInstance = new Vault2();
-            } else {
-                vaultInstance = new Vault();
+                VaultInterface vaultUnlocked = new Vault2();
+                if (vaultUnlocked.init(plugin)) {
+                    vaultInstance = vaultUnlocked;
+                } else {
+                    XLogger.debug("VaultUnlocked economy service not found; trying Vault API.");
+                }
             }
-            if (!vaultInstance.init(plugin)) {
-                vaultInstance = null;
+            if (vaultInstance == null) {
+                VaultInterface vault = new Vault();
+                if (vault.init(plugin)) {
+                    vaultInstance = vault;
+                } else {
+                    vaultInstance = null;
+                }
+            }
+            if (vaultInstance == null) {
                 throw new Exception(Language.vaultConnectText.economyUnavailable);
             }
         }
