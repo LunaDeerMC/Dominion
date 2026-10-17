@@ -1,0 +1,7 @@
+name: Issue298
+version: '1'
+main: Issue298
+api-version: '1.20'
+depend: [Dominion]
+commands:
+  issue298: {}

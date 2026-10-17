@@ -23,7 +23,6 @@ import org.mockito.MockedStatic;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -206,7 +205,7 @@ class NetherPortalCreateTest {
 
     private void allowInDominion(BlockState block, boolean allowed) {
         DominionDTO dominion = mock(DominionDTO.class);
-        when(dominion.getEnvironmentFlagValue()).thenReturn(Map.of(Flags.NETHER_PORTAL_CREATE, allowed));
+        when(dominion.getEnvFlagValue(Flags.NETHER_PORTAL_CREATE)).thenReturn(allowed);
         when(cache.getDominion(block.getLocation())).thenReturn(dominion);
     }
 
