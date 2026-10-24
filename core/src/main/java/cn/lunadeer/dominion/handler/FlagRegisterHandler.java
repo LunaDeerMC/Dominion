@@ -14,10 +14,11 @@ public class FlagRegisterHandler implements Listener {
 
     @EventHandler
     public void onFlagRegister(FlagRegisterEvent event) {
+        JavaPlugin sourcePlugin = event.getPlugin();
         XLogger.debug("External flag registered: " +
                 event.getFlag().getDisplayName() +
                 " (" + event.getFlag().getFlagName() + ")"
-                + " - From: " + event.getPlugin().getName());
+                + " - From: " + (sourcePlugin == null ? "unknown" : sourcePlugin.getName()));
     }
 
 }
