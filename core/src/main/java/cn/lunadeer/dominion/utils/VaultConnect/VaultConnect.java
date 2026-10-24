@@ -35,23 +35,42 @@ public class VaultConnect implements Listener {
     public void onEnable(ServiceRegisterEvent event) {
     }
 
-    private void assertEconomy() throws Exception {
+    private synchronized void assertEconomy() throws Exception {
         if (vaultInstance == null) {
             Plugin vaultPlugin = this.plugin.getServer().getPluginManager().getPlugin("Vault");
-            if (vaultPlugin == null) {
+            if (vaultPlugin == null || !vaultPlugin.isEnabled()) {
                 throw new Exception(Language.vaultConnectText.vaultUnavailable);
             }
-            if (vaultPlugin.getDescription().getAuthors().contains("creatorfromhell")) {
-                vaultInstance = new Vault2();
-            } else {
-                vaultInstance = new Vault();
+            // VaultUnlocked can host legacy providers without a modern provider.
+            // Select by registered service, and publish only a fully initialized adapter.
+            VaultInterface candidate = initializeVault(true);
+            if (candidate == null) {
+                candidate = initializeVault(false);
             }
-            if (!vaultInstance.init(plugin)) {
-                vaultInstance = null;
+            if (candidate == null) {
                 throw new Exception(Language.vaultConnectText.economyUnavailable);
             }
+            vaultInstance = candidate;
+            XLogger.debug("Vault connected using {0}.", candidate.getClass().getSimpleName());
         }
-        XLogger.debug("Vault connected.");
+    }
+
+    private VaultInterface initializeVault(boolean modern) {
+        String economyClass = modern
+                ? "net.milkbowl.vault2.economy.Economy"
+                : "net.milkbowl.vault.economy.Economy";
+        try {
+            // Classic Vault does not contain the VaultUnlocked API.
+            Class.forName(economyClass, false, VaultConnect.class.getClassLoader());
+            VaultInterface candidate = modern ? new Vault2() : new Vault();
+            return candidate.init(plugin) ? candidate : null;
+        } catch (ClassNotFoundException ignored) {
+            return null;
+        } catch (RuntimeException | LinkageError exception) {
+            // Fallback is limited to initialization, never balance checks or transactions.
+            XLogger.debug("Could not initialize economy service {0}: {1}", economyClass, exception.toString());
+            return null;
+        }
     }
 
     public String currencyNamePlural() throws Exception {
@@ -82,12 +101,4 @@ public class VaultConnect implements Listener {
         return vaultInstance.getBalance(player);
     }
 
-    private static boolean foundClass(String className) {
-        try {
-            Class.forName(className);
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
-    }
 }

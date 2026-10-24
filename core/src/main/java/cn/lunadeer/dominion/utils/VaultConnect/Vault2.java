@@ -1,7 +1,7 @@
 package cn.lunadeer.dominion.utils.VaultConnect;
 
-import cn.lunadeer.dominion.utils.XLogger;
 import net.milkbowl.vault2.economy.Economy;
+import net.milkbowl.vault2.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,9 +19,8 @@ public class Vault2 implements VaultInterface {
         if (rsp != null) {
             econ = rsp.getProvider();
             PluginName = plugin.getName();
-            return true;
+            return econ != null && econ.isEnabled();
         }
-        XLogger.error("VaultUnlocked not available.");
         return false;
     }
 
@@ -37,16 +36,24 @@ public class Vault2 implements VaultInterface {
 
     @Override
     public void withdrawPlayer(OfflinePlayer player, double amount) {
-        econ.withdraw(PluginName, player.getUniqueId(), BigDecimal.valueOf(amount));
+        checkResponse(econ.withdraw(PluginName, player.getUniqueId(), BigDecimal.valueOf(amount)));
     }
 
     @Override
     public void depositPlayer(OfflinePlayer player, double amount) {
-        econ.deposit(PluginName, player.getUniqueId(), BigDecimal.valueOf(amount));
+        checkResponse(econ.deposit(PluginName, player.getUniqueId(), BigDecimal.valueOf(amount)));
     }
 
     @Override
     public double getBalance(OfflinePlayer player) {
         return econ.getBalance(PluginName, player.getUniqueId()).doubleValue();
+    }
+
+    private void checkResponse(EconomyResponse response) {
+        if (response == null || !response.transactionSuccess()) {
+            String message = response == null ? null : response.errorMessage;
+            throw new IllegalStateException(message == null || message.isBlank()
+                    ? "Economy transaction failed." : message);
+        }
     }
 }

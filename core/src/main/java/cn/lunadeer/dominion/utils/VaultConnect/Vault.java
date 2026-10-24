@@ -1,7 +1,7 @@
 package cn.lunadeer.dominion.utils.VaultConnect;
 
-import cn.lunadeer.dominion.utils.XLogger;
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,9 +15,8 @@ public class Vault implements VaultInterface {
         RegisteredServiceProvider<Economy> rsp = plugin.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp != null) {
             econ = rsp.getProvider();
-            return true;
+            return econ != null && econ.isEnabled();
         }
-        XLogger.error("Vault not available.");
         return false;
     }
 
@@ -33,16 +32,24 @@ public class Vault implements VaultInterface {
 
     @Override
     public void withdrawPlayer(OfflinePlayer player, double amount) {
-        econ.withdrawPlayer(player, amount);
+        checkResponse(econ.withdrawPlayer(player, amount));
     }
 
     @Override
     public void depositPlayer(OfflinePlayer player, double amount) {
-        econ.depositPlayer(player, amount);
+        checkResponse(econ.depositPlayer(player, amount));
     }
 
     @Override
     public double getBalance(OfflinePlayer player) {
         return econ.getBalance(player);
+    }
+
+    private void checkResponse(EconomyResponse response) {
+        if (response == null || !response.transactionSuccess()) {
+            String message = response == null ? null : response.errorMessage;
+            throw new IllegalStateException(message == null || message.isBlank()
+                    ? "Economy transaction failed." : message);
+        }
     }
 }
