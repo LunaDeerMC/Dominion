@@ -1,6 +1,7 @@
 # Cushion protection and groups contributed by Codex.
 # Resize validation and explosion protection messages contributed by Codex.
 # Automatic Nether portal creation text contributed by Codex.
+# End crystal placement text contributed by Codex.
 flags:
   cushion_place:
     display-name: 放置坐墊
@@ -410,6 +411,9 @@ flags:
   place_hanging_entity:
     display-name: 放置懸掛實體
     description: 是否可以放置懸掛實體。
+  place_ender_crystal:
+    display-name: 放置終界水晶
+    description: 是否可以放置終界水晶，包括在終界祭壇上放置。
   break_liquid:
     display-name: 收集液體
     description: 是否可以收集水和熔岩。
@@ -610,7 +614,7 @@ flag-groups:
       description: 在領地內移動和旅行。
     building:
       display-name: 建造
-      description: 放置和移除方塊、液體、裝飾實體及花盆內容物。
+      description: 放置和移除方塊、液體、裝飾實體及花盆內容物，以及放置終界水晶。
     item-management:
       display-name: 物品管理
       description: 撿取和丟棄物品。

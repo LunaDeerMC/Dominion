@@ -1,6 +1,7 @@
 # Cushion protection and groups contributed by Codex.
 # Resize validation and explosion protection messages contributed by Codex.
 # Automatic Nether portal creation text contributed by Codex.
+# End crystal placement text contributed by Codex.
 flags:
   cushion_place:
     display-name: クッションの設置
@@ -410,6 +411,9 @@ flags:
   place_hanging_entity:
     display-name: 吊り下げエンティティの設置
     description: 吊り下げエンティティを設置できるかどうか。
+  place_ender_crystal:
+    display-name: エンドクリスタルの設置
+    description: エンドの帰還ポータル上を含め、エンドクリスタルを設置できるかどうか。
   break_liquid:
     display-name: 液体の回収
     description: 水や溶岩を回収できるかどうか。
@@ -610,7 +614,7 @@ flag-groups:
       description: 領地内の移動と移動手段。
     building:
       display-name: 建築
-      description: ブロック、液体、装飾エンティティ、植木鉢の中身の設置と撤去。
+      description: ブロック、液体、装飾エンティティ、植木鉢の中身の設置と撤去、およびエンドクリスタルの設置。
     item-management:
       display-name: アイテム管理
       description: アイテムの拾得とドロップ。

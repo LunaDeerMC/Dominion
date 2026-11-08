@@ -145,6 +145,53 @@ class FlagReconcilerMigrationTest {
         assertEquals(0, reconciler.reconcile().changedEntries());
     }
 
+    @Test
+    void crystalPlacementDefaultsToDeniedAcrossAllPrivilegeTablesAndPreservesExplicitGrants() throws Exception {
+        SQLiteDataSource dataSource = new SQLiteDataSource();
+        dataSource.setUrl("jdbc:sqlite:" + tempDir.resolve("crystal-placement.db"));
+        List<String> tables = List.of("dominion", "dominion_member", "dominion_group", "privilege_template");
+        try (Connection connection = dataSource.getConnection(); var statement = connection.createStatement()) {
+            for (String table : tables) {
+                createTableWithoutFlag(connection, table,
+                        table.equals("dominion") ? Flags.getActiveFlags() : Flags.getActivePriFlags(),
+                        Flags.PLACE_ENDER_CRYSTAL);
+                statement.execute("INSERT INTO " + table + " (id) VALUES (1)");
+            }
+        }
+
+        FlagReconciler reconciler = new FlagReconciler(dataSource, DatabaseType.SQLITE);
+        assertEquals(4, reconciler.reconcile().changedEntries());
+        try (Connection connection = dataSource.getConnection(); var statement = connection.createStatement()) {
+            for (String table : tables) {
+                statement.execute("INSERT INTO " + table + " (id) VALUES (2)");
+                try (ResultSet result = statement.executeQuery(
+                        "SELECT place_ender_crystal, place, place_armor_stand FROM " + table + " ORDER BY id")) {
+                    for (int row = 0; row < 2; row++) {
+                        assertTrue(result.next());
+                        assertFalse(result.getBoolean("place_ender_crystal"), table);
+                        assertTrue(result.getBoolean("place"), "Ordinary building grants must remain unchanged");
+                        assertTrue(result.getBoolean("place_armor_stand"));
+                    }
+                    assertFalse(result.next());
+                }
+                statement.execute("UPDATE " + table + " SET place_ender_crystal = true WHERE id = 1");
+            }
+        }
+
+        assertEquals(0, reconciler.reconcile().changedEntries());
+        try (Connection connection = dataSource.getConnection(); var statement = connection.createStatement()) {
+            for (String table : tables) {
+                try (ResultSet result = statement.executeQuery(
+                        "SELECT place_ender_crystal FROM " + table + " ORDER BY id")) {
+                    assertTrue(result.next());
+                    assertTrue(result.getBoolean(1), table + " must retain an explicit grant");
+                    assertTrue(result.next());
+                    assertFalse(result.getBoolean(1), table + " must retain the default denial");
+                }
+            }
+        }
+    }
+
     private static void createTableWithoutFlag(Connection connection,
                                                String table,
                                                List<? extends Flag> flags,

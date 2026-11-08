@@ -60,6 +60,40 @@ class WorldWideFlagMigrationTest {
         assertTrue(WorldWide.getEnvFlagValue(world, Flags.NETHER_PORTAL_CREATE));
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = {1, 5})
+    void crystalPlacementIsIndependentOfBuildingAndExplosionPermissionsAndPreservesExplicitGrants(int schemaVersion) throws Exception {
+        String worldName = "crystal-placement-migration-" + schemaVersion;
+        File file = tempDir.resolve(worldName + ".yml").toFile();
+        YamlConfiguration config = new YamlConfiguration();
+        config.set("enabled", true);
+        config.set("flag-schema-version", schemaVersion);
+        config.set(Flags.PLACE.getConfigurationNameKey(), true);
+        config.set(Flags.PLACE_ENTITY.getConfigurationNameKey(), true);
+        config.set(Flags.ENDER_CRYSTAL_EXPLODE.getConfigurationNameKey(), true);
+        config.save(file);
+        World world = mock(World.class);
+        when(world.getName()).thenReturn(worldName);
+
+        WorldWide.loadWorld(file);
+
+        String crystalKey = Flags.PLACE_ENDER_CRYSTAL.getConfigurationNameKey();
+        YamlConfiguration migrated = YamlConfiguration.loadConfiguration(file);
+        assertTrue(migrated.contains(crystalKey));
+        assertFalse(migrated.getBoolean(crystalKey));
+        assertFalse(WorldWide.getGuestFlagValue(world, Flags.PLACE_ENDER_CRYSTAL));
+        assertTrue(WorldWide.getGuestFlagValue(world, Flags.PLACE));
+        assertTrue(WorldWide.getEnvFlagValue(world, Flags.ENDER_CRYSTAL_EXPLODE));
+
+        migrated.set(crystalKey, true);
+        migrated.save(file);
+        WorldWide.loadWorld(file);
+        assertTrue(WorldWide.getGuestFlagValue(world, Flags.PLACE_ENDER_CRYSTAL));
+        String afterReload = Files.readString(file.toPath());
+        WorldWide.loadWorld(file);
+        assertEquals(afterReload, Files.readString(file.toPath()));
+    }
+
     @Test
     void migratesLegacyValuesAndDoesNotOverwriteThemAgain() throws Exception {
         File file = tempDir.resolve("migration-test.yml").toFile();

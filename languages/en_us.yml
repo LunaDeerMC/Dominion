@@ -1,6 +1,7 @@
 # Cushion protection and groups contributed by Codex.
 # Resize validation and explosion protection messages contributed by Codex.
 # Automatic Nether portal creation text contributed by Codex.
+# End crystal placement text contributed by Codex.
 flags:
   cushion_place:
     display-name: Cushion Place
@@ -410,6 +411,9 @@ flags:
   place_hanging_entity:
     display-name: Place Hanging Entity
     description: Whether hanging entities can be placed.
+  place_ender_crystal:
+    display-name: Place End Crystal
+    description: Whether end crystals can be placed, including at the End exit portal.
   break_liquid:
     display-name: Collect Liquid
     description: Whether water and lava can be collected.
@@ -610,7 +614,7 @@ flag-groups:
       description: Movement and travel inside a dominion.
     building:
       display-name: Building
-      description: Place and remove blocks, liquids, decorative entities and flower-pot contents.
+      description: Place and remove blocks, liquids, decorative entities and flower-pot contents; place end crystals.
     item-management:
       display-name: Item Management
       description: Pick up and drop items.

@@ -32,8 +32,10 @@ import java.util.Map;
  */
 public final class FlagConfiguration {
 
-    private static final int SCHEMA_VERSION = 6;
+    private static final int SCHEMA_VERSION = 7;
     private static final int SPLIT_FLAGS_SCHEMA_VERSION = 5;
+    private static final int CUSHION_GROUPS_SCHEMA_VERSION = 6;
+    private static final int CRYSTAL_PLACEMENT_GROUP_SCHEMA_VERSION = 7;
     private static final Map<Flag, String> declaredFlagIcons = new IdentityHashMap<>();
     private static final Map<String, List<String>> unresolvedEnvironmentGroupFlags = new HashMap<>();
     private static final Map<String, List<String>> unresolvedPrivilegeGroupFlags = new HashMap<>();
@@ -61,6 +63,7 @@ public final class FlagConfiguration {
             unresolvedPrivilegeGroupFlags.clear();
         } else {
             migrateCushionGroups(yaml, schemaVersion);
+            migrateCrystalPlacementGroup(yaml, schemaVersion);
             loadConfiguredFlagGroups(yaml);
         }
         Language.loadFlagGroupTexts();
@@ -212,7 +215,7 @@ public final class FlagConfiguration {
 
     /** One-time additive migration: preserve custom groups, icons, order and subsequent edits. */
     static void migrateCushionGroups(YamlConfiguration yaml, int schemaVersion) {
-        if (schemaVersion >= SCHEMA_VERSION) return;
+        if (schemaVersion >= CUSHION_GROUPS_SCHEMA_VERSION) return;
         for (String id : List.of("building", "decoration")) {
             String path = "groups.privilege." + id;
             if (yaml.isConfigurationSection(path)) appendGroupFlags(yaml, path, "cushion_place", "cushion_break");
@@ -229,6 +232,15 @@ public final class FlagConfiguration {
             }
             if (type.equals("privilege")) appendGroupFlags(yaml, path, "cushion_place", "cushion_break");
             else appendGroupFlags(yaml, path, "cushion_mob_damage", "cushion_environment_break");
+        }
+    }
+
+    /** Add the new placement permission once without recreating a deleted building group. */
+    static void migrateCrystalPlacementGroup(YamlConfiguration yaml, int schemaVersion) {
+        if (schemaVersion >= CRYSTAL_PLACEMENT_GROUP_SCHEMA_VERSION) return;
+        String path = "groups.privilege.building";
+        if (yaml.isConfigurationSection(path)) {
+            appendGroupFlags(yaml, path, Flags.PLACE_ENDER_CRYSTAL.getFlagName());
         }
     }
 
