@@ -1,8 +1,6 @@
 package cn.lunadeer.dominion.cache;
 
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
-import cn.lunadeer.dominion.configuration.Language;
-import cn.lunadeer.dominion.misc.DominionException;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,29 +13,21 @@ import static cn.lunadeer.dominion.misc.Others.isInDominion;
 
 /**
  * The DominionNode class represents a node in the dominion tree structure.
- * <p>
- * DominionNode not store the dominion data, only the id of the dominion.
  */
 public class DominionNode {
-    private final Integer dominionId;
+    private final DominionDTO dominion;
     private CopyOnWriteArrayList<DominionNode> children = new CopyOnWriteArrayList<>();
 
-    public DominionNode(Integer dominionId) {
-        this.dominionId = dominionId;
+    public DominionNode(DominionDTO dominion) {
+        this.dominion = dominion;
     }
 
     /**
      * Gets the DominionDTO associated with this node.
-     * <p>
-     * This method will fetch the DominionDTO from the cache.
      *
      * @return the DominionDTO associated with this node
      */
     public @NotNull DominionDTO getDominion() {
-        DominionDTO dominion = CacheManager.instance.getDominion(dominionId);
-        if (dominion == null) {
-            throw new DominionException(Language.convertsText.unknownDominion, dominionId);
-        }
         return dominion;
     }
 
@@ -56,7 +46,7 @@ public class DominionNode {
      * @return the dominion ID
      */
     public Integer getDominionId() {
-        return dominionId;
+        return dominion.getId();
     }
 
     /**
@@ -90,7 +80,7 @@ public class DominionNode {
 
         if (children != null) {
             for (DominionDTO dominion : children) {
-                DominionNode node = new DominionNode(dominion.getId());
+                DominionNode node = new DominionNode(dominion);
                 node.children = buildTree(dominion.getId(), parentToChildrenMap);
                 dominionTree.add(node);
             }
