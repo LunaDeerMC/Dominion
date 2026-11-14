@@ -1,0 +1,24 @@
+// ./gradlew -I tests/e2e/cushion-piston301/init.gradle cushionPiston301HarnessJar
+import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.jvm.tasks.Jar
+
+gradle.projectsEvaluated {
+    def root = gradle.rootProject
+    def core = root.project(':core')
+    def version = root.project(':versions:v26_3')
+    def compile = root.tasks.register('compileCushionPiston301Harness', JavaCompile) {
+        source = root.fileTree('tests/e2e/cushion-piston301') { include '*.java' }
+        classpath = version.configurations.compileClasspath + core.sourceSets.main.output
+        destinationDirectory = root.layout.buildDirectory.dir('cushion-piston301/classes')
+        javaCompiler = version.tasks.named('compileJava', JavaCompile).get().javaCompiler
+        options.encoding = 'UTF-8'
+        dependsOn core.tasks.named('classes')
+    }
+    root.tasks.register('cushionPiston301HarnessJar', Jar) {
+        dependsOn compile
+        from compile.flatMap { it.destinationDirectory }
+        from root.file('tests/e2e/cushion-piston301/plugin.yml')
+        archiveFileName = 'CushionPiston301.jar'
+        destinationDirectory = root.layout.buildDirectory.dir('cushion-piston301')
+    }
+}

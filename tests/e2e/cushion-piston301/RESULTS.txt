@@ -1,0 +1,150 @@
+ENV core=26.3-DEV-0cf3b7b (MC: 26.3) dominion=4.9.9-release
+PASS real world-wide configuration enabled
+PASS real cushion_environment_break=false
+PASS helper EAST extending=true material=AIR
+PASS helper EAST extending=true material=WATER
+PASS helper EAST extending=true material=LAVA
+PASS helper EAST extending=true material=STONE
+PASS helper EAST extending=false material=AIR
+PASS helper EAST extending=false material=WATER
+PASS helper EAST extending=false material=LAVA
+PASS helper EAST extending=false material=STONE
+PASS helper WEST extending=true material=AIR
+PASS helper WEST extending=true material=WATER
+PASS helper WEST extending=true material=LAVA
+PASS helper WEST extending=true material=STONE
+PASS helper WEST extending=false material=AIR
+PASS helper WEST extending=false material=WATER
+PASS helper WEST extending=false material=LAVA
+PASS helper WEST extending=false material=STONE
+PASS helper NORTH extending=true material=AIR
+PASS helper NORTH extending=true material=WATER
+PASS helper NORTH extending=true material=LAVA
+PASS helper NORTH extending=true material=STONE
+PASS helper NORTH extending=false material=AIR
+PASS helper NORTH extending=false material=WATER
+PASS helper NORTH extending=false material=LAVA
+PASS helper NORTH extending=false material=STONE
+PASS helper SOUTH extending=true material=AIR
+PASS helper SOUTH extending=true material=WATER
+PASS helper SOUTH extending=true material=LAVA
+PASS helper SOUTH extending=true material=STONE
+PASS helper SOUTH extending=false material=AIR
+PASS helper SOUTH extending=false material=WATER
+PASS helper SOUTH extending=false material=LAVA
+PASS helper SOUTH extending=false material=STONE
+PASS helper UP extending=true material=AIR
+PASS helper UP extending=true material=WATER
+PASS helper UP extending=true material=LAVA
+PASS helper UP extending=true material=STONE
+PASS helper UP extending=false material=AIR
+PASS helper UP extending=false material=WATER
+PASS helper UP extending=false material=LAVA
+PASS helper UP extending=false material=STONE
+PASS helper DOWN extending=true material=AIR
+PASS helper DOWN extending=true material=WATER
+PASS helper DOWN extending=true material=LAVA
+PASS helper DOWN extending=true material=STONE
+PASS helper DOWN extending=false material=AIR
+PASS helper DOWN extending=false material=WATER
+PASS helper DOWN extending=false material=LAVA
+PASS helper DOWN extending=false material=STONE
+PASS real world-wide configuration enabled
+PASS real cushion_environment_break=false
+NATURAL water extend cancelled=false blocks=[WATER:BoundingBox [minX=0.0, minY=0.0, minZ=0.0, maxX=0.0, maxY=0.0, maxZ=0.0]]
+PASS water real extend event count=1
+PASS water cancelled=false
+PASS water actual piston extended=true
+PASS water retract not cancelled
+PASS water real retract events=1
+PASS water retracted state
+PASS real world-wide configuration enabled
+PASS real cushion_environment_break=false
+NATURAL lava extend cancelled=false blocks=[LAVA:BoundingBox [minX=0.0, minY=0.0, minZ=0.0, maxX=0.0, maxY=0.0, maxZ=0.0]]
+PASS lava real extend event count=1
+PASS lava cancelled=false
+PASS lava actual piston extended=true
+PASS lava retract not cancelled
+PASS lava real retract events=1
+PASS lava retracted state
+PASS real world-wide configuration enabled
+PASS real cushion_environment_break=false
+NATURAL stone extend cancelled=false blocks=[STONE:BoundingBox [minX=100009.0, minY=80.0, minZ=100008.0, maxX=100010.0, maxY=81.0, maxZ=100009.0]]
+PASS stone real extend event count=1
+PASS stone cancelled=false
+PASS stone actual piston extended=true
+PASS stone retract not cancelled
+PASS stone real retract events=1
+PASS stone retracted state
+PASS real world-wide configuration enabled
+PASS real cushion_environment_break=false
+NATURAL tnt extend cancelled=false blocks=[TNT:BoundingBox [minX=100009.0, minY=80.0, minZ=100008.0, maxX=100010.0, maxY=81.0, maxZ=100009.0]]
+PASS tnt real extend event count=1
+PASS tnt cancelled=false
+PASS tnt actual piston extended=true
+PASS tnt retract not cancelled
+PASS tnt real retract events=1
+PASS tnt retracted state
+PASS real world-wide configuration enabled
+PASS real cushion_environment_break=false
+NATURAL fire extend cancelled=false blocks=[FIRE:BoundingBox [minX=100009.0, minY=80.0, minZ=100008.0, maxX=100010.0, maxY=80.0625, maxZ=100009.0]]
+PASS fire real extend event count=1
+PASS fire cancelled=false
+PASS fire actual piston extended=true
+PASS fire retract not cancelled
+PASS fire real retract events=1
+PASS fire retracted state
+PASS real world-wide configuration enabled
+PASS real cushion_environment_break=false
+PASS head-protected cushion spawned
+NATURAL head-protected extend cancelled=true blocks=[]
+PASS head-protected real extend event count=1
+PASS head-protected cancelled=true
+PASS head-protected actual piston extended=false
+PASS head-protected actual cushion destroyed=false
+PASS head-protected real retract events=0
+PASS head-protected retracted state
+PASS real world-wide configuration enabled
+PASS real cushion_environment_break=true
+PASS head-allowed cushion spawned
+NATURAL head-allowed extend cancelled=false blocks=[]
+PASS head-allowed real extend event count=1
+PASS head-allowed cancelled=false
+PASS head-allowed actual piston extended=true
+PASS head-allowed actual cushion destroyed=true
+PASS head-allowed retract not cancelled
+PASS head-allowed real retract events=1
+PASS head-allowed retracted state
+PASS real world-wide configuration enabled
+PASS real cushion_environment_break=false
+PASS water-cushion-outside cushion spawned
+NATURAL water-cushion-outside extend cancelled=false blocks=[WATER:BoundingBox [minX=0.0, minY=0.0, minZ=0.0, maxX=0.0, maxY=0.0, maxZ=0.0]]
+PASS water-cushion-outside real extend event count=1
+PASS water-cushion-outside cancelled=false
+PASS water-cushion-outside actual piston extended=true
+PASS water-cushion-outside actual cushion destroyed=false
+PASS water-cushion-outside retract not cancelled
+PASS water-cushion-outside real retract events=1
+PASS water-cushion-outside retracted state
+PASS real world-wide configuration enabled
+PASS real cushion_environment_break=false
+PASS stone-protected cushion spawned
+NATURAL stone-protected extend cancelled=true blocks=[STONE:BoundingBox [minX=100009.0, minY=80.0, minZ=100008.0, maxX=100010.0, maxY=81.0, maxZ=100009.0]]
+PASS stone-protected real extend event count=1
+PASS stone-protected cancelled=true
+PASS stone-protected actual piston extended=false
+PASS stone-protected actual cushion destroyed=false
+PASS stone-protected real retract events=0
+PASS stone-protected retracted state
+PASS real world-wide configuration enabled
+PASS real cushion_environment_break=true
+PASS stone-allowed cushion spawned
+NATURAL stone-allowed extend cancelled=false blocks=[STONE:BoundingBox [minX=100009.0, minY=80.0, minZ=100008.0, maxX=100010.0, maxY=81.0, maxZ=100009.0]]
+PASS stone-allowed real extend event count=1
+PASS stone-allowed cancelled=false
+PASS stone-allowed actual piston extended=true
+PASS stone-allowed actual cushion destroyed=true
+PASS stone-allowed retract not cancelled
+PASS stone-allowed real retract events=1
+PASS stone-allowed retracted state
+SUMMARY checks=138 failures=0

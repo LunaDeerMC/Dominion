@@ -24,12 +24,30 @@ public final class CushionPistonProtection {
         BoundingBox headPath = BoundingBox.of(head).union(BoundingBox.of(piston));
         if (denied(event, headPath)) return;
         for (Block block : blocks) {
-            BoundingBox original = block.getBoundingBox();
+            BoundingBox original = movementBounds(block);
+            if (original == null) continue;
             BoundingBox swept = original.clone().union(original.clone().shift(movement.getDirection()));
             // Honey blocks also carry entities standing on top during horizontal motion.
             if (block.getType() == Material.HONEY_BLOCK && movement.getModY() == 0) swept.expand(0, 0, 0, 0, 0.5, 0);
             if (denied(event, swept.expand(0.01))) return;
         }
+    }
+
+    private static BoundingBox movementBounds(Block block) {
+        BoundingBox outline = block.getBoundingBox();
+        if (outline.getVolume() > 0) return outline;
+
+        // Empty outlines are reported at the world origin. Piston events also include
+        // destroyed fluids, so do not turn an empty shape into a swept unit block.
+        // Preserve protection for a block with collision geometry but no outline.
+        BoundingBox collision = null;
+        for (BoundingBox part : block.getCollisionShape().getBoundingBoxes()) {
+            if (part.getVolume() <= 0) continue;
+            if (collision == null) collision = part.clone();
+            else collision.union(part);
+        }
+        // Collision boxes are block-local, unlike a nonempty outline bounding box.
+        return collision == null ? null : collision.shift(block.getX(), block.getY(), block.getZ());
     }
 
     private static boolean denied(BlockPistonEvent event, BoundingBox area) {

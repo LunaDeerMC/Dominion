@@ -1,0 +1,6 @@
+name: CushionPiston301
+version: '1.0'
+main: CushionPiston301
+api-version: '26.3'
+folia-supported: true
+depend: [Dominion]
